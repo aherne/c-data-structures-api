@@ -1,0 +1,344 @@
+/*
+ * LinkedList.h
+ *
+ *  Created on: Apr 17, 2016
+ *      Author: aherne
+ */
+
+#ifndef LIST_LINKEDLIST_H_
+#define LIST_LINKEDLIST_H_
+
+template<typename T>
+struct LinkedListEntry {
+	T value;
+	LinkedListEntry* next;
+};
+
+template<typename T>
+class LinkedListComparator {
+public:
+	LinkedListComparator(bool (*function)(const T&,const T&)) {
+		compareFunction = function;
+	}
+
+	bool operator()(LinkedListEntry<T>*& left, LinkedListEntry<T>*& right) const {
+		return compareFunction(left->value, right->value);
+	}
+private:
+	bool (*compareFunction)(const T&,const T&);
+};
+
+#include "LinkedListSorter.h"
+
+template<typename T>
+class LinkedListIterator;
+
+template<typename T>
+class LinkedList: public List<T> {
+	friend class LinkedListIterator<T>;
+	public:
+		typedef LinkedListIterator<T> iterator;
+
+		LinkedList() {
+			head = nullptr;
+			tail = nullptr;
+			currentItem = nullptr;
+			currentIndex = 0;
+			count = 0;
+		}
+
+		~LinkedList() {
+			empty();
+		}
+
+		void clear() {
+			empty();
+
+			head = nullptr;
+			tail = nullptr;
+			currentItem = nullptr;
+			currentIndex = 0;
+			count = 0;
+		}
+
+		void addToTop(const T& value) {
+			// reset internal iterator
+			currentIndex = 0;
+			currentItem = nullptr;
+
+			// add element
+			LinkedListEntry<T>* element = new LinkedListEntry<T>;
+			element->value = value;
+			element->next = head;
+			head = element;
+			if(tail==nullptr) tail = head;
+
+			// increment counter
+			++ count;
+		}
+
+		void addToBottom(const T& value) {
+			// reset internal iterator
+			currentIndex = 0;
+			currentItem = nullptr;
+
+			// add element
+			LinkedListEntry<T>* newNode = new LinkedListEntry<T>;
+			newNode->value = value;
+			newNode->next = nullptr;
+			if(count==0) {
+				head = newNode;
+				tail = head;
+			} else {
+				tail->next = newNode;
+				tail = newNode;
+			}
+
+			// increment counter
+			++ count;
+		}
+
+		T& get(const size_t& index) {
+			if(index>=count) throw std::out_of_range("Index must already exist!");
+
+			traverse(index);
+
+			return currentItem->value;
+		}
+
+		void set(const size_t& index, const T& value) {
+			if(index>=count) throw std::out_of_range("Index must already exist!");
+
+			traverse(index);
+
+			currentItem->value = value;
+		}
+
+		void emplace(const size_t& index, const T& value) {
+			if(index>count) throw std::out_of_range("Index cannot exceed list length!");
+
+			if(index==0) {
+				addToTop(value);
+
+				currentIndex = 0;
+				currentItem = head;
+			} else if(index==count) {
+				addToBottom(value);
+
+				currentIndex = index;
+				currentItem = tail;
+			} else {
+				std::size_t i = 0;
+				LinkedListEntry<T>* temp = head;
+				if(currentItem!=nullptr && index>currentIndex) {
+					i = currentIndex;
+					temp = currentItem;
+				}
+				while(temp!=nullptr) {
+					if((i+1)==index) {
+						LinkedListEntry<T>* newNode = new LinkedListEntry<T>;
+						newNode->value = value;
+						newNode->next = temp->next;
+
+						temp->next = newNode;
+
+						currentIndex = index;
+						currentItem = newNode;
+
+						++ count;
+						return;
+					}
+					temp = temp->next;
+					++i;
+				}
+			}
+		}
+
+		bool isEmpty() {
+			return count==0;
+		}
+
+		std::size_t size() {
+			return count;
+		}
+
+		bool containsIndex(const size_t& index) {
+			return (index>=count?false:true);
+		}
+
+		bool containsValue(const T& value) {
+			LinkedListEntry<T>* temp = head;
+			while(temp!=nullptr) {
+				if(valueComparator(temp->value, value)==0) {
+					return true;
+				}
+				temp = temp->next;
+			}
+			return false;
+		}
+
+		void removeIndex(const size_t& index) {
+			if(index>=count) throw std::out_of_range("Index must already exist!");
+
+			if(index==0) {
+				deleteHead();
+			} else {
+				traverse(index-1);
+				deleteNextItem();
+			}
+		}
+
+		void removeValue(const T& value) {
+			if(count==0) return;
+
+			std::size_t oldCount = count;
+			LinkedListEntry<T>* temp = head;
+			std::size_t position = 0;
+			while(temp!=nullptr) {
+				if(temp == head) {
+					if(valueComparator(temp->value, value)==0) {
+						deleteHead();
+						temp = head;
+					}
+				} else {
+					if(temp->next!=nullptr) {
+						if(valueComparator(temp->next->value, value)==0) {
+							currentIndex = position;
+							currentItem = temp;
+							deleteNextItem();
+							temp = currentItem;
+						}
+					}
+				}
+
+
+				temp = temp->next;
+				++ position;
+			}
+
+			if(oldCount == count) throw std::out_of_range("Value not found!");
+		}
+
+		iterator begin() {
+			return LinkedListIterator<T>(this);
+		}
+
+		iterator end(){
+			return LinkedListIterator<T>(count);
+		}
+
+		void sort(bool (*comparator) (const T&, const T&)) {
+			// reset internal iterator
+			currentIndex = 0;
+			currentItem = nullptr;
+			// sort
+			LinkedListComparator<T> comparison(comparator);
+			LinkedListSorter<LinkedListEntry<T>, LinkedListComparator<T>> dlls(&head, &tail, comparison);
+		}
+	private:
+
+		void deleteHead() {
+			LinkedListEntry<T>* temp = head->next;
+			delete head;
+			head = temp;
+			if(temp==nullptr) tail = nullptr;
+			currentIndex = 0;
+			currentItem = temp;
+			-- count;
+		}
+
+		void deleteNextItem() {
+			LinkedListEntry<T>* nextItem = currentItem->next;
+			currentItem->next = nextItem->next;
+
+			if(nextItem==tail) tail = currentItem;
+
+			delete nextItem;
+
+			-- count;
+		}
+		void traverse(const size_t& index) {
+			std::size_t i = 0;
+			LinkedListEntry<T>* temp = head;
+			if(currentItem!=nullptr && index>=currentIndex) {
+				i = currentIndex;
+				temp = currentItem;
+			}
+			while(temp!=nullptr) {
+				if(i==index) {
+					currentIndex = index;
+					currentItem = temp;
+					return;
+				}
+				temp = temp->next;
+				++i;
+			}
+		}
+
+		void empty(){
+			LinkedListEntry<T>* temp = head;
+			LinkedListEntry<T>* del = temp;
+			while(del != nullptr) {
+				temp = temp->next;
+				delete del;
+				del = temp;
+			}
+		}
+
+		LinkedListEntry<T>* head;
+		LinkedListEntry<T>* tail;
+		std::size_t count;
+		comparator<T> valueComparator;
+
+		// for fast get/set iteration
+		std::size_t currentIndex;
+		LinkedListEntry<T>* currentItem;
+};
+
+template<typename T>
+class LinkedListIterator {
+	public:
+		LinkedListIterator(LinkedList<T>* list){
+			this->list = list;
+			current_item = list->head;
+			offset = 0;
+		}
+
+		LinkedListIterator(std::size_t total){
+			list = nullptr;
+			current_item = nullptr;
+			offset = total;
+		}
+
+		~LinkedListIterator(){}
+
+		const T operator*(){
+			return current_item->value;
+		}
+
+		bool operator!=(const LinkedListIterator<T>& it) const {
+			return offset!=it.offset;
+		}
+
+		void remove() {
+			list->removeIndex(offset);
+			current_item = list->currentItem;
+			--offset;
+		}
+
+		LinkedListIterator<T>& operator++(){
+			if(current_item!=nullptr) {
+				current_item = current_item->next;
+			}
+			++offset;
+			return *this;
+		}
+
+	private:
+		LinkedList<T>* list;
+		LinkedListEntry<T>* current_item;
+		std::size_t offset;
+};
+
+
+#endif /* LIST_LINKEDLIST_H_ */
