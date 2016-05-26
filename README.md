@@ -221,11 +221,26 @@ Operations complexity @ map:
 			<td>Gets map values as std::vector.</td>
 		</tr>
 		<tr>
+			<td>sortByKey(C)</td>
+			<td>-</td>
+			<td>O(N*2+log(N))</td>
+			<td>-</td>
+			<td>Gets map values as std::vector.</td>
+		</tr>
+		<tr>
+			<td>sortByValue(C)</td>
+			<td>-</td>
+			<td>O(N*2+log(N))</td>
+			<td>-</td>
+			<td>Gets map values as std::vector.</td>
+		</tr>
+		<tr>
 			<td colspan=5>
 				<strong>Glossary:</strong><br/>
 				K = position in list<br/>
 				N = number of elements in list<br/>
-				V = value stored by list
+				V = value stored by list<br/>
+				C = comparator
 			</td>
 		</tr>
 	</tbody>
@@ -286,10 +301,18 @@ Operations complexity @ set:
 			<td>Gets set values as std::vector.</td>
 		</tr>
 		<tr>
+			<td>sort(C)</td>
+			<td>-</td>
+			<td>O(N*2+log(N))</td>
+			<td>-</td>
+			<td>Gets map values as std::vector.</td>
+		</tr>
+		<tr>
 			<td colspan=5>
 				<strong>Glossary:</strong><br/>
 				N = number of elements in list<br/>
-				V = value stored by list
+				V = value stored by list<br/>
+				C = comparator
 			</td>
 		</tr>
 	</tbody>
