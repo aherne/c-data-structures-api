@@ -3,20 +3,20 @@
 My own implementation of data structures in C++, much simpler than that used by STL, with equal or greater performance. In my tradition, it's strictly organized, structured in a way somewhat similar to Java Collections API:
 
 - List: "interface" implementing signatures of operations common to all kinds of list data structures
-	- ArrayList: implements a list of dynamic array type (same as std::vector)
-	- LinkedList: implements a list of singly linked type (same as std::forward_list @ C++11, but keeping a pointer to tail, making insertions on bottom as fast as on top) 
-	- DoublyLinkedList: implements a list of doubly linked type (same as std::list)
+	- ArrayList: implements a list of dynamic array type (similar to std::vector)
+	- LinkedList: implements a list of singly linked type (similar to std::forward_list @ C++11, but keeping a pointer to tail, making insertions on bottom as fast as on top) 
+	- DoublyLinkedList: implements a list of doubly linked type (similar to std::list)
 - Map: "interface" implementing signatures of operations common to all kinds of map data structures
-	- HashMap: implements a map of hash table type (similar in principle to std::unordered_map @ C++11, only significantly faster and lighter weight)
+	- HashMap: implements a map of hash table type (similar to std::unordered_map @ C++11, only significantly faster and lighter weight)
 	- LinkedHashMap: implements a map of hash table type ordered via a doubly linked list (no STL equivalent, elements can be iterated by insertion order)
 	- TreeMap: implements a map or red-black-tree type (wrapper over std::map)
 - Set: "interface" implementing signatures of operations common to all kinds of set data structures
-	- HashSet: implements a set of hash table type (similar in principle to std::unordered_set @ C++11, only significantly faster and lighter weight)
+	- HashSet: implements a set of hash table type (similar to std::unordered_set @ C++11, only significantly faster and lighter weight)
 	- LinkedHashSet: implements a set of hash table type ordered via a doubly linked list (no STL equivalent, elements can be iterated by insertion order)
 	- TreeSet: implements a set or red-black-tree type (wrapper over std::set)
 - Container: "interface" implementing container adaptors into which all read/write operations are performed only on head or tail
-	- Stack: implements a LIFO container adaptor where data is pushed to head and popped from head (same as std::stack, also wrapping std::deque)
-	- Queue: implements a FIFO container adaptor where data is pushed to bottom and popped from head (same as std::queue, also wrapping std::deque)
+	- Stack: implements a LIFO container adaptor where data is pushed to head and popped from head (similar to std::stack, also wrapping std::deque)
+	- Queue: implements a FIFO container adaptor where data is pushed to bottom and popped from head (similar to std::queue, also wrapping std::deque)
 
 Operations complexity @ list:
 <table>
