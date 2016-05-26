@@ -23,21 +23,93 @@ Operations complexity @ list:
 			<td>ArrayList</td>
 			<td>LinkedList</td>
 			<td>DoublyLinkedList</td>
+			<td>Description</td>
 		</tr>
 	</thead>
+	<tbody>
+		<tr>
+			<td>addToTop(V)</td>
+			<td>O(N*2)</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>Add value on top of list.</td>
+		</tr>
+		<tr>
+			<td>addToBottom(V)</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>Add value on bottom of list.</td>
+		</tr>
+		<tr>
+			<td>clear()</td>
+			<td>O(N)</td>
+			<td>O(N)</td>
+			<td>O(N)</td>
+			<td>Clears list of all values.</td>
+		</tr>
+		<tr>
+			<td>containsIndex(K)</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>Checks if position exists in list.</td>
+		</tr>
+		<tr>
+			<td>containsValue(V)</td>
+			<td>O(N)</td>
+			<td>O(N)</td>
+			<td>O(N)</td>
+			<td>Checks if value exists in list.</td>
+		</tr>
+		<tr>
+			<td>emplace(K,V)</td>
+			<td>O((N-K)*2)</td>
+			<td>O(K)/O(K-P)</td>
+			<td>O(K)/O(N-K)/O(K-P)/O(P-K)</td>
+			<td>Inserts value at position, padding existing element to the right.</td>
+		</tr>
+		<tr>
+			<td>get(K)</td>
+			<td>O(1)</td>
+			<td>O(K)/O(K-P)</td>
+			<td>O(K)/O(N-K)/O(K-P)/O(P-K)</td>
+			<td>Gets value by position.</td>
+		</tr>
+		<tr>
+			<td>set(K,V)</td>
+			<td>O(1)</td>
+			<td>O(K)/O(K-P)</td>
+			<td>O(K)/O(N-K)/O(K-P)/O(P-K)</td>
+			<td>Sets value by position.</td>
+		</tr>
+		<tr>
+			<td>removeIndex(K)</td>
+			<td>O((N-K)*2)</td>
+			<td>O(K)/O(K-P)</td>
+			<td>O(K)/O(N-K)/O(K-P)/O(P-K)</td>
+			<td>Removes element by position.</td>
+		</tr>
+		<tr>
+			<td>removeValue(V)</td>
+			<td>O(N)</td>
+			<td>O(N)</td>
+			<td>O(N)</td>
+			<td>Removes all elements that match value.</td>
+		</tr>
+		<tr>
+			<td>isEmpty()</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>Checks if list is empty</td>
+		</tr>
+		<tr>
+			<td>size()</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>Gets list size</td>
+		</tr>
+	</tbody>
 </table>
-
-Operation								|	ArrayList	|	LinkedList	|	DoublyLinkedList
-Insertion on top						O(N*2)			O(1)		O(1)
-Insertion on random position			O(K+(N-K)*2)	O(K)		O(K)/O(N-K)
-Insertion on bottom						O(1)			O(1)		O(1)
-Retrieval of top element				O(1)			O(1)		O(1)
-Retrieval of random position element	O(1)			O(K)		O(K)/O(N-K)
-Retrieval of next position element		O(1)			O(1)		O(1)
-Retrieval of previous position element	O(1)			O(K)		O(1)
-Retrieval of bottom element				O(1)			O(N)		O(1)
-Removal of top element					O(N)			O(1)		O(1)
-Removal of random position element		O(K+(N-K)*2)	O(K)		O(K)/O(N-K)
-Removal of next position element		O(K+(N-K)*2)	O(1)		O(1)
-Removal of previous position element	O(K+(N-K)*2)	O(K)		O(1)
-Removal of bottom element				O(1)			O(N)		O(1)
