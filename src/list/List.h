@@ -28,6 +28,7 @@ public:
 	virtual bool containsValue(const T& value) = 0;
 	virtual void removeIndex(const size_t& index) = 0;
 	virtual void removeValue(const T& value) = 0;
+	virtual void sort(bool (*comparator) (const T&, const T&)) = 0;
 };
 
 #endif /* LIST_LIST_H_ */
