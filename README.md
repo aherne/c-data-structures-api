@@ -14,6 +14,9 @@ My own implementation of data structures in C++, much simpler than that used by 
 	- HashSet: implements a set of hash table type (same as std::unordered_set @ C++11)
 	- LinkedHashSet: implements a set of hash table type ordered via a doubly linked list (no STL equivalent, elements can be iterated by insertion order)
 	- TreeSet: implements a set or red-black-tree type (wrapper over std::set)
+- Container: "interface" implementing container adaptors into which all read/write operations are performed only on head or tail
+	- Stack: implements a LIFO container adaptor where data is pushed to head and popped from head (same as std::stack, also wrapping std::deque)
+	- Queue: implements a FIFO container adaptor where data is pushed to bottom and popped from head (same as std::queue, also wrapping std::deque)
 
 Operations complexity @ list:
 <table>
@@ -123,7 +126,7 @@ Operations complexity @ list:
 				<strong>Glossary:</strong><br/>
 				K = position in list<br/>
 				N = number of elements in list<br/>
-				V = value stored by list<br/>
+				V = value to be stored in list<br/>
 				P = internal iterator position<br/>
 				C = comparator
 			</td>
@@ -239,7 +242,7 @@ Operations complexity @ map:
 				<strong>Glossary:</strong><br/>
 				K = position in list<br/>
 				N = number of elements in list<br/>
-				V = value stored by list<br/>
+				V = value to be stored in map<br/>
 				C = comparator
 			</td>
 		</tr>
@@ -310,9 +313,70 @@ Operations complexity @ set:
 		<tr>
 			<td colspan=5>
 				<strong>Glossary:</strong><br/>
-				N = number of elements in list<br/>
-				V = value stored by list<br/>
+				N = number of elements in set<br/>
+				V = value to be stored in set<br/>
 				C = comparator
+			</td>
+		</tr>
+	</tbody>
+
+Operations complexity @ container:
+	virtual void clear() = 0;
+	virtual std::size_t size() = 0;
+	virtual bool isEmpty() = 0;
+	virtual T& peek() = 0;
+	virtual T pop() = 0;
+	virtual void push(const T& item) = 0;
+<table>
+	<thead>
+		<tr>
+			<td>Operation</td>
+			<td>Stack</td>
+			<td>Queue</td>
+			<td>Description</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>clear()</td>
+			<td>O(N)</td>
+			<td>O(N)</td>
+			<td>Clears container of all values.</td>
+		</tr>
+		<tr>
+			<td>size()</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>Gets container size</td>
+		</tr>
+		<tr>
+			<td>isEmpty()</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>Checks if container is empty</td>
+		</tr>
+		<tr>
+			<td>push(V)</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>Pushes value to head @ stack or tail @ queue.</td>
+		</tr>
+		<tr>
+			<td>peek()</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>Gets value in container head.</td>
+		</tr>
+		<tr>
+			<td>pop()</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>Removes head element of container and returns its value.</td>
+		</tr>
+		<tr>
+			<td colspan=5>
+				<strong>Glossary:</strong><br/>
+				N = number of elements in container
 			</td>
 		</tr>
 	</tbody>
