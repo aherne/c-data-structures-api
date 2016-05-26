@@ -112,12 +112,107 @@ Operations complexity @ list:
 			<td>Gets list size</td>
 		</tr>
 		<tr>
+			<td>sort(C)</td>
+			<td>O(N+log(N))</td>
+			<td>O(N*2+log(N))</td>
+			<td>O(N*2+log(N))</td>
+			<td>Sorts list by comparator.</td>
+		</tr>
+		<tr>
 			<td colspan=5>
 				<strong>Glossary:</strong><br/>
 				K = position in list<br/>
 				N = number of elements in list<br/>
 				V = value stored by list<br/>
-				P = internal iterator position
+				P = internal iterator position<br/>
+				C = comparator
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+Operations complexity @ map:
+<table>
+	<thead>
+		<tr>
+			<td>Operation</td>
+			<td>HashMap</td>
+			<td>LinkedHashMap</td>
+			<td>TreeMap</td>
+			<td>Description</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>clear()</td>
+			<td>O(N)</td>
+			<td>O(N)</td>
+			<td>O(N)</td>
+			<td>Clears map of all values.</td>
+		</tr>
+		<tr>
+			<td>containsKey(K)</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>O(log(N))</td>
+			<td>Checks if key exists in map.</td>
+		</tr>
+		<tr>
+			<td>containsValue(V)</td>
+			<td>O(N)</td>
+			<td>O(N)</td>
+			<td>O(N)</td>
+			<td>Checks if value exists in map.</td>
+		</tr>
+		<tr>
+			<td>get(K)</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>O(log(N))</td>
+			<td>Gets value by key.</td>
+		</tr>
+		<tr>
+			<td>set(K,V)</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>O(log(N))</td>
+			<td>Sets value by key.</td>
+		</tr>
+		<tr>
+			<td>removeKey(K)</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>O(log(N))</td>
+			<td>Removes element by key.</td>
+		</tr>
+		<tr>
+			<td>removeValue(V)</td>
+			<td>O(N)</td>
+			<td>O(N)</td>
+			<td>O(N)</td>
+			<td>Removes all elements that match value.</td>
+		</tr>
+		<tr>
+			<td>isEmpty()</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>Checks if map is empty</td>
+		</tr>
+		<tr>
+			<td>size()</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>Gets map size</td>
+		</tr>
+		<tr>
+			<td colspan=5>
+				<strong>Glossary:</strong><br/>
+				K = position in list<br/>
+				N = number of elements in list<br/>
+				V = value stored by list<br/>
+				C = comparator
 			</td>
 		</tr>
 	</tbody>
