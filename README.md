@@ -225,14 +225,14 @@ Operations complexity @ map:
 			<td>-</td>
 			<td>O(N*2+log(N))</td>
 			<td>-</td>
-			<td>Gets map values as std::vector.</td>
+			<td>Sorts map by keys and comparator.</td>
 		</tr>
 		<tr>
 			<td>sortByValue(C)</td>
 			<td>-</td>
 			<td>O(N*2+log(N))</td>
 			<td>-</td>
-			<td>Gets map values as std::vector.</td>
+			<td>Sorts map by values and comparator.</td>
 		</tr>
 		<tr>
 			<td colspan=5>
@@ -305,7 +305,7 @@ Operations complexity @ set:
 			<td>-</td>
 			<td>O(N*2+log(N))</td>
 			<td>-</td>
-			<td>Gets map values as std::vector.</td>
+			<td>Sorts set by values.</td>
 		</tr>
 		<tr>
 			<td colspan=5>
