@@ -319,14 +319,9 @@ Operations complexity @ set:
 			</td>
 		</tr>
 	</tbody>
+</table>
 
 Operations complexity @ container:
-	virtual void clear() = 0;
-	virtual std::size_t size() = 0;
-	virtual bool isEmpty() = 0;
-	virtual T& peek() = 0;
-	virtual T pop() = 0;
-	virtual void push(const T& item) = 0;
 <table>
 	<thead>
 		<tr>
