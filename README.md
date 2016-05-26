@@ -207,12 +207,89 @@ Operations complexity @ map:
 			<td>Gets map size</td>
 		</tr>
 		<tr>
+			<td>getKeys()</td>
+			<td>O(N*2)</td>
+			<td>O(N*2)</td>
+			<td>O(N*2)</td>
+			<td>Gets map keys as std::vector.</td>
+		</tr>
+		<tr>
+			<td>getValues()</td>
+			<td>O(N*2)</td>
+			<td>O(N*2)</td>
+			<td>O(N*2)</td>
+			<td>Gets map values as std::vector.</td>
+		</tr>
+		<tr>
 			<td colspan=5>
 				<strong>Glossary:</strong><br/>
 				K = position in list<br/>
 				N = number of elements in list<br/>
-				V = value stored by list<br/>
-				C = comparator
+				V = value stored by list
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+Operations complexity @ set:
+<table>
+	<thead>
+		<tr>
+			<td>Operation</td>
+			<td>HashSet</td>
+			<td>LinkedHashSet</td>
+			<td>TreeSet</td>
+			<td>Description</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>clear()</td>
+			<td>O(N)</td>
+			<td>O(N)</td>
+			<td>O(N)</td>
+			<td>Clears set of all values.</td>
+		</tr>
+		<tr>
+			<td>contains(V)</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>O(log(N))</td>
+			<td>Checks if value exists in set.</td>
+		</tr>
+		<tr>
+			<td>remove(V)</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>O(log(N))</td>
+			<td>Removes element by value.</td>
+		</tr>
+		<tr>
+			<td>isEmpty()</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>Checks if set is empty</td>
+		</tr>
+		<tr>
+			<td>size()</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>Gets set size</td>
+		</tr>
+		<tr>
+			<td>getValues()</td>
+			<td>O(N*2)</td>
+			<td>O(N*2)</td>
+			<td>O(N*2)</td>
+			<td>Gets set values as std::vector.</td>
+		</tr>
+		<tr>
+			<td colspan=5>
+				<strong>Glossary:</strong><br/>
+				N = number of elements in list<br/>
+				V = value stored by list
 			</td>
 		</tr>
 	</tbody>
