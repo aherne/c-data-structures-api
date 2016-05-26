@@ -1,6 +1,8 @@
 # c-data-structures-api
 
-My own implementation of data structures in C++, much simpler than that used by STL, with equal or greater performance. In my tradition, it's strictly organized, structured in a way somewhat similar to Java Collections API:
+My own implementation of data structures in C++, much simpler than that used by STL, with equal or greater performance, structured in a way somewhat similar to Java Collections API.
+
+Supported data structures:
 
 - List: "interface" implementing signatures of operations common to all kinds of list data structures
 	- ArrayList: implements a list of dynamic array type (similar to std::vector)
@@ -17,6 +19,7 @@ My own implementation of data structures in C++, much simpler than that used by 
 - Container: "interface" implementing container adaptors into which all read/write operations are performed only on head or tail
 	- Stack: implements a LIFO container adaptor where data is pushed to head and popped from head (similar to std::stack, also wrapping std::deque)
 	- Queue: implements a FIFO container adaptor where data is pushed to bottom and popped from head (similar to std::queue, also wrapping std::deque)
+- Tree: to be done 
 
 Operations complexity @ list:
 <table>
