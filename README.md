@@ -7,11 +7,11 @@ My own implementation of data structures in C++, much simpler than that used by 
 	- LinkedList: implements a list of singly linked type (same as std::forward_list @ C++11, but keeping a pointer to tail, making insertions on bottom as fast as on top) 
 	- DoublyLinkedList: implements a list of doubly linked type (same as std::list)
 - Map: "interface" implementing signatures of operations common to all kinds of map data structures
-	- HashMap: implements a map of hash table type (same as std::unordered_map @ C++11)
+	- HashMap: implements a map of hash table type (similar in principle to std::unordered_map @ C++11, only significantly faster and lighter weight)
 	- LinkedHashMap: implements a map of hash table type ordered via a doubly linked list (no STL equivalent, elements can be iterated by insertion order)
 	- TreeMap: implements a map or red-black-tree type (wrapper over std::map)
 - Set: "interface" implementing signatures of operations common to all kinds of set data structures
-	- HashSet: implements a set of hash table type (same as std::unordered_set @ C++11)
+	- HashSet: implements a set of hash table type (similar in principle to std::unordered_set @ C++11, only significantly faster and lighter weight)
 	- LinkedHashSet: implements a set of hash table type ordered via a doubly linked list (no STL equivalent, elements can be iterated by insertion order)
 	- TreeSet: implements a set or red-black-tree type (wrapper over std::set)
 - Container: "interface" implementing container adaptors into which all read/write operations are performed only on head or tail
