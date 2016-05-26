@@ -15,18 +15,29 @@ My own implementation of data structures in C++, much simpler than that used by 
 	- LinkedHashSet: implements a set of hash table type ordered via a doubly linked list (no STL equivalent, elements can be iterated by insertion order)
 	- TreeSet: implements a set or red-black-tree type (wrapper over std::set)
 
-asd
-										ArrayList	LinkedList	DoublyLinkedList	HashMap		LinkedHashMap	TreeMap		HashSet	LinkedHashSet	TreeSet
-Insertion on top						O(N*2)		O(1)
-Insertion on random position			O(K+(N-K)*2)O(K)
-Insertion on bottom						O(1)		O(1)
-Retrieval of top element				O(1)		O(1)
-Retrieval of random position element	O(1)		O(K)
-Retrieval of next position element		O(1)		O(1)
-Retrieval of previous position element	O(1)		O(K)
-Retrieval of bottom element				O(1)		O(N)
-Removal of top element					O(N)		O(1)
-Removal of random position element		O(K+(N-K)*2)O(K)
-Removal of next position element		O(K+(N-K)*2)O(1)
-Removal of previous position element	O(K+(N-K)*2)O(K)
-Removal of bottom element				O(1)		O(N)
+Operations complexity @ list:
+<table>
+	<thead>
+		<tr>
+			<td>Operation</td>
+			<td>ArrayList</td>
+			<td>LinkedList</td>
+			<td>DoublyLinkedList</td>
+		</tr>
+	</thead>
+</table>
+
+Operation								|	ArrayList	|	LinkedList	|	DoublyLinkedList
+Insertion on top						O(N*2)			O(1)		O(1)
+Insertion on random position			O(K+(N-K)*2)	O(K)		O(K)/O(N-K)
+Insertion on bottom						O(1)			O(1)		O(1)
+Retrieval of top element				O(1)			O(1)		O(1)
+Retrieval of random position element	O(1)			O(K)		O(K)/O(N-K)
+Retrieval of next position element		O(1)			O(1)		O(1)
+Retrieval of previous position element	O(1)			O(K)		O(1)
+Retrieval of bottom element				O(1)			O(N)		O(1)
+Removal of top element					O(N)			O(1)		O(1)
+Removal of random position element		O(K+(N-K)*2)	O(K)		O(K)/O(N-K)
+Removal of next position element		O(K+(N-K)*2)	O(1)		O(1)
+Removal of previous position element	O(K+(N-K)*2)	O(K)		O(1)
+Removal of bottom element				O(1)			O(N)		O(1)
