@@ -92,7 +92,7 @@ Operations complexity @ list:
 		</tr>
 		<tr>
 			<td>removeValue(V)</td>
-			<td>O(N)</td>
+			<td>O(N*2)</td>
 			<td>O(N)</td>
 			<td>O(N)</td>
 			<td>Removes all elements that match value.</td>
@@ -110,6 +110,15 @@ Operations complexity @ list:
 			<td>O(1)</td>
 			<td>O(1)</td>
 			<td>Gets list size</td>
+		</tr>
+		<tr>
+			<td colspan=5>
+				<strong>Glossary:</strong><br/>
+				K = position in list<br/>
+				N = number of elements in list<br/>
+				V = value stored by list<br/>
+				P = internal iterator position
+			</td>
 		</tr>
 	</tbody>
 </table>
