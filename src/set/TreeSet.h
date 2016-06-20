@@ -18,7 +18,9 @@ class TreeSet : public Set<T> {
 public:
 	typedef typename std::set<T, VALUE_COMPARATOR>::iterator iterator;
 
-	TreeSet(){}
+	TreeSet(){
+		count = 0;
+	}
 
 	~TreeSet(){}
 
@@ -26,17 +28,18 @@ public:
 		data.clear();
 	}
 
-	bool contains(const T& value){
+	bool contains(const T& value) const{
 		if(data.size()==0) return false;
 		return data.count(value);
 	}
 
-	bool isEmpty() {
+	bool isEmpty() const {
 		return data.empty();
 	}
 
-	std::size_t size(){
-		return data.size();
+	const std::size_t& size() const{
+		count = data.size();
+		return count;
 	}
 
 	std::vector<T> getValues(){
@@ -65,6 +68,7 @@ public:
 		return data.end();
 	}
 private:
+	mutable std::size_t count;
 	std::set<T, VALUE_COMPARATOR> data;
 };
 

@@ -51,7 +51,7 @@ public:
 		buckets = new HashMapEntry<_KEY, _VALUE>*[bucket_count]();
 	}
 
-	bool containsKey(const _KEY& key){
+	bool containsKey(const _KEY& key) const{
 		if(count==0) return false;
 		std::size_t hashValue = hashingFunc(key);
 		int bucketNumber = getBucketNumber(hashValue);
@@ -66,7 +66,7 @@ public:
 		return false;
 	}
 
-	bool containsValue(const _VALUE& value) {
+	bool containsValue(const _VALUE& value) const{
 		if(count==0) return false;
 		for(std::size_t i=0; i< bucket_count; ++i) {
 			HashMapEntry<_KEY, _VALUE>* currentBucket = buckets[i];
@@ -80,11 +80,11 @@ public:
 		return false;
 	}
 
-	bool isEmpty() {
+	bool isEmpty() const {
 		return (count==0?true:false);
 	}
 
-	std::size_t size() {
+	const std::size_t& size() const {
 		return count;
 	}
 	std::vector<_KEY> getKeys() {
@@ -110,7 +110,7 @@ public:
 		return output;
 	}
 
-	_VALUE& get(const _KEY& key) {
+	const _VALUE& get(const _KEY& key) const {
 		std::size_t hashValue = hashingFunc(key);
 		int bucketNumber = getBucketNumber(hashValue);
 
@@ -205,7 +205,7 @@ public:
 	}
 
 private:
-	int getBucketNumber(std::size_t hash) {
+	int getBucketNumber(std::size_t hash) const {
 		return hash % bucket_count;
 	}
 

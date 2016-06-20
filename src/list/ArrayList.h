@@ -52,7 +52,7 @@ public:
 		++ count;
 	}
 
-	T& get(const size_t& index) {
+	const T& get(const size_t& index) const {
 		if(index>=count) throw std::out_of_range("Index must already exist!");
 		return contents[index];
 	}
@@ -74,19 +74,19 @@ public:
 		++ count;
 	}
 
-	bool isEmpty() {
+	bool isEmpty() const {
 		return count==0;
 	}
 
-	std::size_t size() {
+	const std::size_t& size() const {
 		return count;
 	}
 
-	bool containsIndex(const size_t& index) {
+	bool containsIndex(const size_t& index) const {
 		return (index>=count?false:true);
 	}
 
-	bool containsValue(const T& value) {
+	bool containsValue(const T& value) const {
 		for(std::size_t i=0; i<count; ++i) {
 			if(valueComparator(contents[i], value)==0) {
 				return true;

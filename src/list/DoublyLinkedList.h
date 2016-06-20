@@ -94,7 +94,7 @@ class DoublyLinkedList: public List<T> {
 			++ count;
 		}
 
-		T& get(const size_t& index) {
+		const T& get(const size_t& index) const {
 			if(index>=count) throw std::out_of_range("Index must already exist!");
 
 			traverse(index);
@@ -134,19 +134,19 @@ class DoublyLinkedList: public List<T> {
 			}
 		}
 
-		bool isEmpty() {
+		bool isEmpty() const {
 			return count==0;
 		}
 
-		std::size_t size() {
+		const std::size_t& size() const {
 			return count;
 		}
 
-		bool containsIndex(const size_t& index) {
+		bool containsIndex(const size_t& index) const  {
 			return (index>=count?false:true);
 		}
 
-		bool containsValue(const T& value) {
+		bool containsValue(const T& value) const {
 			DoublyLinkedListEntry<T>* temp = head;
 			while(temp!=nullptr) {
 				if(valueComparator(temp->value, value)==0) {
@@ -216,7 +216,7 @@ class DoublyLinkedList: public List<T> {
 			DoublyLinkedListSorter<DoublyLinkedListEntry<T>, DoublyLinkedListComparator<T>> dlls(&head, &tail, comparison);
 		}
 	private:
-		void traverse(const std::size_t& index) {
+		void traverse(const std::size_t& index) const {
 			if(index==currentIndex) return;
 
 			bool forwardTraversal = true;
@@ -325,8 +325,8 @@ class DoublyLinkedList: public List<T> {
 		comparator<T> valueComparator;
 
 		// for fast iteration
-		std::size_t currentIndex;
-		DoublyLinkedListEntry<T>* currentItem;
+		mutable std::size_t currentIndex;
+		mutable DoublyLinkedListEntry<T>* currentItem;
 };
 
 

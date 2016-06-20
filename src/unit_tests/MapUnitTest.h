@@ -21,27 +21,27 @@ class MapUnitTest {
 			test(&lhml);
 			testLinkedHashMap();
 
-//			std::cout << "=====HashMap<long,long>=====" << std::endl;
-//			HashMap<long, long> hml;
-//			test(&hml);
-//			testHashMap();
-//
-//			std::cout << "=====TreeMap<long,long>=====" << std::endl;
-//			TreeMap<long, long> tml;
-//			test(&tml);
-//			testTreeMap();
-//
+			std::cout << "=====HashMap<long,long>=====" << std::endl;
+			HashMap<long, long> hml;
+			test(&hml);
+			testHashMap();
+
+			std::cout << "=====TreeMap<long,long>=====" << std::endl;
+			TreeMap<long, long> tml;
+			test(&tml);
+			testTreeMap();
+
 			std::cout << "=====LinkedHashMap<char*,char*>=====" << std::endl;
 			LinkedHashMap<char*, char*> lhms;
 			test(&lhms);
-//
-//			std::cout << "=====HashMap<char*,char*>=====" << std::endl;
-//			HashMap<char*, char*> hms;
-//			test(&hms);
-//
-//			std::cout << "=====TreeMap<char*,char*>=====" << std::endl;
-//			TreeMap<char*, char*, stringKeyComparator> tms;
-//			test(&tms);
+
+			std::cout << "=====HashMap<char*,char*>=====" << std::endl;
+			HashMap<char*, char*> hms;
+			test(&hms);
+
+			std::cout << "=====TreeMap<char*,char*>=====" << std::endl;
+			TreeMap<char*, char*, stringKeyComparator> tms;
+			test(&tms);
 		}
 
 	private:

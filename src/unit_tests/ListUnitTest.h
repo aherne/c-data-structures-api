@@ -44,7 +44,7 @@ public:
 
 //		testArrayList();
 //		testLinkedList();
-		testDoublyLinkedList();
+//		testDoublyLinkedList();
 	}
 private:
 

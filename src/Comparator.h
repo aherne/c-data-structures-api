@@ -10,11 +10,15 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdexcept>
+#include <typeinfo>
 
 template<typename T>
 struct comparator {
 	int operator()(T& left, T& right) const {
-		throw std::out_of_range("No key/value comparator defined for this type!");
+
+		std::cout << typeid(left).name() << std::endl;
+		std::cout << typeid(right).name() << std::endl;
+		throw std::out_of_range("No key/value comparator defined for this type:");
 		return 0;
 	}
 };
@@ -30,7 +34,7 @@ struct comparator<char> {
 
 template<>
 struct comparator<long> {
-	int operator()(const long& left, const long& right) {
+	int operator()(const long& left, const long& right) const {
 		if(left<right) return -1;
 		else if (left>right) return 1;
 		else return 0;

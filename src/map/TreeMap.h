@@ -18,19 +18,21 @@ class TreeMap : public Map<_KEY,_VALUE> {
 	typedef typename std::map<_KEY, _VALUE,_KEY_COMPARATOR>::iterator iterator;
 
 	public:
-		TreeMap(){}
+		TreeMap(){
+			count=0;
+		}
 		~TreeMap(){}
 
 		void clear(){
 			data.clear();
 		}
 
-		bool containsKey(const _KEY& key){
+		bool containsKey(const _KEY& key) const{
 			if(data.size()==0) return false;
 			return data.count(key);
 		}
 
-		bool containsValue(const _VALUE& value) {
+		bool containsValue(const _VALUE& value) const {
 			if(data.size()==0) return false;
 			for(auto it = data.begin(); it != data.end(); ++it) {
 				if(valueComparator(it->second, value) ==0) {
@@ -40,12 +42,13 @@ class TreeMap : public Map<_KEY,_VALUE> {
 			return false;
 		}
 
-		bool isEmpty(){
+		bool isEmpty() const{
 			return data.empty();
 		}
 
-		std::size_t size(){
-			return data.size();
+		const std::size_t& size() const{
+			count = data.size(); // TODO: hack to enforce conformity with interface
+			return count;
 		}
 
 		std::vector<_KEY> getKeys(){
@@ -64,7 +67,7 @@ class TreeMap : public Map<_KEY,_VALUE> {
 			return output;
 		}
 
-		_VALUE& get(const _KEY& key) {
+		const _VALUE& get(const _KEY& key) const{
 			return data.at(key);
 		}
 
@@ -98,6 +101,7 @@ class TreeMap : public Map<_KEY,_VALUE> {
 			return data.end();
 		}
 	private:
+		mutable std::size_t count;
 		std::map<_KEY,_VALUE, _KEY_COMPARATOR> data;
 		comparator<_VALUE> valueComparator;
 };

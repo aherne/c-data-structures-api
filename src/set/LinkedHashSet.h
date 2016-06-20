@@ -73,7 +73,7 @@ public:
 		buckets = new LinkedHashSetEntry<T>*[bucket_count]();
 	}
 
-	bool contains(const T& value) {
+	bool contains(const T& value) const {
 		if(count==0) return false;
 		std::size_t hashValue = hashingFunc(value);
 		int bucketNumber = getBucketNumber(hashValue);
@@ -88,11 +88,11 @@ public:
 		return false;
 	}
 
-	bool isEmpty(){
+	bool isEmpty() const{
 		return (count==0?true:false);
 	}
 
-	std::size_t size(){
+	const std::size_t& size() const{
 		return count;
 	}
 
@@ -189,7 +189,7 @@ public:
 	}
 private:
 
-	int getBucketNumber(std::size_t hash) {
+	int getBucketNumber(std::size_t hash) const {
 		return hash % bucket_count;
 	}
 

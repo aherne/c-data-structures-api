@@ -29,15 +29,15 @@ public:
 		contents.clear();
 	}
 
-	std::size_t size() {
+	std::size_t size() const {
 		return contents.size();
 	}
 
-	bool isEmpty() {
+	bool isEmpty() const {
 		return contents.empty();
 	}
 
-	T& peek() {
+	const T& peek() const {
 		if(contents.size()==0) throw std::out_of_range("Container is empty!");
 		return contents[0];
 	}

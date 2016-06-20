@@ -30,11 +30,11 @@ int main() {
 //	ListUnitTest listUnitTest;
 //	listUnitTest.execute();
 
-	ListBenchmark listBenchmark;
-	listBenchmark.execute();
+//	ListBenchmark listBenchmark;
+//	listBenchmark.execute();
 
-//	ContainerUnitTest containerUnitTest;
-//	containerUnitTest.execute();
+	ContainerUnitTest containerUnitTest;
+	containerUnitTest.execute();
 
 	return 1;
 }

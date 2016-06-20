@@ -19,29 +19,29 @@ class SetUnitTest {
 			std::cout << "=====LinkedHashSet<long>=====" << std::endl;
 			LinkedHashSet<long> lhml;
 			test(&lhml);
-//			testLinkedHashSet();
+			testLinkedHashSet();
 
-//			std::cout << "=====HashSet<long>=====" << std::endl;
-//			HashSet<long> hml;
-//			test(&hml);
-//			testHashSet();
-//
-//			std::cout << "=====TreeSet<long>=====" << std::endl;
-//			TreeSet<long> tml;
-//			test(&tml);
-//			testTreeSet();
-//
+			std::cout << "=====HashSet<long>=====" << std::endl;
+			HashSet<long> hml;
+			test(&hml);
+			testHashSet();
+
+			std::cout << "=====TreeSet<long>=====" << std::endl;
+			TreeSet<long> tml;
+			test(&tml);
+			testTreeSet();
+
 			std::cout << "=====LinkedHashSet<char*>=====" << std::endl;
 			LinkedHashSet<char*> lhms;
 			test(&lhms);
-//
-//			std::cout << "=====HashSet<char*>=====" << std::endl;
-//			HashSet<char*> hms;
-//			test(&hms);
-//
-//			std::cout << "=====TreeSet<char*>=====" << std::endl;
-//			TreeSet<char*, stringKeyComparator> tms;
-//			test(&tms);
+
+			std::cout << "=====HashSet<char*>=====" << std::endl;
+			HashSet<char*> hms;
+			test(&hms);
+
+			std::cout << "=====TreeSet<char*>=====" << std::endl;
+			TreeSet<char*, stringKeyComparator> tms;
+			test(&tms);
 		}
 
 	private:
