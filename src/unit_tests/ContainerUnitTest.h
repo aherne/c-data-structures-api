@@ -14,18 +14,18 @@
 class ContainerUnitTest {
 public:
 	void execute() {
-		std::cout << "=====Stack<long>=====" << std::endl;
-		Stack<long> stack1;
-		testStack(&stack1);
+//		std::cout << "=====Stack<long>=====" << std::endl;
+//		Stack<long> stack1;
+//		testStack(&stack1);
+//
+//		std::cout << "=====Stack<char*>=====" << std::endl;
+//		Stack<char*> stack2;
+//		testStack(&stack2);
 
 		std::cout << "=====Queue<long>=====" << std::endl;
 		Queue<long> queue1;
 		testQueue(&queue1);
-
-		std::cout << "=====Stack<char*>=====" << std::endl;
-		Stack<char*> stack2;
-		testStack(&stack2);
-
+//
 		std::cout << "=====Queue<char*>=====" << std::endl;
 		Queue<long> queue2;
 		testQueue(&queue2);

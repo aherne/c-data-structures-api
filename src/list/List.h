@@ -15,6 +15,7 @@ template<typename T>
 class List {
 public:
 	virtual ~List() {}
+	virtual const T& operator[](const size_t& index) const=0;
 
 	virtual void clear()=0;
 	virtual void addToTop(const T& value)=0;

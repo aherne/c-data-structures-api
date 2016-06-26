@@ -61,7 +61,7 @@ private:
 		std::cout << "get: " << (list->get(keyToCheck)==keyToCheck?"OK":"ERROR") << std::endl;
 		long newValue = 23434545;
 		list->set(keyToCheck, newValue);
-		std::cout << "set: " << (list->get(keyToCheck)==newValue?"OK":"ERROR") << std::endl;
+		std::cout << "set & operator[]: " << ((*list)[keyToCheck]==newValue?"OK":"ERROR") << std::endl;
 		list->removeIndex(keyToCheck);
 		std::cout << "removeIndex: " << (!list->containsValue(newValue)?"OK":"ERROR") << std::endl;
 		long oldValue = list->get(keyToCheck);
@@ -150,15 +150,15 @@ private:
 		// test collisions
 
 		LinkedList<long> ht;
-		k=18;ht.addToBottom(k);
-		k=1;ht.addToBottom(k);
-		k=150;ht.addToBottom(k);
-		k=5;ht.addToBottom(k);
-		k=8;ht.addToBottom(k);
-		k=6;ht.addToBottom(k);
-		k=9;ht.addToBottom(k);
-		k=11;ht.addToBottom(k);
-		k=22;ht.addToBottom(k);
+		k=18;ht.addToTop(k);
+		k=1;ht.addToTop(k);
+		k=150;ht.addToTop(k);
+		k=5;ht.addToTop(k);
+		k=8;ht.addToTop(k);
+		k=6;ht.addToTop(k);
+		k=9;ht.addToTop(k);
+		k=11;ht.addToTop(k);
+		k=22;ht.addToTop(k);
 
 		size_t index = 6;
 		long newValue = 2;

@@ -14,6 +14,28 @@
 #include <unordered_map>
 #include <sys/time.h>
 
+		template <class _Tp>
+		struct my_equal_to
+		{
+		    bool operator()(const _Tp& __x, const _Tp& __y) const
+		    { return strcmp( __x, __y ) == 0; }
+		};
+
+		struct my_hash_function{
+		    //BKDR hash algorithm
+		    int operator()(char * str)const
+		    {
+				unsigned long hash = 5381;
+				int c;
+
+				while ((c = *str++)) {
+					hash = ((hash << 5) + hash) + c;
+				}
+
+				return hash;
+		    }
+		};
+
 class MapBenchmark {
 public:
 	void execute() {
@@ -25,7 +47,7 @@ public:
 
 //
 //		std::cout << "HashMap<long,long>" << std::endl;
-//		testHashMapLong();
+//		testHashMap();
 //
 //		std::cout << "TreeMap<long,long>" << std::endl;
 //		testTreeMap();
@@ -43,7 +65,10 @@ public:
 //		testMap();
 
 //		std::cout << "std::unordered_map<long,long>" << std::endl;
-//		testUnorderedMap();
+//		testUnorderedMapLong();
+
+		std::cout << "std::unordered_map<char*,char*>" << std::endl;
+		testUnorderedMapString();
 	}
 private:
 	std::size_t getTime() {
@@ -52,7 +77,7 @@ private:
 		return tp.tv_sec * 1000 + tp.tv_usec / 1000;
 	}
 
-	void testUnorderedMap() {
+	void testUnorderedMapLong() {
 		std::size_t start, end;
 
 		start = getTime();
@@ -84,6 +109,53 @@ private:
 		}
 		end = getTime();
 		std::cout << "\t" << "Deletion:\t" <<  (end-start) << std::endl;
+	}
+
+	void testUnorderedMapString() {
+
+		int start, end;
+
+		std::unordered_map<char*, char*, my_hash_function> ht;
+		// create strings
+		std::vector<char*> list;
+		for(long i=0; i<1000000; ++i) {
+			char* temp = (char*) malloc(20*sizeof(char));
+			sprintf(temp, "%ld", i);
+			list.push_back(temp);
+		}
+
+		// foreach strings, add to map
+		start = getTime();
+		for(char* item: list) {
+			ht[item]= item;
+		}
+		end = getTime();
+		std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
+
+		start = getTime();
+		for(auto it = ht.begin(); it!=ht.end(); ++it) {
+			(*it).first;
+		}
+		end = getTime();
+		std::cout << "\t" << "Iteration:\t" <<  (end-start) << std::endl;
+
+		start = getTime();
+		for(char* item: list) {
+			ht[item];
+		}
+		end = getTime();
+		std::cout << "\t" << "Selection:\t" <<  (end-start) << std::endl;
+
+		start = getTime();
+		for(char* item: list) {
+			ht.erase(item);
+		}
+		end = getTime();
+		std::cout << "\t" << "Deletion:\t" <<  (end-start) << std::endl;
+		// delete strings
+		for(char* item: list) {
+			free(item);
+		}
 	}
 
 	void testMap() {

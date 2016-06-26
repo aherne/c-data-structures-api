@@ -53,6 +53,12 @@ class DoublyLinkedList: public List<T> {
 			empty();
 		}
 
+		const T& operator[](const size_t& index) const {
+			traverse(index);
+
+			return currentItem->value;
+		}
+
 		void clear() {
 			empty();
 

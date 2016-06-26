@@ -379,3 +379,27 @@ Operations complexity @ container:
 		</tr>
 	</tbody>
 </table>
+Benchmarks LinkedHashMap vs. std::unordered_map
+
+std::unordered_map<long,long>
+	Insertion:	72
+	Iteration:	4
+	Selection:	13
+	Deletion:	28
+LinkedHashMap<long,long>
+	Insertion:	73
+	Iteration:	0
+	Selection:	12
+	Deletion:	24
+
+std::unordered_map<char*,char*>
+	Insertion:	161
+	Iteration:	31
+	Selection:	54
+	Deletion:	85
+
+LinkedHashMap<char*,char*>
+	Insertion:	109
+	Iteration:	0
+	Selection:	32
+	Deletion:	46

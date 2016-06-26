@@ -24,6 +24,10 @@ public:
 		free(contents);
 	}
 
+	const T& operator[](const size_t& index) const {
+		return contents[index];
+	}
+
 	void clear() {
 		free(contents);
 
