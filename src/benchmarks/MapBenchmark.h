@@ -10,8 +10,8 @@
 
 #include "../map/LinkedHashMap.h"
 #include "../map/HashMap.h"
-#include "../map/TreeMap.h"
 #include <unordered_map>
+#include <map>
 #include <sys/time.h>
 
 		template <class _Tp>
@@ -39,36 +39,30 @@
 class MapBenchmark {
 public:
 	void execute() {
-//		std::cout << "LinkedHashMap<long,long>" << std::endl;
-//		testLinkedHashMapLong();
-
-//		std::cout << "LinkedHashMap<char*,char*>" << std::endl;
-//		testLinkedHashMapString();
-
-//
-//		std::cout << "HashMap<long,long>" << std::endl;
-//		testHashMap();
-//
-//		std::cout << "TreeMap<long,long>" << std::endl;
-//		testTreeMap();
-//
-
-//		HashMap<char*, char*> hms;
-//		std::cout << "HashMap<char*,char*>" << std::endl;
-//		test(&hms);
-
-//		TreeMap<char*, char*, stringKeyComparator> tms;
-//		std::cout << "TreeMap<char*,char*>" << std::endl;
-//		test(&tms);
-
 //		std::cout << "std::map<long,long>" << std::endl;
 //		testMap();
 
 //		std::cout << "std::unordered_map<long,long>" << std::endl;
 //		testUnorderedMapLong();
 
-		std::cout << "std::unordered_map<char*,char*>" << std::endl;
-		testUnorderedMapString();
+//		std::cout << "std::unordered_map<char*,char*>" << std::endl;
+//		testUnorderedMapString();
+
+//		HashMap<long, long> hml;
+//		std::cout << "HashMap<long,long>" << std::endl;
+//		test(&hml);
+
+//		LinkedHashMap<long, long> lhml;
+//		std::cout << "LinkedHashMap<long,long>" << std::endl;
+//		test(&lhml);
+//
+//		HashMap<char*, char*> hms;
+//		std::cout << "HashMap<char*,char*>" << std::endl;
+//		test(&hms);
+//
+		LinkedHashMap<char*, char*> lhms;
+		std::cout << "LinkedHashMap<char*,char*>" << std::endl;
+		test(&lhms);
 	}
 private:
 	std::size_t getTime() {
@@ -192,26 +186,25 @@ private:
 		std::cout << "\t" << "Deletion:\t" <<  (end-start) << std::endl;
 	}
 
-	void testLinkedHashMapLong() {
+	void test(Map<long, long>* ht) {
 		std::size_t start, end;
-		LinkedHashMap<long, long> ht;
 		start = getTime();
 		for(long i=0; i<1000000; ++i) {
-			ht.set(i,i);
+			ht->set(i,i);
 		}
 		end = getTime();
 		std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
 
 		start = getTime();
-		for(auto it = ht.begin(); it!=ht.end(); ++it) {
-			(*it).first;
+		for(auto it = ht->begin(); *it!=*(ht->end()); ++(*it)) {
+			(*(*it)).first;
 		}
 		end = getTime();
 		std::cout << "\t" << "Iteration:\t" <<  (end-start) << std::endl;
 
 		start = getTime();
 		for(long i=0; i<1000000; ++i) {
-			ht.get(i);
+			ht->get(i);
 		}
 		end = getTime();
 		std::cout << "\t" << "Selection:\t" <<  (end-start) << std::endl;
@@ -219,83 +212,15 @@ private:
 
 		start = getTime();
 		for(long i=0; i<1000000; ++i) {
-			ht.removeKey(i);
+			ht->removeKey(i);
 		}
 		end = getTime();
 		std::cout << "\t" << "Deletion:\t" <<  (end-start) << std::endl;
 	}
 
-	void testHashMap() {
-		std::size_t start, end;
-		HashMap<long, long> ht;
-		start = getTime();
-		for(long i=0; i<1000000; ++i) {
-			ht.set(i,i);
-		}
-		end = getTime();
-		std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
-
-		start = getTime();
-		for(auto it = ht.begin(); it!=ht.end(); ++it) {
-			(*it).first;
-		}
-		end = getTime();
-		std::cout << "\t" << "Iteration:\t" <<  (end-start) << std::endl;
-
-		start = getTime();
-		for(long i=0; i<1000000; ++i) {
-			ht.get(i);
-		}
-		end = getTime();
-		std::cout << "\t" << "Selection:\t" <<  (end-start) << std::endl;
-
-
-		start = getTime();
-		for(long i=0; i<1000000; ++i) {
-			ht.removeKey(i);
-		}
-		end = getTime();
-		std::cout << "\t" << "Deletion:\t" <<  (end-start) << std::endl;
-	}
-
-	void testTreeMap() {
-		std::size_t start, end;
-
-		TreeMap<long, long> ht;
-		start = getTime();
-		for(long i=0; i<1000000; ++i) {
-			ht.set(i,i);
-		}
-		end = getTime();
-		std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
-
-		start = getTime();
-		for(auto it = ht.begin(); it!=ht.end(); ++it) {
-			(*it).first;
-		}
-		end = getTime();
-		std::cout << "\t" << "Iteration:\t" <<  (end-start) << std::endl;
-
-		start = getTime();
-		for(long i=0; i<1000000; ++i) {
-			ht.get(i);
-		}
-		end = getTime();
-		std::cout << "\t" << "Selection:\t" <<  (end-start) << std::endl;
-
-
-		start = getTime();
-		for(long i=0; i<1000000; ++i) {
-			ht.removeKey(i);
-		}
-		end = getTime();
-		std::cout << "\t" << "Deletion:\t" <<  (end-start) << std::endl;
-	}
-
-	void testLinkedHashMapString() {
+	void test(Map<char*, char*>* ht) {
 		int start, end;
 
-		LinkedHashMap<char*, char*> ht;
 		// create strings
 		std::vector<char*> list;
 		for(long i=0; i<1000000; ++i) {
@@ -307,28 +232,28 @@ private:
 		// foreach strings, add to map
 		start = getTime();
 		for(char* item: list) {
-			ht.set(item, item);
+			ht->set(item, item);
 		}
 		end = getTime();
 		std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
 
 		start = getTime();
-		for(auto it = ht.begin(); it!=ht.end(); ++it) {
-			(*it).first;
+		for(auto it = ht->begin(); *it!=*(ht->end()); ++(*it)) {
+			(*(*it)).first;
 		}
 		end = getTime();
 		std::cout << "\t" << "Iteration:\t" <<  (end-start) << std::endl;
 
 		start = getTime();
 		for(char* item: list) {
-			ht.get(item);
+			ht->get(item);
 		}
 		end = getTime();
 		std::cout << "\t" << "Selection:\t" <<  (end-start) << std::endl;
 
 		start = getTime();
 		for(char* item: list) {
-			ht.removeKey(item);
+			ht->removeKey(item);
 		}
 		end = getTime();
 		std::cout << "\t" << "Deletion:\t" <<  (end-start) << std::endl;

@@ -8,7 +8,6 @@
 #ifndef LINKEDHASHMAP_H_
 #define LINKEDHASHMAP_H_
 
-#include <vector>
 #include <algorithm>
 #include <utility>
 #include "Map.h"
@@ -71,15 +70,27 @@ public:
 		buckets = new LinkedHashMapEntry<_KEY, _VALUE>*[bucket_count]();
 		head = nullptr;
 		tail = nullptr;
+		internalIteratorStart = nullptr;
+		internalIteratorEnd = nullptr;
 	}
 
 	~LinkedHashMap(){
+		if(internalIteratorStart!=nullptr) {
+			delete internalIteratorStart;
+			delete internalIteratorEnd;
+		}
 		emptyBuckets();
 		head = nullptr;
 		tail = nullptr;
 	}
 
 	void clear(){
+		if(internalIteratorStart!=nullptr) {
+			delete internalIteratorStart;
+			internalIteratorStart = nullptr;
+			delete internalIteratorEnd;
+			internalIteratorEnd = nullptr;
+		}
 		emptyBuckets();
 		head = nullptr;
 		tail = nullptr;
@@ -126,30 +137,6 @@ public:
 		return count;
 	}
 
-	std::vector<_KEY> getKeys(){
-		std::vector<_KEY> output;
-		if(head!=nullptr) {
-			LinkedHashMapEntry<_KEY, _VALUE>* currentBucket = head;
-			while(currentBucket!=nullptr) {
-				output.push_back(currentBucket->data.key);
-				currentBucket = currentBucket->next;
-			}
-		}
-		return output;
-	}
-
-	std::vector<_VALUE> getValues(){
-		std::vector<_VALUE> output;
-		if(head!=nullptr) {
-			LinkedHashMapEntry<_KEY, _VALUE>* currentBucket = head;
-			while(currentBucket!=nullptr) {
-				output.push_back(currentBucket->data.value);
-				currentBucket = currentBucket->next;
-			}
-		}
-		return output;
-	}
-
 	const _VALUE& get(const _KEY& key) const{
 		std::size_t hashValue = hashingFunc(key);
 		int bucketNumber = getBucketNumber(hashValue);
@@ -161,7 +148,7 @@ public:
 			}
 			currentBucket = currentBucket->nextInBucket;
 		}
-		throw std::out_of_range("Value not found!");
+		throw std::out_of_range("Key not found!");
 	}
 
 	void set(const _KEY& key, const _VALUE& value){
@@ -233,12 +220,24 @@ public:
 		if(oldCount == count) throw std::out_of_range("Value not found!");
 	}
 
-	iterator begin() {
-		return LinkedHashMapIterator<_KEY,_VALUE>(this);
+	MapIterator<_KEY,_VALUE>* begin(){
+		if(internalIteratorStart!=nullptr) {
+			delete internalIteratorStart;
+			internalIteratorStart = nullptr;
+			delete internalIteratorEnd;
+			internalIteratorEnd = nullptr;
+		}
+		internalIteratorStart = new iterator(this);
+		return internalIteratorStart;
 	}
 
-	iterator end(){
-		return LinkedHashMapIterator<_KEY,_VALUE>(count);
+	MapIterator<_KEY,_VALUE>* end(){
+		if(internalIteratorEnd!=nullptr){
+			return internalIteratorEnd;
+		} else {
+			internalIteratorEnd = new iterator(count);
+			return internalIteratorEnd;
+		}
 	}
 
 	void sortByKey(bool (*comparator) (const _KEY&, const _KEY&)) {
@@ -251,6 +250,9 @@ public:
 	}
 
 private:
+	MapIterator<_KEY,_VALUE>* internalIteratorStart;
+	MapIterator<_KEY,_VALUE>* internalIteratorEnd;
+
 	LinkedHashMapEntry<_KEY, _VALUE>* createEntry(std::size_t hashValue, const _KEY& key, const _VALUE& value) {
 		LinkedHashMapEntry<_KEY, _VALUE>* be = new LinkedHashMapEntry<_KEY, _VALUE>;
 		be->hash = hashValue;
@@ -365,21 +367,16 @@ private:
 };
 
 template<typename _KEY, typename _VALUE>
-class LinkedHashMapIterator {
+class LinkedHashMapIterator : public MapIterator<_KEY,_VALUE> {
 	public:
-		LinkedHashMapIterator(){
-			current_item = nullptr;
-			offset = 0;
-		}
-
 		LinkedHashMapIterator(LinkedHashMap<_KEY, _VALUE>* map){
 			current_item = map->head;
-			offset = 0;
+			this->offset = 0;
 		}
 
 		LinkedHashMapIterator(std::size_t total){
 			current_item = nullptr;
-			offset = total;
+			this->offset = total;
 		}
 
 		~LinkedHashMapIterator(){}
@@ -388,21 +385,15 @@ class LinkedHashMapIterator {
 			return std::make_pair(current_item->data.key, current_item->data.value);
 		}
 
-		bool operator!=(const LinkedHashMapIterator<_KEY,_VALUE>& it) const {
-			return offset!=it.offset;
-		}
-
-		LinkedHashMapIterator<_KEY,_VALUE>& operator++(){
+		void operator++(){
 			if(current_item!=nullptr) {
 				current_item = current_item->next;
 			}
-			++offset;
-			return *this;
+			++this->offset;
 		}
 
 	private:
 		LinkedHashMapEntry<_KEY, _VALUE>* current_item;
-		std::size_t offset;
 };
 
 #endif /* HASHMAP_H_ */

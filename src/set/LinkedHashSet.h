@@ -10,7 +10,6 @@
 
 #include <vector>
 #include <algorithm>
-#include <list>
 #include "Set.h"
 #include "../Hashing.h"
 #include "../Comparator.h"
@@ -176,11 +175,11 @@ public:
 	}
 
 	iterator begin() {
-		return LinkedHashSetIterator<T>(this);
+		return iterator(this);
 	}
 
 	iterator end(){
-		return LinkedHashSetIterator<T>(count);
+		return iterator(count);
 	}
 
 	void sort(bool (*comparator) (const T&, const T&)) {

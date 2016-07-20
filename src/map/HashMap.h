@@ -8,12 +8,19 @@
 #ifndef SRC_HASHMAP_H_
 #define SRC_HASHMAP_H_
 
-#include <vector>
 #include <utility>
 #include "Map.h"
-#include "HashMapEntry.h"
 #include "../Hashing.h"
 #include "../Comparator.h"
+
+#include "MapEntry.h"
+
+template<typename _KEY, typename _VALUE>
+struct HashMapEntry {
+	std::size_t hash;
+	MapEntry<_KEY,_VALUE> data;
+	HashMapEntry<_KEY, _VALUE>* next;
+};
 
 template<typename _KEY, typename _VALUE>
 class HashMapIterator;
@@ -29,21 +36,25 @@ public:
 		count=0;
 		bucket_count=8;
 		buckets = new HashMapEntry<_KEY, _VALUE>*[bucket_count]();
+		internalIteratorStart = nullptr;
+		internalIteratorEnd = nullptr;
 	}
 
 	~HashMap(){
+		if(internalIteratorStart!=nullptr) {
+			delete internalIteratorStart;
+			delete internalIteratorEnd;
+		}
 		emptyBuckets();
 	}
 
-	HashMapIterator<_KEY,_VALUE> begin(){
-		 return iterator(this);
-	}
-
-	HashMapIterator<_KEY,_VALUE> end(){
-		return iterator(this, count );
-	}
-
 	void clear(){
+		if(internalIteratorStart!=nullptr) {
+			delete internalIteratorStart;
+			internalIteratorStart = nullptr;
+			delete internalIteratorEnd;
+			internalIteratorEnd = nullptr;
+		}
 		emptyBuckets();
 
 		count=0;
@@ -87,28 +98,6 @@ public:
 	const std::size_t& size() const {
 		return count;
 	}
-	std::vector<_KEY> getKeys() {
-		std::vector<_KEY> output;
-		for(std::size_t i=0; i< bucket_count; ++i) {
-			HashMapEntry<_KEY, _VALUE>* currentBucket = buckets[i];
-			while(currentBucket!=nullptr) {
-				output.push_back(currentBucket->data.key);
-				currentBucket = currentBucket->next;
-			}
-		}
-		return output;
-	}
-	std::vector<_VALUE> getValues(){
-		std::vector<_VALUE> output;
-		for(std::size_t i=0; i< bucket_count; ++i) {
-			HashMapEntry<_KEY, _VALUE>* currentBucket = buckets[i];
-			while(currentBucket!=nullptr) {
-				output.push_back(currentBucket->data.value);
-				currentBucket = currentBucket->next;
-			}
-		}
-		return output;
-	}
 
 	const _VALUE& get(const _KEY& key) const {
 		std::size_t hashValue = hashingFunc(key);
@@ -121,7 +110,7 @@ public:
 			}
 			currentBucket = currentBucket->next;
 		}
-		throw std::out_of_range("Value not found!");
+		throw std::out_of_range("Key not found!");
 	}
 
 	void set(const _KEY& key, const _VALUE& value){
@@ -173,26 +162,11 @@ public:
 
 	void removeKey(const _KEY& key){
 		if(count==0) return;
+		std::size_t oldCount = count;
 		std::size_t hashValue = hashingFunc(key);
 		int bucketNumber = getBucketNumber(hashValue);
-		HashMapEntry<_KEY, _VALUE>* currentBucket = buckets[bucketNumber];
-		HashMapEntry<_KEY, _VALUE>* previousBucket = nullptr;
-		while(currentBucket!=nullptr) {
-			if(currentBucket->hash == hashValue && keyComparator(currentBucket->data.key,key)==0) {
-				if(previousBucket!=nullptr) {
-					previousBucket->next = currentBucket->next;
-				} else {
-					previousBucket = currentBucket->next;
-				}
-				delete currentBucket;
-				buckets[bucketNumber] = previousBucket;
-				--count;
-				return;
-			}
-			previousBucket = currentBucket;
-			currentBucket = currentBucket->next;
-		}
-		throw std::out_of_range("Key not found!");
+		buckets[bucketNumber] = recursiveDeleteKey(buckets[bucketNumber], key);
+		if(oldCount == count) throw std::out_of_range("Key not found!");
 	}
 
 	void removeValue(const _VALUE& value) {
@@ -204,9 +178,47 @@ public:
 		if(oldCount == count) throw std::out_of_range("Value not found!");
 	}
 
+	MapIterator<_KEY,_VALUE>* begin(){
+		if(internalIteratorStart!=nullptr) {
+			delete internalIteratorStart;
+			internalIteratorStart = nullptr;
+			delete internalIteratorEnd;
+			internalIteratorEnd = nullptr;
+		}
+		internalIteratorStart = new iterator(this);
+		return internalIteratorStart;
+	}
+
+	MapIterator<_KEY,_VALUE>* end(){
+		if(internalIteratorEnd!=nullptr){
+			return internalIteratorEnd;
+		} else {
+			internalIteratorEnd = new iterator(count);
+			return internalIteratorEnd;
+		}
+	}
+
 private:
+	MapIterator<_KEY,_VALUE>* internalIteratorStart;
+	MapIterator<_KEY,_VALUE>* internalIteratorEnd;
+
 	int getBucketNumber(std::size_t hash) const {
 		return hash % bucket_count;
+	}
+
+	HashMapEntry<_KEY, _VALUE>* recursiveDeleteKey(HashMapEntry<_KEY, _VALUE>* currentBucket, const _KEY& key) {
+		if (currentBucket == nullptr)
+			return nullptr;
+
+		if (keyComparator(currentBucket->data.key, key)==0) {
+			HashMapEntry<_KEY, _VALUE>* tempNextP;
+			tempNextP = currentBucket->next;
+			delete currentBucket;
+			-- count;
+			return tempNextP;
+		}
+		currentBucket->next = recursiveDeleteKey(currentBucket->next, key);
+		return currentBucket;
 	}
 
 	HashMapEntry<_KEY, _VALUE>* recursiveDeleteValue(HashMapEntry<_KEY, _VALUE> *currP, const _VALUE& value) {
@@ -273,20 +285,13 @@ private:
 };
 
 template<typename _KEY, typename _VALUE>
-class HashMapIterator {
+class HashMapIterator : public MapIterator<_KEY,_VALUE> {
 	public:
-		HashMapIterator(){
-			content = nullptr;
-			current_bucket = 0;
-			current_position = 0;
-			offset = 0;
-		}
-
 		HashMapIterator(HashMap<_KEY, _VALUE>* map){
 			content = map;
 			current_bucket = 0;
 			current_position = 0;
-			offset = 0;
+			this->offset = 0;
 			for(std::size_t i=current_bucket; i< content->bucket_count; ++i) {
 				HashMapEntry<_KEY, _VALUE>* currentBucket = content->buckets[i];
 				if(currentBucket!=nullptr) {
@@ -296,11 +301,11 @@ class HashMapIterator {
 			}
 		}
 
-		HashMapIterator(HashMap<_KEY, _VALUE>* map, std::size_t total){
-			content = map;
+		HashMapIterator(std::size_t total){
+			content = nullptr;
 			current_bucket = 0;
 			current_position = 0;
-			offset = total;
+			this->offset = total;
 		}
 
 		~HashMapIterator() {}
@@ -318,10 +323,6 @@ class HashMapIterator {
 			throw std::out_of_range("Element not found!");
 		}
 
-		bool operator!=(const HashMapIterator<_KEY,_VALUE>& it) {
-			return offset!=it.offset;
-		}
-
 		void operator++() {
 			std::size_t j = 0;
 			for(std::size_t i=current_bucket; i< content->bucket_count; ++i) {
@@ -330,25 +331,24 @@ class HashMapIterator {
 					if(i==current_bucket) {
 						if(j>current_position) {
 							++current_position;
-							++offset;
+							++this->offset;
 							return;
 						}
 						++j;
 					} else {
 						current_bucket = i;
 						current_position = 0;
-						++offset;
+						++this->offset;
 						return;
 					}
 					currentBucket = currentBucket->next;
 				}
 			}
 			// if this step is reached, then iterator reached end
-			++offset;
+			++this->offset;
 			return;
 		}
 
-		std::size_t offset;
 	private:
 		HashMap<_KEY, _VALUE>* content;
 

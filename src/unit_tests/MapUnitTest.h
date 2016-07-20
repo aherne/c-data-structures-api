@@ -11,37 +11,28 @@
 #include "../StringListGenerator.h"
 #include "../map/LinkedHashMap.h"
 #include "../map/HashMap.h"
-#include "../map/TreeMap.h"
 
 class MapUnitTest {
 	public:
 		void execute() {
-			std::cout << "=====LinkedHashMap<long,long>=====" << std::endl;
-			LinkedHashMap<long, long> lhml;
-			test(&lhml);
+//			std::cout << "=====LinkedHashMap<long,long>=====" << std::endl;
+//			LinkedHashMap<long, long> lhml;
+//			test(&lhml);
+//
+//			std::cout << "=====HashMap<long,long>=====" << std::endl;
+//			HashMap<long, long> hml;
+//			test(&hml);
+//
+//			std::cout << "=====LinkedHashMap<char*,char*>=====" << std::endl;
+//			LinkedHashMap<char*, char*> lhms;
+//			test(&lhms);
+//
+//			std::cout << "=====HashMap<char*,char*>=====" << std::endl;
+//			HashMap<char*, char*> hms;
+//			test(&hms);
+
 			testLinkedHashMap();
-
-			std::cout << "=====HashMap<long,long>=====" << std::endl;
-			HashMap<long, long> hml;
-			test(&hml);
 			testHashMap();
-
-			std::cout << "=====TreeMap<long,long>=====" << std::endl;
-			TreeMap<long, long> tml;
-			test(&tml);
-			testTreeMap();
-
-			std::cout << "=====LinkedHashMap<char*,char*>=====" << std::endl;
-			LinkedHashMap<char*, char*> lhms;
-			test(&lhms);
-
-			std::cout << "=====HashMap<char*,char*>=====" << std::endl;
-			HashMap<char*, char*> hms;
-			test(&hms);
-
-			std::cout << "=====TreeMap<char*,char*>=====" << std::endl;
-			TreeMap<char*, char*, stringKeyComparator> tms;
-			test(&tms);
 		}
 
 	private:
@@ -118,14 +109,14 @@ class MapUnitTest {
 
 			std::cout << "sortByKey:" << std::endl;
 			ht.sortByKey(&compareAsc<long>);
-			for(auto it = ht.begin(); it!=ht.end(); ++it) {
-				std::cout <<"\t"<< (*it).first << ":" << (*it).second << std::endl;
+			for(auto it = ht.begin(); *it!=*(ht.end()); ++(*it)) {
+				std::cout <<"\t"<< (*(*it)).first << ":" << (*(*it)).second << std::endl;
 			}
 
 			std::cout << "sortByValue:" << std::endl;
 			ht.sortByValue(&compareDesc<long>);
-			for(auto it = ht.begin(); it!=ht.end(); ++it) {
-				std::cout <<"\t"<< (*it).first << ":" << (*it).second << std::endl;
+			for(auto it = ht.begin(); *it!=*(ht.end()); ++(*it)) {
+				std::cout <<"\t"<< (*(*it)).first << ":" << (*(*it)).second << std::endl;
 			}
 
 			ht.clear();
@@ -147,31 +138,8 @@ class MapUnitTest {
 			k=22;v=1;ht.set(k,v);
 
 			std::cout << "iterator:" << std::endl;
-			for(auto it = ht.begin(); it!=ht.end(); ++it) {
-				std::cout <<"\t" << (*it).first << ":" << (*it).second << std::endl;
-			}
-
-			ht.clear();
-		}
-
-		void testTreeMap() {
-			long k,v;
-			// test collisions
-
-			TreeMap<long, long> ht;
-			k=18;v=8;ht.set(k,v);
-			k=1;v=2;ht.set(k,v);
-			k=150;v=4;ht.set(k,v);
-			k=5;v=3;ht.set(k,v);
-			k=8;v=5;ht.set(k,v);
-			k=6;v=5;ht.set(k,v);
-			k=9;v=6;ht.set(k,v);
-			k=11;v=7;ht.set(k,v);
-			k=22;v=1;ht.set(k,v);
-
-			std::cout << "iterator:" << std::endl;
-			for(auto it = ht.begin(); it!=ht.end(); ++it) {
-				std::cout <<"\t" << (*it).first << ":" << (*it).second << std::endl;
+			for(auto it = ht.begin(); *it!=*(ht.end()); ++(*it)) {
+				std::cout <<"\t" << (*(*it)).first << ":" << (*(*it)).second << std::endl;
 			}
 
 			ht.clear();

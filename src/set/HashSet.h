@@ -10,9 +10,15 @@
 
 #include <vector>
 #include "Set.h"
-#include "HashSetEntry.h"
 #include "../Hashing.h"
 #include "../Comparator.h"
+
+template<typename T>
+struct HashSetEntry {
+	std::size_t hash;
+	T value;
+	HashSetEntry<T>* next;
+};
 
 template<typename T>
 class HashSetIterator;
@@ -143,11 +149,11 @@ public:
 		throw std::out_of_range("Key not found!");
 	}
 
-	HashSetIterator<T> begin() {
+	iterator begin() {
 		return iterator(this);
 	}
 
-	HashSetIterator<T> end() {
+	iterator end() {
 		return iterator(this, count );
 	}
 private:

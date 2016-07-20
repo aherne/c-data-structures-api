@@ -13,10 +13,11 @@
 #include "unit_tests/ListUnitTest.h"
 #include "benchmarks/ListBenchmark.h"
 #include "unit_tests/ContainerUnitTest.h"
+#include "map/TreeMapNew.h"
 
 int main() {
-//	MapUnitTest mapUnitTest;
-//	mapUnitTest.execute();
+	MapUnitTest mapUnitTest;
+	mapUnitTest.execute();
 
 //	MapBenchmark mapBenchmark;
 //	mapBenchmark.execute();
@@ -27,8 +28,8 @@ int main() {
 //	SetBenchmark setBenchmark;
 //	setBenchmark.execute();
 
-	ListUnitTest listUnitTest;
-	listUnitTest.execute();
+//	ListUnitTest listUnitTest;
+//	listUnitTest.execute();
 
 //	ListBenchmark listBenchmark;
 //	listBenchmark.execute();
