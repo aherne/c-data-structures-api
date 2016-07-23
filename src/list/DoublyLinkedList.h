@@ -105,6 +105,8 @@ class DoublyLinkedList: public List<T> {
 
 			traverse(index);
 
+			if(currentItem==nullptr) throw std::out_of_range("Null pointer exception!");
+
 			return currentItem->value;
 		}
 
@@ -223,7 +225,7 @@ class DoublyLinkedList: public List<T> {
 		}
 	private:
 		void traverse(const std::size_t& index) const {
-			if(index==currentIndex) return;
+			if(index==currentIndex && currentItem!=nullptr) return;
 
 			bool forwardTraversal = true;
 			if(currentItem==nullptr) {
@@ -239,6 +241,7 @@ class DoublyLinkedList: public List<T> {
 			}
 
 			if(!forwardTraversal) {
+				std::cout << __LINE__ << std::endl;
 				// backward traversal
 				std::size_t i = count-1;
 				DoublyLinkedListEntry<T>* temp = tail;
@@ -256,6 +259,7 @@ class DoublyLinkedList: public List<T> {
 					--i;
 				}
 			} else {
+				std::cout << __LINE__ << std::endl;
 				// forward traversal
 				std::size_t i = 0;
 				DoublyLinkedListEntry<T>* temp = head;
