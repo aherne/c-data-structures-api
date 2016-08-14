@@ -49,7 +49,7 @@ public:
 	}
 
 	bool operator()(LinkedHashMapEntry<_KEY,_VALUE>*& left, LinkedHashMapEntry<_KEY,_VALUE>*& right) const {
-		return compareFunction(left->data.key, right->data.key);
+		return compareFunction(left->data.value, right->data.value);
 	}
 private:
 	bool (*compareFunction)(const _VALUE&,const _VALUE&);
@@ -382,6 +382,7 @@ class LinkedHashMapIterator : public MapIterator<_KEY,_VALUE> {
 		~LinkedHashMapIterator(){}
 
 		const std::pair<_KEY, _VALUE> operator*(){
+			if(current_item==nullptr) throw std::out_of_range("Key not found!");
 			return std::make_pair(current_item->data.key, current_item->data.value);
 		}
 

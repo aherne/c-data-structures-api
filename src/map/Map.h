@@ -17,9 +17,11 @@ class MapIterator {
 		virtual ~MapIterator() {}
 		virtual const std::pair<_KEY, _VALUE> operator*() = 0;
 		virtual void operator++() = 0;
+
 		bool operator!=(const MapIterator<_KEY,_VALUE>& it) {
 			return offset != it.offset;
 		}
+	protected:
 		std::size_t offset;
 };
 

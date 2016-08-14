@@ -15,24 +15,26 @@
 class MapUnitTest {
 	public:
 		void execute() {
-//			std::cout << "=====LinkedHashMap<long,long>=====" << std::endl;
-//			LinkedHashMap<long, long> lhml;
-//			test(&lhml);
-//
-//			std::cout << "=====HashMap<long,long>=====" << std::endl;
-//			HashMap<long, long> hml;
-//			test(&hml);
-//
-//			std::cout << "=====LinkedHashMap<char*,char*>=====" << std::endl;
-//			LinkedHashMap<char*, char*> lhms;
-//			test(&lhms);
-//
-//			std::cout << "=====HashMap<char*,char*>=====" << std::endl;
-//			HashMap<char*, char*> hms;
-//			test(&hms);
+			std::cout << "=====LinkedHashMap<long,long>=====" << std::endl;
+			LinkedHashMap<long, long> lhml;
+			test(&lhml);
+
+			std::cout << "=====HashMap<long,long>=====" << std::endl;
+			HashMap<long, long> hml;
+			test(&hml);
+
+			std::cout << "=====LinkedHashMap<char*,char*>=====" << std::endl;
+			LinkedHashMap<char*, char*> lhms;
+			test(&lhms);
+
+			std::cout << "=====HashMap<char*,char*>=====" << std::endl;
+			HashMap<char*, char*> hms;
+			test(&hms);
 
 			testLinkedHashMap();
 			testHashMap();
+
+			testIteratorInvalidation();
 		}
 
 	private:
@@ -143,6 +145,21 @@ class MapUnitTest {
 			}
 
 			ht.clear();
+		}
+
+		void testIteratorInvalidation() {
+//			LinkedHashMap<long,long> ht;
+//			ht.set(1,2);
+//			ht.set(3,4);
+//			for(auto it = ht.begin(); *it!=*(ht.end());	++(*it)) {
+//				ht.removeKey(3);
+//			}
+//			HashMap<long,long> ht;
+//			ht.set(1,2);
+//			ht.set(3,4);
+//			for(auto it = ht.begin(); *it!=*(ht.end());	++(*it)) {
+//				ht.removeKey(3);
+//			}
 		}
 };
 

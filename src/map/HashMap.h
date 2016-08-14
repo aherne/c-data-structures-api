@@ -320,7 +320,7 @@ class HashMapIterator : public MapIterator<_KEY,_VALUE> {
 				currentBucket = currentBucket->next;
 				++j;
 			}
-			throw std::out_of_range("Element not found!");
+			throw std::out_of_range("Key not found!");
 		}
 
 		void operator++() {

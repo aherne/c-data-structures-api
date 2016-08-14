@@ -1,24 +1,41 @@
 # c-data-structures-api
 
-My own implementation of data structures in C++, much simpler than that used by STL, with equal or greater performance, structured in a way somewhat similar to Java Collections API.
+GENESIS
+This library originally came out of frustration on C++11 HashTable solution (std::unordered_map). I was originally making a C++ data structures extension for PHP using wrappers to STL only and HashTable C implementation used by PHP was MUCH faster than unordered_map when working with string keys. Before "reinventing the wheel", I first tried to incrementally dig through the problem:
+1. use char* instead of std::string keys: there was a huge improvement (definitely a good path), but the problem remained
+2. use the same hashing algorithm PHP "array" is using: there was some new improvement, but the problem remained
+3. dig through std::unordered_map source code and find out other possible reasons: there I met a huge slab of code with endless layers of abstractions
+What could I do next? I've spent almost a month on a path that seemingly led nowhere, so I've finally decided to write my own solution. This solution had to be far more light weight (built on "less is more" principle), very performance oriented (fast with low memory consumption) and well written (when you want performance, some layers of abstraction must be ditched). 
+
+In the end, I've spent LESS in writing my own implementation than solving problems in others': what came out is a HashMap solution that is 50% faster when working 
+
+
+This is my own implementation of data structures in C++, different from STL in being much lighter weight, tightly organized through polymorphism and with equal or greater performance. 
+ve spent almost a month digging through the maze of std::unordered_map code to see 
+
+The principle is somewhat inspired by Java Collections API: pure virtual classes defining abstract operations that data structure allows (eg: List) followed by 
+
+
+
+This is my own implementation of data structures in C++, different from STL in being much lighter weight, tightly organized through polymorphism and with equal or greater performance. The principle, somewhat inspired by Java Collections API, is having each basic abstract data structure as an interface and each implementation of it as a separate class.
 
 Supported data structures:
 
-- List: "interface" implementing signatures of operations common to all kinds of list data structures
+- List: "interface" implementing signatures of operations common to all kinds of LIST data structures
 	- ArrayList: implements a list of dynamic array type (similar to std::vector)
 	- LinkedList: implements a list of singly linked type (similar to std::forward_list @ C++11, but keeping a pointer to tail, making insertions on bottom as fast as on top) 
 	- DoublyLinkedList: implements a list of doubly linked type (similar to std::list)
-- Map: "interface" implementing signatures of operations common to all kinds of map data structures
-	- HashMap: implements a map of hash table type (similar to std::unordered_map @ C++11, only significantly faster and lighter weight)
-	- LinkedHashMap: implements a map of hash table type ordered via a doubly linked list (no STL equivalent, elements can be iterated by insertion order)
-	- TreeMap: implements a map or red-black-tree type (wrapper over std::map)
-- Set: "interface" implementing signatures of operations common to all kinds of set data structures
+- Map: "interface" implementing signatures of operations common to all kinds of MAP data structures
+	- HashMap: implements a map of hash table type (similar to std::unordered_map @ C++11, but significantly faster and lighter weight)
+	- LinkedHashMap: implements a map of hash table type ordered via a doubly linked list (no STL equivalent, elements are be iterated by insertion order)
+	- TreeMap: TBD
+- Set: "interface" implementing signatures of operations common to all kinds of SET data structures
 	- HashSet: implements a set of hash table type (similar to std::unordered_set @ C++11, only significantly faster and lighter weight)
 	- LinkedHashSet: implements a set of hash table type ordered via a doubly linked list (no STL equivalent, elements can be iterated by insertion order)
-	- TreeSet: implements a set or red-black-tree type (wrapper over std::set)
+	- TreeSet: TBD
 - Container: "interface" implementing container adaptors into which all read/write operations are performed only on head or tail
-	- Stack: implements a LIFO container adaptor where data is pushed to head and popped from head (similar to std::stack, also wrapping std::deque)
-	- Queue: implements a FIFO container adaptor where data is pushed to bottom and popped from head (similar to std::queue, also wrapping std::deque)
+	- Stack: implements a LIFO container adaptor where data is pushed to head and popped from head (similar to std::stack, but using dynamic arrays)
+	- Queue: implements a FIFO container adaptor where data is pushed to bottom and popped from head (similar to std::queue, but using dynamic arrays)
 - Tree: to be done 
 
 Operations complexity @ list:
@@ -380,26 +397,3 @@ Operations complexity @ container:
 	</tbody>
 </table>
 Benchmarks LinkedHashMap vs. std::unordered_map
-
-std::unordered_map<long,long>
-	Insertion:	72
-	Iteration:	4
-	Selection:	13
-	Deletion:	28
-LinkedHashMap<long,long>
-	Insertion:	73
-	Iteration:	0
-	Selection:	12
-	Deletion:	24
-
-std::unordered_map<char*,char*>
-	Insertion:	161
-	Iteration:	31
-	Selection:	54
-	Deletion:	85
-
-LinkedHashMap<char*,char*>
-	Insertion:	109
-	Iteration:	0
-	Selection:	32
-	Deletion:	46
