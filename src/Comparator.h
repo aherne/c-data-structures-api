@@ -15,6 +15,7 @@
 template<typename T>
 struct comparator {
 	int operator()(T left, T right) const {
+		throw std::out_of_range("No key/value comparator defined for this type:");
 		return 0;
 	}
 };

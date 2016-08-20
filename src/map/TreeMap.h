@@ -11,19 +11,6 @@
 #include "../RedBlackTree.h"
 #include "MapEntry.h"
 #include "Map.h"
-#include "../Comparator.h"
-
-template<typename _KEY, typename _VALUE>
-int compareByKey(const MapEntry<_KEY,_VALUE>& left, const MapEntry<_KEY,_VALUE>& right) {
-	comparator<_KEY> cmp;
-	return cmp(left.key, right.key);
-}
-
-template<typename _KEY, typename _VALUE>
-int compareByValue(const MapEntry<_KEY,_VALUE>& left, const MapEntry<_KEY,_VALUE>& right) {
-	comparator<_VALUE> cmp;
-	return cmp(left.value, right.value);
-}
 
 template<typename _KEY, typename _VALUE>
 class TreeMapIterator;

@@ -9,7 +9,6 @@
 #define SRC_REDBLACKTREE_H_
 
 #include "list/ArrayList.h"
-#include "Comparator.h"
 
 enum RedBlackTreeNodeColor { RED, BLACK };
 

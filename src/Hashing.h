@@ -11,8 +11,8 @@
 
 template<typename T>
 struct hash {
-	std::size_t operator()(const T& item) const {
-		throw std::out_of_range("No key/value hashing function found!");
+	std::size_t operator()(T item) const {
+		throw std::out_of_range("No hashing function found for this type!");
 		return 0;
 	}
 };

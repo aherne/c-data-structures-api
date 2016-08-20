@@ -10,6 +10,7 @@
 
 #include "../map/LinkedHashMap.h"
 #include "../map/HashMap.h"
+#include "../map/TreeMap.h"
 #include <unordered_map>
 #include <map>
 #include <sys/time.h>
@@ -39,8 +40,8 @@
 class MapBenchmark {
 public:
 	void execute() {
-//		std::cout << "std::map<long,long>" << std::endl;
-//		testMap();
+		std::cout << "std::map<long,long>" << std::endl;
+		testMap();
 
 //		std::cout << "std::unordered_map<long,long>" << std::endl;
 //		testUnorderedMapLong();
@@ -55,13 +56,21 @@ public:
 //		LinkedHashMap<long, long> lhml;
 //		std::cout << "LinkedHashMap<long,long>" << std::endl;
 //		test(&lhml);
+
+//		TreeMap<long, long> hml;
+//		std::cout << "TreeMap<long,long>" << std::endl;
+//		test(&hml);
 //
 //		HashMap<char*, char*> hms;
 //		std::cout << "HashMap<char*,char*>" << std::endl;
 //		test(&hms);
 //
-		LinkedHashMap<char*, char*> lhms;
-		std::cout << "LinkedHashMap<char*,char*>" << std::endl;
+//		LinkedHashMap<char*, char*> lhms;
+//		std::cout << "LinkedHashMap<char*,char*>" << std::endl;
+//		test(&lhms);
+
+		TreeMap<char*, char*> lhms;
+		std::cout << "TreeMap<char*,char*>" << std::endl;
 		test(&lhms);
 	}
 private:
