@@ -14,11 +14,7 @@
 
 template<typename T>
 struct comparator {
-	int operator()(T& left, T& right) const {
-
-		std::cout << typeid(left).name() << std::endl;
-		std::cout << typeid(right).name() << std::endl;
-		throw std::out_of_range("No key/value comparator defined for this type:");
+	int operator()(T left, T right) const {
 		return 0;
 	}
 };

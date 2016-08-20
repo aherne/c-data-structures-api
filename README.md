@@ -7,7 +7,7 @@ This library originally came out of frustration on C++11 HashTable solution (std
 3. dig through std::unordered_map source code and find out other possible reasons: there I met a huge slab of code with endless layers of abstractions
 What could I do next? I've spent almost a month on a path that seemingly led nowhere, so I've finally decided to write my own solution. This solution had to be far more light weight (built on "less is more" principle), very performance oriented (fast with low memory consumption) and well written (when you want performance, some layers of abstraction must be ditched). 
 
-In the end, I've spent LESS in writing my own implementation than solving problems in others': what came out is a HashMap solution that is 50% faster when working 
+In the end, I've spent LESS in writing my own implementation than solving problems in others': what came out is a HashMap solution that is 50% faster when working with string keys. 
 
 
 This is my own implementation of data structures in C++, different from STL in being much lighter weight, tightly organized through polymorphism and with equal or greater performance. 

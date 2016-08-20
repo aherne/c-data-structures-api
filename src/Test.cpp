@@ -6,7 +6,6 @@
  */
 #include <iostream>
 
-#include "Exceptions.h"
 #include "unit_tests/MapUnitTest.h"
 #include "benchmarks/MapBenchmark.h"
 #include "unit_tests/SetUnitTest.h"
@@ -14,6 +13,7 @@
 #include "unit_tests/ListUnitTest.h"
 #include "benchmarks/ListBenchmark.h"
 #include "unit_tests/ContainerUnitTest.h"
+#include "map/TreeMap.h"
 
 int main() {
 	MapUnitTest mapUnitTest;
