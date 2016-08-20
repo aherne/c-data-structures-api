@@ -15,11 +15,11 @@
 #include "unit_tests/ContainerUnitTest.h"
 
 int main() {
-//	MapUnitTest mapUnitTest;
-//	mapUnitTest.execute();
+	MapUnitTest mapUnitTest;
+	mapUnitTest.execute();
 
-	MapBenchmark mapBenchmark;
-	mapBenchmark.execute();
+//	MapBenchmark mapBenchmark;
+//	mapBenchmark.execute();
 
 //	SetUnitTest setUnitTest;
 //	setUnitTest.execute();

@@ -31,4 +31,13 @@ iterator invalidation
 			whenever buckets resize
 		hash map
 			SAME
-		
+
+------------------------------
+GRAPH
+	HashTable<Vertex> contents;
+	
+	template<typename VALUE>
+	struct Vertex {
+		VALUE data;
+		ArrayList<Vertex*> edges;	
+	}

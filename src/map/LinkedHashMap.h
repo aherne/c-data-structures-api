@@ -10,10 +10,9 @@
 
 #include <algorithm>
 #include <utility>
-#include "Map.h"
+#include "../LinkedHashTable.h"
 #include "MapEntry.h"
-#include "../Hashing.h"
-#include "../Comparator.h"
+#include "Map.h"
 #include "../list/DoublyLinkedListSorter.h"
 
 template<typename _KEY, typename _VALUE>
@@ -34,7 +33,7 @@ public:
 		compareFunction = function;
 	}
 
-	bool operator()(LinkedHashMapEntry<_KEY,_VALUE>*& left, LinkedHashMapEntry<_KEY,_VALUE>*& right) const {
+	bool operator()(LinkedHashTableEntry<MapEntry<_KEY, _VALUE>>*& left, LinkedHashTableEntry<MapEntry<_KEY, _VALUE>>*& right) const {
 		return compareFunction(left->data.key, right->data.key);
 	}
 private:
@@ -48,7 +47,7 @@ public:
 		compareFunction = function;
 	}
 
-	bool operator()(LinkedHashMapEntry<_KEY,_VALUE>*& left, LinkedHashMapEntry<_KEY,_VALUE>*& right) const {
+	bool operator()(LinkedHashTableEntry<MapEntry<_KEY, _VALUE>>*& left, LinkedHashTableEntry<MapEntry<_KEY, _VALUE>>*& right) const {
 		return compareFunction(left->data.value, right->data.value);
 	}
 private:
@@ -64,12 +63,9 @@ class LinkedHashMap : public Map<_KEY,_VALUE> {
 public:
 	typedef LinkedHashMapIterator<_KEY,_VALUE> iterator;
 
+
 	LinkedHashMap(){
-		count=0;
-		bucket_count=8;
-		buckets = new LinkedHashMapEntry<_KEY, _VALUE>*[bucket_count]();
-		head = nullptr;
-		tail = nullptr;
+		hashTable = new LinkedHashTable<MapEntry<_KEY,_VALUE>>;
 		internalIteratorStart = nullptr;
 		internalIteratorEnd = nullptr;
 	}
@@ -79,9 +75,7 @@ public:
 			delete internalIteratorStart;
 			delete internalIteratorEnd;
 		}
-		emptyBuckets();
-		head = nullptr;
-		tail = nullptr;
+		delete hashTable;
 	}
 
 	void clear(){
@@ -91,133 +85,59 @@ public:
 			delete internalIteratorEnd;
 			internalIteratorEnd = nullptr;
 		}
-		emptyBuckets();
-		head = nullptr;
-		tail = nullptr;
+		delete hashTable;
 
-		count=0;
-		bucket_count=8;
-		buckets = new LinkedHashMapEntry<_KEY, _VALUE>*[bucket_count]();
+		hashTable = new LinkedHashTable<MapEntry<_KEY,_VALUE>>;
 	}
 
 	bool containsKey(const _KEY& key) const{
-		if(count==0) return false;
-		std::size_t hashValue = hashingFunc(key);
-		int bucketNumber = getBucketNumber(hashValue);
-
-		LinkedHashMapEntry<_KEY, _VALUE>* currentBucket = buckets[bucketNumber];
-		while(currentBucket!=nullptr) {
-			if(currentBucket->hash == hashValue && keyComparator(currentBucket->data.key,key)==0) {
-				return true;
-			}
-			currentBucket = currentBucket->nextInBucket;
-		}
-		return false;
+		if(hashTable->isEmpty()) return false;
+		MapEntry<_KEY,_VALUE> mapEntry;
+		mapEntry.key = key;
+		return hashTable->contains(mapEntry, &compareByKey, &hasher);
 	}
 
 	bool containsValue(const _VALUE& value) const{
-		if(count==0) return false;
-		for(std::size_t i=0; i< bucket_count; ++i) {
-			LinkedHashMapEntry<_KEY, _VALUE>* currentBucket = buckets[i];
-			while(currentBucket!=nullptr) {
-				if(valueComparator(currentBucket->data.value, value)==0) {
-					return true;
-				}
-				currentBucket = currentBucket->nextInBucket;
-			}
-		}
-		return false;
+		if(hashTable->isEmpty()) return false;
+		MapEntry<_KEY,_VALUE> mapEntry;
+		mapEntry.value = value;
+		return hashTable->contains(mapEntry, &compareByValue);
 	}
 
 	bool isEmpty() const {
-		return (count==0?true:false);
+		return hashTable->isEmpty();
 	}
 
-	const std::size_t& size() const{
-		return count;
+	const std::size_t& size() const {
+		return hashTable->size();
 	}
 
-	const _VALUE& get(const _KEY& key) const{
-		std::size_t hashValue = hashingFunc(key);
-		int bucketNumber = getBucketNumber(hashValue);
-
-		LinkedHashMapEntry<_KEY, _VALUE>* currentBucket = buckets[bucketNumber];
-		while(currentBucket!=nullptr) {
-			if(currentBucket->hash == hashValue && keyComparator(currentBucket->data.key,key)==0) {
-				return currentBucket->data.value;
-			}
-			currentBucket = currentBucket->nextInBucket;
-		}
-		throw std::out_of_range("Key not found!");
+	const _VALUE& get(const _KEY& key) const {
+		MapEntry<_KEY,_VALUE> mapEntry;
+		mapEntry.key = key;
+		const MapEntry<_KEY,_VALUE>* result = hashTable->get(mapEntry, &compareByKey, &hasher);
+		return result->value;
 	}
 
 	void set(const _KEY& key, const _VALUE& value){
-		std::size_t hashValue = hashingFunc(key);
-		int bucketNumber = getBucketNumber(hashValue);
-		LinkedHashMapEntry<_KEY, _VALUE>* currentBucket = buckets[bucketNumber];
-		if(currentBucket!=nullptr) {
-			while(currentBucket!=nullptr) {
-				if(currentBucket->hash == hashValue && keyComparator(currentBucket->data.key,key)==0) {
-					// update
-					currentBucket->data.value = value;
-					return;
-				}
-				if(currentBucket->nextInBucket == nullptr) {
-					LinkedHashMapEntry<_KEY, _VALUE>* be = createEntry(hashValue, key,value);
-					currentBucket->nextInBucket = be;
-
-					if(tail!=nullptr) {
-						tail->next = be;
-					}
-					tail = be;
-
-					++ count;
-					if(count == bucket_count) {
-						rehash();
-					}
-
-					return;
-				} else {
-					currentBucket = currentBucket->nextInBucket;
-				}
-			}
-		} else {
-			LinkedHashMapEntry<_KEY, _VALUE>* be = createEntry(hashValue, key,value);
-			buckets[bucketNumber] = be;
-
-			if(head==nullptr) {
-				head = be;
-			}
-			if(tail!=nullptr) {
-				tail->next = be;
-			}
-			tail = be;
-
-			++ count;
-			if(count == bucket_count) {
-				rehash();
-			}
-
-			return;
-		}
+		MapEntry<_KEY,_VALUE> mapEntry;
+		mapEntry.key = key;
+		mapEntry.value = value;
+		hashTable->set(mapEntry, &compareByKey, &hasher);
 	}
 
 	void removeKey(const _KEY& key){
-		if(count==0) return;
-		std::size_t oldCount = count;
-		std::size_t hashValue = hashingFunc(key);
-		int bucketNumber = getBucketNumber(hashValue);
-		buckets[bucketNumber] = recursiveDeleteKey(buckets[bucketNumber], key);
-		if(oldCount == count) throw std::out_of_range("Key not found!");
+		if(hashTable->isEmpty()) return;
+		MapEntry<_KEY,_VALUE> mapEntry;
+		mapEntry.key = key;
+		hashTable->remove(mapEntry, &compareByKey, &hasher);
 	}
 
 	void removeValue(const _VALUE& value) {
-		if(count==0) return;
-		std::size_t oldCount = count;
-		for(std::size_t i=0; i<bucket_count; ++i) {
-			buckets[i] = recursiveDeleteValue(buckets[i], value);
-		}
-		if(oldCount == count) throw std::out_of_range("Value not found!");
+		if(hashTable->isEmpty()) return;
+		MapEntry<_KEY,_VALUE> mapEntry;
+		mapEntry.value = value;
+		hashTable->remove(mapEntry, &compareByValue);
 	}
 
 	MapIterator<_KEY,_VALUE>* begin(){
@@ -227,7 +147,7 @@ public:
 			delete internalIteratorEnd;
 			internalIteratorEnd = nullptr;
 		}
-		internalIteratorStart = new iterator(this);
+		internalIteratorStart = new iterator(hashTable);
 		return internalIteratorStart;
 	}
 
@@ -235,142 +155,31 @@ public:
 		if(internalIteratorEnd!=nullptr){
 			return internalIteratorEnd;
 		} else {
-			internalIteratorEnd = new iterator(count);
+			internalIteratorEnd = new iterator(hashTable->size());
 			return internalIteratorEnd;
 		}
 	}
 
 	void sortByKey(bool (*comparator) (const _KEY&, const _KEY&)) {
 		KeyMapBucketComparator<_KEY,_VALUE> klhmbc(comparator);
-		DoublyLinkedListSorter<LinkedHashMapEntry<_KEY, _VALUE>, KeyMapBucketComparator<_KEY,_VALUE>> sort(&head, &tail, klhmbc);
+		DoublyLinkedListSorter<LinkedHashTableEntry<MapEntry<_KEY, _VALUE>>, KeyMapBucketComparator<_KEY,_VALUE>> sort(&(hashTable->getHead()), &(hashTable->getTail()), klhmbc);
 	}
 	void sortByValue(bool (*comparator) (const _VALUE&, const _VALUE&)) {
 		ValueMapBucketComparator<_KEY,_VALUE> klhmbc(comparator);
-		DoublyLinkedListSorter<LinkedHashMapEntry<_KEY, _VALUE>, ValueMapBucketComparator<_KEY,_VALUE>> sort(&head, &tail, klhmbc);
+		DoublyLinkedListSorter<LinkedHashTableEntry<MapEntry<_KEY, _VALUE>>, ValueMapBucketComparator<_KEY,_VALUE>> sort(&(hashTable->getHead()), &(hashTable->getTail()), klhmbc);
 	}
 
 private:
+	LinkedHashTable<MapEntry<_KEY,_VALUE>>* hashTable;
 	MapIterator<_KEY,_VALUE>* internalIteratorStart;
 	MapIterator<_KEY,_VALUE>* internalIteratorEnd;
-
-	LinkedHashMapEntry<_KEY, _VALUE>* createEntry(std::size_t hashValue, const _KEY& key, const _VALUE& value) {
-		LinkedHashMapEntry<_KEY, _VALUE>* be = new LinkedHashMapEntry<_KEY, _VALUE>;
-		be->hash = hashValue;
-		be->data.key = key;
-		be->data.value = value;
-		be->nextInBucket = nullptr;
-		be->next = nullptr;
-		be->previous = tail;
-		return be;
-	}
-
-	int getBucketNumber(std::size_t hash) const {
-		return hash % bucket_count;
-	}
-
-	void deleteFromDoublyLinkedList(LinkedHashMapEntry<_KEY, _VALUE>*& currentBucket) {
-		if(currentBucket == head) {
-			head = head->next;		// one step forward
-		} else if(currentBucket == tail) {
-			tail = tail->previous;	// one step backward
-			tail->next = nullptr;
-		} else {
-			currentBucket->previous->next = currentBucket->next;
-		}
-	}
-
-	LinkedHashMapEntry<_KEY, _VALUE>* recursiveDeleteKey(LinkedHashMapEntry<_KEY, _VALUE>* currentBucket, const _KEY& key) {
-		if (currentBucket == nullptr)
-			return nullptr;
-
-		if (keyComparator(currentBucket->data.key, key)==0) {
-			deleteFromDoublyLinkedList(currentBucket);
-			LinkedHashMapEntry<_KEY, _VALUE>* tempNextP;
-			tempNextP = currentBucket->nextInBucket;
-			delete currentBucket;
-			-- count;
-			return tempNextP;
-		}
-		currentBucket->nextInBucket = recursiveDeleteKey(currentBucket->nextInBucket, key);
-		return currentBucket;
-	}
-
-	LinkedHashMapEntry<_KEY, _VALUE>* recursiveDeleteValue(LinkedHashMapEntry<_KEY, _VALUE>* currentBucket, const _VALUE& value) {
-		if (currentBucket == nullptr)
-			return nullptr;
-
-		if (valueComparator(currentBucket->data.value,value)==0) {
-			deleteFromDoublyLinkedList(currentBucket);
-			LinkedHashMapEntry<_KEY, _VALUE>* tempNextP;
-			tempNextP = currentBucket->nextInBucket;
-			delete currentBucket;
-			-- count;
-			return tempNextP;
-		}
-		currentBucket->nextInBucket = recursiveDeleteValue(currentBucket->nextInBucket, value);
-		return currentBucket;
-	}
-
-	void emptyBuckets(){
-		for(std::size_t i=0; i< bucket_count; ++i) {
-			LinkedHashMapEntry<_KEY, _VALUE>* head = buckets[i];
-			LinkedHashMapEntry<_KEY, _VALUE>* del = head;
-			while(del != nullptr) {
-				head = head->nextInBucket;
-				delete del;
-				del = head;
-			}
-		}
-		delete[] buckets;
-	}
-
-	void rehash(){
-		std::size_t new_bucket_count = bucket_count*2 + 1;
-
-		LinkedHashMapEntry<_KEY, _VALUE>** new_buckets = new LinkedHashMapEntry<_KEY, _VALUE>*[new_bucket_count]();
-
-		for(std::size_t i=0; i< bucket_count; ++i) {
-			LinkedHashMapEntry<_KEY, _VALUE>* currentBucket = buckets[i];
-			while(currentBucket!=nullptr) {
-				int bucket_number = currentBucket->hash % new_bucket_count;
-
-	            // advance n *before* moving node to new hash bed
-				LinkedHashMapEntry<_KEY, _VALUE>* tmp = currentBucket;
-	            currentBucket = currentBucket->nextInBucket;
-
-	            // find the proper collision list pointer.
-	            LinkedHashMapEntry<_KEY, _VALUE>*& bucket = new_buckets[bucket_number];
-	            tmp->nextInBucket = bucket;
-	            bucket = tmp;
-			}
-		}
-
-		delete [] buckets;
-		buckets = new_buckets;
-		bucket_count = new_bucket_count;
-	}
-
-	std::size_t count;
-
-	// parameters needed by hash map
-	std::size_t bucket_count;
-	LinkedHashMapEntry<_KEY, _VALUE>** buckets;
-	hash<_KEY> hashingFunc;
-
-	// comparators
-	comparator<_KEY> keyComparator;
-	comparator<_VALUE> valueComparator;
-
-	// parameters needed by doubly linked list
-	LinkedHashMapEntry<_KEY, _VALUE>* head;
-	LinkedHashMapEntry<_KEY, _VALUE>* tail;
 };
 
 template<typename _KEY, typename _VALUE>
 class LinkedHashMapIterator : public MapIterator<_KEY,_VALUE> {
 	public:
-		LinkedHashMapIterator(LinkedHashMap<_KEY, _VALUE>* map){
-			current_item = map->head;
+		LinkedHashMapIterator(LinkedHashTable<MapEntry<_KEY,_VALUE>>* map){
+			current_item = map->getHead();
 			this->offset = 0;
 		}
 
@@ -394,7 +203,7 @@ class LinkedHashMapIterator : public MapIterator<_KEY,_VALUE> {
 		}
 
 	private:
-		LinkedHashMapEntry<_KEY, _VALUE>* current_item;
+		LinkedHashTableEntry<MapEntry<_KEY,_VALUE>>* current_item;
 };
 
 #endif /* HASHMAP_H_ */

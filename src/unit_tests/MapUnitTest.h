@@ -41,7 +41,7 @@ class MapUnitTest {
 //			TreeMap<char*, char*> hms;
 //			test(&hms);
 //
-//			testLinkedHashMap();
+			testLinkedHashMap();
 //			testHashMap();
 //			testTreeMap();
 //
