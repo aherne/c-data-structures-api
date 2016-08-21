@@ -15,8 +15,8 @@
 #include "unit_tests/ContainerUnitTest.h"
 
 int main() {
-	MapUnitTest mapUnitTest;
-	mapUnitTest.execute();
+//	MapUnitTest mapUnitTest;
+//	mapUnitTest.execute();
 
 //	MapBenchmark mapBenchmark;
 //	mapBenchmark.execute();
@@ -24,8 +24,8 @@ int main() {
 //	SetUnitTest setUnitTest;
 //	setUnitTest.execute();
 
-//	SetBenchmark setBenchmark;
-//	setBenchmark.execute();
+	SetBenchmark setBenchmark;
+	setBenchmark.execute();
 
 //	ListUnitTest listUnitTest;
 //	listUnitTest.execute();

@@ -82,5 +82,10 @@ struct stringKeyComparator {
    }
 };
 
+template<typename T>
+int compareValue(const T& left, const T& right) {
+	comparator<T> comp;
+	return comp(left, right);
+}
 
 #endif /* SRC_COMPARATOR_H_ */

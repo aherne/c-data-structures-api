@@ -38,6 +38,11 @@ struct hash<char*> {
 	}
 };
 
+template<typename T>
+std::size_t hashValue(const T& item) {
+	hash<T> temp;
+	return temp(item);
+}
 
 
 #endif /* SRC_HASHING_H_ */

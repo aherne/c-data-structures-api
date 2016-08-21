@@ -40,7 +40,7 @@ class SetUnitTest {
 			test(&hms);
 
 			std::cout << "=====TreeSet<char*>=====" << std::endl;
-			TreeSet<char*, stringKeyComparator> tms;
+			TreeSet<char*> tms;
 			test(&tms);
 		}
 
@@ -103,8 +103,8 @@ class SetUnitTest {
 			ht.sort(&compareAsc<long>);
 
 			std::cout << "sort:" << std::endl;
-			for(auto it = ht.begin(); it!=ht.end(); ++it) {
-				std::cout <<"\t" << (*it) << std::endl;
+			for(auto it = ht.begin(); *it!=*(ht.end()); ++(*it)) {
+				std::cout <<"\t" << (*(*it)) << std::endl;
 			}
 
 			ht.clear();
@@ -126,8 +126,8 @@ class SetUnitTest {
 			k=22;ht.add(k);
 
 			std::cout << "iterator:" << std::endl;
-			for(auto it = ht.begin(); it!=ht.end(); ++it) {
-				std::cout <<"\t" << (*it) << std::endl;
+			for(auto it = ht.begin(); *it!=*(ht.end()); ++(*it)) {
+				std::cout <<"\t" << (*(*it)) << std::endl;
 			}
 
 			ht.clear();
@@ -149,8 +149,8 @@ class SetUnitTest {
 			k=22;ht.add(k);
 
 			std::cout << "iterator:" << std::endl;
-			for(auto it = ht.begin(); it!=ht.end(); ++it) {
-				std::cout <<"\t" << *it << std::endl;
+			for(auto it = ht.begin(); *it!=*(ht.end()); ++(*it)) {
+				std::cout <<"\t" << (*(*it)) << std::endl;
 			}
 
 			ht.clear();

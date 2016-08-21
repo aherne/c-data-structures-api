@@ -8,17 +8,10 @@
 #ifndef SET_HASHSET_H_
 #define SET_HASHSET_H_
 
-#include <vector>
+#include "../HashTable.h"
 #include "Set.h"
 #include "../Hashing.h"
 #include "../Comparator.h"
-
-template<typename T>
-struct HashSetEntry {
-	std::size_t hash;
-	T value;
-	HashSetEntry<T>* next;
-};
 
 template<typename T>
 class HashSetIterator;
@@ -30,264 +23,110 @@ public:
 	typedef HashSetIterator<T> iterator;
 
 	HashSet(){
-		count=0;
-		bucket_count=8;
-		buckets = new HashSetEntry<T>*[bucket_count]();
+		hashTable = new HashTable<T>;
+		internalIteratorStart = nullptr;
+		internalIteratorEnd = nullptr;
 	}
 
 	~HashSet(){
-		emptyBuckets();
+		if(internalIteratorStart!=nullptr) {
+			delete internalIteratorStart;
+			delete internalIteratorEnd;
+		}
+		delete hashTable;
 	}
 
 	void clear(){
-		emptyBuckets();
+		if(internalIteratorStart!=nullptr) {
+			delete internalIteratorStart;
+			internalIteratorStart = nullptr;
+			delete internalIteratorEnd;
+			internalIteratorEnd = nullptr;
+		}
+		delete hashTable;
 
-		count=0;
-		bucket_count=8;
-		buckets = new HashSetEntry<T>*[bucket_count]();
+		hashTable = new HashTable<T>;
 	}
 
 	bool contains(const T& value) const {
-		if(count==0) return false;
-		std::size_t hashValue = hashingFunc(value);
-		int bucketNumber = getBucketNumber(hashValue);
-
-		HashSetEntry<T>* currentBucket = buckets[bucketNumber];
-		while(currentBucket!=nullptr) {
-			if(currentBucket->hash == hashValue && valueComparator(currentBucket->value,value)==0) {
-				return true;
-			}
-			currentBucket = currentBucket->next;
-		}
-		return false;
+		return hashTable->contains(value, &compareValue, &hashValue);
 	}
 
 	bool isEmpty() const{
-		return (count==0?true:false);
+		return hashTable->isEmpty();
 	}
 
 	const std::size_t& size() const{
-		return count;
-	}
-
-	std::vector<T> getValues(){
-		std::vector<T> output;
-		for(std::size_t i=0; i< bucket_count; ++i) {
-			HashSetEntry<T>* currentBucket = buckets[i];
-			while(currentBucket!=nullptr) {
-				output.push_back(currentBucket->value);
-				currentBucket = currentBucket->next;
-			}
-		}
-		return output;
+		return hashTable->size();
 	}
 
 	void add(const T& value){
-		std::size_t hashValue = hashingFunc(value);
-		int bucketNumber = getBucketNumber(hashValue);
-		HashSetEntry<T>* currentBucket = buckets[bucketNumber];
-		if(currentBucket!=nullptr) {
-			// there are rows already, so loop until end
-			while(currentBucket!=nullptr) {
-				if(currentBucket->hash == hashValue && valueComparator(currentBucket->value, value)==0) {
-					return; // value already exists
-				}
-				if(currentBucket->next == nullptr) {
-					// append to end
-					HashSetEntry<T>* be = new HashSetEntry<T>;
-					be->hash = hashValue;
-					be->value = value;
-					be->next = nullptr;
-
-					currentBucket->next = be;
-					++ count;
-					if(count == bucket_count) {
-						rehash();
-					}
-					return;
-				} else {
-					currentBucket = currentBucket->next;
-				}
-			}
-		} else {
-			HashSetEntry<T>* be = new HashSetEntry<T>;
-			be->hash = hashValue;
-			be->value = value;
-			be->next = nullptr;
-
-			buckets[bucketNumber] = be;
-
-			++ count;
-			if(count == bucket_count) {
-				rehash();
-			}
-			return;
-		}
+		hashTable->set(value, &compareValue, &hashValue);
 	}
 
 	void remove(const T& value){
-		if(count==0) return;
-		std::size_t hashValue = hashingFunc(value);
-		int bucketNumber = getBucketNumber(hashValue);
-		HashSetEntry<T>* currentBucket = buckets[bucketNumber];
-		HashSetEntry<T>* previousBucket = nullptr;
-		while(currentBucket!=nullptr) {
-			if(currentBucket->hash == hashValue && valueComparator(currentBucket->value,value)==0) {
-				if(previousBucket!=nullptr) {
-					previousBucket->next = currentBucket->next;
-				} else {
-					previousBucket = currentBucket->next;
-				}
-				delete currentBucket;
-				buckets[bucketNumber] = previousBucket;
-				--count;
-				return;
-			}
-			previousBucket = currentBucket;
-			currentBucket = currentBucket->next;
+		hashTable->remove(value, &compareValue, &hashValue);
+	}
+
+	SetIterator<T>* begin() {
+		if(internalIteratorStart!=nullptr) {
+			delete internalIteratorStart;
+			internalIteratorStart = nullptr;
+			delete internalIteratorEnd;
+			internalIteratorEnd = nullptr;
 		}
-		throw std::out_of_range("Key not found!");
+		internalIteratorStart = new iterator(hashTable);
+		return internalIteratorStart;
 	}
 
-	iterator begin() {
-		return iterator(this);
-	}
-
-	iterator end() {
-		return iterator(this, count );
+	SetIterator<T>* end() {
+		if(internalIteratorEnd!=nullptr){
+			return internalIteratorEnd;
+		} else {
+			internalIteratorEnd = new iterator(hashTable->size());
+			return internalIteratorEnd;
+		}
 	}
 private:
-	int getBucketNumber(std::size_t hash) const {
-		return hash % bucket_count;
-	}
-
-	void emptyBuckets(){
-		for(std::size_t i=0; i< bucket_count; ++i) {
-			HashSetEntry<T>* head = buckets[i];
-			HashSetEntry<T>* del = head;
-			while(del != nullptr) {
-				head = head->next;
-				delete del;
-				del = head;
-			}
-		}
-		delete[] buckets;
-	}
-
-	void rehash(){
-		std::size_t new_bucket_count = bucket_count*2 + 1;
-
-		HashSetEntry<T>** new_buckets = new HashSetEntry<T>*[new_bucket_count]();
-
-		for(std::size_t i=0; i< bucket_count; ++i) {
-			HashSetEntry<T>* currentBucket = buckets[i];
-			while(currentBucket!=nullptr) {
-				int bucket_number = currentBucket->hash % new_bucket_count;
-
-	            // advance n *before* moving node to new hash bed
-				HashSetEntry<T>* tmp = currentBucket;
-	            currentBucket = currentBucket->next;
-
-	            // find the proper collision list pointer.
-	            HashSetEntry<T>*& bucket = new_buckets[bucket_number];
-	            tmp->next = bucket;
-	            bucket = tmp;
-			}
-		}
-
-		delete [] buckets;
-		buckets = new_buckets;
-		bucket_count = new_bucket_count;
-	}
-
-	std::size_t count;
-	std::size_t bucket_count;
-	HashSetEntry<T> **buckets;
-
-	hash<T> hashingFunc;
-	comparator<T> valueComparator;
+	HashTable<T>* hashTable;
+	SetIterator<T>* internalIteratorStart;
+	SetIterator<T>* internalIteratorEnd;
 };
 
 
 template<typename T>
-class HashSetIterator {
+class HashSetIterator : public SetIterator<T> {
 	public:
-		HashSetIterator(){
+		HashSetIterator(HashTable<T>* hashTable){
+			content = hashTable;
+			current_bucket = hashTable->getMinBucket();
+			current_position = 0;
+			this->offset = 0;
+		}
+
+		HashSetIterator(std::size_t total){
 			content = nullptr;
 			current_bucket = 0;
 			current_position = 0;
-			offset = 0;
-		}
-
-		HashSetIterator(HashSet<T>* set){
-			content = set;
-			current_bucket = 0;
-			current_position = 0;
-			offset = 0;
-			for(std::size_t i=current_bucket; i< content->bucket_count; ++i) {
-				HashSetEntry<T>* currentBucket = content->buckets[i];
-				if(currentBucket!=nullptr) {
-					current_bucket = i;
-					return;
-				}
-			}
-		}
-
-		HashSetIterator(HashSet<T>* set, std::size_t total){
-			content = set;
-			current_bucket = 0;
-			current_position = 0;
-			offset = total;
+			this->offset = total;
 		}
 
 		~HashSetIterator() {}
 
-		const T operator*() {
-			HashSetEntry<T>* currentBucket = content->buckets[current_bucket];
-			std::size_t j = 0;
-			while(currentBucket!=nullptr) {
-				if(j==current_position) {
-					return currentBucket->value;
-				}
-				currentBucket = currentBucket->next;
-				++j;
-			}
-			throw std::out_of_range("Element not found!");
+		const T& operator*(){
+			HashTableEntry<T>* currentBucket = content->getCurrentNode(current_bucket, current_position);
+			if(currentBucket==nullptr) throw std::out_of_range("Key not found!");
+			return currentBucket->data;
 		}
 
-		bool operator!=(const HashSetIterator<T>& it) {
-			return offset!=it.offset;
-		}
-
-		void operator++(){
-			std::size_t j = 0;
-			for(std::size_t i=current_bucket; i< content->bucket_count; ++i) {
-				HashSetEntry<T>* currentBucket = content->buckets[i];
-				while(currentBucket!=nullptr) {
-					if(i==current_bucket) {
-						if(j>current_position) {
-							++current_position;
-							++offset;
-							return;
-						}
-						++j;
-					} else {
-						current_bucket = i;
-						current_position = 0;
-						++offset;
-						return;
-					}
-					currentBucket = currentBucket->next;
-				}
-			}
-			// if this step is reached, then iterator reached end
-			++offset;
+		void operator++() {
+			content->nextNode(current_bucket, current_position);
+			++this->offset;
 			return;
 		}
 
-		std::size_t offset;
 	private:
-		HashSet<T>* content;
+		HashTable<T>* content;
 
 		std::size_t current_bucket;
 		std::size_t current_position;

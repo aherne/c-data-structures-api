@@ -15,16 +15,6 @@
 #include "Map.h"
 #include "../list/DoublyLinkedListSorter.h"
 
-template<typename _KEY, typename _VALUE>
-struct LinkedHashMapEntry {
-	std::size_t hash;
-	MapEntry<_KEY,_VALUE> data;
-	// singly linked list for traversal @ bucket
-	LinkedHashMapEntry<_KEY, _VALUE>* nextInBucket;
-	// doubly linked list for traversal in insertion order
-	LinkedHashMapEntry<_KEY, _VALUE>* previous;
-	LinkedHashMapEntry<_KEY, _VALUE>* next;
-};
 
 template<typename _KEY, typename _VALUE>
 class KeyMapBucketComparator {

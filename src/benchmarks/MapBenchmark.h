@@ -43,35 +43,35 @@ public:
 		std::cout << "std::map<long,long>" << std::endl;
 		testMap();
 
-//		std::cout << "std::unordered_map<long,long>" << std::endl;
-//		testUnorderedMapLong();
+		std::cout << "std::unordered_map<long,long>" << std::endl;
+		testUnorderedMapLong();
 
-//		std::cout << "std::unordered_map<char*,char*>" << std::endl;
-//		testUnorderedMapString();
+		std::cout << "std::unordered_map<char*,char*>" << std::endl;
+		testUnorderedMapString();
 
-//		HashMap<long, long> hml;
-//		std::cout << "HashMap<long,long>" << std::endl;
-//		test(&hml);
+		HashMap<long, long> hml;
+		std::cout << "HashMap<long,long>" << std::endl;
+		test(&hml);
 
-//		LinkedHashMap<long, long> lhml;
-//		std::cout << "LinkedHashMap<long,long>" << std::endl;
-//		test(&lhml);
+		LinkedHashMap<long, long> lhml;
+		std::cout << "LinkedHashMap<long,long>" << std::endl;
+		test(&lhml);
 
-//		TreeMap<long, long> hml;
-//		std::cout << "TreeMap<long,long>" << std::endl;
-//		test(&hml);
-//
-//		HashMap<char*, char*> hms;
-//		std::cout << "HashMap<char*,char*>" << std::endl;
-//		test(&hms);
-//
-//		LinkedHashMap<char*, char*> lhms;
-//		std::cout << "LinkedHashMap<char*,char*>" << std::endl;
-//		test(&lhms);
+		TreeMap<long, long> tml;
+		std::cout << "TreeMap<long,long>" << std::endl;
+		test(&tml);
 
-		TreeMap<char*, char*> lhms;
-		std::cout << "TreeMap<char*,char*>" << std::endl;
+		HashMap<char*, char*> hms;
+		std::cout << "HashMap<char*,char*>" << std::endl;
+		test(&hms);
+
+		LinkedHashMap<char*, char*> lhms;
+		std::cout << "LinkedHashMap<char*,char*>" << std::endl;
 		test(&lhms);
+
+		TreeMap<char*, char*> tms;
+		std::cout << "TreeMap<char*,char*>" << std::endl;
+		test(&tms);
 	}
 private:
 	std::size_t getTime() {

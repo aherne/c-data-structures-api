@@ -33,11 +33,29 @@ iterator invalidation
 			SAME
 
 ------------------------------
-GRAPH
-	HashTable<Vertex> contents;
+GRAPH WITHOUT WEIGHTS
+	HashTable<Vertex<VALUE>*> contents;
 	
 	template<typename VALUE>
 	struct Vertex {
 		VALUE data;
-		ArrayList<Vertex*> edges;	
+		ArrayList<Vertex<VALUE>*> edges;	
 	}
+GRAPH WITH WEIGHTS
+	HashTable<Vertex<VALUE, WEIGHT>*> contents;
+	
+	template<typename VALUE, typename WEIGHT>
+	struct Vertex {
+		VALUE data;
+		ArrayList<Edge<VALUE, WEIGHT>*> edges;	
+	}
+		
+	template<typename VALUE>
+	struct Edge {
+		Vertex<VALUE>* vertex;
+		WEIGHT weight;
+	}
+	
+	// would be very fast to search vertex and find its edges
+	// would be fast to update a vertex or edge
+	// would be O(E) to delete an edge

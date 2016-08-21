@@ -13,13 +13,6 @@
 #include "Map.h"
 
 template<typename _KEY, typename _VALUE>
-struct HashMapEntry {
-	std::size_t hash;
-	MapEntry<_KEY,_VALUE> data;
-	HashMapEntry<_KEY, _VALUE>* next;
-};
-
-template<typename _KEY, typename _VALUE>
 class HashMapIterator;
 
 template<typename _KEY, typename _VALUE>
