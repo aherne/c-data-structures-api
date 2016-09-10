@@ -14,6 +14,16 @@ int comparator1(const long& left, const long& right) {
 	return left-right;
 }
 
+template<typename T>
+class PrintNodeVisitor: public TreeNodeVisitor<T> {
+public:
+	virtual ~PrintNodeVisitor(){};
+
+	void visit(TreeNode<T>*& element) {
+		std::cout << element->getData() << std::endl;
+	}
+};
+
 class TreeUnitTest {
 public:
 	void execute() {
@@ -28,6 +38,11 @@ public:
 		 * 	  |
 		 * 	  11
 		 */
+//		methodsTest();
+		iteratorsTest();
+	}
+private:
+	void methodsTest() {
 		TreeNode<long>* root = new TreeNode<long>(1);
 		TreeNode<long>* c1 = root->addChild(2);
 		TreeNode<long>* c2 = root->addChild(3);
@@ -89,6 +104,41 @@ public:
 
 		root->removeBranch(2, &comparator1);
 		std::cout << "removeBranch: " << (root->search(2,&comparator1).empty() && root->search(8,&comparator1).empty() && root->getChildren().size()==2?"OK":"FAILED") << std::endl;
+
+		delete root;
+	}
+
+	void iteratorsTest() {
+		TreeNode<long>* root = new TreeNode<long>(1);
+		TreeNode<long>* c1 = root->addChild(2);
+		TreeNode<long>* c2 = root->addChild(3);
+		TreeNode<long>* c3 = root->addChild(4);
+		TreeNode<long>* c1_1 = c1->addChild(5);
+		c1->addChild(6);
+		TreeNode<long>* c1_1_1 = c1_1->addChild(7);
+		c1_1->addChild(8);
+		c2->addChild(9);
+		c3->addChild(10);
+		c1_1_1->addChild(11);
+
+		PrintNodeVisitor<long> visitor;
+
+		std::cout << "LEVEL ORDER TRAVERSAL" << std::endl;
+
+		LevelOrderTreeIterator(root, &visitor);
+
+		std::cout << "LEVEL ORDER TRAVERSAL WITH DEPTH" << std::endl;
+
+		LevelOrderTreeIterator(root,1, &visitor);
+
+		std::cout << "PRE ORDER TRAVERSAL" << std::endl;
+
+		PreOrderTreeIterator(root, &visitor);
+
+		std::cout << "POST ORDER TRAVERSAL" << std::endl;
+
+		PostOrderTreeIterator(root, &visitor);
+
 
 		delete root;
 	}
