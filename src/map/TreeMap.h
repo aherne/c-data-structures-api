@@ -8,7 +8,7 @@
 #ifndef SRC_MAP_TREEMAP_H_
 #define SRC_MAP_TREEMAP_H_
 
-#include "../RedBlackTree.h"
+#include "../tree/RedBlackTree.h"
 #include "MapEntry.h"
 #include "Map.h"
 

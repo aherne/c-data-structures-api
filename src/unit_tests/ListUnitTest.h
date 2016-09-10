@@ -26,9 +26,9 @@ public:
 //		LinkedList<long> lll;
 //		testList(&lll);
 //
-		std::cout << "=====DoublyLinkedList<long>=====" << std::endl;
-		DoublyLinkedList<long> dll;
-		testList(&dll);
+//		std::cout << "=====DoublyLinkedList<long>=====" << std::endl;
+//		DoublyLinkedList<long> dll;
+//		testList(&dll);
 //
 //		std::cout << "=====ArrayList<char*>=====" << std::endl;
 //		ArrayList<char*> als;
@@ -38,9 +38,9 @@ public:
 //		LinkedList<char*> lls;
 //		testList(&lls);
 //
-		std::cout << "=====DoublyLinkedList<char*>=====" << std::endl;
-		DoublyLinkedList<char*> dls;
-		testList(&dls);
+//		std::cout << "=====DoublyLinkedList<char*>=====" << std::endl;
+//		DoublyLinkedList<char*> dls;
+//		testList(&dls);
 
 //		testArrayList();
 //		testLinkedList();
@@ -196,8 +196,10 @@ private:
 		ht.sort(&compareAsc<long>);
 
 		std::cout << "sort:" << std::endl;
+		int i=0;
 		for(auto it = ht.begin(); it!=ht.end(); ++it) {
 			std::cout <<"\t" << *it << std::endl;
+			++i;
 		}
 
 		ht.clear();

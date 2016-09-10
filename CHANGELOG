@@ -1,11 +1,26 @@
 (LATER) unit tests & benchmarks must be split into .h and .cpp
 ALL:
-	VERY IMPORTANT: invalidate internal iterators on any add/remove
+	ITERATOR INVALIDATION
+		list
+			dynamic arrays
+				whenever an element is removed
+				whenever array resizes
+			linked lists
+				whenever an element is removed
+			doubly linked list
+				whenever an element is removed
+		map
+			doubly linked list hash map & hash map
+				whenever an element is removed
+				whenever buckets resize
+			tree map
+				whenever an element is removed
+		set
+			same
 linkedhashmap
-	+ (LATER) unique(valueComparator)
+	(LATER) unique(valueComparator)
 map
-	* (LATER) add keyComparator and valueComparator template args to all
-	* logic of removeIndex/Value should be as simple as @ dlllist
+	(LATER) add keyComparator and valueComparator template args to all
 	(LATER) unify sort test methods (since now iterators work the same)
 set
 	* (LATER) add valueComparator template arg to all
@@ -15,22 +30,9 @@ list
 	+ (LATER) unique(valueComparator)
 	+ (LATER) remove @ iterator
 FIX: sort has complexity 2N+logN (because changing tail requires full iteration)
+BUG: @ArrayList: if one issues a DELETE on an item=> CRASH
 ==============================
 iterator invalidation
-	list
-		dynamic arrays
-			whenever an element is removed
-			whenever array resizes
-		linked lists
-			whenever an element is removed
-		doubly linked list
-			whenever an element is removed
-	map
-		doubly linked list hash map
-			whenever an element is removed
-			whenever buckets resize
-		hash map
-			SAME
 
 ------------------------------
 GRAPH WITHOUT WEIGHTS

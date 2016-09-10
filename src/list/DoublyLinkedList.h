@@ -366,13 +366,6 @@ class DoublyLinkedListIterator {
 			return current_item->value;
 		}
 
-		void remove() {
-			DoublyLinkedListEntry<T>* tmp = current_item->previous;
-			list->deleteItem(current_item);
-			current_item = tmp;
-			--offset;
-		}
-
 		bool operator!=(const DoublyLinkedListIterator<T>& it) const {
 			return offset!=it.offset;
 		}

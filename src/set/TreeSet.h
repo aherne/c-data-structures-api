@@ -8,7 +8,7 @@
 #ifndef SET_TREESET_H_
 #define SET_TREESET_H_
 
-#include "../RedBlackTree.h"
+#include "../tree/RedBlackTree.h"
 #include "Set.h"
 #include "../Hashing.h"
 #include "../Comparator.h"
