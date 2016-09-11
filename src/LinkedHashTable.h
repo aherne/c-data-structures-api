@@ -8,6 +8,7 @@
 #ifndef SRC_LINKEDHASHTABLE_H_
 #define SRC_LINKEDHASHTABLE_H_
 
+#include <stdexcept>
 
 template<typename VALUE>
 struct LinkedHashTableEntry {

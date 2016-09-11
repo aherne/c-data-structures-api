@@ -1,3 +1,5 @@
+(BUG): @ArrayList: if one issues a DELETE on an item=> CRASH
+
 (LATER) unit tests & benchmarks must be split into .h and .cpp
 ALL:
 	ITERATOR INVALIDATION
@@ -20,21 +22,21 @@ ALL:
 linkedhashmap
 	(LATER) unique(valueComparator)
 map
-	(LATER) add keyComparator and valueComparator template args to all
+	(LATER) add keyComparator and valueComparator (?) template args to all
 	(LATER) unify sort test methods (since now iterators work the same)
 set
 	* (LATER) add valueComparator template arg to all
 list
-	+ create separate test cases for addToTop
-		PHP: operator[] will always add to bottom!
 	+ (LATER) unique(valueComparator)
 	+ (LATER) remove @ iterator
 FIX: sort has complexity 2N+logN (because changing tail requires full iteration)
-BUG: @ArrayList: if one issues a DELETE on an item=> CRASH
+ISSUE: @TreeNode 
+- remove & removeBranch are problematic. If root node @ tree is removed, then a DELETE is issued => double-free. Maybe they should be user-level domain?
+- current design imposes a single search full scan solution, which is unacceptable. Either encapsulate or remove the method. 
++ add UniqueValueTreeNode
+? create a Tree interface maybe?
++ interators (VERY DIFFICULT)
 ==============================
-iterator invalidation
-
-------------------------------
 GRAPH WITHOUT WEIGHTS
 	HashTable<Vertex<VALUE>*> contents;
 	
@@ -57,7 +59,3 @@ GRAPH WITH WEIGHTS
 		Vertex<VALUE>* vertex;
 		WEIGHT weight;
 	}
-	
-	// would be very fast to search vertex and find its edges
-	// would be fast to update a vertex or edge
-	// would be O(E) to delete an edge

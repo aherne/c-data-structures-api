@@ -60,11 +60,6 @@ public:
 
 	// tested
 	void addChild(TreeNode<T>*& node) {
-		for(auto it=children.begin(); it!=children.end(); ++it) {
-			if(*it == node) {
-				throw std::out_of_range("Child already added!");
-			}
-		}
 		node->setParent(this);
 		children.push_back(node);
 	}
@@ -119,25 +114,28 @@ public:
 		children.clear();
 	}
 
-	bool remove(const T& data, int (*comparator)(const T&, const T&)) {
+	// tested
+	void remove(const T& data, int (*comparator)(const T&, const T&)) {
 		std::vector<TreeNode<T>*> results = search(data, comparator);
+		if(results.size()==0) throw std::out_of_range("Value not found!");
 		for(auto it = results.begin(); it!=results.end(); ++it) {
 			TreeNode<T>* parent = (*it)->getParent();
-			if(parent!=nullptr) {	// if root is deleted, there is nothing to detach (however, there will be a double-free)
-				(*it)->detach();
+			if(parent==nullptr) { // root is deleted (tree must be cleared)
+				delete (*it);
+				return;
 			}
+			(*it)->detach();
 			delete (*it);
-			return true;
 		}
-		return false;
 	}
 
+	// tested
 	void removeBranch(const T& data, int (*comparator)(const T&, const T&)) {
 		std::vector<TreeNode<T>*> results = search(data, comparator);
+		if(results.size()==0) throw std::out_of_range("Value not found!");
 		for(auto it = results.begin(); it!=results.end(); ++it) {
 			TreeNode<T>* parent = (*it)->getParent();
-			if(parent==nullptr) {
-				// root is deleted (tree is cleared)
+			if(parent==nullptr) { // root is deleted (tree must be cleared)
 				delete (*it);
 				return;
 			}

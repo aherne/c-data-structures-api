@@ -8,6 +8,8 @@
 #ifndef SRC_MAP_H_
 #define SRC_MAP_H_
 
+#include <utility>
+
 template<typename _KEY, typename _VALUE>
 class MapIterator {
 	public:

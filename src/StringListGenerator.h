@@ -9,6 +9,8 @@
 #define UNIT_TESTS_STRINGLISTGENERATOR_H_
 
 #include <vector>
+#include <cstdlib>
+#include <stdio.h>
 
 class StringListGenerator {
 public:
