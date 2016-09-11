@@ -8,6 +8,8 @@
 #ifndef SET_H_
 #define SET_H_
 
+#include <cstring>
+
 template<typename T>
 class SetIterator {
 	public:

@@ -9,7 +9,7 @@
 #define CONTAINER_STACK_H_
 
 #include "Container.h"
-#include "CapacityExceededException.h"
+#include <stdexcept>
 
 template<typename T>
 class Stack: public Container<T> {

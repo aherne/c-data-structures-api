@@ -8,6 +8,8 @@
 #ifndef CONTAINER_CONTAINER_H_
 #define CONTAINER_CONTAINER_H_
 
+#include <cstring>
+
 template<typename T>
 class Container {
 public:

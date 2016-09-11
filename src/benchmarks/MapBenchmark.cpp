@@ -12,7 +12,6 @@
 #include <unordered_map>
 #include <map>
 #include <sys/time.h>
-#include <iostream>
 
 template <class _Tp>
 struct my_equal_to

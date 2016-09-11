@@ -9,7 +9,7 @@
 #define CONTAINER_QUEUE_H_
 
 #include "Container.h"
-#include "CapacityExceededException.h"
+#include <stdexcept>
 
 template<typename T>
 class Queue: public Container<T> {

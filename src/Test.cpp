@@ -16,29 +16,29 @@
 #include "unit_tests/TreeUnitTest.h"
 
 int main() {
-//	MapUnitTest mapUnitTest;
-//	mapUnitTest.execute();
+	MapUnitTest mapUnitTest;
+	mapUnitTest.execute();
 
-//	MapBenchmark mapBenchmark;
-//	mapBenchmark.execute();
+	MapBenchmark mapBenchmark;
+	mapBenchmark.execute();
 
-//	SetUnitTest setUnitTest;
-//	setUnitTest.execute();
+	SetUnitTest setUnitTest;
+	setUnitTest.execute();
 
-//	SetBenchmark setBenchmark;
-//	setBenchmark.execute();
+	SetBenchmark setBenchmark;
+	setBenchmark.execute();
 
-//	ListUnitTest listUnitTest;
-//	listUnitTest.execute();
+	ListUnitTest listUnitTest;
+	listUnitTest.execute();
 
-//	ListBenchmark listBenchmark;
-//	listBenchmark.execute();
+	ListBenchmark listBenchmark;
+	listBenchmark.execute();
 
-//	ContainerUnitTest containerUnitTest;
-//	containerUnitTest.execute();
+	ContainerUnitTest containerUnitTest;
+	containerUnitTest.execute();
 
-//	TreeUnitTest treeUnitTest;
-//	treeUnitTest.execute();
+	TreeUnitTest treeUnitTest;
+	treeUnitTest.execute();
 
 	return 1;
 }

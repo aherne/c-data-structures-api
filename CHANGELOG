@@ -1,6 +1,5 @@
 (BUG): @ArrayList: if one issues a DELETE on an item=> CRASH
 
-(LATER) unit tests & benchmarks must be split into .h and .cpp
 ALL:
 	ITERATOR INVALIDATION
 		list
