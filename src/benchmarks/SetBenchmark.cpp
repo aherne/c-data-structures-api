@@ -11,7 +11,6 @@
 #include "../set/TreeSet.h"
 #include <unordered_set>
 #include <set>
-#include <sys/time.h>
 
 struct my_hash_function{
 	//BKDR hash algorithm
@@ -61,12 +60,6 @@ void SetBenchmark::execute() {
 	TreeSet<char*> tms;
 	std::cout << "TreeSet<char*>" << std::endl;
 	test(&tms);
-}
-
-std::size_t SetBenchmark::getTime() {
-	struct timeval tp;
-	gettimeofday(&tp, NULL);
-	return tp.tv_sec * 1000 + tp.tv_usec / 1000;
 }
 
 void SetBenchmark::testUnorderedSetLong() {

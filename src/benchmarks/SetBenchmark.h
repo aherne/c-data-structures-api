@@ -8,6 +8,7 @@
 #ifndef BENCHMARKS_SETBENCHMARK_H_
 #define BENCHMARKS_SETBENCHMARK_H_
 
+#include "../Benchmark.h"
 #include <cstring>
 #include "../set/Set.h"
 
@@ -15,7 +16,6 @@ class SetBenchmark {
 public:
 	void execute();
 private:
-	std::size_t getTime();
 	void testUnorderedSetLong();
 	void testUnorderedSetString();
 	void testSet();

@@ -8,13 +8,13 @@
 #ifndef BENCHMARKS_LISTBENCHMARK_H_
 #define BENCHMARKS_LISTBENCHMARK_H_
 
+#include "../Benchmark.h"
 #include "../StringListGenerator.h"
 
 class ListBenchmark {
 public:
 	void execute();
 private:
-	std::size_t getTime();
 	void testVector();
 	void testVector(StringListGenerator* slg);
 	void testForwardList();

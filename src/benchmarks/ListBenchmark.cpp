@@ -9,7 +9,6 @@
 #include "../list/ArrayList.h"
 #include "../list/LinkedList.h"
 #include "../list/DoublyLinkedList.h"
-#include <sys/time.h>
 #include <forward_list>
 #include <list>
 #include <vector>
@@ -40,12 +39,6 @@ void ListBenchmark::execute() {
 	testDoublyLinkedList(&slg);
 	std::cout << "=====std::list<char*>=====" << std::endl;
 	testList(&slg);
-}
-
-std::size_t ListBenchmark::getTime() {
-	struct timeval tp;
-	gettimeofday(&tp, NULL);
-	return tp.tv_sec * 1000 + tp.tv_usec / 1000;
 }
 
 void ListBenchmark::testVector() {
