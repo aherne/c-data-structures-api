@@ -1,14 +1,36 @@
 # c-data-structures-api
 
-GENESIS
-This library originally came out of frustration on C++11 HashTable solution (std::unordered_map). I was originally making a C++ data structures extension for PHP using wrappers to STL only and HashTable C implementation used by PHP was MUCH faster than unordered_map when working with string keys. Before "reinventing the wheel", I first tried to incrementally dig through the problem:
-1. use char* instead of std::string keys: there was a huge improvement (definitely a good path), but the problem remained
-2. use the same hashing algorithm PHP "array" is using: there was some new improvement, but the problem remained
-3. dig through std::unordered_map source code and find out other possible reasons: there I met a huge slab of code with endless layers of abstractions
-What could I do next? I've spent almost a month on a path that seemingly led nowhere, so I've finally decided to write my own solution. This solution had to be far more light weight (built on "less is more" principle), very performance oriented (fast with low memory consumption) and well written (when you want performance, some layers of abstraction must be ditched). 
+##Genesis##
 
-In the end, I've spent LESS in writing my own implementation than solving problems in others': what came out is a HashMap solution that is 50% faster when working with string keys. 
+Building another STL instead of using the fast super-stable time-tested library that is already used by virtually all C++ programmers seems like a textbook example of "reinventing the wheel", which happens to be a most damning stigma in today's world of programming (especially in higher level languages such as Java, but increasingly so in C++ as well). 
 
+###REINVENTING THE WHEEL 101###
+
+Why is "reinventing the wheel" so bad? Because  apparently some people long before you had a godly intelligence to create something that is beyond redesign! You, as a "senior developer" should just use your mind as a bucket of others' ideas and concoct solutions based on those. The more you learn, the more your bucket enlarges so you will ultimatly reach a level of no "wheel reinvention" and finally achieved ultimate "seniorship". Sounds like a mindless religion? Sure is! The end result of this mindset is:
+
+- overly complicated code. Chances are nobody made a solution PRECISELY for your needs, so you end up using something that is needlessly complex, which taxes performance as well as making code hard to understand. In the world of Java or PHP (the other languages I'm competent at) you encounter a profusion of frameworks geared at making above-mentioned bucket enormous enough to fit "everything" a coder will ever possibly need. 
+- abominable code made by programmers who never got their chance to exercise their mind. Obviously, years or even decades of experience while working like a factory robot doesn't increase your intelligence and problem-solving skills. The things you write will always reflect the lack of fundamental logic: zero concern on performance, simplicity, elegance or even common sense. Typically here we find classes doing EVERYTHING, technologies used because developer could not write two lines of proper code, orgies of pre-processor macros (in C/C++) and an omnious messy look from top to bottom.
+- the standards. Factory work would not be complete without standards. A worker is supposed to obey standards as his second nature! Generally the standards have themselves become standardized, so companies have created tools that check if your code obeys the standards (be it test coverage, code quality, design patterns or whatever). The end result gives the impression of a quality improvement, but real life experience tells you they are to a large extent useless hindrance. Hiring a few competent developers is always a better long term solution (in terms of quality & performance) than imposing standards to sub-standard workers.
+- WARNING: this may hurt feelings! Because programming is a well-payed job, it has lately attracted an army of people too stupid to be programmers. Just like other animals, humans greatly differ in their intellectual qualities and some people are simply too stupid to do any better EVEN IF they are properly trained "the standards" or maybe to think for themselves.
+
+Are all of above responsable for the steady decline in the quality of programming? You bet! What is the alternative then? The alternative is to "reinvent the wheel" whenever you can think you can do better, learn from your/others' mistakes and move your level ever higher while maintaining rock-solid allegiance to above-mentioned principles of performance, simplicity and elegance. Why only these three abstract ideas I qualify as standards? Because they define a working methodology that imposes no constraints except striving for clarity and perfection. This way programming becomes an ungoing quest to intellectual discovery and delight! 
+
+###WHAT'S WRONG WITH STL###
+There is nothing inherently wrong with STL. It's a very robust and heavily tested solution that proved itself to be a good companion to programmer needs, BUT there is nothing ultimate about it. It's just one IMPLEMENTATION of "data structure & algorithms" concepts, not perfect like everything else in life, with its own qualities and defects.
+
+What I liked about STL implementation is its iterators. STL iterators are without doubt more advanced/complete than anything done on that topic (at least in languages I know: Java and PHP). They have unbeatable flexibility, but they have the major defect of being non-extensible. It is fiendishly complicated to employ a STL iterator for a custom-defined (non-STL) data structure, which is why I unfortunately had to give up and implement my own (more primitive) versions of it. 
+
+What I failed to like about STL and made me think I can do better:
+- It's unstructured. What I liked about Collections API in Java is the interface-implementation paradigm that suits data structures the best. In C++ as well, a list should be a concept (class with pure virtual methods), while a dynamic array / linked list / doubly linked list should be different implementations of same concept. Not only should programmer abstract the list implementation by using List* only (which is a no-cost operation), but he will be assured whatever functionality is defined by List will have an implementation for whatever list type he uses (eg: linked list). In STL, because data structures are not designed hierarchically, there is an absolute chaos in method names (who aren't very intuitive BTW) and functionality (which may or may not have been implemented) so one needs to constantly check documentation. This was DEFINITELY something that needed to be changed.
+- It's coupled. It's extremely difficult to glue its components (be it iterators or dependency classes/structs) with non-STL components. It's clear that the very good programmers who have worked for it, even though they went overboard with decoupling to largest extent imaginable (which is why STL structures' implementations are so complex), the end result has been something so complicated that it becomes uninviting to understand (leaving the impression of overprogrammed code).     
+- Its HashTable implementations (unordered_map, unordered_set @ C++11) are too slow and could definitely be improved. For example, my implementations are TWO TIMES faster for char* keys (using same hashing algorithm: DJBX33A) than unordered_map/unordered_set.
+- Stacks are queues expose too much functionality when theory requires them to only include two functionalities: push/pop(/peek), enqueue/dequeue
+
+What I found missing in STL, but found useful enough to be included in my implementation:
+- LinkedHashTable (and its LinkedHashMap, LinkedHashSet implementations): this is a hashtable where entries are iterated by insertion order (by adding doubly-linked-list functionality to hash table nodes). Actually, in languages such as PHP or Python that's the only HashTable known. Even in C++, I frequently missed this option, which in my implementation only adds less than 10% performance taxation.
+- Trees & Graphs. I always found incredible how n-ary trees lack an "official" implementation in all languages I know, even though they are routinely needed and can easily be abstracted.
+
+###WHAT IS DATA STRUCTURES API###
 
 This is my own implementation of data structures in C++, different from STL in being much lighter weight, tightly organized through polymorphism and with equal or greater performance. 
 ve spent almost a month digging through the maze of std::unordered_map code to see 
