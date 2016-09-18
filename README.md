@@ -4,18 +4,18 @@
 
 Building another STL instead of using the fast super-stable time-tested library that is already used by virtually all C++ programmers seems like a textbook example of "reinventing the wheel", which happens to be a most damning stigma in today's world of programming (especially in higher level languages such as Java, but increasingly so in C++ as well). 
 
-###REINVENTING THE WHEEL 101###
+###Reinventing the Wheel 101###
 
 Why is "reinventing the wheel" so bad? Because  apparently some people long before you had a godly intelligence to create something that is beyond redesign! You, as a "senior developer" should just use your mind as a bucket of others' ideas and concoct solutions based on those. The more you learn, the more your bucket enlarges so you will ultimatly reach a level of no "wheel reinvention" and finally achieved ultimate "seniorship". Sounds like a mindless religion? Sure is! The end result of this mindset is:
 
 - overly complicated code. Chances are nobody made a solution PRECISELY for your needs, so you end up using something that is needlessly complex, which taxes performance as well as making code hard to understand. In the world of Java or PHP (the other languages I'm competent at) you encounter a profusion of frameworks geared at making above-mentioned bucket enormous enough to fit "everything" a coder will ever possibly need. 
 - abominable code made by programmers who never got their chance to exercise their mind. Obviously, years or even decades of experience while working like a factory robot doesn't increase your intelligence and problem-solving skills. The things you write will always reflect the lack of fundamental logic: zero concern on performance, simplicity, elegance or even common sense. Typically here we find classes doing EVERYTHING, technologies used because developer could not write two lines of proper code, orgies of pre-processor macros (in C/C++) and an omnious messy look from top to bottom.
 - the standards. Factory work would not be complete without standards. A worker is supposed to obey standards as his second nature! Generally the standards have themselves become standardized, so companies have created tools that check if your code obeys the standards (be it test coverage, code quality, design patterns or whatever). The end result gives the impression of a quality improvement, but real life experience tells you they are to a large extent useless hindrance. Hiring a few competent developers is always a better long term solution (in terms of quality & performance) than imposing standards to sub-standard workers.
-- WARNING: this may hurt feelings! Because programming is a well-payed job, it has lately attracted an army of people too stupid to be programmers. Just like other animals, humans greatly differ in their intellectual qualities and some people are simply too stupid to do any better EVEN IF they are properly trained "the standards" or maybe to think for themselves.
+- WARNING: this may hurt feelings! Because programming is a well-payed job, it has lately attracted an army of people unsuitable for this job, incapable to do any better EVEN IF they are trained "the standards" or to think for themselves.
 
 Are all of above responsable for the steady decline in the quality of programming? You bet! What is the alternative then? The alternative is to "reinvent the wheel" whenever you can think you can do better, learn from your/others' mistakes and move your level ever higher while maintaining rock-solid allegiance to above-mentioned principles of performance, simplicity and elegance. Why only these three abstract ideas I qualify as standards? Because they define a working methodology that imposes no constraints except striving for clarity and perfection. This way programming becomes an ungoing quest to intellectual discovery and delight! 
 
-###WHAT'S WRONG WITH STL###
+###What's Wrong with STL?###
 There is nothing inherently wrong with STL. It's a very robust and heavily tested solution that proved itself to be a good companion to programmer needs, BUT there is nothing ultimate about it. It's just one IMPLEMENTATION of "data structure & algorithms" concepts, not perfect like everything else in life, with its own qualities and defects.
 
 What I liked about STL implementation is its iterators. STL iterators are without doubt more advanced/complete than anything done on that topic (at least in languages I know: Java and PHP). They have unbeatable flexibility, but they have the major defect of being non-extensible. It is fiendishly complicated to employ a STL iterator for a custom-defined (non-STL) data structure, which is why I unfortunately had to give up and implement my own (more primitive) versions of it. 
@@ -32,7 +32,7 @@ What I found missing in STL, but found useful enough to be included in my implem
 - LinkedHashTable (and its LinkedHashMap, LinkedHashSet implementations): this is a hashtable where entries are iterated by insertion order (by adding doubly-linked-list functionality to hash table nodes). Actually, in languages such as PHP or Python that's the only HashTable known. Even in C++, I frequently missed this option, which in my implementation only adds less than 10% performance taxation.
 - Trees & Graphs. I always found incredible how n-ary trees lack an "official" implementation in all languages I know, even though they are routinely needed and can easily be abstracted.
 
-###WHAT IS DATA STRUCTURES API###
+###What's Data Structures API###
 This is my own implementation of data structures and algorithms in C++, built on principles of performance, simplicity and elegance described above, different from STL in being much lighter weight, tightly organized through polymorphism and with equal or greater performance. Its principles are somewhat inspired by Java Collections API in concept-implementation separation: here we have pure virtual classes defining concept (abstract data structure) requires (eg: List) followed by implementations of that concept using real data structures (eg: LinkedList). The former will be classes with pure-virtual methods, while the latter will be classes that extend them and implement all methods defined in parent.
 
 Supported data structures:
@@ -52,8 +52,8 @@ Supported data structures:
 - Container: defines signatures for container adaptors into which all read/write operations are performed only on head or tail
 	- Stack: implements a LIFO container adaptor where data is pushed to head and popped from head (similar to std::stack, but using dynamic arrays)
 	- Queue: implements a FIFO container adaptor where data is pushed to bottom and popped from head (similar to std::queue, but using dynamic arrays)
-- Tree: TBD
-	- RedBlackTree: A binary tree balanced on red-black principles.
+- Tree: none (trying to set a common ground is unintuitive and would lead to over-programming)
+	- RedBlackTree: A binary search tree balanced on red-black principles.
 	- TreeNode: A n-ary tree (no STL equivalent)
 
 Operations complexity @ list:
