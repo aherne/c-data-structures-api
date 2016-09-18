@@ -21,44 +21,40 @@ There is nothing inherently wrong with STL. It's a very robust and heavily teste
 What I liked about STL implementation is its iterators. STL iterators are without doubt more advanced/complete than anything done on that topic (at least in languages I know: Java and PHP). They have unbeatable flexibility, but they have the major defect of being non-extensible. It is fiendishly complicated to employ a STL iterator for a custom-defined (non-STL) data structure, which is why I unfortunately had to give up and implement my own (more primitive) versions of it. 
 
 What I failed to like about STL and made me think I can do better:
+
 - It's unstructured. What I liked about Collections API in Java is the interface-implementation paradigm that suits data structures the best. In C++ as well, a list should be a concept (class with pure virtual methods), while a dynamic array / linked list / doubly linked list should be different implementations of same concept. Not only should programmer abstract the list implementation by using List* only (which is a no-cost operation), but he will be assured whatever functionality is defined by List will have an implementation for whatever list type he uses (eg: linked list). In STL, because data structures are not designed hierarchically, there is an absolute chaos in method names (who aren't very intuitive BTW) and functionality (which may or may not have been implemented) so one needs to constantly check documentation. This was DEFINITELY something that needed to be changed.
 - It's coupled. It's extremely difficult to glue its components (be it iterators or dependency classes/structs) with non-STL components. It's clear that the very good programmers who have worked for it, even though they went overboard with decoupling to largest extent imaginable (which is why STL structures' implementations are so complex), the end result has been something so complicated that it becomes uninviting to understand (leaving the impression of overprogrammed code).     
 - Its HashTable implementations (unordered_map, unordered_set @ C++11) are too slow and could definitely be improved. For example, my implementations are TWO TIMES faster for char* keys (using same hashing algorithm: DJBX33A) than unordered_map/unordered_set.
 - Stacks are queues expose too much functionality when theory requires them to only include two functionalities: push/pop(/peek), enqueue/dequeue
 
 What I found missing in STL, but found useful enough to be included in my implementation:
+
 - LinkedHashTable (and its LinkedHashMap, LinkedHashSet implementations): this is a hashtable where entries are iterated by insertion order (by adding doubly-linked-list functionality to hash table nodes). Actually, in languages such as PHP or Python that's the only HashTable known. Even in C++, I frequently missed this option, which in my implementation only adds less than 10% performance taxation.
 - Trees & Graphs. I always found incredible how n-ary trees lack an "official" implementation in all languages I know, even though they are routinely needed and can easily be abstracted.
 
 ###WHAT IS DATA STRUCTURES API###
-
-This is my own implementation of data structures in C++, different from STL in being much lighter weight, tightly organized through polymorphism and with equal or greater performance. 
-ve spent almost a month digging through the maze of std::unordered_map code to see 
-
-The principle is somewhat inspired by Java Collections API: pure virtual classes defining abstract operations that data structure allows (eg: List) followed by 
-
-
-
-This is my own implementation of data structures in C++, different from STL in being much lighter weight, tightly organized through polymorphism and with equal or greater performance. The principle, somewhat inspired by Java Collections API, is having each basic abstract data structure as an interface and each implementation of it as a separate class.
+This is my own implementation of data structures and algorithms in C++, built on principles of performance, simplicity and elegance described above, different from STL in being much lighter weight, tightly organized through polymorphism and with equal or greater performance. Its principles are somewhat inspired by Java Collections API in concept-implementation separation: here we have pure virtual classes defining concept (abstract data structure) requires (eg: List) followed by implementations of that concept using real data structures (eg: LinkedList). The former will be classes with pure-virtual methods, while the latter will be classes that extend them and implement all methods defined in parent.
 
 Supported data structures:
 
-- List: "interface" implementing signatures of operations common to all kinds of LIST data structures
-	- ArrayList: implements a list of dynamic array type (similar to std::vector)
-	- LinkedList: implements a list of singly linked type (similar to std::forward_list @ C++11, but keeping a pointer to tail, making insertions on bottom as fast as on top) 
-	- DoublyLinkedList: implements a list of doubly linked type (similar to std::list)
-- Map: "interface" implementing signatures of operations common to all kinds of MAP data structures
-	- HashMap: implements a map of hash table type (similar to std::unordered_map @ C++11, but significantly faster and lighter weight)
-	- LinkedHashMap: implements a map of hash table type ordered via a doubly linked list (no STL equivalent, elements are be iterated by insertion order)
-	- TreeMap: TBD
-- Set: "interface" implementing signatures of operations common to all kinds of SET data structures
-	- HashSet: implements a set of hash table type (similar to std::unordered_set @ C++11, only significantly faster and lighter weight)
-	- LinkedHashSet: implements a set of hash table type ordered via a doubly linked list (no STL equivalent, elements can be iterated by insertion order)
-	- TreeSet: TBD
-- Container: "interface" implementing container adaptors into which all read/write operations are performed only on head or tail
+- List: defines signatures for list abstract data structure 
+	- ArrayList: implements a list of dynamic array type (akin STL std::vector)
+	- LinkedList: implements a list of singly linked type (akin STL std::forward_list @ C++11, but keeping a pointer to tail, making insertions on bottom as fast as on top) 
+	- DoublyLinkedList: implements a list of doubly linked type (akin STL std::list)
+- Map: defines signatures for map abstract data structure
+	- HashMap: implements a map of hash table type (akin STL std::unordered_map @ C++11, but faster and lighter weight)
+	- LinkedHashMap: implements a map of hash table type with entries iterated by insertion order (no STL equivalent)
+	- TreeMap: implements a map of red black tree type (akin STL std::map)
+- Set: defines signatures for set abstract data structure
+	- HashSet: implements a set of hash table type (akin std::unordered_set @ C++11, but faster and lighter weight)
+	- LinkedHashSet: implements a set of hash table type with entries iterated by insertion order (no STL equivalent)
+	- TreeSet: implements a set of red black tree type (akin STL std::set)
+- Container: defines signatures for container adaptors into which all read/write operations are performed only on head or tail
 	- Stack: implements a LIFO container adaptor where data is pushed to head and popped from head (similar to std::stack, but using dynamic arrays)
 	- Queue: implements a FIFO container adaptor where data is pushed to bottom and popped from head (similar to std::queue, but using dynamic arrays)
-- Tree: to be done 
+- Tree: TBD
+	- RedBlackTree: A binary tree balanced on red-black principles.
+	- TreeNode: A n-ary tree (no STL equivalent)
 
 Operations complexity @ list:
 <table>
@@ -418,4 +414,3 @@ Operations complexity @ container:
 		</tr>
 	</tbody>
 </table>
-Benchmarks LinkedHashMap vs. std::unordered_map
