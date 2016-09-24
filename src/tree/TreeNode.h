@@ -9,7 +9,7 @@
 #define TREENODE_H_
 
 #include <vector>
-#include "../container/Queue.h"
+#include <stdexcept>
 
 template<typename T>
 class TreeNode {
@@ -19,11 +19,7 @@ public:
 		this->data = data;
 	}
 
-	~TreeNode() {
-		for(auto it=children.begin(); it!=children.end(); ++it) {
-			delete *it;
-		}
-	}
+	~TreeNode() {}
 
 	// tested
 	void setParent(TreeNode<T>* parent) {
@@ -75,6 +71,10 @@ public:
 		throw std::out_of_range("Child not found!");
 	}
 
+	void removeChildren() {
+		children.clear();
+	}
+
 	// tested
 	bool isDescendantOf(TreeNode<T>*& node) {
 		TreeNode<T>* root = this;
@@ -95,63 +95,6 @@ public:
 				return true;
 			}
 			root = root->getParent();
-		}
-		return false;
-	}
-
-	// tested
-	void detach() {
-		// remove me as child of parent
-		parent->removeChild(this);
-
-		// migrate my children to parent
-		for(auto it = children.begin(); it!=children.end(); ++it) {
-			parent->addChild(*it);
-		}
-
-		// empty parent & children
-		parent = nullptr;
-		children.clear();
-	}
-
-	// tested
-	void remove(const T& data, int (*comparator)(const T&, const T&)) {
-		std::vector<TreeNode<T>*> results = search(data, comparator);
-		if(results.size()==0) throw std::out_of_range("Value not found!");
-		for(auto it = results.begin(); it!=results.end(); ++it) {
-			TreeNode<T>* parent = (*it)->getParent();
-			if(parent==nullptr) { // root is deleted (tree must be cleared)
-				delete (*it);
-				return;
-			}
-			(*it)->detach();
-			delete (*it);
-		}
-	}
-
-	// tested
-	void removeBranch(const T& data, int (*comparator)(const T&, const T&)) {
-		std::vector<TreeNode<T>*> results = search(data, comparator);
-		if(results.size()==0) throw std::out_of_range("Value not found!");
-		for(auto it = results.begin(); it!=results.end(); ++it) {
-			TreeNode<T>* parent = (*it)->getParent();
-			if(parent==nullptr) { // root is deleted (tree must be cleared)
-				delete (*it);
-				return;
-			}
-			parent->removeChild(*it);
-			delete (*it);
-		}
-	}
-
-	// tested
-	std::vector<TreeNode<T>*> search(const T& data, int (*comparator)(const T&, const T&));
-
-	// tested
-	bool contains(const T& data, int (*comparator)(const T&, const T&)) const {
-		if(comparator(this->data, data)==0) return true;
-		for(auto it=children.begin(); it!=children.end(); ++it) {
-			if((*it)->contains(data, comparator)) return true;
 		}
 		return false;
 	}
@@ -187,7 +130,7 @@ public:
 		}
 		return output;
 	}
-	// Height of node – The height of a node is the number of edges on the longest downward path between that node and a leaf.
+	// The height of a node is the number of edges on the longest downward path between that node and a leaf.
 	// tested
 	std::size_t getHeight() {
 		std::size_t height = 0;
@@ -200,7 +143,7 @@ public:
 		return 1+height;
 	}
 
-	// Depth –The depth of a node is the number of edges from the node to the tree's root node.
+	// The depth of a node is the number of edges from the node to the tree's root node.
 	// tested
 	std::size_t getDepth() {
 		std::size_t depth = 0;
@@ -216,94 +159,5 @@ private:
 	T data;
 	std::vector<TreeNode<T>*> children;
 };
-
-
-template<typename T>
-class TreeNodeVisitor {
-public:
-	virtual ~TreeNodeVisitor(){};
-
-	virtual void visit(TreeNode<T>*& element) = 0;
-};
-
-template<typename T>
-class SearchVisitor : public TreeNodeVisitor<T> {
-public:
-	SearchVisitor(T data, int (*comparator)(const T&, const T&)) {
-		this->data = data;
-		this->comparator = comparator;
-	}
-
-	~SearchVisitor() {}
-
-	void visit(TreeNode<T>*& element) {
-		if(comparator(data, element->getData())==0) {
-			results.push_back(element);
-		}
-	}
-
-	const std::vector<TreeNode<T>*>& getResults() {
-		return results;
-	}
-private:
-	std::vector<TreeNode<T>*> results;
-	T data;
-	int (*comparator)(const T&, const T&);
-};
-
-template<typename T>
-inline void PreOrderTreeIterator(TreeNode<T>* node, TreeNodeVisitor<T>* visitor) {
-	visitor->visit(node);
-	std::vector<TreeNode<T>*> children = node->getChildren();
-	for(auto it = children.begin(); it!=children.end(); ++it) {
-		PreOrderTreeIterator(*it, visitor);
-	}
-}
-
-template<typename T>
-inline void PostOrderTreeIterator(TreeNode<T>* node, TreeNodeVisitor<T>* visitor) {
-	std::vector<TreeNode<T>*> children = node->getChildren();
-	for(auto it = children.begin(); it!=children.end(); ++it) {
-		PreOrderTreeIterator(*it, visitor);
-	}
-	visitor->visit(node);
-}
-
-template<typename T>
-inline void LevelOrderTreeIterator(TreeNode<T>* root, TreeNodeVisitor<T>* visitor) {
-	Queue<TreeNode<T>*> q;
-	q.push(root);
-	while(!q.isEmpty()) {
-		TreeNode<T>* node = q.pop();
-		visitor->visit(node);
-		std::vector<TreeNode<T>*> children = node->getChildren();
-		for(auto it = children.begin(); it!=children.end(); ++it) {
-			q.push(*it);
-		}
-	}
-}
-
-template<typename T>
-inline void LevelOrderTreeIterator(TreeNode<T>* root, std::size_t depth, TreeNodeVisitor<T>* visitor) {
-	Queue<TreeNode<T>*> q;
-	q.push(root);
-	while(!q.isEmpty()) {
-		TreeNode<T>* node = q.pop();
-		visitor->visit(node);
-		std::vector<TreeNode<T>*> children = node->getChildren();
-		for(auto it = children.begin(); it!=children.end(); ++it) {
-			if((*it)->getDepth() <= depth) {
-				q.push(*it);
-			}
-		}
-	}
-}
-
-template<typename T>
-inline std::vector<TreeNode<T>*> TreeNode<T>::search(const T& data, int (*comparator)(const T&, const T&)) {
-	SearchVisitor<T> visitor(data, comparator);
-	LevelOrderTreeIterator(this,&visitor);
-	return visitor.getResults();
-}
 
 #endif /* TREENODE_H_ */

@@ -38,7 +38,8 @@ void TreeUnitTest::execute() {
 }
 
 void TreeUnitTest::methodsTest() {
-	TreeNode<long>* root = new TreeNode<long>(1);
+	Tree<long>* tree = new Tree<long>(1);
+	TreeNode<long>* root = tree->getRoot();
 	TreeNode<long>* c1 = root->addChild(2);
 	TreeNode<long>* c2 = root->addChild(3);
 	TreeNode<long>* c3 = root->addChild(4);
@@ -49,8 +50,8 @@ void TreeUnitTest::methodsTest() {
 	c2->addChild(9);
 	TreeNode<long>* c3_1 = c3->addChild(10);
 	TreeNode<long>* c1_1_1_1 = c1_1_1->addChild(11);
-	std::cout << "getSize: " << (root->getSize()==11?"OK":"FAILED") << std::endl;
-	std::cout << "getHeight: " << (root->getHeight()==5?"OK":"FAILED") << std::endl;
+	std::cout << "getSize: " << (tree->getSize()==11?"OK":"FAILED") << std::endl;
+	std::cout << "getHeight: " << (tree->getHeight()==5?"OK":"FAILED") << std::endl;
 	std::cout << "getDepth: " << (c1_1_1_1->getDepth()==4?"OK":"FAILED") << std::endl;
 	std::cout << "isDescendantOf: " << (c1_1_1_1->isDescendantOf(root)==true?"OK":"FAILED") << std::endl;
 	std::cout << "isAncestorOf: " << (root->isAncestorOf(c1_1_1_1)==true?"OK":"FAILED") << std::endl;
@@ -85,22 +86,17 @@ void TreeUnitTest::methodsTest() {
 	children1 = c3->getChildren();
 	std::cout << "removeChild: " << (children1.size()==1?"OK":"FAILED") << std::endl;
 
-	c1_1_1->detach();
-	delete c1_1_1;
-	std::cout << "detach: " << (root->search(7, &comparator1).empty() && c1_1->getChildren()[1]->getData()==11?"OK":"FAILED") << std::endl;
-
-
-	std::cout << "contains: " << (root->contains(11, &comparator1)?"OK":"FAILED") << std::endl;
-	std::vector<TreeNode<long>*> search = root->search(10, &comparator1);
+	std::cout << "contains: " << (tree->contains(11, &comparator1)?"OK":"FAILED") << std::endl;
+	std::vector<TreeNode<long>*> search = tree->search(10, &comparator1);
 	std::cout << "search: " << (search.size()>0 && search[0]==c3_1?"OK":"FAILED") << std::endl;
 
-	root->remove(3, &comparator1);
-	std::cout << "remove: " << (root->search(3,&comparator1).empty() && root->getChildren()[2]->getData()==9?"OK":"FAILED") << std::endl;
+	tree->removeNode(c2);
+	std::cout << "removeNode: " << (tree->search(3,&comparator1).empty() && root->getChildren()[2]->getData()==9?"OK":"FAILED") << std::endl;
 
-	root->removeBranch(2, &comparator1);
-	std::cout << "removeBranch: " << (root->search(2,&comparator1).empty() && root->search(8,&comparator1).empty() && root->getChildren().size()==2?"OK":"FAILED") << std::endl;
+	tree->removeBranch(c1);
+	std::cout << "removeBranch: " << (tree->search(2,&comparator1).empty() && tree->search(8,&comparator1).empty() && root->getChildren().size()==2?"OK":"FAILED") << std::endl;
 
-	delete root;
+	delete tree;
 }
 
 void TreeUnitTest::iteratorsTest() {
@@ -134,6 +130,5 @@ void TreeUnitTest::iteratorsTest() {
 
 	PostOrderTreeIterator(root, &visitor);
 
-
-	delete root;
+	TreeDeallocator<long> deallocate(root);
 }

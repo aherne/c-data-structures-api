@@ -8,7 +8,7 @@
 #ifndef SRC_UNIT_TESTS_TREEUNITTEST_H_
 #define SRC_UNIT_TESTS_TREEUNITTEST_H_
 
-#include "../tree/TreeNode.h"
+#include "../tree/Tree.h"
 #include <iostream>
 
 class TreeUnitTest {

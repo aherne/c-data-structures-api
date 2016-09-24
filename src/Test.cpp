@@ -19,8 +19,8 @@ int main() {
 //	MapUnitTest mapUnitTest;
 //	mapUnitTest.execute();
 //
-	MapBenchmark mapBenchmark;
-	mapBenchmark.execute();
+//	MapBenchmark mapBenchmark;
+//	mapBenchmark.execute();
 //
 //	SetUnitTest setUnitTest;
 //	setUnitTest.execute();
@@ -37,8 +37,8 @@ int main() {
 //	ContainerUnitTest containerUnitTest;
 //	containerUnitTest.execute();
 //
-//	TreeUnitTest treeUnitTest;
-//	treeUnitTest.execute();
+	TreeUnitTest treeUnitTest;
+	treeUnitTest.execute();
 
 	return 1;
 }
