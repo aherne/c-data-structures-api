@@ -414,3 +414,31 @@ Operations complexity @ container:
 		</tr>
 	</tbody>
 </table>
+
+##Benchmarks##
+
+####Lists####
+
+Test case:
+
+1 inserting a million rows on bottom
+2 checking the memory allocated by above operation
+3 iterating list from top to bottom
+4 getting list element values based on position from top to bottom 
+5 removing list elements based on position from bottom to top (in those that have a dynamic array behind) and top to bottom (in those that have a [doubly-]linked list behind)
+
+Results:
+
+	memory	insertion	iteration	selection	deletion
+std::vector<long>	7816	4	0	0	1
+ArrayList<long>	7816	3	0	0	1
+std::forward_list<long>	31152	30	5	5	14
+LinkedList<long>	31152	30	0	0	14
+std::list<long>	31152	35	5	5	17
+DoublyLinkedList<long>	31152	31	0	5	17
+std::vector<char*>	7816	3	0	1	1
+ArrayList<char*>	7816	2	0	0	0
+std::forward_list<char*>	31152	31	6	6	15
+LinkedList<char*>	31152	30	0	0	15
+std::list<char*>	31152	32	5	5	16
+DoublyLinkedList<char*>	31152	32	0	7	17
