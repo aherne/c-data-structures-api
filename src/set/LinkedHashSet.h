@@ -44,6 +44,12 @@ public:
 		internalIteratorEnd = nullptr;
 	}
 
+	LinkedHashSet(const std::size_t& reservedSize){
+		hashTable = new LinkedHashTable<T>(reservedSize);
+		internalIteratorStart = nullptr;
+		internalIteratorEnd = nullptr;
+	}
+
 	~LinkedHashSet(){
 		if(internalIteratorStart!=nullptr) {
 			delete internalIteratorStart;

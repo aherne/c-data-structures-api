@@ -18,7 +18,8 @@ public:
 private:
 	void testUnorderedMapLong();
 	void testUnorderedMapString();
-	void testMap();
+	void testMapLong();
+	void testMapString();
 	void test(Map<long, long>* ht);
 	void test(Map<char*, char*>* ht);
 };

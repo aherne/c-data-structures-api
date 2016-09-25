@@ -53,6 +53,11 @@ class LinkedHashMap : public Map<_KEY,_VALUE> {
 public:
 	typedef LinkedHashMapIterator<_KEY,_VALUE> iterator;
 
+	LinkedHashMap(const std::size_t& reservedSize){
+		hashTable = new LinkedHashTable<MapEntry<_KEY,_VALUE>>(reservedSize);
+		internalIteratorStart = nullptr;
+		internalIteratorEnd = nullptr;
+	}
 
 	LinkedHashMap(){
 		hashTable = new LinkedHashTable<MapEntry<_KEY,_VALUE>>;

@@ -31,6 +31,13 @@ public:
 		head = nullptr;
 		tail = nullptr;
 	}
+	LinkedHashTable(const std::size_t& reservedSize){
+		count=0;
+		bucket_count=reservedSize;
+		buckets = new LinkedHashTableEntry<VALUE>*[bucket_count]();
+		head = nullptr;
+		tail = nullptr;
+	}
 
 	~LinkedHashTable(){
 		emptyBuckets();

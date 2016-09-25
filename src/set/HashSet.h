@@ -27,6 +27,11 @@ public:
 		internalIteratorStart = nullptr;
 		internalIteratorEnd = nullptr;
 	}
+	HashSet(const std::size_t& reservedSize){
+		hashTable = new HashTable<T>(reservedSize);
+		internalIteratorStart = nullptr;
+		internalIteratorEnd = nullptr;
+	}
 
 	~HashSet(){
 		if(internalIteratorStart!=nullptr) {

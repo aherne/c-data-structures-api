@@ -14,42 +14,45 @@
 #include <vector>
 
 void ListBenchmark::execute() {
-	std::cout << "=====std::vector<long>=====" << std::endl;
-	testVector();
-	std::cout << "=====ArrayList<long>=====" << std::endl;
-	testArrayList();
-	std::cout << "=====std::forward_list<long>=====" << std::endl;
-	testForwardList();
-	std::cout << "=====LinkedList<long>=====" << std::endl;
-	testLinkedList();
-	std::cout << "=====std::list<long>=====" << std::endl;
-	testList();
-	std::cout << "=====DoublyLinkedList<long>=====" << std::endl;
-	testDoublyLinkedList();
-	StringListGenerator slg(1000000);
-	std::cout << "=====ArrayList<char*>=====" << std::endl;
-	testArrayList(&slg);
-	std::cout << "=====std::vector<char*>=====" << std::endl;
-	testVector(&slg);
-	std::cout << "=====LinkedList<char*>=====" << std::endl;
-	testLinkedList(&slg);
-	std::cout << "=====std::forward_list<char*>=====" << std::endl;
-	testForwardList(&slg);
-	std::cout << "=====DoublyLinkedList<char*>=====" << std::endl;
-	testDoublyLinkedList(&slg);
-	std::cout << "=====std::list<char*>=====" << std::endl;
-	testList(&slg);
+//	std::cout << "=====std::vector<long>=====" << std::endl;
+//	testVector();
+//	std::cout << "=====ArrayList<long>=====" << std::endl;
+//	testArrayList();
+//	std::cout << "=====std::forward_list<long>=====" << std::endl;
+//	testForwardList();
+//	std::cout << "=====LinkedList<long>=====" << std::endl;
+//	testLinkedList();
+//	std::cout << "=====std::list<long>=====" << std::endl;
+//	testList();
+//	std::cout << "=====DoublyLinkedList<long>=====" << std::endl;
+//	testDoublyLinkedList();
+//	StringListGenerator slg(1000000);
+//	std::cout << "=====ArrayList<char*>=====" << std::endl;
+//	testArrayList(&slg);
+//	std::cout << "=====std::vector<char*>=====" << std::endl;
+//	testVector(&slg);
+//	std::cout << "=====LinkedList<char*>=====" << std::endl;
+//	testLinkedList(&slg);
+//	std::cout << "=====std::forward_list<char*>=====" << std::endl;
+//	testForwardList(&slg);
+//	std::cout << "=====DoublyLinkedList<char*>=====" << std::endl;
+//	testDoublyLinkedList(&slg);
+//	std::cout << "=====std::list<char*>=====" << std::endl;
+//	testList(&slg);
 }
 
 void ListBenchmark::testVector() {
-	std::size_t start, end;
+	std::size_t start, end, start_memory, end_memory;
 
+	start_memory = getMemory();
 	start = getTime();
 	std::vector<long> ht;
 	for(long i=0; i<1000000; ++i) {
 		ht.push_back(i);
 	}
 	end = getTime();
+	end_memory = getMemory();
+	std::cout << "\t" << "Memory:\t" <<  (end_memory-start_memory) << std::endl;
 	std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
 
 	start = getTime();
@@ -76,14 +79,17 @@ void ListBenchmark::testVector() {
 
 void ListBenchmark::testVector(StringListGenerator* slg) {
 	std::vector<char*> items = slg->getList();
-	std::size_t start, end;
+	std::size_t start, end, start_memory, end_memory;
 
+	start_memory = getMemory();
 	start = getTime();
 	std::vector<char*> ht;
 	for(auto it = items.begin(); it!=items.end(); ++it) {
 		ht.push_back(*it);
 	}
 	end = getTime();
+	end_memory = getMemory();
+	std::cout << "\t" << "Memory:\t" <<  (end_memory-start_memory) << std::endl;
 	std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
 
 	start = getTime();
@@ -109,14 +115,17 @@ void ListBenchmark::testVector(StringListGenerator* slg) {
 }
 
 void ListBenchmark::testForwardList() {
-	std::size_t start, end;
+	std::size_t start, end, start_memory, end_memory;
 
+	start_memory = getMemory();
 	start = getTime();
 	std::forward_list<long> ht;
 	for(long i=0; i<1000000; ++i) {
 		ht.push_front(i);
 	}
 	end = getTime();
+	end_memory = getMemory();
+	std::cout << "\t" << "Memory:\t" <<  (end_memory-start_memory) << std::endl;
 	std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
 
 	start = getTime();
@@ -136,14 +145,17 @@ void ListBenchmark::testForwardList() {
 
 void ListBenchmark::testForwardList(StringListGenerator* slg) {
 	std::vector<char*> items = slg->getList();
-	std::size_t start, end;
+	std::size_t start, end, start_memory, end_memory;
 
+	start_memory = getMemory();
 	start = getTime();
 	std::forward_list<char*> ht;
 	for(auto it = items.begin(); it!=items.end(); ++it) {
 		ht.push_front(*it);
 	}
 	end = getTime();
+	end_memory = getMemory();
+	std::cout << "\t" << "Memory:\t" <<  (end_memory-start_memory) << std::endl;
 	std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
 
 	start = getTime();
@@ -162,14 +174,17 @@ void ListBenchmark::testForwardList(StringListGenerator* slg) {
 }
 
 void ListBenchmark::testList() {
-	std::size_t start, end;
+	std::size_t start, end, start_memory, end_memory;
 
+	start_memory = getMemory();
 	start = getTime();
 	std::list<long> ht;
 	for(long i=0; i<1000000; ++i) {
 		ht.push_back(i);
 	}
 	end = getTime();
+	end_memory = getMemory();
+	std::cout << "\t" << "Memory:\t" <<  (end_memory-start_memory) << std::endl;
 	std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
 
 	start = getTime();
@@ -195,14 +210,17 @@ void ListBenchmark::testList() {
 }
 
 void ListBenchmark::testArrayList() {
-	std::size_t start, end;
+	std::size_t start, end, start_memory, end_memory;
 
+	start_memory = getMemory();
 	start = getTime();
 	ArrayList<long> ht;
 	for(long i=0; i<1000000; ++i) {
 		ht.addToBottom(i);
 	}
 	end = getTime();
+	end_memory = getMemory();
+	std::cout << "\t" << "Memory:\t" <<  (end_memory-start_memory) << std::endl;
 	std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
 
 	start = getTime();
@@ -236,14 +254,17 @@ void ListBenchmark::testArrayList() {
 }
 
 void ListBenchmark::testLinkedList() {
-	std::size_t start, end;
+	std::size_t start, end, start_memory, end_memory;
 
+	start_memory = getMemory();
 	start = getTime();
 	LinkedList<long> ht;
 	for(long i=0; i<1000000; ++i) {
 		ht.addToBottom(i);
 	}
 	end = getTime();
+	end_memory = getMemory();
+	std::cout << "\t" << "Memory:\t" <<  (end_memory-start_memory) << std::endl;
 	std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
 
 	start = getTime();
@@ -270,14 +291,17 @@ void ListBenchmark::testLinkedList() {
 }
 
 void ListBenchmark::testDoublyLinkedList() {
-	std::size_t start, end;
+	std::size_t start, end, start_memory, end_memory;
 
+	start_memory = getMemory();
 	start = getTime();
 	DoublyLinkedList<long> ht;
 	for(long i=0; i<1000000; ++i) {
 		ht.addToBottom(i);
 	}
 	end = getTime();
+	end_memory = getMemory();
+	std::cout << "\t" << "Memory:\t" <<  (end_memory-start_memory) << std::endl;
 	std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
 
 	start = getTime();
@@ -311,14 +335,17 @@ void ListBenchmark::testDoublyLinkedList() {
 
 void ListBenchmark::testArrayList(StringListGenerator* slg) {
 	std::vector<char*> items = slg->getList();
-	std::size_t start, end;
+	std::size_t start, end, start_memory, end_memory;
 
+	start_memory = getMemory();
 	start = getTime();
 	ArrayList<char*> ht;
 	for(auto it = items.begin(); it!=items.end(); ++it) {
 		ht.addToBottom(*it);
 	}
 	end = getTime();
+	end_memory = getMemory();
+	std::cout << "\t" << "Memory:\t" <<  (end_memory-start_memory) << std::endl;
 	std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
 
 	start = getTime();
@@ -353,14 +380,17 @@ void ListBenchmark::testArrayList(StringListGenerator* slg) {
 
 void ListBenchmark::testLinkedList(StringListGenerator* slg) {
 	std::vector<char*> items = slg->getList();
-	std::size_t start, end;
+	std::size_t start, end, start_memory, end_memory;
 
+	start_memory = getMemory();
 	start = getTime();
 	LinkedList<char*> ht;
 	for(auto it = items.begin(); it!=items.end(); ++it) {
 		ht.addToTop(*it);
 	}
 	end = getTime();
+	end_memory = getMemory();
+	std::cout << "\t" << "Memory:\t" <<  (end_memory-start_memory) << std::endl;
 	std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
 
 	start = getTime();
@@ -388,14 +418,17 @@ void ListBenchmark::testLinkedList(StringListGenerator* slg) {
 
 void ListBenchmark::testDoublyLinkedList(StringListGenerator* slg) {
 	std::vector<char*> items = slg->getList();
-	std::size_t start, end;
+	std::size_t start, end, start_memory, end_memory;
 
+	start_memory = getMemory();
 	start = getTime();
 	DoublyLinkedList<char*> ht;
 	for(auto it = items.begin(); it!=items.end(); ++it) {
 		ht.addToBottom(*it);
 	}
 	end = getTime();
+	end_memory = getMemory();
+	std::cout << "\t" << "Memory:\t" <<  (end_memory-start_memory) << std::endl;
 	std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
 
 	start = getTime();
@@ -429,14 +462,17 @@ void ListBenchmark::testDoublyLinkedList(StringListGenerator* slg) {
 
 void ListBenchmark::testList(StringListGenerator* slg) {
 	std::vector<char*> items = slg->getList();
-	std::size_t start, end;
+	std::size_t start, end, start_memory, end_memory;
 
+	start_memory = getMemory();
 	start = getTime();
 	std::list<char*> ht;
 	for(auto it = items.begin(); it!=items.end(); ++it) {
 		ht.push_front(*it);
 	}
 	end = getTime();
+	end_memory = getMemory();
+	std::cout << "\t" << "Memory:\t" <<  (end_memory-start_memory) << std::endl;
 	std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
 
 	start = getTime();

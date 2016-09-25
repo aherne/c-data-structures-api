@@ -27,6 +27,12 @@ public:
 		internalIteratorEnd = nullptr;
 	}
 
+	HashMap(const std::size_t& reservedSize){
+		hashTable = new HashTable<MapEntry<_KEY,_VALUE>>(reservedSize);
+		internalIteratorStart = nullptr;
+		internalIteratorEnd = nullptr;
+	}
+
 	~HashMap(){
 		if(internalIteratorStart!=nullptr) {
 			delete internalIteratorStart;

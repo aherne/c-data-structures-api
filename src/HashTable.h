@@ -24,6 +24,12 @@ public:
 		buckets = new HashTableEntry<VALUE>*[bucket_count]();
 	}
 
+	HashTable(const std::size_t& reservedSize){
+		count=0;
+		bucket_count=reservedSize;
+		buckets = new HashTableEntry<VALUE>*[bucket_count]();
+	}
+
 	~HashTable(){
 		emptyBuckets();
 	}

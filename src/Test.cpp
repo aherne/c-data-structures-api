@@ -25,8 +25,8 @@ int main() {
 //	SetUnitTest setUnitTest;
 //	setUnitTest.execute();
 //
-//	SetBenchmark setBenchmark;
-//	setBenchmark.execute();
+	SetBenchmark setBenchmark;
+	setBenchmark.execute();
 //
 //	ListUnitTest listUnitTest;
 //	listUnitTest.execute();
@@ -37,8 +37,8 @@ int main() {
 //	ContainerUnitTest containerUnitTest;
 //	containerUnitTest.execute();
 //
-	TreeUnitTest treeUnitTest;
-	treeUnitTest.execute();
+//	TreeUnitTest treeUnitTest;
+//	treeUnitTest.execute();
 
 	return 1;
 }

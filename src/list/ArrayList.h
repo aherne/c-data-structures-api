@@ -20,6 +20,12 @@ public:
 		count = 0;
 	}
 
+	ArrayList(const std::size_t& reservedSize) {
+		maximum_size = reservedSize;
+		contents = (T*) malloc(maximum_size*sizeof(T));
+		count = 0;
+	}
+
 	~ArrayList() {
 		free(contents);
 	}

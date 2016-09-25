@@ -12,11 +12,10 @@
 #include <unordered_map>
 #include <map>
 
-template <class _Tp>
-struct my_equal_to
+struct my_comparator
 {
-	bool operator()(const _Tp& __x, const _Tp& __y) const
-	{ return strcmp( __x, __y ) == 0; }
+	bool operator()(char* const& left, char* const& right) const
+	{ return strcmp( left, right )<0?true:false; }
 };
 
 struct my_hash_function{
@@ -36,7 +35,10 @@ struct my_hash_function{
 
 void MapBenchmark::execute() {
 //	std::cout << "std::map<long,long>" << std::endl;
-//	testMap();
+//	testMapLong();
+//
+//	std::cout << "std::map<char*,char*>" << std::endl;
+//	testMapString();
 //
 //	std::cout << "std::unordered_map<long,long>" << std::endl;
 //	testUnorderedMapLong();
@@ -52,9 +54,9 @@ void MapBenchmark::execute() {
 //	std::cout << "LinkedHashMap<long,long>" << std::endl;
 //	test(&lhml);
 
-	TreeMap<long, long> tml;
-	std::cout << "TreeMap<long,long>" << std::endl;
-	test(&tml);
+//	TreeMap<long, long> tml;
+//	std::cout << "TreeMap<long,long>" << std::endl;
+//	test(&tml);
 //
 //	HashMap<char*, char*> hms;
 //	std::cout << "HashMap<char*,char*>" << std::endl;
@@ -70,14 +72,17 @@ void MapBenchmark::execute() {
 }
 
 void MapBenchmark::testUnorderedMapLong() {
-	std::size_t start, end;
+	std::size_t start, end, start_memory, end_memory;
 
+	start_memory = getMemory();
 	start = getTime();
 	std::unordered_map<long,long> ht;
 	for(long i=0; i<1000000; ++i) {
 		ht[i]=i;
 	}
 	end = getTime();
+	end_memory = getMemory();
+	std::cout << "\t" << "Memory:\t" <<  (end_memory-start_memory) << std::endl;
 	std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
 
 	start = getTime();
@@ -104,8 +109,7 @@ void MapBenchmark::testUnorderedMapLong() {
 }
 
 void MapBenchmark::testUnorderedMapString() {
-
-	int start, end;
+	std::size_t start, end, start_memory, end_memory;
 
 	std::unordered_map<char*, char*, my_hash_function> ht;
 	// create strings
@@ -117,11 +121,14 @@ void MapBenchmark::testUnorderedMapString() {
 	}
 
 	// foreach strings, add to map
+	start_memory = getMemory();
 	start = getTime();
 	for(char* item: list) {
 		ht[item]= item;
 	}
 	end = getTime();
+	end_memory = getMemory();
+	std::cout << "\t" << "Memory:\t" <<  (end_memory-start_memory) << std::endl;
 	std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
 
 	start = getTime();
@@ -150,15 +157,18 @@ void MapBenchmark::testUnorderedMapString() {
 	}
 }
 
-void MapBenchmark::testMap() {
-	std::size_t start, end;
+void MapBenchmark::testMapLong() {
+	std::size_t start, end, start_memory, end_memory;
 
+	start_memory = getMemory();
 	start = getTime();
 	std::map<long,long> ht;
 	for(long i=0; i<1000000; ++i) {
 		ht[i]=i;
 	}
 	end = getTime();
+	end_memory = getMemory();
+	std::cout << "\t" << "Memory:\t" <<  (end_memory-start_memory) << std::endl;
 	std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
 
 	start = getTime();
@@ -184,13 +194,66 @@ void MapBenchmark::testMap() {
 	std::cout << "\t" << "Deletion:\t" <<  (end-start) << std::endl;
 }
 
+void MapBenchmark::testMapString() {
+	std::size_t start, end, start_memory, end_memory;
+
+	std::map<char*, char*, my_comparator> ht;
+	// create strings
+	std::vector<char*> list;
+	for(long i=0; i<1000000; ++i) {
+		char* temp = (char*) malloc(20*sizeof(char));
+		sprintf(temp, "%ld", i);
+		list.push_back(temp);
+	}
+
+	// foreach strings, add to map
+	start_memory = getMemory();
+	start = getTime();
+	for(char* item: list) {
+		ht[item]= item;
+	}
+	end = getTime();
+	end_memory = getMemory();
+	std::cout << "\t" << "Memory:\t" <<  (end_memory-start_memory) << std::endl;
+	std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
+
+	start = getTime();
+	for(auto it = ht.begin(); it!=ht.end(); ++it) {
+		(*it).first;
+	}
+	end = getTime();
+	std::cout << "\t" << "Iteration:\t" <<  (end-start) << std::endl;
+
+	start = getTime();
+	for(char* item: list) {
+		ht[item];
+	}
+	end = getTime();
+	std::cout << "\t" << "Selection:\t" <<  (end-start) << std::endl;
+
+	start = getTime();
+	for(char* item: list) {
+		ht.erase(item);
+	}
+	end = getTime();
+	std::cout << "\t" << "Deletion:\t" <<  (end-start) << std::endl;
+	// delete strings
+	for(char* item: list) {
+		free(item);
+	}
+}
+
 void MapBenchmark::test(Map<long, long>* ht) {
-	std::size_t start, end;
+	std::size_t start, end, start_memory, end_memory;
+
+	start_memory = getMemory();
 	start = getTime();
 	for(long i=0; i<1000000; ++i) {
 		ht->set(i,i);
 	}
 	end = getTime();
+	end_memory = getMemory();
+	std::cout << "\t" << "Memory:\t" <<  (end_memory-start_memory) << std::endl;
 	std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
 
 	start = getTime();
@@ -217,7 +280,7 @@ void MapBenchmark::test(Map<long, long>* ht) {
 }
 
 void MapBenchmark::test(Map<char*, char*>* ht) {
-	int start, end;
+	std::size_t start, end, start_memory, end_memory;
 
 	// create strings
 	std::vector<char*> list;
@@ -228,11 +291,14 @@ void MapBenchmark::test(Map<char*, char*>* ht) {
 	}
 
 	// foreach strings, add to map
+	start_memory = getMemory();
 	start = getTime();
 	for(char* item: list) {
 		ht->set(item, item);
 	}
 	end = getTime();
+	end_memory = getMemory();
+	std::cout << "\t" << "Memory:\t" <<  (end_memory-start_memory) << std::endl;
 	std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
 
 	start = getTime();

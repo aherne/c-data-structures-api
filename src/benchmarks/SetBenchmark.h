@@ -18,7 +18,8 @@ public:
 private:
 	void testUnorderedSetLong();
 	void testUnorderedSetString();
-	void testSet();
+	void testSetLong();
+	void testSetString();
 	void test(Set<long>* ht);
 	void test(Set<char*>* ht);
 };
