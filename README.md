@@ -421,7 +421,7 @@ Operations complexity @ container:
 
 Test case:
 
-1. checking the memory allocated by insertion of a million rows into the list
+1. checking the memory allocated by a list containing a million entries
 2. checking duration of inserting a million rows on list's bottom
 3. checking duration of iterating list from top to bottom
 4. checking getting list element values by offset from top to bottom 
