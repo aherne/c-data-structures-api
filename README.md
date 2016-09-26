@@ -431,7 +431,7 @@ Results:
 
 <table>
 	<thead>
-		<tr><td>Memory (KB)</td><td>Insertion (MS)</td><td>Iteration (MS)</td><td>Selection (MS)</td><td>Deletion (MS)</td></tr>
+		<tr><td>&nbsp;</td><td>MEMORY (KB)</td><td>INSERTION (MS)</td><td>ITERATION (MS)</td><td>SELECTION (MS)</td><td>DELETION (MS)</td></tr>
 	</thead>
 	<tbody>
 		<tr><td>std::vector<long></td><td>7816</td><td>4</td><td>0</td><td>0</td><td>1</td></tr>
