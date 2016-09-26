@@ -421,11 +421,11 @@ Operations complexity @ container:
 
 Test case:
 
-1 inserting a million rows on bottom
-2 checking the memory allocated by above operation
-3 iterating list from top to bottom
-4 getting list element values based on position from top to bottom 
-5 removing list elements based on position from bottom to top (in those that have a dynamic array behind) and top to bottom (in those that have a [doubly-]linked list behind)
+1. checking the memory allocated by insertion of a million rows into the list
+2. checking duration of inserting a million rows on list's bottom
+3. checking duration of iterating list from top to bottom
+4. checking getting list element values by offset from top to bottom 
+5. removing list elements based on offset from bottom to top (for dynamic arrays) and top to bottom (for [doubly-]linked lists)
 
 Results:
 
