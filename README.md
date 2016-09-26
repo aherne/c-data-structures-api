@@ -431,20 +431,20 @@ Results:
 
 <table>
 	<thead>
-		<tr>MEMORY (KB)</td><td>INSERTION (MS)</td><td>ITERATION (MS)</td><td>SELECTION (MS)</td><td>DELETION (MS)</tr>
+		<tr><td>MEMORY (KB)</td><td>INSERTION (MS)</td><td>ITERATION (MS)</td><td>SELECTION (MS)</td><td>DELETION (MS)</tr>
 	</thead>
 	<tbody>
-		<tr>std::vector<long></td><td>7816</td><td>4</td><td>0</td><td>0</td><td>1</tr>
-		<tr>ArrayList<long></td><td>7816</td><td>3</td><td>0</td><td>0</td><td>1</tr>
-		<tr>std::forward_list<long></td><td>31152</td><td>30</td><td>5</td><td>5</td><td>14</tr>
-		<tr>LinkedList<long></td><td>31152</td><td>30</td><td>0</td><td>0</td><td>14</tr>
-		<tr>std::list<long></td><td>31152</td><td>35</td><td>5</td><td>5</td><td>17</tr>
-		<tr>DoublyLinkedList<long></td><td>31152</td><td>31</td><td>0</td><td>5</td><td>17</tr>
-		<tr>std::vector<char*></td><td>7816</td><td>3</td><td>0</td><td>1</td><td>1</tr>
-		<tr>ArrayList<char*></td><td>7816</td><td>2</td><td>0</td><td>0</td><td>0</tr>
-		<tr>std::forward_list<char*></td><td>31152</td><td>31</td><td>6</td><td>6</td><td>15</tr>
-		<tr>LinkedList<char*></td><td>31152</td><td>30</td><td>0</td><td>0</td><td>15</tr>
-		<tr>std::list<char*></td><td>31152</td><td>32</td><td>5</td><td>5</td><td>16</tr>
-		<tr>DoublyLinkedList<char*></td><td>31152</td><td>32</td><td>0</td><td>7</td><td>17</tr>
+		<tr><td>std::vector<long></td><td>7816</td><td>4</td><td>0</td><td>0</td><td>1</tr>
+		<tr><td>ArrayList<long></td><td>7816</td><td>3</td><td>0</td><td>0</td><td>1</tr>
+		<tr><td>std::forward_list<long></td><td>31152</td><td>30</td><td>5</td><td>5</td><td>14</tr>
+		<tr><td>LinkedList<long></td><td>31152</td><td>30</td><td>0</td><td>0</td><td>14</tr>
+		<tr><td>std::list<long></td><td>31152</td><td>35</td><td>5</td><td>5</td><td>17</tr>
+		<tr><td>DoublyLinkedList<long></td><td>31152</td><td>31</td><td>0</td><td>5</td><td>17</tr>
+		<tr><td>std::vector<char*></td><td>7816</td><td>3</td><td>0</td><td>1</td><td>1</tr>
+		<tr><td>ArrayList<char*></td><td>7816</td><td>2</td><td>0</td><td>0</td><td>0</tr>
+		<tr><td>std::forward_list<char*></td><td>31152</td><td>31</td><td>6</td><td>6</td><td>15</tr>
+		<tr><td>LinkedList<char*></td><td>31152</td><td>30</td><td>0</td><td>0</td><td>15</tr>
+		<tr><td>std::list<char*></td><td>31152</td><td>32</td><td>5</td><td>5</td><td>16</tr>
+		<tr><td>DoublyLinkedList<char*></td><td>31152</td><td>32</td><td>0</td><td>7</td><td>17</tr>
 	</tbody>
 <table>
