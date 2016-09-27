@@ -431,7 +431,7 @@ Test case:
 
 1. checking memory allocated by a list containing a million entries
 2. checking duration of a million rows insertion on list's bottom
-3. checking duration of iterating list from top to bottom
+3. checking duration of iterating all list from top to bottom
 4. checking duration of getting all list element values by offset from top to bottom 
 5. removing all list elements based on offset from bottom to top (for dynamic arrays) and top to bottom (for [doubly-]linked lists)
 
@@ -458,6 +458,7 @@ Graphic: {TODO}
 Several notes:
 
 1. tests for dynamic array implementations use reserved size of one million plus one. The reason is that each implementation has its own growth point (A grows at point V, while B grows at point Z>V: if we stop insertion between V and Z, A will appear slower because it has done one more reallocation)
+2. despite different programming behind, memory usage between STL and CDS is always the same and only varies by data structure.
 
 ###Maps###
 
@@ -465,8 +466,8 @@ Test case:
 
 1. checking memory allocated by a map containing a million entries
 2. checking duration of a million rows insertion
-3. checking duration of iterating map
-4. checking duration of getting map entry values by key
+3. checking duration of iterating all map
+4. checking duration of getting all map entry values by key
 5. removing all map entries based on key
 
 Results:
@@ -487,4 +488,35 @@ Results:
 
 Several notes:
 
-1. tests for hash table implementations use reserved size of one million plus one. The reason is that each implementation has its own growth point (A grows at point V, while B grows at point Z>V: if we stop insertion between V and Z, A will appear slower because it has done one more bucket reallocation)
+1. tests for hash table implementations use reserved size of one million plus one. The reason is that each implementation has its own growth point (A grows at point V, while B grows at point Z>V: if we stop insertion between V and Z, A will appear slower because it has done one more reallocation)
+2. despite different programming behind, memory usage between STL and CDS is always the same and only varies by data structure EXCEPT for std::unordered_map<long,long> who for reason I do not understand allocates LESS.
+
+###Sets###
+
+Test case:
+
+1. checking memory allocated by a set containing a million entries
+2. checking duration of a million rows insertion
+3. checking duration of iterating all set
+4. removing all set entries based on value
+
+Results:
+
+<table>
+<tr><td>Implementation</td><td>Data Structure</td><td>Value Type</td><td>Memory (kb)</td><td>Insertion (ms)</td><td>Iteration (ms)</td><td>Deletion (ms)</td></tr>
+<tr><td>std::set</td><td>red black tree</td><td>long</td><td>46860</td><td>237</td><td>22</td><td>116</td></tr>
+<tr><td>TreeSet</td><td>red black tree</td><td>long</td><td>46860</td><td>231</td><td>20</td><td>112</td></tr>
+<tr><td>std::set</td><td>red black tree</td><td>char*</td><td>46860</td><td>260</td><td>15</td><td>211</td></tr>
+<tr><td>TreeSet</td><td>red black tree</td><td>char*</td><td>46860</td><td>293</td><td>15</td><td>139</td></tr>
+<tr><td>std::unordered_set</td><td>hash table</td><td>long</td><td>39408</td><td>57</td><td>4</td><td>26</td></tr>
+<tr><td>HashSet</td><td>hash table</td><td>long</td><td>31152</td><td>40</td><td>7</td><td>24</td></tr>
+<tr><td>std::unordered_set</td><td>hash table</td><td>char*</td><td>31284</td><td>75</td><td>15</td><td>62</td></tr>
+<tr><td>HashSet</td><td>hash table</td><td>char*</td><td>31284</td><td>55</td><td>12</td><td>42</td></tr>
+<tr><td>LinkedHashSet</td><td>linked hash table</td><td>long</td><td>46860</td><td>47</td><td>7</td><td>27</td></tr>
+<tr><td>LinkedHashSet</td><td>linked hash table</td><td>char*</td><td>46860</td><td>64</td><td>7</td><td>42</td></tr>
+</table>
+
+Several notes:
+
+1. tests for hash table implementations use reserved size of one million plus one. The reason is that each implementation has its own growth point (A grows at point V, while B grows at point Z>V: if we stop insertion between V and Z, A will appear slower because it has done one more reallocation)
+2. despite different programming behind, memory usage between STL and CDS is always the same and only varies by data structure EXCEPT for std::unordered_set<long,long> who for reason I do not understand this time allocates MORE.
