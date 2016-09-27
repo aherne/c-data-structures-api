@@ -417,34 +417,25 @@ Operations complexity @ container:
 
 ##Benchmarks##
 
+Several notes:
+1. functions used for benchmarking can be reviewed in src/Benchmark.h and only run on UNIX
+2. benchmarks themselves can be found in src/Benchmarks folder and can be ran by uncommenting respective lines in src/Test.cpp (Eg: ListBenchmark)
+3. for maximum reliability, each benchmark for each data structure implementation has been ran individually in three rows, commenting all others.
+4. results are done by compiling results of three rows of tests on each structure implementation
+5. library was compiled using O2 optimization
+
 ####Lists####
 
 Test case:
 
-1. checking the memory allocated by a list containing a million entries
-2. checking duration of inserting a million rows on list's bottom
+1. checking memory allocated by a list containing a million entries
+2. checking duration of a million rows insertion on list's bottom
 3. checking duration of iterating list from top to bottom
-4. checking getting list element values by offset from top to bottom 
+4. checking duration of getting list element values by offset from top to bottom 
 5. removing list elements based on offset from bottom to top (for dynamic arrays) and top to bottom (for [doubly-]linked lists)
 
-Results:
+Results:....
 
-<table>
-	<thead>
-		<tr><td>&nbsp;</td><td>MEMORY (KB)</td><td>INSERTION (MS)</td><td>ITERATION (MS)</td><td>SELECTION (MS)</td><td>DELETION (MS)</td></tr>
-	</thead>
-	<tbody>
-		<tr><td>std::vector<long></td><td>7816</td><td>4</td><td>0</td><td>0</td><td>1</td></tr>
-		<tr><td>ArrayList<long></td><td>7816</td><td>3</td><td>0</td><td>0</td><td>1</td></tr>
-		<tr><td>std::forward_list<long></td><td>31152</td><td>30</td><td>5</td><td>5</td><td>14</td></tr>
-		<tr><td>LinkedList<long></td><td>31152</td><td>30</td><td>0</td><td>0</td><td>14</td></tr>
-		<tr><td>std::list<long></td><td>31152</td><td>35</td><td>5</td><td>5</td><td>17</td></tr>
-		<tr><td>DoublyLinkedList<long></td><td>31152</td><td>31</td><td>0</td><td>5</td><td>17</td></tr>
-		<tr><td>std::vector<char*></td><td>7816</td><td>3</td><td>0</td><td>1</td><td>1</td></tr>
-		<tr><td>ArrayList<char*></td><td>7816</td><td>2</td><td>0</td><td>0</td><td>0</td></tr>
-		<tr><td>std::forward_list<char*></td><td>31152</td><td>31</td><td>6</td><td>6</td><td>15</td></tr>
-		<tr><td>LinkedList<char*></td><td>31152</td><td>30</td><td>0</td><td>0</td><td>15</td></tr>
-		<tr><td>std::list<char*></td><td>31152</td><td>32</td><td>5</td><td>5</td><td>16</td></tr>
-		<tr><td>DoublyLinkedList<char*></td><td>31152</td><td>32</td><td>0</td><td>7</td><td>17</td></tr>
-	</tbody>
-<table>
+Several notes:
+
+1. tests for dynamic array implementations use reserved size of one million plus one. The reason is that each implementation has its oen grow point (A grows at V, while B grows at Z>V: if we stop insertion between V and Z, A will appear slower because it has done one more reallocation)
