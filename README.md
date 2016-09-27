@@ -435,7 +435,23 @@ Test case:
 4. checking duration of getting list element values by offset from top to bottom 
 5. removing list elements based on offset from bottom to top (for dynamic arrays) and top to bottom (for [doubly-]linked lists)
 
-Results:....
+Results:
+
+<table>
+<tr><td>Implementation</td><td>Data Structure</td><td>Value Type</td><td>memory</td><td>insertion</td><td>iteration</td><td>selection</td><td>deletion</td><td>speed</td></tr>
+<tr><td>std::vector</td><td>dynamic array</td><td>long</td><td>7816</td><td>4</td><td>0</td><td>0</td><td>1</td><td></td></tr>
+<tr><td>ArrayList</td><td>dynamic array</td><td>long</td><td>7816</td><td>3</td><td>0</td><td>0</td><td>1</td><td>0.33</td></tr>
+<tr><td>std::vector</td><td>dynamic array</td><td>char*</td><td>7816</td><td>3</td><td>0</td><td>1</td><td>1</td><td></td></tr>
+<tr><td>ArrayList</td><td>dynamic array</td><td>char*</td><td>7816</td><td>2</td><td>0</td><td>0</td><td>0</td><td>0.50</td></tr>
+<tr><td>std::forward_list</td><td>linked list</td><td>long</td><td>31152</td><td>30</td><td>5</td><td>5</td><td>14</td><td></td></tr>
+<tr><td>LinkedList</td><td>linked list</td><td>long</td><td>31152</td><td>30</td><td>0</td><td>0</td><td>14</td><td>0.00</td></tr>
+<tr><td>std::forward_list</td><td>linked list</td><td>char*</td><td>31152</td><td>31</td><td>6</td><td>6</td><td>15</td><td></td></tr>
+<tr><td>LinkedList</td><td>linked list</td><td>char*</td><td>31152</td><td>30</td><td>0</td><td>0</td><td>15</td><td>0.03</td></tr>
+<tr><td>std::list</td><td>doubly linked list</td><td>long</td><td>31152</td><td>35</td><td>5</td><td>5</td><td>17</td><td></td></tr>
+<tr><td>DoublyLinkedList</td><td>doubly linked list</td><td>long</td><td>31152</td><td>31</td><td>0</td><td>5</td><td>17</td><td>0.13</td></tr>
+<tr><td>std::list</td><td>doubly linked list</td><td>char*</td><td>31152</td><td>32</td><td>5</td><td>5</td><td>16</td><td></td></tr>
+<tr><td>DoublyLinkedList</td><td>doubly linked list</td><td>char*</td><td>31152</td><td>32</td><td>0</td><td>7</td><td>17</td><td>0.00</td></tr>
+</table>
 
 Several notes:
 
