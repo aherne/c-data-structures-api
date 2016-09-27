@@ -418,6 +418,7 @@ Operations complexity @ container:
 ##Benchmarks##
 
 Several notes:
+
 1. functions used for benchmarking can be reviewed in src/Benchmark.h and only run on UNIX
 2. benchmarks themselves can be found in src/Benchmarks folder and can be ran by uncommenting respective lines in src/Test.cpp (Eg: ListBenchmark)
 3. for maximum reliability, each benchmark for each data structure implementation has been ran individually in three rows, commenting all others.
