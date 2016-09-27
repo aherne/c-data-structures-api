@@ -439,4 +439,4 @@ Results:....
 
 Several notes:
 
-1. tests for dynamic array implementations use reserved size of one million plus one. The reason is that each implementation has its oen grow point (A grows at V, while B grows at Z>V: if we stop insertion between V and Z, A will appear slower because it has done one more reallocation)
+1. tests for dynamic array implementations use reserved size of one million plus one. The reason is that each implementation has its own growth point (A grows at point V, while B grows at point Z>V: if we stop insertion between V and Z, A will appear slower because it has done one more reallocation)
