@@ -109,8 +109,8 @@ public:
 		ArrayList<RedBlackTreeNode<VALUE>*> results;
 		findNodes(root, value, custom_comparator, results);
 		if(results.size()==0) throw std::out_of_range("No match found!");
-		for(auto it = results.begin(); it!=results.end(); ++it) {
-			deleteNode(*it);
+		for(auto it = results.begin(); *it!=*(results.end()); ++(*it)) {
+			deleteNode((*(*it)));
 		}
 
 	}
@@ -182,7 +182,7 @@ private:
 		delete h;
 	}
 
-	void deleteNode(RedBlackTreeNode<VALUE>*& z) {
+	void deleteNode(RedBlackTreeNode<VALUE>* z) {
 		RedBlackTreeNode<VALUE>* x = nil;
 		RedBlackTreeNode<VALUE>* y = z;
 		RedBlackTreeNodeColor yOriginalColor = y->color;

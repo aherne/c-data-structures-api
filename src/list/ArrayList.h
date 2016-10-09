@@ -12,21 +12,35 @@
 #include "../Comparator.h"
 
 template<typename T>
+class ArrayListIterator;
+
+template<typename T>
 class ArrayList: public List<T> {
+	friend class ArrayListIterator<T>;
 public:
+	typedef ArrayListIterator<T> iterator;
+
 	ArrayList() {
 		maximum_size = 8;
 		contents = (T*) malloc(maximum_size*sizeof(T));
 		count = 0;
+		internalIteratorStart = nullptr;
+		internalIteratorEnd = nullptr;
 	}
 
 	ArrayList(const std::size_t& reservedSize) {
 		maximum_size = reservedSize;
 		contents = (T*) malloc(maximum_size*sizeof(T));
 		count = 0;
+		internalIteratorStart = nullptr;
+		internalIteratorEnd = nullptr;
 	}
 
 	~ArrayList() {
+		if(internalIteratorStart!=nullptr) {
+			delete internalIteratorStart;
+			delete internalIteratorEnd;
+		}
 		free(contents);
 	}
 
@@ -35,6 +49,12 @@ public:
 	}
 
 	void clear() {
+		if(internalIteratorStart!=nullptr) {
+			delete internalIteratorStart;
+			internalIteratorStart = nullptr;
+			delete internalIteratorEnd;
+			internalIteratorEnd = nullptr;
+		}
 		free(contents);
 
 		maximum_size = 8;
@@ -131,16 +151,27 @@ public:
 	}
 
 	void sort(bool (*comparator) (const T&, const T&)) {
-		std::sort(begin(), end(), comparator);
+		std::sort(&contents[0], &contents[count], comparator);
 	}
 
-	T* begin() {
-		if(count==0) return nullptr;
-		return &contents[0];
+	ListIterator<T>* begin() {
+		if(internalIteratorStart!=nullptr) {
+			delete internalIteratorStart;
+			internalIteratorStart = nullptr;
+			delete internalIteratorEnd;
+			internalIteratorEnd = nullptr;
+		}
+		internalIteratorStart = new iterator(contents);
+		return internalIteratorStart;
 	}
 
-	T* end() {
-		return &contents[count];
+	ListIterator<T>* end() {
+		if(internalIteratorEnd!=nullptr){
+			return internalIteratorEnd;
+		} else {
+			internalIteratorEnd = new iterator(count);
+			return internalIteratorEnd;
+		}
 	}
 private:
 	void resize() {
@@ -151,10 +182,38 @@ private:
 	std::size_t maximum_size;
 	std::size_t count;
 	T* contents;
+	ListIterator<T>* internalIteratorStart;
+	ListIterator<T>* internalIteratorEnd;
 
 	comparator<T> valueComparator;
 };
 
+template<typename T>
+class ArrayListIterator : public ListIterator<T> {
+	public:
+		ArrayListIterator(T* array){
+			content = array;
+			this->offset = 0;
+		}
 
+		ArrayListIterator(std::size_t total){
+			content = nullptr;
+			this->offset = total;
+		}
+
+		~ArrayListIterator() {}
+
+		const T& operator*(){
+			return content[this->offset];
+		}
+
+		void operator++() {
+			++this->offset;
+			return;
+		}
+
+	private:
+		T* content;
+};
 
 #endif /* LIST_ARRAYLIST_H_ */

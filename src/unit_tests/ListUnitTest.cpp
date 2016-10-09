@@ -133,8 +133,8 @@ void ListUnitTest::testArrayList() {
 	ht.sort(&compareAsc<long>);
 
 	std::cout << "sort:" << std::endl;
-	for(auto it = ht.begin(); it!=ht.end(); ++it) {
-		std::cout <<"\t" << *it << std::endl;
+	for(auto it = ht.begin(); *it!=*(ht.end()); ++(*it)) {
+		std::cout <<"\t" << (*(*it)) << std::endl;
 	}
 
 	ht.clear();
@@ -162,8 +162,8 @@ void ListUnitTest::testLinkedList() {
 	ht.sort(&compareAsc<long>);
 
 	std::cout << "sort:" << std::endl;
-	for(auto it = ht.begin(); it!=ht.end(); ++it) {
-		std::cout <<"\t" << *it << std::endl;
+	for(auto it = ht.begin(); *it!=*(ht.end()); ++(*it)) {
+		std::cout <<"\t" << (*(*it)) << std::endl;
 	}
 
 	ht.clear();
@@ -191,10 +191,8 @@ void ListUnitTest::testDoublyLinkedList() {
 	ht.sort(&compareAsc<long>);
 
 	std::cout << "sort:" << std::endl;
-	int i=0;
-	for(auto it = ht.begin(); it!=ht.end(); ++it) {
-		std::cout <<"\t" << *it << std::endl;
-		++i;
+	for(auto it = ht.begin(); *it!=*(ht.end()); ++(*it)) {
+		std::cout <<"\t" << (*(*it)) << std::endl;
 	}
 
 	ht.clear();

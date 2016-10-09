@@ -14,31 +14,41 @@
 #include <vector>
 
 void ListBenchmark::execute() {
-//	std::cout << "=====std::vector<long>=====" << std::endl;
-//	testVector();
-//	std::cout << "=====ArrayList<long>=====" << std::endl;
-//	testArrayList();
-//	std::cout << "=====std::forward_list<long>=====" << std::endl;
-//	testForwardList();
-//	std::cout << "=====LinkedList<long>=====" << std::endl;
-//	testLinkedList();
-//	std::cout << "=====std::list<long>=====" << std::endl;
-//	testList();
-//	std::cout << "=====DoublyLinkedList<long>=====" << std::endl;
-//	testDoublyLinkedList();
-//	StringListGenerator slg(1000000);
-//	std::cout << "=====ArrayList<char*>=====" << std::endl;
-//	testArrayList(&slg);
-//	std::cout << "=====std::vector<char*>=====" << std::endl;
-//	testVector(&slg);
-//	std::cout << "=====LinkedList<char*>=====" << std::endl;
-//	testLinkedList(&slg);
-//	std::cout << "=====std::forward_list<char*>=====" << std::endl;
-//	testForwardList(&slg);
-//	std::cout << "=====DoublyLinkedList<char*>=====" << std::endl;
-//	testDoublyLinkedList(&slg);
-//	std::cout << "=====std::list<char*>=====" << std::endl;
-//	testList(&slg);
+	std::cout << "=====std::vector<long>=====" << std::endl;
+	testVector();
+	std::cout << "=====std::forward_list<long>=====" << std::endl;
+	testForwardList();
+	std::cout << "=====std::list<long>=====" << std::endl;
+	testSTDList();
+
+	std::cout << "=====ArrayList<long>=====" << std::endl;
+	ArrayList<long> al(1000001);
+	testList(&al);
+	std::cout << "=====LinkedList<long>=====" << std::endl;
+	LinkedList<long> ll;
+	testList(&ll);
+	std::cout << "=====DoublyLinkedList<long>=====" << std::endl;
+	DoublyLinkedList<long> dll;
+	testList(&dll);
+
+	StringListGenerator slg(1000000);
+
+	std::cout << "=====std::vector<char*>=====" << std::endl;
+	testVector(&slg);
+	std::cout << "=====std::forward_list<char*>=====" << std::endl;
+	testForwardList(&slg);
+	std::cout << "=====std::list<char*>=====" << std::endl;
+	testSTDList(&slg);
+
+	std::cout << "=====ArrayList<char*>=====" << std::endl;
+	ArrayList<char*> als(1000001);
+	testList(&als, &slg);
+	std::cout << "=====LinkedList<char*>=====" << std::endl;
+	LinkedList<char*> lls;
+	testList(&lls, &slg);
+	std::cout << "=====DoublyLinkedList<char*>=====" << std::endl;
+	DoublyLinkedList<char*> dlls;
+	testList(&dlls, &slg);
 }
 
 void ListBenchmark::testVector() {
@@ -173,7 +183,7 @@ void ListBenchmark::testForwardList(StringListGenerator* slg) {
 	std::cout << "\t" << "Deletion:\t" <<  (end-start) << std::endl;
 }
 
-void ListBenchmark::testList() {
+void ListBenchmark::testSTDList() {
 	std::size_t start, end, start_memory, end_memory;
 
 	start_memory = getMemory();
@@ -209,258 +219,7 @@ void ListBenchmark::testList() {
 	std::cout << "\t" << "Deletion:\t" <<  (end-start) << std::endl;
 }
 
-void ListBenchmark::testArrayList() {
-	std::size_t start, end, start_memory, end_memory;
-
-	start_memory = getMemory();
-	start = getTime();
-	ArrayList<long> ht;
-	for(long i=0; i<1000000; ++i) {
-		ht.addToBottom(i);
-	}
-	end = getTime();
-	end_memory = getMemory();
-	std::cout << "\t" << "Memory:\t" <<  (end_memory-start_memory) << std::endl;
-	std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
-
-	start = getTime();
-	for(auto it = ht.begin(); it!=ht.end(); ++it) {
-		(*it);
-	}
-	end = getTime();
-	std::cout << "\t" << "Iteration:\t" <<  (end-start) << std::endl;
-
-	start = getTime();
-	for(long i=0; i<1000000; ++i) {
-		ht.get(i);
-	}
-	end = getTime();
-	std::cout << "\t" << "Selection[ASC]:\t" <<  (end-start) << std::endl;
-
-	start = getTime();
-	for(long i=999999; i>=0; --i) {
-		ht.get(i);
-	}
-	end = getTime();
-	std::cout << "\t" << "Selection[DESC]:\t" <<  (end-start) << std::endl;
-
-
-	start = getTime();
-	for(long i=999999; i>=0; --i) {
-		ht.removeIndex(i);
-	}
-	end = getTime();
-	std::cout << "\t" << "Deletion[DESC]:\t" <<  (end-start) << std::endl;
-}
-
-void ListBenchmark::testLinkedList() {
-	std::size_t start, end, start_memory, end_memory;
-
-	start_memory = getMemory();
-	start = getTime();
-	LinkedList<long> ht;
-	for(long i=0; i<1000000; ++i) {
-		ht.addToBottom(i);
-	}
-	end = getTime();
-	end_memory = getMemory();
-	std::cout << "\t" << "Memory:\t" <<  (end_memory-start_memory) << std::endl;
-	std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
-
-	start = getTime();
-	for(auto it = ht.begin(); it!=ht.end(); ++it) {
-		(*it);
-	}
-	end = getTime();
-	std::cout << "\t" << "Iteration:\t" <<  (end-start) << std::endl;
-
-	start = getTime();
-	for(long i=0; i<1000000; ++i) {
-		ht.get(i);
-	}
-	end = getTime();
-	std::cout << "\t" << "Selection[ASC]:\t" <<  (end-start) << std::endl;
-
-
-	start = getTime();
-	for(long i=0; i<1000000; ++i) {
-		ht.removeIndex(0);
-	}
-	end = getTime();
-	std::cout << "\t" << "Deletion[ASC]:\t" <<  (end-start) << std::endl;
-}
-
-void ListBenchmark::testDoublyLinkedList() {
-	std::size_t start, end, start_memory, end_memory;
-
-	start_memory = getMemory();
-	start = getTime();
-	DoublyLinkedList<long> ht;
-	for(long i=0; i<1000000; ++i) {
-		ht.addToBottom(i);
-	}
-	end = getTime();
-	end_memory = getMemory();
-	std::cout << "\t" << "Memory:\t" <<  (end_memory-start_memory) << std::endl;
-	std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
-
-	start = getTime();
-	for(auto it = ht.begin(); it!=ht.end(); ++it) {
-		(*it);
-	}
-	end = getTime();
-	std::cout << "\t" << "Iteration:\t" <<  (end-start) << std::endl;
-
-	start = getTime();
-	for(long i=0; i<1000000; ++i) {
-		ht.get(i);
-	}
-	end = getTime();
-	std::cout << "\t" << "Selection:\t" <<  (end-start) << std::endl;
-
-//		start = getTime();
-//		for(long i=0; i<1000000; ++i) {
-//			ht.removeIndex(0);
-//		}
-//		end = getTime();
-//		std::cout << "\t" << "Deletion[ASC]:\t" <<  (end-start) << std::endl;
-
-	start = getTime();
-	for(long i=999999; i>=0; --i) {
-		ht.removeIndex(i);
-	}
-	end = getTime();
-	std::cout << "\t" << "Deletion[DESC]:\t" <<  (end-start) << std::endl;
-}
-
-void ListBenchmark::testArrayList(StringListGenerator* slg) {
-	std::vector<char*> items = slg->getList();
-	std::size_t start, end, start_memory, end_memory;
-
-	start_memory = getMemory();
-	start = getTime();
-	ArrayList<char*> ht;
-	for(auto it = items.begin(); it!=items.end(); ++it) {
-		ht.addToBottom(*it);
-	}
-	end = getTime();
-	end_memory = getMemory();
-	std::cout << "\t" << "Memory:\t" <<  (end_memory-start_memory) << std::endl;
-	std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
-
-	start = getTime();
-	for(auto it = ht.begin(); it!=ht.end(); ++it) {
-		(*it);
-	}
-	end = getTime();
-	std::cout << "\t" << "Iteration:\t" <<  (end-start) << std::endl;
-
-	start = getTime();
-	for(long i=0; i<1000000; ++i) {
-		ht.get(i);
-	}
-	end = getTime();
-	std::cout << "\t" << "Selection[ASC]:\t" <<  (end-start) << std::endl;
-
-	start = getTime();
-	for(long i=999999; i>=0; --i) {
-		ht.get(i);
-	}
-	end = getTime();
-	std::cout << "\t" << "Selection[DESC]:\t" <<  (end-start) << std::endl;
-
-
-	start = getTime();
-	for(long i=999999; i>=0; --i) {
-		ht.removeIndex(i);
-	}
-	end = getTime();
-	std::cout << "\t" << "Deletion[DESC]:\t" <<  (end-start) << std::endl;
-}
-
-void ListBenchmark::testLinkedList(StringListGenerator* slg) {
-	std::vector<char*> items = slg->getList();
-	std::size_t start, end, start_memory, end_memory;
-
-	start_memory = getMemory();
-	start = getTime();
-	LinkedList<char*> ht;
-	for(auto it = items.begin(); it!=items.end(); ++it) {
-		ht.addToTop(*it);
-	}
-	end = getTime();
-	end_memory = getMemory();
-	std::cout << "\t" << "Memory:\t" <<  (end_memory-start_memory) << std::endl;
-	std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
-
-	start = getTime();
-	for(auto it = ht.begin(); it!=ht.end(); ++it) {
-		(*it);
-	}
-	end = getTime();
-	std::cout << "\t" << "Iteration:\t" <<  (end-start) << std::endl;
-
-	start = getTime();
-	for(long i=0; i<1000000; ++i) {
-		ht.get(i);
-	}
-	end = getTime();
-	std::cout << "\t" << "Selection[ASC]:\t" <<  (end-start) << std::endl;
-
-
-	start = getTime();
-	for(long i=0; i<1000000; ++i) {
-		ht.removeIndex(0);
-	}
-	end = getTime();
-	std::cout << "\t" << "Deletion[ASC]:\t" <<  (end-start) << std::endl;
-}
-
-void ListBenchmark::testDoublyLinkedList(StringListGenerator* slg) {
-	std::vector<char*> items = slg->getList();
-	std::size_t start, end, start_memory, end_memory;
-
-	start_memory = getMemory();
-	start = getTime();
-	DoublyLinkedList<char*> ht;
-	for(auto it = items.begin(); it!=items.end(); ++it) {
-		ht.addToBottom(*it);
-	}
-	end = getTime();
-	end_memory = getMemory();
-	std::cout << "\t" << "Memory:\t" <<  (end_memory-start_memory) << std::endl;
-	std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
-
-	start = getTime();
-	for(auto it = ht.begin(); it!=ht.end(); ++it) {
-		(*it);
-	}
-	end = getTime();
-	std::cout << "\t" << "Iteration:\t" <<  (end-start) << std::endl;
-
-	start = getTime();
-	for(long i=0; i<1000000; ++i) {
-		ht.get(i);
-	}
-	end = getTime();
-	std::cout << "\t" << "Selection:\t" <<  (end-start) << std::endl;
-
-//		start = getTime();
-//		for(long i=0; i<1000000; ++i) {
-//			ht.removeIndex(0);
-//		}
-//		end = getTime();
-//		std::cout << "\t" << "Deletion[ASC]:\t" <<  (end-start) << std::endl;
-
-	start = getTime();
-	for(long i=999999; i>=0; --i) {
-		ht.removeIndex(i);
-	}
-	end = getTime();
-	std::cout << "\t" << "Deletion[DESC]:\t" <<  (end-start) << std::endl;
-}
-
-void ListBenchmark::testList(StringListGenerator* slg) {
+void ListBenchmark::testSTDList(StringListGenerator* slg) {
 	std::vector<char*> items = slg->getList();
 	std::size_t start, end, start_memory, end_memory;
 
@@ -488,5 +247,95 @@ void ListBenchmark::testList(StringListGenerator* slg) {
 	}
 	end = getTime();
 	std::cout << "\t" << "Deletion:\t" <<  (end-start) << std::endl;
+}
+
+void ListBenchmark::testList(List<long>* ht) {
+	std::size_t start, end, start_memory, end_memory;
+
+	start_memory = getMemory();
+	start = getTime();
+	for(long i=0; i<1000000; ++i) {
+		ht->addToBottom(i);
+	}
+	end = getTime();
+	end_memory = getMemory();
+	std::cout << "\t" << "Memory:\t" <<  (end_memory-start_memory) << std::endl;
+	std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
+
+	start = getTime();
+	for(auto it = ht->begin(); *it!=*(ht->end()); ++(*it)) {
+		(*(*it));
+	}
+	end = getTime();
+	std::cout << "\t" << "Iteration:\t" <<  (end-start) << std::endl;
+
+	start = getTime();
+	for(long i=0; i<1000000; ++i) {
+		ht->get(i);
+	}
+	end = getTime();
+	std::cout << "\t" << "Selection:\t" <<  (end-start) << std::endl;
+
+
+	if(LinkedList<long>* v = dynamic_cast<LinkedList<long>*>(ht)) {
+		start = getTime();
+		for(long i=0; i<1000000; ++i) {
+			v->removeIndex(0);
+		}
+		end = getTime();
+		std::cout << "\t" << "Deletion:\t" <<  (end-start) << std::endl;
+	} else {
+		start = getTime();
+		for(long i=999999; i>=0; --i) {
+			ht->removeIndex(i);
+		}
+		end = getTime();
+		std::cout << "\t" << "Deletion:\t" <<  (end-start) << std::endl;
+	}
+}
+
+void ListBenchmark::testList(List<char*>* ht, StringListGenerator* slg) {
+	std::vector<char*> items = slg->getList();
+	std::size_t start, end, start_memory, end_memory;
+
+	start_memory = getMemory();
+	start = getTime();
+	for(auto it = items.begin(); it!=items.end(); ++it) {
+		ht->addToBottom(*it);
+	}
+	end = getTime();
+	end_memory = getMemory();
+	std::cout << "\t" << "Memory:\t" <<  (end_memory-start_memory) << std::endl;
+	std::cout << "\t" << "Insertion:\t" <<  (end-start) << std::endl;
+
+	start = getTime();
+	for(auto it = ht->begin(); *it!=*(ht->end()); ++(*it)) {
+		(*(*it));
+	}
+	end = getTime();
+	std::cout << "\t" << "Iteration:\t" <<  (end-start) << std::endl;
+
+	start = getTime();
+	for(long i=0; i<1000000; ++i) {
+		ht->get(i);
+	}
+	end = getTime();
+	std::cout << "\t" << "Selection:\t" <<  (end-start) << std::endl;
+
+	if(LinkedList<char*>* v = dynamic_cast<LinkedList<char*>*>(ht)) {
+		start = getTime();
+		for(long i=0; i<1000000; ++i) {
+			v->removeIndex(0);
+		}
+		end = getTime();
+		std::cout << "\t" << "Deletion:\t" <<  (end-start) << std::endl;
+	} else {
+		start = getTime();
+		for(long i=999999; i>=0; --i) {
+			ht->removeIndex(i);
+		}
+		end = getTime();
+		std::cout << "\t" << "Deletion:\t" <<  (end-start) << std::endl;
+	}
 }
 

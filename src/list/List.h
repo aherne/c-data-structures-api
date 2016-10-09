@@ -11,6 +11,24 @@
 #include <algorithm>
 
 template<typename T>
+class ListIterator {
+	public:
+		ListIterator() {
+			offset = 0;
+		}
+		virtual ~ListIterator() {}
+		virtual const T& operator*() = 0;
+		virtual void operator++() = 0;
+
+
+		bool operator!=(const ListIterator<T>& it) {
+			return offset != it.offset;
+		}
+	protected:
+		std::size_t offset;
+};
+
+template<typename T>
 class List {
 public:
 	virtual ~List() {}
@@ -28,7 +46,8 @@ public:
 	virtual bool containsValue(const T& value) const = 0;
 	virtual void removeIndex(const size_t& index) = 0;
 	virtual void removeValue(const T& value) = 0;
-	virtual void sort(bool (*comparator) (const T&, const T&)) = 0;
+	virtual ListIterator<T>* begin() = 0;
+	virtual ListIterator<T>* end() = 0;
 };
 
 #endif /* LIST_LIST_H_ */

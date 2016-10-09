@@ -45,6 +45,8 @@ class LinkedList: public List<T> {
 			currentItem = nullptr;
 			currentIndex = 0;
 			count = 0;
+			internalIteratorStart = nullptr;
+			internalIteratorEnd = nullptr;
 		}
 
 		~LinkedList() {
@@ -60,6 +62,8 @@ class LinkedList: public List<T> {
 		void clear() {
 			empty();
 
+			internalIteratorStart = nullptr;
+			internalIteratorEnd = nullptr;
 			head = nullptr;
 			tail = nullptr;
 			currentItem = nullptr;
@@ -225,14 +229,6 @@ class LinkedList: public List<T> {
 			if(oldCount == count) throw std::out_of_range("Value not found!");
 		}
 
-		iterator begin() {
-			return LinkedListIterator<T>(this);
-		}
-
-		iterator end(){
-			return LinkedListIterator<T>(count);
-		}
-
 		void sort(bool (*comparator) (const T&, const T&)) {
 			// reset internal iterator
 			currentIndex = 0;
@@ -240,6 +236,26 @@ class LinkedList: public List<T> {
 			// sort
 			LinkedListComparator<T> comparison(comparator);
 			LinkedListSorter<LinkedListEntry<T>, LinkedListComparator<T>> dlls(&head, &tail, comparison);
+		}
+
+		ListIterator<T>* begin() {
+			if(internalIteratorStart!=nullptr) {
+				delete internalIteratorStart;
+				internalIteratorStart = nullptr;
+				delete internalIteratorEnd;
+				internalIteratorEnd = nullptr;
+			}
+			internalIteratorStart = new iterator(head);
+			return internalIteratorStart;
+		}
+
+		ListIterator<T>* end() {
+			if(internalIteratorEnd!=nullptr){
+				return internalIteratorEnd;
+			} else {
+				internalIteratorEnd = new iterator(count);
+				return internalIteratorEnd;
+			}
 		}
 	private:
 
@@ -283,6 +299,13 @@ class LinkedList: public List<T> {
 		}
 
 		void empty(){
+			// delete iterators
+			if(internalIteratorStart!=nullptr) {
+				delete internalIteratorStart;
+				delete internalIteratorEnd;
+			}
+
+			// delete entries in LL
 			LinkedListEntry<T>* temp = head;
 			LinkedListEntry<T>* del = temp;
 			while(del != nullptr) {
@@ -300,51 +323,38 @@ class LinkedList: public List<T> {
 		// for fast get/set iteration
 		mutable std::size_t currentIndex;
 		mutable LinkedListEntry<T>* currentItem;
+		ListIterator<T>* internalIteratorStart;
+		ListIterator<T>* internalIteratorEnd;
 };
 
 template<typename T>
-class LinkedListIterator {
+class LinkedListIterator : public ListIterator<T>{
 	public:
-		LinkedListIterator(LinkedList<T>* list){
-			this->list = list;
-			current_item = list->head;
-			offset = 0;
+		LinkedListIterator(LinkedListEntry<T>* head){
+			content = head;
+			this->offset = 0;
 		}
 
 		LinkedListIterator(std::size_t total){
-			list = nullptr;
-			current_item = nullptr;
-			offset = total;
+			content = nullptr;
+			this->offset = total;
 		}
 
 		~LinkedListIterator(){}
 
-		const T operator*(){
-			return current_item->value;
+		const T& operator*(){
+			return content->value;
 		}
 
-		bool operator!=(const LinkedListIterator<T>& it) const {
-			return offset!=it.offset;
-		}
-
-		void remove() {
-			list->removeIndex(offset);
-			current_item = list->currentItem;
-			--offset;
-		}
-
-		LinkedListIterator<T>& operator++(){
-			if(current_item!=nullptr) {
-				current_item = current_item->next;
+		void operator++(){
+			if(content!=nullptr) {
+				content = content->next;
 			}
-			++offset;
-			return *this;
+			++this->offset;
 		}
 
 	private:
-		LinkedList<T>* list;
-		LinkedListEntry<T>* current_item;
-		std::size_t offset;
+		LinkedListEntry<T>* content;
 };
 
 

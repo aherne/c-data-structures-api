@@ -47,6 +47,8 @@ class DoublyLinkedList: public List<T> {
 			currentItem = nullptr;
 			currentIndex = 0;
 			count = 0;
+			internalIteratorStart = nullptr;
+			internalIteratorEnd = nullptr;
 		}
 
 		~DoublyLinkedList() {
@@ -62,6 +64,8 @@ class DoublyLinkedList: public List<T> {
 		void clear() {
 			empty();
 
+			internalIteratorStart = nullptr;
+			internalIteratorEnd = nullptr;
 			head = nullptr;
 			currentItem = nullptr;
 			currentIndex = 0;
@@ -207,14 +211,6 @@ class DoublyLinkedList: public List<T> {
 			if(oldCount == count) throw std::out_of_range("Value not found!");
 		}
 
-		iterator begin() {
-			return DoublyLinkedListIterator<T>(this);
-		}
-
-		iterator end(){
-			return DoublyLinkedListIterator<T>(count);
-		}
-
 		void sort(bool (*comparator) (const T&, const T&)) {
 			// reset internal iterator
 			currentIndex = 0;
@@ -222,6 +218,26 @@ class DoublyLinkedList: public List<T> {
 			// sort
 			DoublyLinkedListComparator<T> comparison(comparator);
 			DoublyLinkedListSorter<DoublyLinkedListEntry<T>, DoublyLinkedListComparator<T>> dlls(&head, &tail, comparison);
+		}
+
+		ListIterator<T>* begin() {
+			if(internalIteratorStart!=nullptr) {
+				delete internalIteratorStart;
+				internalIteratorStart = nullptr;
+				delete internalIteratorEnd;
+				internalIteratorEnd = nullptr;
+			}
+			internalIteratorStart = new iterator(head);
+			return internalIteratorStart;
+		}
+
+		ListIterator<T>* end() {
+			if(internalIteratorEnd!=nullptr){
+				return internalIteratorEnd;
+			} else {
+				internalIteratorEnd = new iterator(count);
+				return internalIteratorEnd;
+			}
 		}
 	private:
 		void traverse(const std::size_t& index) const {
@@ -318,6 +334,13 @@ class DoublyLinkedList: public List<T> {
 		}
 
 		void empty(){
+			// delete iterators
+			if(internalIteratorStart!=nullptr) {
+				delete internalIteratorStart;
+				delete internalIteratorEnd;
+			}
+
+			// delete entries in DLL
 			DoublyLinkedListEntry<T>* temp = head;
 			DoublyLinkedListEntry<T>* del = temp;
 			while(del != nullptr) {
@@ -335,53 +358,40 @@ class DoublyLinkedList: public List<T> {
 		// for fast iteration
 		mutable std::size_t currentIndex;
 		mutable DoublyLinkedListEntry<T>* currentItem;
+		ListIterator<T>* internalIteratorStart;
+		ListIterator<T>* internalIteratorEnd;
 };
 
 
 
 template<typename T>
-class DoublyLinkedListIterator {
+class DoublyLinkedListIterator : public ListIterator<T>{
 	public:
-		DoublyLinkedListIterator(){
-			list = nullptr;
-			current_item = nullptr;
-			offset = 0;
-		}
-
-		DoublyLinkedListIterator(DoublyLinkedList<T>* list){
-			this->list = list;
-			current_item = list->head;
-			offset = 0;
+		DoublyLinkedListIterator(DoublyLinkedListEntry<T>* head){
+			content = head;
+			this->offset = 0;
 		}
 
 		DoublyLinkedListIterator(std::size_t total){
-			list = nullptr;
-			current_item = nullptr;
-			offset = total;
+			content = nullptr;
+			this->offset = total;
 		}
 
 		~DoublyLinkedListIterator(){}
 
-		const T operator*(){
-			return current_item->value;
+		const T& operator*(){
+			return content->value;
 		}
 
-		bool operator!=(const DoublyLinkedListIterator<T>& it) const {
-			return offset!=it.offset;
-		}
-
-		DoublyLinkedListIterator<T>& operator++(){
-			if(current_item!=nullptr) {
-				current_item = current_item->next;
+		void operator++(){
+			if(content!=nullptr) {
+				content = content->next;
 			}
-			++offset;
-			return *this;
+			++this->offset;
 		}
 
 	private:
-		DoublyLinkedList<T>* list;
-		DoublyLinkedListEntry<T>* current_item;
-		std::size_t offset;
+		DoublyLinkedListEntry<T>* content;
 };
 
 #endif /* LIST_DOUBLYLINKEDLIST_H_ */

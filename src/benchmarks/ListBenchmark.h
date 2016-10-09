@@ -10,6 +10,7 @@
 
 #include "../Benchmark.h"
 #include "../StringListGenerator.h"
+#include "../list/List.h"
 
 class ListBenchmark {
 public:
@@ -19,14 +20,10 @@ private:
 	void testVector(StringListGenerator* slg);
 	void testForwardList();
 	void testForwardList(StringListGenerator* slg);
-	void testList();
-	void testArrayList();
-	void testLinkedList();
-	void testDoublyLinkedList();
-	void testArrayList(StringListGenerator* slg);
-	void testLinkedList(StringListGenerator* slg);
-	void testDoublyLinkedList(StringListGenerator* slg);
-	void testList(StringListGenerator* slg);
+	void testSTDList();
+	void testSTDList(StringListGenerator* slg);
+	void testList(List<long>*);
+	void testList(List<char*>*,StringListGenerator* slg);
 };
 
 
