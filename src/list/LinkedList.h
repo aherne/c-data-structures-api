@@ -245,7 +245,7 @@ class LinkedList: public List<T> {
 				delete internalIteratorEnd;
 				internalIteratorEnd = nullptr;
 			}
-			internalIteratorStart = new iterator(head);
+			internalIteratorStart = new iterator(this);
 			return internalIteratorStart;
 		}
 
@@ -330,31 +330,41 @@ class LinkedList: public List<T> {
 template<typename T>
 class LinkedListIterator : public ListIterator<T>{
 	public:
-		LinkedListIterator(LinkedListEntry<T>* head){
-			content = head;
+		LinkedListIterator(LinkedList<T>* list){
+			content = list;
+			current_item = list->head;
 			this->offset = 0;
+			this->total = list->count;
 		}
 
 		LinkedListIterator(std::size_t total){
 			content = nullptr;
+			current_item = nullptr;
 			this->offset = total;
+			this->total = total;
 		}
 
 		~LinkedListIterator(){}
 
 		const T& operator*(){
-			return content->value;
+			return current_item->value;
 		}
 
 		void operator++(){
-			if(content!=nullptr) {
-				content = content->next;
+			if(content->count!=this->total) {
+				this->offset = this->total;
+			} else {
+				if(current_item!=nullptr) {
+					current_item = current_item->next;
+				}
+				++this->offset;
 			}
-			++this->offset;
 		}
 
 	private:
-		LinkedListEntry<T>* content;
+		LinkedList<T>* content;
+		LinkedListEntry<T>* current_item;
+		std::size_t total;
 };
 
 

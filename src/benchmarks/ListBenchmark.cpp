@@ -14,41 +14,41 @@
 #include <vector>
 
 void ListBenchmark::execute() {
-	std::cout << "=====std::vector<long>=====" << std::endl;
-	testVector();
-	std::cout << "=====std::forward_list<long>=====" << std::endl;
-	testForwardList();
-	std::cout << "=====std::list<long>=====" << std::endl;
-	testSTDList();
+//	std::cout << "=====std::vector<long>=====" << std::endl;
+//	testVector();
+//	std::cout << "=====std::forward_list<long>=====" << std::endl;
+//	testForwardList();
+//	std::cout << "=====std::list<long>=====" << std::endl;
+//	testSTDList();
 
 	std::cout << "=====ArrayList<long>=====" << std::endl;
 	ArrayList<long> al(1000001);
 	testList(&al);
-	std::cout << "=====LinkedList<long>=====" << std::endl;
-	LinkedList<long> ll;
-	testList(&ll);
-	std::cout << "=====DoublyLinkedList<long>=====" << std::endl;
-	DoublyLinkedList<long> dll;
-	testList(&dll);
-
-	StringListGenerator slg(1000000);
-
-	std::cout << "=====std::vector<char*>=====" << std::endl;
-	testVector(&slg);
-	std::cout << "=====std::forward_list<char*>=====" << std::endl;
-	testForwardList(&slg);
-	std::cout << "=====std::list<char*>=====" << std::endl;
-	testSTDList(&slg);
-
-	std::cout << "=====ArrayList<char*>=====" << std::endl;
-	ArrayList<char*> als(1000001);
-	testList(&als, &slg);
-	std::cout << "=====LinkedList<char*>=====" << std::endl;
-	LinkedList<char*> lls;
-	testList(&lls, &slg);
-	std::cout << "=====DoublyLinkedList<char*>=====" << std::endl;
-	DoublyLinkedList<char*> dlls;
-	testList(&dlls, &slg);
+//	std::cout << "=====LinkedList<long>=====" << std::endl;
+//	LinkedList<long> ll;
+//	testList(&ll);
+//	std::cout << "=====DoublyLinkedList<long>=====" << std::endl;
+//	DoublyLinkedList<long> dll;
+//	testList(&dll);
+//
+//	StringListGenerator slg(1000000);
+//
+//	std::cout << "=====std::vector<char*>=====" << std::endl;
+//	testVector(&slg);
+//	std::cout << "=====std::forward_list<char*>=====" << std::endl;
+//	testForwardList(&slg);
+//	std::cout << "=====std::list<char*>=====" << std::endl;
+//	testSTDList(&slg);
+//
+//	std::cout << "=====ArrayList<char*>=====" << std::endl;
+//	ArrayList<char*> als(1000001);
+//	testList(&als, &slg);
+//	std::cout << "=====LinkedList<char*>=====" << std::endl;
+//	LinkedList<char*> lls;
+//	testList(&lls, &slg);
+//	std::cout << "=====DoublyLinkedList<char*>=====" << std::endl;
+//	DoublyLinkedList<char*> dlls;
+//	testList(&dlls, &slg);
 }
 
 void ListBenchmark::testVector() {

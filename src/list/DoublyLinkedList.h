@@ -227,7 +227,7 @@ class DoublyLinkedList: public List<T> {
 				delete internalIteratorEnd;
 				internalIteratorEnd = nullptr;
 			}
-			internalIteratorStart = new iterator(head);
+			internalIteratorStart = new iterator(this);
 			return internalIteratorStart;
 		}
 
@@ -362,36 +362,44 @@ class DoublyLinkedList: public List<T> {
 		ListIterator<T>* internalIteratorEnd;
 };
 
-
-
 template<typename T>
 class DoublyLinkedListIterator : public ListIterator<T>{
 	public:
-		DoublyLinkedListIterator(DoublyLinkedListEntry<T>* head){
-			content = head;
+		DoublyLinkedListIterator(DoublyLinkedList<T>* list){
+			content = list;
+			current_item = list->head;
 			this->offset = 0;
+			this->total = list->count;
 		}
 
 		DoublyLinkedListIterator(std::size_t total){
 			content = nullptr;
+			current_item = nullptr;
 			this->offset = total;
+			this->total = total;
 		}
 
 		~DoublyLinkedListIterator(){}
 
 		const T& operator*(){
-			return content->value;
+			return current_item->value;
 		}
 
 		void operator++(){
-			if(content!=nullptr) {
-				content = content->next;
+			if(content->count!=this->total) {
+				this->offset = this->total;
+			} else {
+				if(current_item!=nullptr) {
+					current_item = current_item->next;
+				}
+				++this->offset;
 			}
-			++this->offset;
 		}
 
 	private:
-		DoublyLinkedListEntry<T>* content;
+		DoublyLinkedList<T>* content;
+		DoublyLinkedListEntry<T>* current_item;
+		std::size_t total;
 };
 
 #endif /* LIST_DOUBLYLINKEDLIST_H_ */

@@ -13,13 +13,9 @@
 template<typename T>
 class ListIterator {
 	public:
-		ListIterator() {
-			offset = 0;
-		}
 		virtual ~ListIterator() {}
 		virtual const T& operator*() = 0;
 		virtual void operator++() = 0;
-
 
 		bool operator!=(const ListIterator<T>& it) {
 			return offset != it.offset;

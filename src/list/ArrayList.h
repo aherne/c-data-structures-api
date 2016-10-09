@@ -161,7 +161,7 @@ public:
 			delete internalIteratorEnd;
 			internalIteratorEnd = nullptr;
 		}
-		internalIteratorStart = new iterator(contents);
+		internalIteratorStart = new iterator(this);
 		return internalIteratorStart;
 	}
 
@@ -191,29 +191,37 @@ private:
 template<typename T>
 class ArrayListIterator : public ListIterator<T> {
 	public:
-		ArrayListIterator(T* array){
-			content = array;
+		ArrayListIterator(ArrayList<T>* list){
+			content = list;
 			this->offset = 0;
+			this->total = list->count;
 		}
 
 		ArrayListIterator(std::size_t total){
 			content = nullptr;
 			this->offset = total;
+			this->total = total;
 		}
 
 		~ArrayListIterator() {}
 
 		const T& operator*(){
-			return content[this->offset];
+			return content->contents[this->offset];
 		}
 
 		void operator++() {
-			++this->offset;
+			if(content->count!=this->total) {
+				this->offset = this->total;
+			} else {
+				++this->offset;
+			}
 			return;
 		}
 
 	private:
-		T* content;
+		ArrayList<T>* content;
+		std::size_t total;
+
 };
 
 #endif /* LIST_ARRAYLIST_H_ */
