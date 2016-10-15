@@ -14,33 +14,33 @@
 #include <typeinfo>
 
 void ListUnitTest::execute() {
-//	std::cout << "=====ArrayList<long>=====" << std::endl;
-//	ArrayList<long> all;
-//	testList(&all);
-//
-//	std::cout << "=====LinkedList<long>=====" << std::endl;
-//	LinkedList<long> lll;
-//	testList(&lll);
-//
-//	std::cout << "=====DoublyLinkedList<long>=====" << std::endl;
-//	DoublyLinkedList<long> dll;
-//	testList(&dll);
-//
-//	std::cout << "=====ArrayList<char*>=====" << std::endl;
-//	ArrayList<char*> als;
-//	testList(&als);
-//
-//	std::cout << "=====LinkedList<char*>=====" << std::endl;
-//	LinkedList<char*> lls;
-//	testList(&lls);
-//
-//	std::cout << "=====DoublyLinkedList<char*>=====" << std::endl;
-//	DoublyLinkedList<char*> dls;
-//	testList(&dls);
+	std::cout << "=====ArrayList<long>=====" << std::endl;
+	ArrayList<long> all;
+	testList(&all);
 
-//	testArrayList();
+	std::cout << "=====LinkedList<long>=====" << std::endl;
+	LinkedList<long> lll;
+	testList(&lll);
+
+	std::cout << "=====DoublyLinkedList<long>=====" << std::endl;
+	DoublyLinkedList<long> dll;
+	testList(&dll);
+
+	std::cout << "=====ArrayList<char*>=====" << std::endl;
+	ArrayList<char*> als;
+	testList(&als);
+
+	std::cout << "=====LinkedList<char*>=====" << std::endl;
+	LinkedList<char*> lls;
+	testList(&lls);
+
+	std::cout << "=====DoublyLinkedList<char*>=====" << std::endl;
+	DoublyLinkedList<char*> dls;
+	testList(&dls);
+
+	testArrayList();
 	testLinkedList();
-//	testDoublyLinkedList();
+	testDoublyLinkedList();
 }
 
 void ListUnitTest::testList(List<long>* list) {

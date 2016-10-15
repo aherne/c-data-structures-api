@@ -12,7 +12,7 @@
 template<typename T>
 struct hash {
 	std::size_t operator()(T item) const {
-		throw std::out_of_range("No hashing function found for this type!");
+		throw std::logic_error("No hashing function found for this type!");
 		return 0;
 	}
 };

@@ -174,13 +174,17 @@ template<typename _KEY, typename _VALUE>
 class LinkedHashMapIterator : public MapIterator<_KEY,_VALUE> {
 	public:
 		LinkedHashMapIterator(LinkedHashTable<MapEntry<_KEY,_VALUE>>* map){
+			content = map;
 			current_item = map->getHead();
 			this->offset = 0;
+			this->total = map->size();
 		}
 
 		LinkedHashMapIterator(std::size_t total){
+			content = nullptr;
 			current_item = nullptr;
 			this->offset = total;
+			this->total = total;
 		}
 
 		~LinkedHashMapIterator(){}
@@ -191,14 +195,20 @@ class LinkedHashMapIterator : public MapIterator<_KEY,_VALUE> {
 		}
 
 		void operator++(){
-			if(current_item!=nullptr) {
-				current_item = current_item->next;
+			if(content->size()!=this->total) {
+				this->offset = this->total;
+			} else {
+				if(current_item!=nullptr) {
+					current_item = current_item->next;
+				}
+				++this->offset;
 			}
-			++this->offset;
 		}
 
 	private:
+		LinkedHashTable<MapEntry<_KEY,_VALUE>>* content;
 		LinkedHashTableEntry<MapEntry<_KEY,_VALUE>>* current_item;
+		std::size_t total;
 };
 
 #endif /* HASHMAP_H_ */

@@ -124,13 +124,17 @@ template<typename T>
 class LinkedHashSetIterator : public SetIterator<T> {
 	public:
 		LinkedHashSetIterator(LinkedHashTable<T>* set){
+			content = set;
 			current_item = set->getHead();
 			this->offset = 0;
+			this->total = set->size();
 		}
 
 		LinkedHashSetIterator(std::size_t total){
+			content = nullptr;
 			current_item = nullptr;
 			this->offset = total;
+			this->total = total;
 		}
 
 		~LinkedHashSetIterator(){}
@@ -141,14 +145,20 @@ class LinkedHashSetIterator : public SetIterator<T> {
 		}
 
 		void operator++(){
-			if(current_item!=nullptr) {
-				current_item = current_item->next;
+			if(content->size()!=this->total) {
+				this->offset = this->total;
+			} else {
+				if(current_item!=nullptr) {
+					current_item = current_item->next;
+				}
+				++this->offset;
 			}
-			++this->offset;
 		}
 
 	private:
+		LinkedHashTable<T>* content;
 		LinkedHashTableEntry<T>* current_item;
+		std::size_t total;
 };
 
 #endif /* SRC_LINKEDHASHSET_H_ */

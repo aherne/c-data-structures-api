@@ -120,15 +120,17 @@ template<typename _KEY, typename _VALUE>
 class TreeMapIterator : public MapIterator<_KEY,_VALUE> {
 	public:
 		TreeMapIterator(RedBlackTree<MapEntry<_KEY,_VALUE>>* tree){
-			this->tree = tree;
+			this->content = tree;
 			current_item = tree->min();
 			this->offset = 0;
+			this->total = tree->getSize();
 		}
 
 		TreeMapIterator(std::size_t total){
-			tree = nullptr;
+			content = nullptr;
 			current_item = nullptr;
 			this->offset = total;
+			this->total = total;
 		}
 
 		~TreeMapIterator(){}
@@ -139,13 +141,18 @@ class TreeMapIterator : public MapIterator<_KEY,_VALUE> {
 		}
 
 		void operator++(){
-			current_item = tree->getNextNode(current_item);
-			++this->offset;
+			if(content->getSize()!=this->total) {
+				this->offset = this->total;
+			} else {
+				current_item = content->getNextNode(current_item);
+				++this->offset;
+			}
 		}
 
 	private:
-		RedBlackTree<MapEntry<_KEY,_VALUE>>* tree;
+		RedBlackTree<MapEntry<_KEY,_VALUE>>* content;
 		RedBlackTreeNode<MapEntry<_KEY,_VALUE>>* current_item;
+		std::size_t total;
 };
 
 #endif /* SRC_MAP_TREEMAP_H_ */

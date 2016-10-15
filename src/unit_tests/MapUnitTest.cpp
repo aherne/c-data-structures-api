@@ -121,8 +121,11 @@ void MapUnitTest::testLinkedHashMap() {
 
 	std::cout << "sortByValue:" << std::endl;
 	ht.sortByValue(&compareDesc<long>);
+	long i=0;
 	for(auto it = ht.begin(); *it!=*(ht.end()); ++(*it)) {
 		std::cout <<"\t"<< (*(*it)).first << ":" << (*(*it)).second << std::endl;
+		if(i==2) ht.removeKey(9);
+		++i;
 	}
 
 	ht.clear();
@@ -144,8 +147,11 @@ void MapUnitTest::testHashMap() {
 	k=22;v=1;ht.set(k,v);
 
 	std::cout << "iterator:" << std::endl;
+	long i=0;
 	for(auto it = ht.begin(); *it!=*(ht.end()); ++(*it)) {
 		std::cout <<"\t" << (*(*it)).first << ":" << (*(*it)).second << std::endl;
+		if(i==2) ht.removeKey(22);
+		++i;
 	}
 
 	ht.clear();
@@ -167,8 +173,11 @@ void MapUnitTest::testTreeMap() {
 	k=22;v=1;ht.set(k,v);
 
 	std::cout << "iterator:" << std::endl;
+	long i=0;
 	for(auto it = ht.begin(); *it!=*(ht.end()); ++(*it)) {
 		std::cout <<"\t" << (*(*it)).first << ":" << (*(*it)).second << std::endl;
+		if(i==2) ht.removeKey(22);
+		++i;
 	}
 
 	ht.clear();

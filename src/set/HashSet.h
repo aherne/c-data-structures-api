@@ -107,6 +107,7 @@ class HashSetIterator : public SetIterator<T> {
 			current_bucket = hashTable->getMinBucket();
 			current_position = 0;
 			this->offset = 0;
+			this->total = hashTable->size();
 		}
 
 		HashSetIterator(std::size_t total){
@@ -114,6 +115,7 @@ class HashSetIterator : public SetIterator<T> {
 			current_bucket = 0;
 			current_position = 0;
 			this->offset = total;
+			this->total = total;
 		}
 
 		~HashSetIterator() {}
@@ -125,9 +127,12 @@ class HashSetIterator : public SetIterator<T> {
 		}
 
 		void operator++() {
-			content->nextNode(current_bucket, current_position);
-			++this->offset;
-			return;
+			if(content->size()!=this->total) {
+				this->offset = this->total;
+			} else {
+				content->nextNode(current_bucket, current_position);
+				++this->offset;
+			}
 		}
 
 	private:
@@ -135,6 +140,7 @@ class HashSetIterator : public SetIterator<T> {
 
 		std::size_t current_bucket;
 		std::size_t current_position;
+		std::size_t total;
 };
 
 

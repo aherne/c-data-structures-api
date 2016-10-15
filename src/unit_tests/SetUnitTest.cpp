@@ -17,17 +17,14 @@ void SetUnitTest::execute() {
 	std::cout << "=====LinkedHashSet<long>=====" << std::endl;
 	LinkedHashSet<long> lhml;
 	test(&lhml);
-	testLinkedHashSet();
 
 	std::cout << "=====HashSet<long>=====" << std::endl;
 	HashSet<long> hml;
 	test(&hml);
-	testHashSet();
 
 	std::cout << "=====TreeSet<long>=====" << std::endl;
 	TreeSet<long> tml;
 	test(&tml);
-	testTreeSet();
 
 	std::cout << "=====LinkedHashSet<char*>=====" << std::endl;
 	LinkedHashSet<char*> lhms;
@@ -40,6 +37,10 @@ void SetUnitTest::execute() {
 	std::cout << "=====TreeSet<char*>=====" << std::endl;
 	TreeSet<char*> tms;
 	test(&tms);
+
+	testLinkedHashSet();
+	testHashSet();
+	testTreeSet();
 }
 
 void SetUnitTest::test(Set<long>* ht) {
@@ -100,8 +101,11 @@ void SetUnitTest::testLinkedHashSet() {
 	ht.sort(&compareAsc<long>);
 
 	std::cout << "sort:" << std::endl;
+	long i=0;
 	for(auto it = ht.begin(); *it!=*(ht.end()); ++(*it)) {
 		std::cout <<"\t" << (*(*it)) << std::endl;
+		if(i==2) ht.remove(9);
+		++i;
 	}
 
 	ht.clear();
@@ -123,8 +127,11 @@ void SetUnitTest::testHashSet() {
 	k=22;ht.add(k);
 
 	std::cout << "iterator:" << std::endl;
+	long i=0;
 	for(auto it = ht.begin(); *it!=*(ht.end()); ++(*it)) {
 		std::cout <<"\t" << (*(*it)) << std::endl;
+		if(i==2) ht.remove(9);
+		++i;
 	}
 
 	ht.clear();
@@ -146,8 +153,11 @@ void SetUnitTest::testTreeSet() {
 	k=22;ht.add(k);
 
 	std::cout << "iterator:" << std::endl;
+	long i=0;
 	for(auto it = ht.begin(); *it!=*(ht.end()); ++(*it)) {
 		std::cout <<"\t" << (*(*it)) << std::endl;
+		if(i==2) ht.remove(9);
+		++i;
 	}
 
 	ht.clear();

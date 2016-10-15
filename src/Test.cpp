@@ -22,14 +22,14 @@ int main() {
 //	MapBenchmark mapBenchmark;
 //	mapBenchmark.execute();
 //
-//	SetUnitTest setUnitTest;
-//	setUnitTest.execute();
+	SetUnitTest setUnitTest;
+	setUnitTest.execute();
 //
 //	SetBenchmark setBenchmark;
 //	setBenchmark.execute();
 //
-	ListUnitTest listUnitTest;
-	listUnitTest.execute();
+//	ListUnitTest listUnitTest;
+//	listUnitTest.execute();
 //
 //	ListBenchmark listBenchmark;
 //	listBenchmark.execute();

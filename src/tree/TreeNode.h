@@ -68,7 +68,7 @@ public:
 				return;
 			}
 		}
-		throw std::out_of_range("Child not found!");
+		throw std::logic_error("Child not found!");
 	}
 
 	void removeChildren() {

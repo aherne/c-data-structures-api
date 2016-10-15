@@ -95,15 +95,17 @@ template<typename T>
 class TreeSetIterator : public SetIterator<T> {
 	public:
 		TreeSetIterator(RedBlackTree<T>* tree){
-			this->tree = tree;
+			content = tree;
 			current_item = tree->min();
 			this->offset = 0;
+			this->total = tree->getSize();
 		}
 
 		TreeSetIterator(std::size_t total){
-			tree = nullptr;
+			content = nullptr;
 			current_item = nullptr;
 			this->offset = total;
+			this->total = total;
 		}
 
 		~TreeSetIterator(){}
@@ -114,13 +116,18 @@ class TreeSetIterator : public SetIterator<T> {
 		}
 
 		void operator++(){
-			current_item = tree->getNextNode(current_item);
-			++this->offset;
+			if(content->getSize()!=this->total) {
+				this->offset = this->total;
+			} else {
+				current_item = content->getNextNode(current_item);
+				++this->offset;
+			}
 		}
 
 	private:
-		RedBlackTree<T>* tree;
+		RedBlackTree<T>* content;
 		RedBlackTreeNode<T>* current_item;
+		std::size_t total;
 };
 
 #endif /* SET_TREESET_H_ */

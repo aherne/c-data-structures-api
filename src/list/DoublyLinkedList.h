@@ -109,8 +109,6 @@ class DoublyLinkedList: public List<T> {
 
 			traverse(index);
 
-			if(currentItem==nullptr) throw std::out_of_range("Null pointer exception!");
-
 			return currentItem->value;
 		}
 

@@ -2,7 +2,6 @@
 	If attempting to add list implementations in a tree, a crash occurs on deallocation
 
 ALL:
-	use std::logic_error instead of std::out_of_range when applies
 	add comparator function pointer arguments to all methods that require a comparator (instead of predefining a comparator):
 		list
 			- containsValue
@@ -14,23 +13,6 @@ ALL:
 				- removeValue
 		set
 			a hasher and keyComparator are globally required
-	ITERATOR INVALIDATION
-		list
-			dynamic arrays
-				whenever an element is removed
-				whenever array resizes
-			linked lists
-				whenever an element is removed
-			doubly linked list
-				whenever an element is removed
-		map
-			doubly linked list hash map & hash map
-				whenever an element is removed
-				whenever buckets resize
-			tree map
-				whenever an element is removed
-		set
-			same
 linkedhashmap
 	(LATER) unique(valueComparator)
 map

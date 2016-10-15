@@ -146,7 +146,7 @@ public:
 				}
 			}
 		}
-		if(reduce==0) throw std::out_of_range("Value must already exist!");
+		if(reduce==0) throw std::out_of_range("Value not found!");
 		count -= reduce;
 	}
 

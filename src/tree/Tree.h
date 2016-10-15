@@ -84,7 +84,7 @@ class Tree {
 
 		// tested
 		void removeNode(TreeNode<T>* node) {
-			if(node == root) throw std::out_of_range("Root cannot be removed without deallocating the whole tree!");
+			if(node == root) throw std::logic_error("Root cannot be removed without deallocating the whole tree!");
 
 			// gets node's parent
 			TreeNode<T>* parent = node->getParent();
@@ -104,7 +104,7 @@ class Tree {
 
 		// tested
 		void removeBranch(TreeNode<T>* node) {
-			if(node == root) throw std::out_of_range("Root cannot be removed without deallocating the whole tree!");
+			if(node == root) throw std::logic_error("Root cannot be removed without deallocating the whole tree!");
 			TreeNode<T>* parent = node->getParent();
 			parent->removeChild(node);
 			TreeDeallocator<T> deallocate(node);

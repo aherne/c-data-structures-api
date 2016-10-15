@@ -137,6 +137,7 @@ class HashMapIterator : public MapIterator<_KEY,_VALUE> {
 			current_bucket = hashTable->getMinBucket();
 			current_position = 0;
 			this->offset = 0;
+			this->total = hashTable->size();
 		}
 
 		HashMapIterator(std::size_t total){
@@ -144,6 +145,7 @@ class HashMapIterator : public MapIterator<_KEY,_VALUE> {
 			current_bucket = 0;
 			current_position = 0;
 			this->offset = total;
+			this->total = total;
 		}
 
 		~HashMapIterator() {}
@@ -155,9 +157,12 @@ class HashMapIterator : public MapIterator<_KEY,_VALUE> {
 		}
 
 		void operator++() {
-			content->nextNode(current_bucket, current_position);
-			++this->offset;
-			return;
+			if(content->size()!=this->total) {
+				this->offset = this->total;
+			} else {
+				content->nextNode(current_bucket, current_position);
+				++this->offset;
+			}
 		}
 
 	private:
@@ -165,6 +170,7 @@ class HashMapIterator : public MapIterator<_KEY,_VALUE> {
 
 		std::size_t current_bucket;
 		std::size_t current_position;
+		std::size_t total;
 };
 
 
