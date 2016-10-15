@@ -22,8 +22,8 @@ int main() {
 //	MapBenchmark mapBenchmark;
 //	mapBenchmark.execute();
 //
-	SetUnitTest setUnitTest;
-	setUnitTest.execute();
+//	SetUnitTest setUnitTest;
+//	setUnitTest.execute();
 //
 //	SetBenchmark setBenchmark;
 //	setBenchmark.execute();

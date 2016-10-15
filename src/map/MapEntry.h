@@ -30,7 +30,7 @@ int compareByValue(const MapEntry<_KEY,_VALUE>& left, const MapEntry<_KEY,_VALUE
 }
 
 template<typename _KEY, typename _VALUE>
-std::size_t hasher(const MapEntry<_KEY,_VALUE>& element) {
+std::size_t hashByKey(const MapEntry<_KEY,_VALUE>& element) {
 	hash<_KEY> temp;
 	return temp(element.key);
 }

@@ -22,13 +22,13 @@ public:
 	typedef HashMapIterator<_KEY,_VALUE> iterator;
 
 	HashMap(){
-		hashTable = new HashTable<MapEntry<_KEY,_VALUE>>;
+		hashTable = new HashTable<MapEntry<_KEY,_VALUE>,compareByKey, hashByKey>;
 		internalIteratorStart = nullptr;
 		internalIteratorEnd = nullptr;
 	}
 
 	HashMap(const std::size_t& reservedSize){
-		hashTable = new HashTable<MapEntry<_KEY,_VALUE>>(reservedSize);
+		hashTable = new HashTable<MapEntry<_KEY,_VALUE>,compareByKey, hashByKey>(reservedSize);
 		internalIteratorStart = nullptr;
 		internalIteratorEnd = nullptr;
 	}
@@ -50,14 +50,14 @@ public:
 		}
 		delete hashTable;
 
-		hashTable = new HashTable<MapEntry<_KEY,_VALUE>>;
+		hashTable = new HashTable<MapEntry<_KEY,_VALUE>,compareByKey, hashByKey>;
 	}
 
 	bool containsKey(const _KEY& key) const{
 		if(hashTable->isEmpty()) return false;
 		MapEntry<_KEY,_VALUE> mapEntry;
 		mapEntry.key = key;
-		return hashTable->contains(mapEntry, &compareByKey, &hasher);
+		return hashTable->contains(mapEntry);
 	}
 
 	bool containsValue(const _VALUE& value) const{
@@ -78,7 +78,7 @@ public:
 	const _VALUE& get(const _KEY& key) const {
 		MapEntry<_KEY,_VALUE> mapEntry;
 		mapEntry.key = key;
-		const MapEntry<_KEY,_VALUE>* result = hashTable->get(mapEntry, &compareByKey, &hasher);
+		const MapEntry<_KEY,_VALUE>* result = hashTable->get(mapEntry);
 		return result->value;
 	}
 
@@ -86,14 +86,14 @@ public:
 		MapEntry<_KEY,_VALUE> mapEntry;
 		mapEntry.key = key;
 		mapEntry.value = value;
-		hashTable->set(mapEntry, &compareByKey, &hasher);
+		hashTable->set(mapEntry);
 	}
 
 	void removeKey(const _KEY& key){
 		if(hashTable->isEmpty()) return;
 		MapEntry<_KEY,_VALUE> mapEntry;
 		mapEntry.key = key;
-		hashTable->remove(mapEntry, &compareByKey, &hasher);
+		hashTable->remove(mapEntry);
 	}
 
 	void removeValue(const _VALUE& value) {
@@ -124,7 +124,7 @@ public:
 	}
 
 private:
-	HashTable<MapEntry<_KEY,_VALUE>>* hashTable;
+	HashTable<MapEntry<_KEY,_VALUE>,compareByKey, hashByKey>* hashTable;
 	MapIterator<_KEY,_VALUE>* internalIteratorStart;
 	MapIterator<_KEY,_VALUE>* internalIteratorEnd;
 };
@@ -132,7 +132,7 @@ private:
 template<typename _KEY, typename _VALUE>
 class HashMapIterator : public MapIterator<_KEY,_VALUE> {
 	public:
-		HashMapIterator(HashTable<MapEntry<_KEY,_VALUE>>* hashTable){
+		HashMapIterator(HashTable<MapEntry<_KEY,_VALUE>,compareByKey, hashByKey>* hashTable){
 			content = hashTable;
 			current_bucket = hashTable->getMinBucket();
 			current_position = 0;
@@ -166,7 +166,7 @@ class HashMapIterator : public MapIterator<_KEY,_VALUE> {
 		}
 
 	private:
-		HashTable<MapEntry<_KEY,_VALUE>>* content;
+		HashTable<MapEntry<_KEY,_VALUE>, compareByKey, hashByKey>* content;
 
 		std::size_t current_bucket;
 		std::size_t current_position;

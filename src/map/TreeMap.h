@@ -22,7 +22,7 @@ public:
 	typedef TreeMapIterator<_KEY,_VALUE> iterator;
 
 	TreeMap() {
-		tree = new RedBlackTree<MapEntry<_KEY,_VALUE>>;
+		tree = new RedBlackTree<MapEntry<_KEY,_VALUE>, compareByKey>;
 		internalIteratorStart = nullptr;
 		internalIteratorEnd = nullptr;
 	}
@@ -42,13 +42,13 @@ public:
 			internalIteratorEnd = nullptr;
 		}
 		delete tree;
-		tree = new RedBlackTree<MapEntry<_KEY,_VALUE>>;
+		tree = new RedBlackTree<MapEntry<_KEY,_VALUE>, compareByKey>;
 	}
 
 	bool containsKey(const _KEY& key) const {
 		MapEntry<_KEY,_VALUE> mapEntry;
 		mapEntry.key = key;
-		return tree->hasNode(mapEntry, &compareByKey);
+		return tree->hasNode(mapEntry);
 	}
 
 	bool containsValue(const _VALUE& value) const {
@@ -60,7 +60,7 @@ public:
 	const _VALUE& get(const _KEY& key) const {
 		MapEntry<_KEY,_VALUE> mapEntry;
 		mapEntry.key = key;
-		const MapEntry<_KEY,_VALUE>* result = tree->getNodeValue(mapEntry, &compareByKey);
+		const MapEntry<_KEY,_VALUE>* result = tree->getNodeValue(mapEntry);
 		return result->value;
 	}
 
@@ -76,13 +76,13 @@ public:
 		MapEntry<_KEY,_VALUE> mapEntry;
 		mapEntry.key = key;
 		mapEntry.value = value;
-		tree->insertNode(mapEntry, &compareByKey);
+		tree->insertNode(mapEntry);
 	}
 
 	void removeKey(const _KEY& key) {
 		MapEntry<_KEY,_VALUE> mapEntry;
 		mapEntry.key = key;
-		tree->deleteNode(mapEntry, &compareByKey);
+		tree->deleteNode(mapEntry);
 	}
 
 	void removeValue(const _VALUE& value) {
@@ -111,7 +111,7 @@ public:
 		}
 	}
 private:
-	RedBlackTree<MapEntry<_KEY,_VALUE>>* tree;
+	RedBlackTree<MapEntry<_KEY,_VALUE>, compareByKey>* tree;
 	MapIterator<_KEY,_VALUE>* internalIteratorStart;
 	MapIterator<_KEY,_VALUE>* internalIteratorEnd;
 };
@@ -119,7 +119,7 @@ private:
 template<typename _KEY, typename _VALUE>
 class TreeMapIterator : public MapIterator<_KEY,_VALUE> {
 	public:
-		TreeMapIterator(RedBlackTree<MapEntry<_KEY,_VALUE>>* tree){
+		TreeMapIterator(RedBlackTree<MapEntry<_KEY,_VALUE>, compareByKey>* tree){
 			this->content = tree;
 			current_item = tree->min();
 			this->offset = 0;
@@ -150,7 +150,7 @@ class TreeMapIterator : public MapIterator<_KEY,_VALUE> {
 		}
 
 	private:
-		RedBlackTree<MapEntry<_KEY,_VALUE>>* content;
+		RedBlackTree<MapEntry<_KEY,_VALUE>, compareByKey>* content;
 		RedBlackTreeNode<MapEntry<_KEY,_VALUE>>* current_item;
 		std::size_t total;
 };

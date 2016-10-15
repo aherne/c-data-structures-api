@@ -23,12 +23,12 @@ public:
 	typedef HashSetIterator<T> iterator;
 
 	HashSet(){
-		hashTable = new HashTable<T>;
+		hashTable = new HashTable<T, compareByValue, hashByValue>;
 		internalIteratorStart = nullptr;
 		internalIteratorEnd = nullptr;
 	}
 	HashSet(const std::size_t& reservedSize){
-		hashTable = new HashTable<T>(reservedSize);
+		hashTable = new HashTable<T, compareByValue, hashByValue>(reservedSize);
 		internalIteratorStart = nullptr;
 		internalIteratorEnd = nullptr;
 	}
@@ -50,11 +50,11 @@ public:
 		}
 		delete hashTable;
 
-		hashTable = new HashTable<T>;
+		hashTable = new HashTable<T, compareByValue, hashByValue>;
 	}
 
 	bool contains(const T& value) const {
-		return hashTable->contains(value, &compareValue, &hashValue);
+		return hashTable->contains(value);
 	}
 
 	bool isEmpty() const{
@@ -66,11 +66,11 @@ public:
 	}
 
 	void add(const T& value){
-		hashTable->set(value, &compareValue, &hashValue);
+		hashTable->set(value);
 	}
 
 	void remove(const T& value){
-		hashTable->remove(value, &compareValue, &hashValue);
+		hashTable->remove(value);
 	}
 
 	SetIterator<T>* begin() {
@@ -93,7 +93,7 @@ public:
 		}
 	}
 private:
-	HashTable<T>* hashTable;
+	HashTable<T, compareByValue, hashByValue>* hashTable;
 	SetIterator<T>* internalIteratorStart;
 	SetIterator<T>* internalIteratorEnd;
 };
@@ -102,7 +102,7 @@ private:
 template<typename T>
 class HashSetIterator : public SetIterator<T> {
 	public:
-		HashSetIterator(HashTable<T>* hashTable){
+		HashSetIterator(HashTable<T, compareByValue, hashByValue>* hashTable){
 			content = hashTable;
 			current_bucket = hashTable->getMinBucket();
 			current_position = 0;
@@ -136,7 +136,7 @@ class HashSetIterator : public SetIterator<T> {
 		}
 
 	private:
-		HashTable<T>* content;
+		HashTable<T, compareByValue, hashByValue>* content;
 
 		std::size_t current_bucket;
 		std::size_t current_position;

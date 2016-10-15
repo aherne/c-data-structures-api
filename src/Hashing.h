@@ -39,7 +39,7 @@ struct hash<char*> {
 };
 
 template<typename T>
-std::size_t hashValue(const T& item) {
+std::size_t hashByValue(const T& item) {
 	hash<T> temp;
 	return temp(item);
 }

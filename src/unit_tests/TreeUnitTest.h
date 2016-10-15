@@ -8,14 +8,13 @@
 #ifndef SRC_UNIT_TESTS_TREEUNITTEST_H_
 #define SRC_UNIT_TESTS_TREEUNITTEST_H_
 
-#include "../tree/Tree.h"
 #include <iostream>
 
 class TreeUnitTest {
 public:
 	void execute();
 private:
-	void methodsTest();
+	void treeTest();
 	void iteratorsTest();
 };
 

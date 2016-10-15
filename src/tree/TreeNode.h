@@ -47,14 +47,6 @@ public:
 	}
 
 	// tested
-	TreeNode<T>* addChild(const T& data) {
-		TreeNode<T>* node = new TreeNode<T>(data);
-		node->setParent(this);
-		children.push_back(node);
-		return node;
-	}
-
-	// tested
 	void addChild(TreeNode<T>*& node) {
 		node->setParent(this);
 		children.push_back(node);
@@ -68,7 +60,7 @@ public:
 				return;
 			}
 		}
-		throw std::logic_error("Child not found!");
+		throw std::out_of_range("Child not found!");
 	}
 
 	void removeChildren() {

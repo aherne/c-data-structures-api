@@ -21,7 +21,7 @@ struct LinkedHashTableEntry {
 	LinkedHashTableEntry<VALUE>* next;
 };
 
-template<typename VALUE>
+template<typename VALUE, int (*compare)(const VALUE&,const VALUE&), std::size_t (*hashingFunc)(const VALUE&)>
 class LinkedHashTable {
 public:
 	LinkedHashTable(){
@@ -53,7 +53,7 @@ public:
 		buckets = new LinkedHashTableEntry<VALUE>*[bucket_count]();
 	}
 
-	bool contains(const VALUE& value, int (*compare)(const VALUE&,const VALUE&), std::size_t (*hashingFunc)(const VALUE&)) const{
+	bool contains(const VALUE& value) const{
 		if(count==0) return false;
 		std::size_t hashValue = hashingFunc(value);
 		int bucketNumber = getBucketNumber(hashValue);
@@ -68,12 +68,12 @@ public:
 		return false;
 	}
 
-	bool contains(const VALUE& value, int (*compare)(const VALUE&,const VALUE&)) const{
+	bool contains(const VALUE& value, int (*customCompare)(const VALUE&,const VALUE&)) const{
 		if(count==0) return false;
 		for(std::size_t i=0; i< bucket_count; ++i) {
 			LinkedHashTableEntry<VALUE>* currentBucket = buckets[i];
 			while(currentBucket!=nullptr) {
-				if(compare(currentBucket->data, value)==0) {
+				if(customCompare(currentBucket->data, value)==0) {
 					return true;
 				}
 				currentBucket = currentBucket->nextInBucket;
@@ -90,7 +90,7 @@ public:
 		return count;
 	}
 
-	const VALUE* get(const VALUE& value, int (*compare)(const VALUE&,const VALUE&), std::size_t (*hashingFunc)(const VALUE&)) const {
+	const VALUE* get(const VALUE& value) const {
 		std::size_t hashValue = hashingFunc(value);
 		int bucketNumber = getBucketNumber(hashValue);
 
@@ -104,8 +104,7 @@ public:
 		throw std::out_of_range("Key not found!");
 	}
 
-	// FIXME
-	void set(const VALUE& value, int (*compare)(const VALUE&,const VALUE&), std::size_t (*hashingFunc)(const VALUE&)){
+	void set(const VALUE& value){
 		std::size_t hashValue = hashingFunc(value);
 		int bucketNumber = getBucketNumber(hashValue);
 		LinkedHashTableEntry<VALUE>* currentBucket = buckets[bucketNumber];
@@ -156,7 +155,7 @@ public:
 		}
 	}
 
-	void remove(const VALUE& value, int (*compare)(const VALUE&,const VALUE&), std::size_t (*hashingFunc)(const VALUE&)){
+	void remove(const VALUE& value){
 		if(count==0) return;
 		std::size_t oldCount = count;
 		std::size_t hashValue = hashingFunc(value);
@@ -165,11 +164,11 @@ public:
 		if(oldCount == count) throw std::out_of_range("Key not found!");
 	}
 
-	void remove(const VALUE& value, int (*compare)(const VALUE&,const VALUE&)) {
+	void remove(const VALUE& value, int (*customCompare)(const VALUE&,const VALUE&)) {
 		if(count==0) return;
 		std::size_t oldCount = count;
 		for(std::size_t i=0; i<bucket_count; ++i) {
-			buckets[i] = recursiveDelete(buckets[i], value, compare);
+			buckets[i] = recursiveDelete(buckets[i], value, customCompare);
 		}
 		if(oldCount == count) throw std::out_of_range("Value not found!");
 	}
@@ -198,11 +197,11 @@ private:
 		return hash % bucket_count;
 	}
 
-	LinkedHashTableEntry<VALUE>* recursiveDelete(LinkedHashTableEntry<VALUE>* currentBucket, const VALUE& value, int (*compare)(const VALUE&,const VALUE&)) {
+	LinkedHashTableEntry<VALUE>* recursiveDelete(LinkedHashTableEntry<VALUE>* currentBucket, const VALUE& value, int (*comparator)(const VALUE&,const VALUE&)) {
 		if (currentBucket == nullptr)
 			return nullptr;
 
-		if (compare(currentBucket->data, value)==0) {
+		if (comparator(currentBucket->data, value)==0) {
 			deleteFromDoublyLinkedList(currentBucket);
 			LinkedHashTableEntry<VALUE>* tempNextP;
 			tempNextP = currentBucket->nextInBucket;
@@ -210,7 +209,7 @@ private:
 			-- count;
 			return tempNextP;
 		}
-		currentBucket->nextInBucket = recursiveDelete(currentBucket->nextInBucket, value, compare);
+		currentBucket->nextInBucket = recursiveDelete(currentBucket->nextInBucket, value, comparator);
 		return currentBucket;
 	}
 

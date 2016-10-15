@@ -6,6 +6,7 @@
  */
 
 #include "TreeUnitTest.h"
+#include "../tree/Tree.h"
 
 int comparator1(const long& left, const long& right) {
 	return left-right;
@@ -33,23 +34,23 @@ void TreeUnitTest::execute() {
 	 * 	  |
 	 * 	  11
 	 */
-	methodsTest();
+	treeTest();
 	iteratorsTest();
 }
 
-void TreeUnitTest::methodsTest() {
+void TreeUnitTest::treeTest() {
 	Tree<long>* tree = new Tree<long>(1);
 	TreeNode<long>* root = tree->getRoot();
-	TreeNode<long>* c1 = root->addChild(2);
-	TreeNode<long>* c2 = root->addChild(3);
-	TreeNode<long>* c3 = root->addChild(4);
-	TreeNode<long>* c1_1 = c1->addChild(5);
-	c1->addChild(6);
-	TreeNode<long>* c1_1_1 = c1_1->addChild(7);
-	c1_1->addChild(8);
-	c2->addChild(9);
-	TreeNode<long>* c3_1 = c3->addChild(10);
-	TreeNode<long>* c1_1_1_1 = c1_1_1->addChild(11);
+	TreeNode<long>* c1 = tree->createNode(2, root);
+	TreeNode<long>* c2 = tree->createNode(3, root);
+	TreeNode<long>* c3 = tree->createNode(4, root);
+	TreeNode<long>* c1_1 = tree->createNode(5, c1);
+	tree->createNode(6, c1);
+	TreeNode<long>* c1_1_1 = tree->createNode(7, c1_1);
+	tree->createNode(8, c1_1);
+	tree->createNode(9, c2);
+	TreeNode<long>* c3_1 = tree->createNode(10, c3);
+	TreeNode<long>* c1_1_1_1 = tree->createNode(11, c1_1_1);
 	std::cout << "getSize: " << (tree->getSize()==11?"OK":"FAILED") << std::endl;
 	std::cout << "getHeight: " << (tree->getHeight()==5?"OK":"FAILED") << std::endl;
 	std::cout << "getDepth: " << (c1_1_1_1->getDepth()==4?"OK":"FAILED") << std::endl;
@@ -101,16 +102,37 @@ void TreeUnitTest::methodsTest() {
 
 void TreeUnitTest::iteratorsTest() {
 	TreeNode<long>* root = new TreeNode<long>(1);
-	TreeNode<long>* c1 = root->addChild(2);
-	TreeNode<long>* c2 = root->addChild(3);
-	TreeNode<long>* c3 = root->addChild(4);
-	TreeNode<long>* c1_1 = c1->addChild(5);
-	c1->addChild(6);
-	TreeNode<long>* c1_1_1 = c1_1->addChild(7);
-	c1_1->addChild(8);
-	c2->addChild(9);
-	c3->addChild(10);
-	c1_1_1->addChild(11);
+
+	TreeNode<long>* c1 = new TreeNode<long>(2);
+	root->addChild(c1);
+
+	TreeNode<long>* c2 = new TreeNode<long>(3);
+	root->addChild(c2);
+
+	TreeNode<long>* c3 = new TreeNode<long>(4);
+	root->addChild(c3);
+
+	TreeNode<long>* c1_1 = new TreeNode<long>(5);
+	c1->addChild(c1_1);
+
+	TreeNode<long>* c1_2 = new TreeNode<long>(6);
+	c1->addChild(c1_2);
+
+	TreeNode<long>* c1_1_1 = new TreeNode<long>(7);
+	c1_1->addChild(c1_1_1);
+
+	TreeNode<long>* c1_1_2 = new TreeNode<long>(8);
+	c1_1->addChild(c1_1_2);
+
+	TreeNode<long>* c2_1 = new TreeNode<long>(9);
+	c2->addChild(c2_1);
+
+	TreeNode<long>* c3_1 = new TreeNode<long>(10);
+	c3->addChild(c3_1);
+
+
+	TreeNode<long>* c3_2 = new TreeNode<long>(11);
+	c1_1_1->addChild(c3_2);
 
 	PrintNodeVisitor<long> visitor;
 

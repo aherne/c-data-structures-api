@@ -23,7 +23,7 @@ public:
 	typedef TreeSetIterator<T> iterator;
 
 	TreeSet() {
-		tree = new RedBlackTree<T>;
+		tree = new RedBlackTree<T, compareByValue>;
 		internalIteratorStart = nullptr;
 		internalIteratorEnd = nullptr;
 	}
@@ -43,11 +43,11 @@ public:
 			internalIteratorEnd = nullptr;
 		}
 		delete tree;
-		tree = new RedBlackTree<T>;
+		tree = new RedBlackTree<T, compareByValue>;
 	}
 
 	bool contains(const T& value) const {
-		return tree->hasNode(value, &compareValue);
+		return tree->hasNode(value);
 	}
 
 	bool isEmpty() const {
@@ -59,11 +59,11 @@ public:
 	}
 
 	void add(const T& value) {
-		tree->insertNode(value, &compareValue);
+		tree->insertNode(value);
 	}
 
 	void remove(const T& value) {
-		tree->deleteNode(value, &compareValue);
+		tree->deleteNode(value);
 	}
 
 	SetIterator<T>* begin(){
@@ -86,7 +86,7 @@ public:
 		}
 	}
 private:
-	RedBlackTree<T>* tree;
+	RedBlackTree<T, compareByValue>* tree;
 	SetIterator<T>* internalIteratorStart;
 	SetIterator<T>* internalIteratorEnd;
 };
@@ -94,7 +94,7 @@ private:
 template<typename T>
 class TreeSetIterator : public SetIterator<T> {
 	public:
-		TreeSetIterator(RedBlackTree<T>* tree){
+		TreeSetIterator(RedBlackTree<T, compareByValue>* tree){
 			content = tree;
 			current_item = tree->min();
 			this->offset = 0;
@@ -125,7 +125,7 @@ class TreeSetIterator : public SetIterator<T> {
 		}
 
 	private:
-		RedBlackTree<T>* content;
+		RedBlackTree<T, compareByValue>* content;
 		RedBlackTreeNode<T>* current_item;
 		std::size_t total;
 };

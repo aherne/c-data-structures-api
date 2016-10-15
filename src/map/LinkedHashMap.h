@@ -54,13 +54,13 @@ public:
 	typedef LinkedHashMapIterator<_KEY,_VALUE> iterator;
 
 	LinkedHashMap(const std::size_t& reservedSize){
-		hashTable = new LinkedHashTable<MapEntry<_KEY,_VALUE>>(reservedSize);
+		hashTable = new LinkedHashTable<MapEntry<_KEY,_VALUE>, compareByKey, hashByKey>(reservedSize);
 		internalIteratorStart = nullptr;
 		internalIteratorEnd = nullptr;
 	}
 
 	LinkedHashMap(){
-		hashTable = new LinkedHashTable<MapEntry<_KEY,_VALUE>>;
+		hashTable = new LinkedHashTable<MapEntry<_KEY,_VALUE>, compareByKey, hashByKey>;
 		internalIteratorStart = nullptr;
 		internalIteratorEnd = nullptr;
 	}
@@ -82,14 +82,14 @@ public:
 		}
 		delete hashTable;
 
-		hashTable = new LinkedHashTable<MapEntry<_KEY,_VALUE>>;
+		hashTable = new LinkedHashTable<MapEntry<_KEY,_VALUE>, compareByKey, hashByKey>;
 	}
 
 	bool containsKey(const _KEY& key) const{
 		if(hashTable->isEmpty()) return false;
 		MapEntry<_KEY,_VALUE> mapEntry;
 		mapEntry.key = key;
-		return hashTable->contains(mapEntry, &compareByKey, &hasher);
+		return hashTable->contains(mapEntry);
 	}
 
 	bool containsValue(const _VALUE& value) const{
@@ -110,7 +110,7 @@ public:
 	const _VALUE& get(const _KEY& key) const {
 		MapEntry<_KEY,_VALUE> mapEntry;
 		mapEntry.key = key;
-		const MapEntry<_KEY,_VALUE>* result = hashTable->get(mapEntry, &compareByKey, &hasher);
+		const MapEntry<_KEY,_VALUE>* result = hashTable->get(mapEntry);
 		return result->value;
 	}
 
@@ -118,14 +118,14 @@ public:
 		MapEntry<_KEY,_VALUE> mapEntry;
 		mapEntry.key = key;
 		mapEntry.value = value;
-		hashTable->set(mapEntry, &compareByKey, &hasher);
+		hashTable->set(mapEntry);
 	}
 
 	void removeKey(const _KEY& key){
 		if(hashTable->isEmpty()) return;
 		MapEntry<_KEY,_VALUE> mapEntry;
 		mapEntry.key = key;
-		hashTable->remove(mapEntry, &compareByKey, &hasher);
+		hashTable->remove(mapEntry);
 	}
 
 	void removeValue(const _VALUE& value) {
@@ -165,7 +165,7 @@ public:
 	}
 
 private:
-	LinkedHashTable<MapEntry<_KEY,_VALUE>>* hashTable;
+	LinkedHashTable<MapEntry<_KEY,_VALUE>, compareByKey, hashByKey>* hashTable;
 	MapIterator<_KEY,_VALUE>* internalIteratorStart;
 	MapIterator<_KEY,_VALUE>* internalIteratorEnd;
 };
@@ -173,7 +173,7 @@ private:
 template<typename _KEY, typename _VALUE>
 class LinkedHashMapIterator : public MapIterator<_KEY,_VALUE> {
 	public:
-		LinkedHashMapIterator(LinkedHashTable<MapEntry<_KEY,_VALUE>>* map){
+		LinkedHashMapIterator(LinkedHashTable<MapEntry<_KEY,_VALUE>, compareByKey, hashByKey>* map){
 			content = map;
 			current_item = map->getHead();
 			this->offset = 0;
@@ -206,7 +206,7 @@ class LinkedHashMapIterator : public MapIterator<_KEY,_VALUE> {
 		}
 
 	private:
-		LinkedHashTable<MapEntry<_KEY,_VALUE>>* content;
+		LinkedHashTable<MapEntry<_KEY,_VALUE>, compareByKey, hashByKey>* content;
 		LinkedHashTableEntry<MapEntry<_KEY,_VALUE>>* current_item;
 		std::size_t total;
 };

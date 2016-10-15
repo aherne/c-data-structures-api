@@ -39,13 +39,13 @@ public:
 	typedef LinkedHashSetIterator<T> iterator;
 
 	LinkedHashSet(){
-		hashTable = new LinkedHashTable<T>;
+		hashTable = new LinkedHashTable<T, compareByValue, hashByValue>;
 		internalIteratorStart = nullptr;
 		internalIteratorEnd = nullptr;
 	}
 
 	LinkedHashSet(const std::size_t& reservedSize){
-		hashTable = new LinkedHashTable<T>(reservedSize);
+		hashTable = new LinkedHashTable<T, compareByValue, hashByValue>(reservedSize);
 		internalIteratorStart = nullptr;
 		internalIteratorEnd = nullptr;
 	}
@@ -67,11 +67,11 @@ public:
 		}
 		delete hashTable;
 
-		hashTable = new LinkedHashTable<T>;
+		hashTable = new LinkedHashTable<T, compareByValue, hashByValue>;
 	}
 
 	bool contains(const T& value) const {
-		return hashTable->contains(value, &compareValue, &hashValue);
+		return hashTable->contains(value);
 	}
 
 	bool isEmpty() const{
@@ -83,11 +83,11 @@ public:
 	}
 
 	void add(const T& value){
-		hashTable->set(value, &compareValue, &hashValue);
+		hashTable->set(value);
 	}
 
 	void remove(const T& value){
-		hashTable->remove(value, &compareValue, &hashValue);
+		hashTable->remove(value);
 	}
 
 	SetIterator<T>* begin() {
@@ -115,7 +115,7 @@ public:
 		DoublyLinkedListSorter<LinkedHashTableEntry<T>, SetBucketComparator<T>> sort(&hashTable->getHead(), &hashTable->getTail(), lhsc);
 	}
 private:
-	LinkedHashTable<T>* hashTable;
+	LinkedHashTable<T, compareByValue, hashByValue>* hashTable;
 	SetIterator<T>* internalIteratorStart;
 	SetIterator<T>* internalIteratorEnd;
 };
@@ -123,7 +123,7 @@ private:
 template<typename T>
 class LinkedHashSetIterator : public SetIterator<T> {
 	public:
-		LinkedHashSetIterator(LinkedHashTable<T>* set){
+		LinkedHashSetIterator(LinkedHashTable<T, compareByValue, hashByValue>* set){
 			content = set;
 			current_item = set->getHead();
 			this->offset = 0;
@@ -156,7 +156,7 @@ class LinkedHashSetIterator : public SetIterator<T> {
 		}
 
 	private:
-		LinkedHashTable<T>* content;
+		LinkedHashTable<T, compareByValue, hashByValue>* content;
 		LinkedHashTableEntry<T>* current_item;
 		std::size_t total;
 };

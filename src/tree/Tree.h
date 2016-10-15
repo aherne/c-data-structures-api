@@ -10,6 +10,7 @@
 
 #include "TreeNode.h"
 #include "TreeIterator.h"
+#include "../container/Queue.h"
 
 template<typename T>
 class TreeDeallocator {
@@ -80,6 +81,12 @@ class Tree {
 			SearchVisitor<T> visitor(data, comparator);
 			LevelOrderTreeIterator(root,&visitor);
 			return visitor.getResults();
+		}
+
+		TreeNode<T>* createNode(const T& data, TreeNode<T>* parent) {
+			TreeNode<T>* newNode = new TreeNode<T>(data);
+			parent->addChild(newNode);
+			return newNode;
 		}
 
 		// tested

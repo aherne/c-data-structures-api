@@ -83,7 +83,7 @@ struct stringKeyComparator {
 };
 
 template<typename T>
-int compareValue(const T& left, const T& right) {
+int compareByValue(const T& left, const T& right) {
 	comparator<T> comp;
 	return comp(left, right);
 }
