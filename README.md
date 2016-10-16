@@ -54,7 +54,8 @@ Supported data structures:
 	- Queue: implements a FIFO container adaptor where data is pushed to bottom and popped from head (similar to std::queue, but using dynamic arrays)
 - Tree: none (trying to set a common ground is unintuitive and would lead to over-programming)
 	- RedBlackTree: A binary search tree balanced on red-black principles.
-	- TreeNode: A n-ary tree (no STL equivalent)
+	- Tree: A n-ary tree (no STL equivalent)
+	- UniqueTree: A n-ary tree guaranteed to store unique values per node (no STL equivalent)
 
 Operations complexity @ list:
 <table>
@@ -410,6 +411,76 @@ Operations complexity @ container:
 			<td colspan=5>
 				<strong>Glossary:</strong><br/>
 				N = number of elements in container
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+Operations complexity @ container:
+<table>
+	<thead>
+		<tr>
+			<td>Operation</td>
+			<td>Tree</td>
+			<td>UniqueTree</td>
+			<td>Description</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>contains(V)</td>
+			<td>O(N)</td>
+			<td>O(1)</td>
+			<td>Checks if tree contains value.</td>
+		</tr>
+		<tr>
+			<td>createNode(V,TN)</td>
+			<td>O(1)</td>
+			<td>O(2)</td>
+			<td>Creates tree node and assigns it to parent.</td>
+		</tr>
+		<tr>
+			<td>getHeight()</td>
+			<td>O(N)</td>
+			<td>O(N)</td>
+			<td>Gets tree height.</td>
+		</tr>
+		<tr>
+			<td>getRoot()</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>Gets a reference to root node.</td>
+		</tr>
+		<tr>
+			<td>getSize()</td>
+			<td>O(N)</td>
+			<td>O(N)</td>
+			<td>Gets number of nodes in tree.</td>
+		</tr>
+		<tr>
+			<td>removeBranch(TN)</td>
+			<td>O(N)</td>
+			<td>O(2N)</td>
+			<td>Removes node and its descendants from both tree and memory.</td>
+		</tr>
+		<tr>
+			<td>removeNode(TN)</td>
+			<td>O(1)</td>
+			<td>O(2)</td>
+			<td>Removes node from both tree and memory.</td>
+		</tr>
+		<tr>
+			<td>search(V)</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>Removes head element of container and returns its value.</td>
+		</tr>
+		<tr>
+			<td colspan=5>
+				<strong>Glossary:</strong><br/>
+				TN = tree node<br/>
+				V = value<br/>
+				N = number of nodes in tree<br/>
 			</td>
 		</tr>
 	</tbody>
