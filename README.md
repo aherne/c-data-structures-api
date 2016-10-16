@@ -494,7 +494,7 @@ Methodology:
 2. benchmarks themselves can be found in src/Benchmarks folder and can be ran by uncommenting respective lines in src/Test.cpp (Eg: ListBenchmark)
 3. for maximum reliability, each benchmark for each data structure implementation has been ran individually in three rows, commenting all others.
 4. results are done by compiling results of three rows of tests on each structure implementation
-5. tests were ran using O2 compiler optimization on an {CPU} 8GB RAM running on Ubuntu 16
+5. tests were ran using O2 compiler optimization on an Intel(R) Core(TM) i5-2500K CPU & 8GB RAM running on Ubuntu 16
 
 ###Lists###
 
