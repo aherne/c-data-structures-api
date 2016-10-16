@@ -15,6 +15,7 @@ public:
 	void execute();
 private:
 	void treeTest();
+	void uniqueTreeTest();
 	void iteratorsTest();
 };
 

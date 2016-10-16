@@ -37,8 +37,8 @@ int main() {
 //	ContainerUnitTest containerUnitTest;
 //	containerUnitTest.execute();
 //
-//	TreeUnitTest treeUnitTest;
-//	treeUnitTest.execute();
+	TreeUnitTest treeUnitTest;
+	treeUnitTest.execute();
 
 	return 1;
 }

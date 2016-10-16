@@ -113,6 +113,17 @@ public:
 		return output;
 	}
 
+	// tested
+	std::vector<TreeNode<T>*> getDescendants() {
+		std::vector<TreeNode<T>*> output = children;
+		for(auto it=children.begin(); it!=children.end(); ++it) {
+			std::vector<TreeNode<T>*> temp = (*it)->getDescendants();
+			output.insert(output.end(),temp.begin(),temp.end());
+		}
+		return output;
+
+	}
+
 	// Size - number of elements in tree
 	// tested
 	std::size_t getSize() {

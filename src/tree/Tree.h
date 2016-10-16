@@ -10,24 +10,8 @@
 
 #include "TreeNode.h"
 #include "TreeIterator.h"
+#include "TreeDealocator.h"
 #include "../container/Queue.h"
-
-template<typename T>
-class TreeDeallocator {
-public:
-	TreeDeallocator(TreeNode<T>* root) {
-		deleteRecursive(root);
-		delete root;
-	}
-private:
-	void deleteRecursive(TreeNode<T>*& node) {
-		std::vector<TreeNode<T>*> children = node->getChildren();
-		for(auto it = children.begin(); it!=children.end(); ++it) {
-			deleteRecursive(*it);
-			delete (*it);
-		}
-	}
-};
 
 template<typename T>
 class SearchVisitor : public TreeNodeVisitor<T> {
