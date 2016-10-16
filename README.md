@@ -471,7 +471,7 @@ Operations complexity @ container:
 		</tr>
 		<tr>
 			<td>search(V)</td>
-			<td>O(1)</td>
+			<td>O(N)</td>
 			<td>O(1)</td>
 			<td>Removes head element of container and returns its value.</td>
 		</tr>
