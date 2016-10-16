@@ -1,14 +1,9 @@
-(BUG): 
+Tree 
 	If attempting to add list implementations in a tree, a crash occurs on deallocation
-
-ALL:
-	(LATER) convert MapEntry comparators into key comparators (like @ STL)
-linkedhashmap
+List
 	(LATER) unique(valueComparator)
-map
-	(LATER) unify sort test methods (since now iterators work the same)
-list
-	+ (LATER) unique(valueComparator)
-FIX: sort has complexity 2N+logN (because changing tail requires full iteration)
-ISSUE: @TreeNode  
-+ add UniqueValueTreeNode
+Map
+	(LATER) convert MapEntry comparators into key comparators (like @ STL)
+	LinkedHashMap
+		(LATER) unique(valueComparator)
+(LATER) sort has complexity 2N+logN (because changing tail requires full iteration)

@@ -416,7 +416,7 @@ Operations complexity @ container:
 	</tbody>
 </table>
 
-Operations complexity @ container:
+Operations complexity @ n-ary trees:
 <table>
 	<thead>
 		<tr>
