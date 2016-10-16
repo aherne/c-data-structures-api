@@ -3,16 +3,11 @@
 
 ALL:
 	add comparator function pointer arguments to all methods that require a comparator (instead of predefining a comparator):
-		list
-			- containsValue
-			- removeValue
 		map
 			a hasher and keyComparator are globally required
 			value comparator is not required
 				- containsValue
 				- removeValue
-		set
-			a hasher and keyComparator are globally required
 linkedhashmap
 	(LATER) unique(valueComparator)
 map

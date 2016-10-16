@@ -12,80 +12,24 @@
 #include <stdexcept>
 #include <typeinfo>
 
-template<typename T>
-struct comparator {
-	int operator()(T left, T right) const {
-		throw std::logic_error("No key/value comparator defined for this type:");
-		return 0;
-	}
-};
+static inline int comparator(const long& left, const long& right) {
+	if(left<right) return -1;
+	else if (left>right) return 1;
+	else return 0;
+}
 
-template<>
-struct comparator<char> {
-	int operator()(const char& left, const char& right) const {
-		if(left<right) return -1;
-		else if (left>right) return 1;
-		else return 0;
-	}
-};
-
-template<>
-struct comparator<long> {
-	int operator()(const long& left, const long& right) const {
-		if(left<right) return -1;
-		else if (left>right) return 1;
-		else return 0;
-	}
-};
-
-template<>
-struct comparator<double> {
-	int operator()(const double& left, const double& right) const {
-		if(left<right) return -1;
-		else if (left>right) return 1;
-		else return 0;
-	}
-};
-
-template<>
-struct comparator<char*> {
-	int operator()(char* const& left, char* const& right) const {
-		return strcmp(left, right);
-	}
-};
+static inline int comparator(char* const& left, char* const& right) {
+	return strcmp(left, right);
+}
 
 template<typename T>
 bool compareAsc(const T& left, const T& right) {
-	comparator<T> comp;
-	return (comp(left, right)<0?true:false);
+	return (comparator(left, right)<0?true:false);
 }
 
 template<typename T>
 bool compareDesc(const T& left, const T& right) {
-	comparator<T> comp;
-	return (comp(right, left)<0?true:false);
-}
-
-static inline
-bool compareAscCI(char* const& left, char* const& right) {
-	return (strcasecmp(left, right)<0?true:false);
-}
-
-static inline
-bool compareDescCI(char* const& left, char* const& right){
-	return (strcasecmp(right, left)<0?true:false);
-}
-
-struct stringKeyComparator {
-   bool operator()(char* const& a, char* const& b) const {
-	   return (strcasecmp(a, b)<0?true:false);
-   }
-};
-
-template<typename T>
-int compareByValue(const T& left, const T& right) {
-	comparator<T> comp;
-	return comp(left, right);
+	return (comparator(right, left)<0?true:false);
 }
 
 #endif /* SRC_COMPARATOR_H_ */

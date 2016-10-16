@@ -39,9 +39,9 @@ public:
 	virtual bool isEmpty() const = 0;
 	virtual const std::size_t& size() const = 0;
 	virtual bool containsIndex(const size_t& index) const = 0;
-	virtual bool containsValue(const T& value) const = 0;
+	virtual bool containsValue(const T& value, int (*comparator)(const T&, const T&)) const = 0;
 	virtual void removeIndex(const size_t& index) = 0;
-	virtual void removeValue(const T& value) = 0;
+	virtual void removeValue(const T& value, int (*comparator)(const T&, const T&)) = 0;
 	virtual ListIterator<T>* begin() = 0;
 	virtual ListIterator<T>* end() = 0;
 };

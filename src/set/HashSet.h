@@ -13,22 +13,22 @@
 #include "../Hashing.h"
 #include "../Comparator.h"
 
-template<typename T>
+template<typename T, int (*compare)(const T&,const T&), std::size_t (*hash)(const T&)>
 class HashSetIterator;
 
-template<typename T>
+template<typename T, int (*compare)(const T&,const T&)=comparator, std::size_t (*hash)(const T&)=hash>
 class HashSet : public Set<T> {
-	friend class HashSetIterator<T>;
+	friend class HashSetIterator<T,compare,hash>;
 public:
-	typedef HashSetIterator<T> iterator;
+	typedef HashSetIterator<T,compare,hash> iterator;
 
 	HashSet(){
-		hashTable = new HashTable<T, compareByValue, hashByValue>;
+		hashTable = new HashTable<T, compare, hash>;
 		internalIteratorStart = nullptr;
 		internalIteratorEnd = nullptr;
 	}
 	HashSet(const std::size_t& reservedSize){
-		hashTable = new HashTable<T, compareByValue, hashByValue>(reservedSize);
+		hashTable = new HashTable<T, compare, hash>(reservedSize);
 		internalIteratorStart = nullptr;
 		internalIteratorEnd = nullptr;
 	}
@@ -50,7 +50,7 @@ public:
 		}
 		delete hashTable;
 
-		hashTable = new HashTable<T, compareByValue, hashByValue>;
+		hashTable = new HashTable<T, compare, hash>;
 	}
 
 	bool contains(const T& value) const {
@@ -93,16 +93,16 @@ public:
 		}
 	}
 private:
-	HashTable<T, compareByValue, hashByValue>* hashTable;
+	HashTable<T, compare, hash>* hashTable;
 	SetIterator<T>* internalIteratorStart;
 	SetIterator<T>* internalIteratorEnd;
 };
 
 
-template<typename T>
+template<typename T, int (*compare)(const T&,const T&), std::size_t (*hash)(const T&)>
 class HashSetIterator : public SetIterator<T> {
 	public:
-		HashSetIterator(HashTable<T, compareByValue, hashByValue>* hashTable){
+		HashSetIterator(HashTable<T, compare, hash>* hashTable){
 			content = hashTable;
 			current_bucket = hashTable->getMinBucket();
 			current_position = 0;
@@ -136,7 +136,7 @@ class HashSetIterator : public SetIterator<T> {
 		}
 
 	private:
-		HashTable<T, compareByValue, hashByValue>* content;
+		HashTable<T, compare, hash>* content;
 
 		std::size_t current_bucket;
 		std::size_t current_position;

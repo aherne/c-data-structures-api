@@ -50,7 +50,7 @@ void ListUnitTest::testList(List<long>* list) {
 
 	long keyToCheck = 1820;
 	std::cout << "containsIndex: " << (list->containsIndex(keyToCheck)?"OK":"ERROR") << std::endl;
-	std::cout << "containsValue: " << (list->containsValue(keyToCheck)?"OK":"ERROR") << std::endl;
+	std::cout << "containsValue: " << (list->containsValue(keyToCheck, comparator)?"OK":"ERROR") << std::endl;
 	std::cout << "isEmpty: " << (!list->isEmpty()?"OK":"ERROR") << std::endl;
 	std::cout << "size: " << (list->size()==2000?"OK":"ERROR") << std::endl;
 	std::cout << "get: " << (list->get(keyToCheck)==keyToCheck?"OK":"ERROR") << std::endl;
@@ -58,7 +58,7 @@ void ListUnitTest::testList(List<long>* list) {
 	list->set(keyToCheck, newValue);
 	std::cout << "set & operator[]: " << ((*list)[keyToCheck]==newValue?"OK":"ERROR") << std::endl;
 	list->removeIndex(keyToCheck);
-	std::cout << "removeIndex: " << (!list->containsValue(newValue)?"OK":"ERROR") << std::endl;
+	std::cout << "removeIndex: " << (!list->containsValue(newValue, comparator)?"OK":"ERROR") << std::endl;
 	long oldValue = list->get(keyToCheck);
 	long newValue1 = 1234;
 	list->emplace(keyToCheck, newValue1);
@@ -67,8 +67,8 @@ void ListUnitTest::testList(List<long>* list) {
 	std::cout << "size: " << (list->size()==2000?"OK":"ERROR") << std::endl;
 
 	long valueToCheck = 123;
-	list->removeValue(valueToCheck);
-	std::cout << "removeValue: " << (!list->containsValue(valueToCheck)?"OK":"ERROR") << std::endl;
+	list->removeValue(valueToCheck, comparator);
+	std::cout << "removeValue: " << (!list->containsValue(valueToCheck, comparator)?"OK":"ERROR") << std::endl;
 
 	list->clear();
 	std::cout << "clear: " << (list->size()==0?"OK":"ERROR") << std::endl;
@@ -84,7 +84,7 @@ void ListUnitTest::testList(List<char*>* list) {
 	long keyToCheck = 1820;
 	char* valueToCheck1 = strdup("1820");
 	std::cout << "containsIndex: " << (list->containsIndex(keyToCheck)?"OK":"ERROR") << std::endl;
-	std::cout << "containsValue: " << (list->containsValue(valueToCheck1)?"OK":"ERROR") << std::endl;
+	std::cout << "containsValue: " << (list->containsValue(valueToCheck1, comparator)?"OK":"ERROR") << std::endl;
 	std::cout << "isEmpty: " << (!list->isEmpty()?"OK":"ERROR") << std::endl;
 	std::cout << "size: " << (list->size()==2000?"OK":"ERROR") << std::endl;
 	std::cout << "get: " << (strcmp(list->get(keyToCheck),valueToCheck1)==0?"OK":"ERROR") << std::endl;
@@ -92,7 +92,7 @@ void ListUnitTest::testList(List<char*>* list) {
 	list->set(keyToCheck, valueToCheck2);
 	std::cout << "set: " << (strcmp(list->get(keyToCheck),valueToCheck2)==0?"OK":"ERROR") << std::endl;
 	list->removeIndex(keyToCheck);
-	std::cout << "removeIndex: " << (!list->containsValue(valueToCheck2)?"OK":"ERROR") << std::endl;
+	std::cout << "removeIndex: " << (!list->containsValue(valueToCheck2, comparator)?"OK":"ERROR") << std::endl;
 	char* oldValue = list->get(keyToCheck);
 	list->emplace(keyToCheck, valueToCheck1);
 	std::cout << "emplace: " << (strcmp(list->get(keyToCheck),valueToCheck1)==0?"OK":"ERROR") << std::endl;
@@ -100,8 +100,8 @@ void ListUnitTest::testList(List<char*>* list) {
 	std::cout << "size: " << (list->size()==2000?"OK":"ERROR") << std::endl;
 
 	char* valueToCheck3 = strdup("123");
-	list->removeValue(valueToCheck3);
-	std::cout << "removeValue: " << (!list->containsValue(valueToCheck3)?"OK":"ERROR") << std::endl;
+	list->removeValue(valueToCheck3, comparator);
+	std::cout << "removeValue: " << (!list->containsValue(valueToCheck3, comparator)?"OK":"ERROR") << std::endl;
 
 	list->clear();
 	std::cout << "clear: " << (list->size()==0?"OK":"ERROR") << std::endl;

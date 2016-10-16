@@ -35,9 +35,12 @@ void TreeUnitTest::execute() {
 	 * 	  |
 	 * 	  11
 	 */
-//	treeTest();
+	std::cout << "=====Tree<long>=====" << std::endl;
+	treeTest();
+	std::cout << "=====UniqueTree<long>=====" << std::endl;
 	uniqueTreeTest();
-//	iteratorsTest();
+	std::cout << "=====[ITERATORS]=====" << std::endl;
+	iteratorsTest();
 }
 
 void TreeUnitTest::treeTest() {

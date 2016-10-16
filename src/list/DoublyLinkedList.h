@@ -156,10 +156,10 @@ class DoublyLinkedList: public List<T> {
 			return (index>=count?false:true);
 		}
 
-		bool containsValue(const T& value) const {
+		bool containsValue(const T& value, int (*comparator)(const T&, const T&)) const {
 			DoublyLinkedListEntry<T>* temp = head;
 			while(temp!=nullptr) {
-				if(valueComparator(temp->value, value)==0) {
+				if(comparator(temp->value, value)==0) {
 					return true;
 				}
 				temp = temp->next;
@@ -180,14 +180,14 @@ class DoublyLinkedList: public List<T> {
 			}
 		}
 
-		void removeValue(const T& value) {
+		void removeValue(const T& value, int (*comparator)(const T&, const T&)) {
 			if(count==0) return;
 
 			std::size_t oldCount = count;
 			DoublyLinkedListEntry<T>* temp = head;
 			std::size_t position = 0;
 			while(temp!=nullptr) {
-				if(valueComparator(temp->value, value)==0) {
+				if(comparator(temp->value, value)==0) {
 					if(temp == head) {
 						deleteHead();
 						temp = head;
@@ -351,7 +351,6 @@ class DoublyLinkedList: public List<T> {
 		DoublyLinkedListEntry<T>* head;
 		DoublyLinkedListEntry<T>* tail;
 		std::size_t count;
-		comparator<T> valueComparator;
 
 		// for fast iteration
 		mutable std::size_t currentIndex;

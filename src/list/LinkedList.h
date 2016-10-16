@@ -176,10 +176,10 @@ class LinkedList: public List<T> {
 			return (index>=count?false:true);
 		}
 
-		bool containsValue(const T& value) const {
+		bool containsValue(const T& value, int (*comparator)(const T&, const T&)) const {
 			LinkedListEntry<T>* temp = head;
 			while(temp!=nullptr) {
-				if(valueComparator(temp->value, value)==0) {
+				if(comparator(temp->value, value)==0) {
 					return true;
 				}
 				temp = temp->next;
@@ -198,7 +198,7 @@ class LinkedList: public List<T> {
 			}
 		}
 
-		void removeValue(const T& value) {
+		void removeValue(const T& value, int (*comparator)(const T&, const T&)) {
 			if(count==0) return;
 
 			std::size_t oldCount = count;
@@ -206,13 +206,13 @@ class LinkedList: public List<T> {
 			std::size_t position = 0;
 			while(temp!=nullptr) {
 				if(temp == head) {
-					if(valueComparator(temp->value, value)==0) {
+					if(comparator(temp->value, value)==0) {
 						deleteHead();
 						temp = head;
 					}
 				} else {
 					if(temp->next!=nullptr) {
-						if(valueComparator(temp->next->value, value)==0) {
+						if(comparator(temp->next->value, value)==0) {
 							currentIndex = position;
 							currentItem = temp;
 							deleteNextItem();
@@ -318,7 +318,6 @@ class LinkedList: public List<T> {
 		LinkedListEntry<T>* head;
 		LinkedListEntry<T>* tail;
 		std::size_t count;
-		comparator<T> valueComparator;
 
 		// for fast get/set iteration
 		mutable std::size_t currentIndex;

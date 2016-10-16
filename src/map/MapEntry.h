@@ -19,20 +19,17 @@ struct MapEntry {
 
 template<typename _KEY, typename _VALUE>
 int compareByKey(const MapEntry<_KEY,_VALUE>& left, const MapEntry<_KEY,_VALUE>& right) {
-	comparator<_KEY> cmp;
-	return cmp(left.key, right.key);
+	return comparator(left.key, right.key);
 }
 
 template<typename _KEY, typename _VALUE>
 int compareByValue(const MapEntry<_KEY,_VALUE>& left, const MapEntry<_KEY,_VALUE>& right) {
-	comparator<_VALUE> cmp;
-	return cmp(left.value, right.value);
+	return comparator(left.value, right.value);
 }
 
 template<typename _KEY, typename _VALUE>
 std::size_t hashByKey(const MapEntry<_KEY,_VALUE>& element) {
-	hash<_KEY> temp;
-	return temp(element.key);
+	return hash(element.key);
 }
 
 #endif /* MAP_MAPENTRY_H_ */

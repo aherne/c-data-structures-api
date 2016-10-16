@@ -29,23 +29,23 @@ class SetBucketComparator {
 		bool (*compare)(const T&,const T&);
 };
 
-template<typename T>
+template<typename T, int (*compare)(const T&,const T&), std::size_t (*hash)(const T&)>
 class LinkedHashSetIterator;
 
-template<typename T>
+template<typename T, int (*compare)(const T&,const T&)=comparator, std::size_t (*hash)(const T&)=hash>
 class LinkedHashSet : public Set<T> {
-	friend class LinkedHashSetIterator<T>;
+	friend class LinkedHashSetIterator<T,compare,hash>;
 public:
-	typedef LinkedHashSetIterator<T> iterator;
+	typedef LinkedHashSetIterator<T,compare,hash> iterator;
 
 	LinkedHashSet(){
-		hashTable = new LinkedHashTable<T, compareByValue, hashByValue>;
+		hashTable = new LinkedHashTable<T, compare, hash>;
 		internalIteratorStart = nullptr;
 		internalIteratorEnd = nullptr;
 	}
 
 	LinkedHashSet(const std::size_t& reservedSize){
-		hashTable = new LinkedHashTable<T, compareByValue, hashByValue>(reservedSize);
+		hashTable = new LinkedHashTable<T, compare, hash>(reservedSize);
 		internalIteratorStart = nullptr;
 		internalIteratorEnd = nullptr;
 	}
@@ -67,7 +67,7 @@ public:
 		}
 		delete hashTable;
 
-		hashTable = new LinkedHashTable<T, compareByValue, hashByValue>;
+		hashTable = new LinkedHashTable<T, compare, hash>;
 	}
 
 	bool contains(const T& value) const {
@@ -115,15 +115,15 @@ public:
 		DoublyLinkedListSorter<LinkedHashTableEntry<T>, SetBucketComparator<T>> sort(&hashTable->getHead(), &hashTable->getTail(), lhsc);
 	}
 private:
-	LinkedHashTable<T, compareByValue, hashByValue>* hashTable;
+	LinkedHashTable<T, compare, hash>* hashTable;
 	SetIterator<T>* internalIteratorStart;
 	SetIterator<T>* internalIteratorEnd;
 };
 
-template<typename T>
+template<typename T, int (*compare)(const T&,const T&), std::size_t (*hash)(const T&)>
 class LinkedHashSetIterator : public SetIterator<T> {
 	public:
-		LinkedHashSetIterator(LinkedHashTable<T, compareByValue, hashByValue>* set){
+		LinkedHashSetIterator(LinkedHashTable<T, compare, hash>* set){
 			content = set;
 			current_item = set->getHead();
 			this->offset = 0;
@@ -156,7 +156,7 @@ class LinkedHashSetIterator : public SetIterator<T> {
 		}
 
 	private:
-		LinkedHashTable<T, compareByValue, hashByValue>* content;
+		LinkedHashTable<T, compare, hash>* content;
 		LinkedHashTableEntry<T>* current_item;
 		std::size_t total;
 };

@@ -15,14 +15,12 @@
 
 template<typename T>
 int compareNode(TreeNode<T>* const& left, TreeNode<T>* const& right) {
-	comparator<T> cmp;
-	return cmp(left->getData(), right->getData());
+	return comparator(left->getData(), right->getData());
 }
 
 template<typename T>
 std::size_t hashNode(TreeNode<T>* const& node) {
-	hash<T> temp;
-	return temp(node->getData());
+	return hash(node->getData());
 }
 
 template<typename T>

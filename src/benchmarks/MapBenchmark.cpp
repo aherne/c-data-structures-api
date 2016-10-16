@@ -34,41 +34,41 @@ struct my_hash_function{
 };
 
 void MapBenchmark::execute() {
-//	std::cout << "std::map<long,long>" << std::endl;
-//	testMapLong();
-//
-//	std::cout << "std::map<char*,char*>" << std::endl;
-//	testMapString();
-//
-//	std::cout << "std::unordered_map<long,long>" << std::endl;
-//	testUnorderedMapLong();
-//
-//	std::cout << "std::unordered_map<char*,char*>" << std::endl;
-//	testUnorderedMapString();
-//
-//	HashMap<long, long> hml;
-//	std::cout << "HashMap<long,long>" << std::endl;
-//	test(&hml);
-//
-//	LinkedHashMap<long, long> lhml;
-//	std::cout << "LinkedHashMap<long,long>" << std::endl;
-//	test(&lhml);
+	std::cout << "std::map<long,long>" << std::endl;
+	testMapLong();
 
-//	TreeMap<long, long> tml;
-//	std::cout << "TreeMap<long,long>" << std::endl;
-//	test(&tml);
-//
-//	HashMap<char*, char*> hms;
-//	std::cout << "HashMap<char*,char*>" << std::endl;
-//	test(&hms);
-//
-//	LinkedHashMap<char*, char*> lhms;
-//	std::cout << "LinkedHashMap<char*,char*>" << std::endl;
-//	test(&lhms);
-//
-//	TreeMap<char*, char*> tms;
-//	std::cout << "TreeMap<char*,char*>" << std::endl;
-//	test(&tms);
+	std::cout << "std::map<char*,char*>" << std::endl;
+	testMapString();
+
+	std::cout << "std::unordered_map<long,long>" << std::endl;
+	testUnorderedMapLong();
+
+	std::cout << "std::unordered_map<char*,char*>" << std::endl;
+	testUnorderedMapString();
+
+	HashMap<long, long> hml;
+	std::cout << "HashMap<long,long>" << std::endl;
+	test(&hml);
+
+	LinkedHashMap<long, long> lhml;
+	std::cout << "LinkedHashMap<long,long>" << std::endl;
+	test(&lhml);
+
+	TreeMap<long, long> tml;
+	std::cout << "TreeMap<long,long>" << std::endl;
+	test(&tml);
+
+	HashMap<char*, char*> hms;
+	std::cout << "HashMap<char*,char*>" << std::endl;
+	test(&hms);
+
+	LinkedHashMap<char*, char*> lhms;
+	std::cout << "LinkedHashMap<char*,char*>" << std::endl;
+	test(&lhms);
+
+	TreeMap<char*, char*> tms;
+	std::cout << "TreeMap<char*,char*>" << std::endl;
+	test(&tms);
 }
 
 void MapBenchmark::testUnorderedMapLong() {

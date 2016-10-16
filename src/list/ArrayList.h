@@ -116,9 +116,9 @@ public:
 		return (index>=count?false:true);
 	}
 
-	bool containsValue(const T& value) const {
+	bool containsValue(const T& value, int (*comparator)(const T&, const T&)) const {
 		for(std::size_t i=0; i<count; ++i) {
-			if(valueComparator(contents[i], value)==0) {
+			if(comparator(contents[i], value)==0) {
 				return true;
 			}
 		}
@@ -135,10 +135,10 @@ public:
 		--count;
 	}
 
-	void removeValue(const T& value) {
+	void removeValue(const T& value, int (*comparator)(const T&, const T&)) {
 		int reduce = 0;
 		for(std::size_t j=0; j< count; ++j) {
-			if(valueComparator(contents[j], value)==0) {
+			if(comparator(contents[j], value)==0) {
 				reduce ++;
 			} else {
 				if(reduce>0) {
@@ -184,8 +184,6 @@ private:
 	T* contents;
 	ListIterator<T>* internalIteratorStart;
 	ListIterator<T>* internalIteratorEnd;
-
-	comparator<T> valueComparator;
 };
 
 template<typename T>
