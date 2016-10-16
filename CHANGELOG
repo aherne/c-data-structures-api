@@ -2,12 +2,7 @@
 	If attempting to add list implementations in a tree, a crash occurs on deallocation
 
 ALL:
-	add comparator function pointer arguments to all methods that require a comparator (instead of predefining a comparator):
-		map
-			a hasher and keyComparator are globally required
-			value comparator is not required
-				- containsValue
-				- removeValue
+	(LATER) convert MapEntry comparators into key comparators (like @ STL)
 linkedhashmap
 	(LATER) unique(valueComparator)
 map
