@@ -1,5 +1,6 @@
 Tree 
 	If attempting to add list implementations in a tree, a crash occurs on deallocation
+	add const declarations for methods and parameters
 List
 	(LATER) unique(valueComparator)
 Map
