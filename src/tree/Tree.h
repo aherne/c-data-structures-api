@@ -107,7 +107,7 @@ class Tree {
 			q.push(root);
 			while(!q.isEmpty()) {
 				TreeNode<T>* node = q.pop();
-				if(comparator(data, node->getData())) return true;
+				if(comparator(data, node->getData())==0) return true;
 				std::vector<TreeNode<T>*> children = node->getChildren();
 				for(auto it = children.begin(); it!=children.end(); ++it) {
 					q.push(*it);
