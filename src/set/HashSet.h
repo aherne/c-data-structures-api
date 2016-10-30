@@ -57,6 +57,10 @@ public:
 		return hashTable->contains(value);
 	}
 
+	const T* find(const T& value) {
+		return hashTable->get(value);
+	}
+
 	bool isEmpty() const{
 		return hashTable->isEmpty();
 	}

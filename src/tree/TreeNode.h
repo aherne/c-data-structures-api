@@ -37,12 +37,12 @@ public:
 	}
 
 	// tested
-	const T& getData() {
+	const T& getData() const {
 		return data;
 	}
 
 	// tested
-	const std::vector<TreeNode<T>*>& getChildren() {
+	const std::vector<TreeNode<T>*>& getChildren() const {
 		return children;
 	}
 
@@ -53,7 +53,7 @@ public:
 	}
 
 	// tested
-	void removeChild(TreeNode<T>* node) {
+	void removeChild(TreeNode<T>*& node) {
 		for(auto it=children.begin(); it!=children.end(); ++it) {
 			if(*it == node) {
 				it = children.erase(it);
@@ -80,7 +80,7 @@ public:
 	}
 
 	// tested
-	bool isAncestorOf(TreeNode<T>*& node) {
+	bool isAncestorOf(TreeNode<T>*& node) const {
 		TreeNode<T>* root = node;
 		while(root->getParent()!=nullptr) {
 			if(root->getParent()==this) {
@@ -114,7 +114,7 @@ public:
 	}
 
 	// tested
-	std::vector<TreeNode<T>*> getDescendants() {
+	std::vector<TreeNode<T>*> getDescendants() const {
 		std::vector<TreeNode<T>*> output = children;
 		for(auto it=children.begin(); it!=children.end(); ++it) {
 			std::vector<TreeNode<T>*> temp = (*it)->getDescendants();
@@ -126,7 +126,7 @@ public:
 
 	// Size - number of elements in tree
 	// tested
-	std::size_t getSize() {
+	std::size_t getSize() const {
 		std::size_t output = (parent==nullptr?1:0)+children.size();
 		for(auto it=children.begin(); it!=children.end(); ++it) {
 			output += (*it)->getSize();
@@ -135,7 +135,7 @@ public:
 	}
 	// The height of a node is the number of edges on the longest downward path between that node and a leaf.
 	// tested
-	std::size_t getHeight() {
+	std::size_t getHeight() const {
 		std::size_t height = 0;
 		for(auto it=children.begin(); it!=children.end(); ++it) {
 			std::size_t tmp_height = (*it)->getHeight();
@@ -148,7 +148,7 @@ public:
 
 	// The depth of a node is the number of edges from the node to the tree's root node.
 	// tested
-	std::size_t getDepth() {
+	std::size_t getDepth() const {
 		std::size_t depth = 0;
 		TreeNode<T>* root = parent;
 		while(root!=nullptr) {

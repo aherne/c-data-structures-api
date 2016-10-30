@@ -14,6 +14,7 @@
 #include "benchmarks/ListBenchmark.h"
 #include "unit_tests/ContainerUnitTest.h"
 #include "unit_tests/TreeUnitTest.h"
+#include "unit_tests/GraphUnitTest.h"
 
 int main() {
 //	MapUnitTest mapUnitTest;
@@ -37,9 +38,11 @@ int main() {
 //	ContainerUnitTest containerUnitTest;
 //	containerUnitTest.execute();
 //
-	TreeUnitTest treeUnitTest;
-	treeUnitTest.execute();
+//	TreeUnitTest treeUnitTest;
+//	treeUnitTest.execute();
 
+	GraphUnitTest graphUnitTest;
+	graphUnitTest.execute();
 	return 1;
 }
 

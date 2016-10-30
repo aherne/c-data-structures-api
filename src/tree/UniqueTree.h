@@ -11,7 +11,9 @@
 #include "TreeNode.h"
 #include "TreeDealocator.h"
 #include "TreeIterator.h"
-#include "../set/HashSet.h"
+#include "../HashTable.h"
+#include "../Comparator.h"
+#include "../Hashing.h"
 
 template<typename T>
 int compareNode(TreeNode<T>* const& left, TreeNode<T>* const& right) {
