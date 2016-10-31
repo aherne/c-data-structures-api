@@ -1,12 +1,16 @@
 Tree 
 	If attempting to add list implementations in a tree, a crash occurs on deallocation
-	add const declarations for methods and parameters
+	data @ uniquegraphvector is forced to use my comparator
 List
 	(LATER) unique(valueComparator)
+	(LATER) sort has complexity 2N+logN (because changing tail requires full iteration)
 Map
-	operator[] overload
 	(LATER) convert MapEntry comparators into key comparators (like @ STL)
 	LinkedHashMap
 		(LATER) unique(valueComparator)
-(LATER) sort has complexity 2N+logN (because changing tail requires full iteration)
+Graph
+	add support for weighted graphs
+	(LATER) test for cycles @ (non-unique) Graph
+	data @ uniquegraphvector is forced to use my comparator
 Document all code
+test what happens whe we try to use another data type than long/char* @ all data structures

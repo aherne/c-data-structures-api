@@ -39,6 +39,13 @@ public:
 		delete hashTable;
 	}
 
+	const _VALUE& operator[](const _KEY& key) const {
+		MapEntry<_KEY,_VALUE> mapEntry;
+		mapEntry.key = key;
+		const MapEntry<_KEY,_VALUE>* result = hashTable->get(mapEntry);
+		return result->value;
+	}
+
 	void clear(){
 		if(internalIteratorStart!=nullptr) {
 			delete internalIteratorStart;

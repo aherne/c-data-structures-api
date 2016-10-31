@@ -33,6 +33,13 @@ public:
 		delete tree;
 	}
 
+	const _VALUE& operator[](const _KEY& key) const {
+		MapEntry<_KEY,_VALUE> mapEntry;
+		mapEntry.key = key;
+		const MapEntry<_KEY,_VALUE>* result = tree->getNodeValue(mapEntry);
+		return result->value;
+	}
+
 	void clear() {
 		if(internalIteratorStart!=nullptr) {
 			delete internalIteratorStart;
