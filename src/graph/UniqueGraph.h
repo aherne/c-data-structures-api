@@ -71,10 +71,14 @@ public:
 		}
 	}
 
-	// O(1)
+	// O(2)
 	UniqueGraphVertex<T>* createVertex(const T& data) {
-		UniqueGraphVertex<T>* temp = new UniqueGraphVertex<T>();
-		temp->data = data;
+		UniqueGraphVertex<T>* temp = new UniqueGraphVertex<T>;
+		temp->data=data;
+		if(vertexes.contains(temp)) {
+			delete temp;
+			throw std::logic_error("Vertex with that value already exists!");
+		}
 		vertexes.add(temp);
 		return temp;
 	}
