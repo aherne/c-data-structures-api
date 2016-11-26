@@ -10,8 +10,8 @@
 
 #include "../container/Queue.h"
 #include <vector>
+#include "BFS.h"
 
-enum BFSColor { WHITE, GREY, BLACK };
 
 template<typename T>
 struct GraphVertex {

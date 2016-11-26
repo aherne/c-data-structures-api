@@ -16,6 +16,8 @@ public:
 private:
 	void simpleGraphTest();
 	void simpleUniqueGraphTest();
+	void weightedGraphTest();
+	void weightedUniqueGraphTest();
 };
 
 #endif /* SRC_UNIT_TESTS_GRAPHUNITTEST_H_ */

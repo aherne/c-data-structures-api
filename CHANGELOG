@@ -14,3 +14,4 @@ Graph
 	data @ uniquegraphvector is forced to use my comparator
 Document all code
 test what happens whe we try to use another data type than long/char* @ all data structures
+CONVERT COMPARATORS TO STRUCT?
