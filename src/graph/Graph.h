@@ -19,7 +19,6 @@ struct GraphVertex {
 	std::vector<GraphVertex<T>*> edges;
 	// BFS parameters
 	BFSColor color;
-	std::size_t distance;
 	GraphVertex<T>* parent;
 };
 
@@ -143,10 +142,9 @@ public:
 	std::size_t getDistance(GraphVertex<T>* left, GraphVertex<T>* right) const {
 		for(auto it = vertexes.begin(); it!=vertexes.end(); ++it) {
 			(*it)->color = WHITE;
-			(*it)->distance = -1;
+			(*it)->parent = nullptr;
 		}
 		left->color = GREY;
-		left->distance = 0;
 		Queue<GraphVertex<T>*> queue;
 		queue.push(left);
 		while(!queue.isEmpty()) {
@@ -155,10 +153,16 @@ public:
 			for(auto it = children.begin(); it != children.end(); ++it){
 				if((*it)->color == WHITE) {
 					if((*it)==right) {
-						return node->distance + 1;
+						std::size_t response = 0;
+						GraphVertex<T>* parent = node;
+						while(parent!=nullptr) {
+							parent = parent->parent;
+							++ response;
+						}
+						return response;
 					}
 					(*it)->color = GREY;
-					(*it)->distance = node->distance + 1;
+					(*it)->parent = node;
 					queue.push(*it);
 				}
 			}

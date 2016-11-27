@@ -86,10 +86,10 @@ void GraphUnitTest::execute() {
 //	simpleGraphTest();
 //	std::cout << "=====UniqueGraph<long>=====" << std::endl;
 //	simpleUniqueGraphTest();
-//	std::cout << "=====WeightedGraph<long,long>=====" << std::endl;
-//	weightedGraphTest();
-	std::cout << "=====WeightedUniqueGraph<long,long>=====" << std::endl;
-	weightedUniqueGraphTest();
+	std::cout << "=====WeightedGraph<long,long>=====" << std::endl;
+	weightedGraphTest();
+//	std::cout << "=====WeightedUniqueGraph<long,long>=====" << std::endl;
+//	weightedUniqueGraphTest();
 }
 
 void GraphUnitTest::simpleGraphTest() {

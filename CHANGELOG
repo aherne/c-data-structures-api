@@ -9,9 +9,10 @@ Map
 	LinkedHashMap
 		(LATER) unique(valueComparator)
 Graph
-	add support for weighted graphs
 	(LATER) test for cycles @ (non-unique) Graph
 	data @ uniquegraphvector is forced to use my comparator
+	weighted
+		getEdges (array of connecting weights)
 Document all code
 test what happens whe we try to use another data type than long/char* @ all data structures
 CONVERT COMPARATORS TO STRUCT?

@@ -18,8 +18,9 @@ struct WeightedGraphVertex {
 	std::vector<std::pair<WeightedGraphVertex<T,W>*,W>> edges;
 	// BFS parameters
 	BFSColor color;
-	std::size_t distance;
 	WeightedGraphVertex<T,W>* parent;
+	// TODO: store parent in such a way when connecting paths are returned weight is included with O(1) costs
+	// TODO: getShortestWeightedDistance (shortest path != shortest weighted distance)
 };
 
 template<typename T,typename W>
@@ -160,10 +161,9 @@ public:
 	std::size_t getDistance(WeightedGraphVertex<T,W>* left, WeightedGraphVertex<T,W>* right) const {
 		for(auto it = vertexes.begin(); it!=vertexes.end(); ++it) {
 			(*it)->color = WHITE;
-			(*it)->distance = -1;
+			(*it)->parent = nullptr;
 		}
 		left->color = GREY;
-		left->distance = 0;
 		Queue<WeightedGraphVertex<T,W>*> queue;
 		queue.push(left);
 		while(!queue.isEmpty()) {
@@ -172,10 +172,16 @@ public:
 			for(auto it = children.begin(); it != children.end(); ++it){
 				if((*it).first->color == WHITE) {
 					if((*it).first==right) {
-						return node->distance + 1;
+						std::size_t response = 0;
+						WeightedGraphVertex<T,W>* parent = node;
+						while(parent!=nullptr) {
+							parent = parent->parent;
+							++response;
+						}
+						return response;
 					}
 					(*it).first->color = GREY;
-					(*it).first->distance = node->distance + 1;
+					(*it).first->parent = node;
 					queue.push((*it).first);
 				}
 			}
