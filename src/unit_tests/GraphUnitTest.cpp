@@ -47,8 +47,8 @@ class PrintWeightedEdgeVisitor: public WeightedGraphEdgeVisitor<T,W> {
 public:
 	virtual ~PrintWeightedEdgeVisitor(){};
 
-	void visit(const std::pair<WeightedGraphVertex<T,W>*,W>& element) {
-		std::cout << element.first->data << std::endl;
+	void visit(WeightedGraphEdge<T,W>* const element) {
+		std::cout << element->vertex->data << std::endl;
 	}
 };
 
@@ -240,7 +240,7 @@ void GraphUnitTest::weightedGraphTest() {
 	std::cout << "getWeight: " << (graph.getWeight(v1,v2)==2?"OK":"FAILED") << std::endl;
 	std::cout << "isPath: " << (graph.isPath(v1,v8)?"OK":"FAILED") << std::endl;
 	std::cout << "getDistance: " << (graph.getDistance(v1,v7)==4?"OK":"FAILED") << std::endl;
-	std::cout << "getPath: " << (graph.getPath(v1,v7).size()==5?"OK":"FAILED") << std::endl;
+	std::cout << "getPath: " << (graph.getPath(v1,v7).size()==4?"OK":"FAILED") << std::endl;
 	graph.removeVertex(v6);
 	std::cout << "removeVertex: " << (!graph.isPath(v4,v7)?"OK":"FAILED") << std::endl;
 	std::cout << "contains: " << (graph.contains(9,comparator)?"OK":"FAILED") << std::endl;
