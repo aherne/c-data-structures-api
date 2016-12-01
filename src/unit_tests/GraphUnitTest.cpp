@@ -67,8 +67,8 @@ class PrintUniqueWeightedEdgeVisitor: public UniqueWeightedGraphEdgeVisitor<T,W>
 public:
 	virtual ~PrintUniqueWeightedEdgeVisitor(){};
 
-	void visit(const std::pair<UniqueWeightedGraphVertex<T,W>*,W>& element) {
-		std::cout << element.first->data << std::endl;
+	void visit(UniqueWeightedGraphEdge<T,W>* const element) {
+		std::cout << element->vertex->data << std::endl;
 	}
 };
 
@@ -86,10 +86,10 @@ void GraphUnitTest::execute() {
 //	simpleGraphTest();
 //	std::cout << "=====UniqueGraph<long>=====" << std::endl;
 //	simpleUniqueGraphTest();
-	std::cout << "=====WeightedGraph<long,long>=====" << std::endl;
-	weightedGraphTest();
-//	std::cout << "=====WeightedUniqueGraph<long,long>=====" << std::endl;
-//	weightedUniqueGraphTest();
+//	std::cout << "=====WeightedGraph<long,long>=====" << std::endl;
+//	weightedGraphTest();
+	std::cout << "=====WeightedUniqueGraph<long,long>=====" << std::endl;
+	weightedUniqueGraphTest();
 }
 
 void GraphUnitTest::simpleGraphTest() {
@@ -237,10 +237,14 @@ void GraphUnitTest::weightedGraphTest() {
 	// unit test
 	std::cout << "getSize: " << (graph.getSize()==10?"OK":"FAILED") << std::endl;
 	std::cout << "isEdge: " << (graph.isEdge(v1,v2)?"OK":"FAILED") << std::endl;
-	std::cout << "getWeight: " << (graph.getWeight(v1,v2)==2?"OK":"FAILED") << std::endl;
+	std::cout << "getWeight: " << (graph.getWeight(v2,v10)==7?"OK":"FAILED") << std::endl;
 	std::cout << "isPath: " << (graph.isPath(v1,v8)?"OK":"FAILED") << std::endl;
 	std::cout << "getDistance: " << (graph.getDistance(v1,v7)==4?"OK":"FAILED") << std::endl;
 	std::cout << "getPath: " << (graph.getPath(v1,v7).size()==4?"OK":"FAILED") << std::endl;
+	std::vector<WeightedGraphEdge<long,long>*> path = graph.getPath(v1,v7);
+	for(auto it = path.begin(); it!=path.end(); ++it) {
+		std::cout << (*it)->vertex->data << ":" << (*it)->weight << std::endl;
+	}
 	graph.removeVertex(v6);
 	std::cout << "removeVertex: " << (!graph.isPath(v4,v7)?"OK":"FAILED") << std::endl;
 	std::cout << "contains: " << (graph.contains(9,comparator)?"OK":"FAILED") << std::endl;
@@ -294,7 +298,11 @@ void GraphUnitTest::weightedUniqueGraphTest() {
 	std::cout << "getWeight: " << (graph.getWeight(v1,v2)==2?"OK":"FAILED") << std::endl;
 	std::cout << "isPath: " << (graph.isPath(v1,v8)?"OK":"FAILED") << std::endl;
 	std::cout << "getDistance: " << (graph.getDistance(v1,v7)==4?"OK":"FAILED") << std::endl;
-	std::cout << "getPath: " << (graph.getPath(v1,v7).size()==5?"OK":"FAILED") << std::endl;
+	std::cout << "getPath: " << (graph.getPath(v1,v7).size()==4?"OK":"FAILED") << std::endl;
+	std::vector<UniqueWeightedGraphEdge<long,long>*> path = graph.getPath(v1,v7);
+	for(auto it = path.begin(); it!=path.end(); ++it) {
+		std::cout << (*it)->vertex->data << ":" << (*it)->weight << std::endl;
+	}
 	graph.removeVertex(v6);
 	std::cout << "removeVertex: " << (!graph.isPath(v4,v7)?"OK":"FAILED") << std::endl;
 	std::cout << "contains: " << (graph.contains(9)?"OK":"FAILED") << std::endl;

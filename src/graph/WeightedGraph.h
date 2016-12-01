@@ -13,7 +13,7 @@
 #include "BFS.h"
 
 template<typename T, typename W>
-struct WeightedGraphEdge;;
+struct WeightedGraphEdge;
 
 template<typename T, typename W>
 struct WeightedGraphVertex {
@@ -22,8 +22,6 @@ struct WeightedGraphVertex {
 	// BFS parameters
 	BFSColor color;
 	WeightedGraphEdge<T,W>* parent;
-	// TODO: store parent in such a way when connecting paths are returned weight is included with O(1) costs
-	// TODO: getShortestWeightedDistance (shortest path != shortest weighted distance => DFS???)
 };
 
 template<typename T, typename W>
@@ -237,8 +235,10 @@ public:
 				if((*it)->vertex->color == WHITE) {
 					if((*it)->vertex==right) {
 						std::vector<WeightedGraphEdge<T,W>*> response;
+						response.push_back(*it);
 						WeightedGraphEdge<T,W>* parent = node;
 						while(parent!=nullptr) {
+							if(parent->vertex == left) break;
 							response.push_back(parent);
 							parent = parent->vertex->parent;
 						}
