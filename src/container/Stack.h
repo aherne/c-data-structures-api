@@ -61,7 +61,7 @@ public:
 
 	T* begin() {
 		if(count==0) return nullptr;
-		return &contents[0]; // TODO: keep the appearance of a stack
+		return &contents[0];
 	}
 
 	T* end() {
