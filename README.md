@@ -41,7 +41,9 @@ Components fall into three categories:
 - shared: shared dependencies of applied components
 
 Unlike STL components, CDS components are polymorphic. This means, for example, we can use abstract List* to work with a list instead of its aplied ArrayList implementation: 
+
 List<long>* list = new ArrayList<long>;
+
 The advantage of this is hiding complexity: we can at any point decide to use a DoublyLinkedList instead and no other lines of code will need being changed. Another advantage is predictability of method names.
 
 Supported abstract & applied components:
@@ -83,8 +85,8 @@ Each component (abstract or applied) has a polymorphic iterator attached (Eg: cl
 
 - CDS iterators only use forward iteration. This is a restricting move desiged to keep things simple. Nevertheless, it's easy to add backward iteration later on...
 - CDS iterators invalidate automatically whenever items are added/subtracted from structure while iterating. This is a restricting move designed to GUARANTEE safety and no crashes, but at the same time produces a minor performance overhead. This is because on any loop, a check is made whether or not data structure size has changed.
-- CDS iterators are polymorphic, with their structure mirroring that of components. This means, for example, a LinkedList can be iterated both by an abstract ListIterator* or by an applied LinkedListIterator:
-for(auto it=list.begin(); *it!=list.end; ++*it)) { ... }
+- CDS iterators are polymorphic, with their structure mirroring that of components. This means, for example, a LinkedList can be iterated both by an abstract ListIterator* or by an applied LinkedListIterator:<br/>
+for(auto it=list.begin(); *it!=list.end; ++*it)) { ... }<br/>
 for(auto it=linkedList.begin(); it!=linkedList.end; ++it)) { ... }
 
 ###Dependencies###
@@ -92,6 +94,7 @@ for(auto it=linkedList.begin(); it!=linkedList.end; ++it)) { ... }
 Some components rely on dependencies in order to be viable:
 - comparators: functions comparing two items of same type and returning an int (>0 if smaller, 0 if equal, 0> if greater), to be used in sorting and by all structures relying on RedBlackTree.
 - hashers: functions compiling a hash code of an item based on type returning an unsigned int, to be used by all structures relying on (Linked)HashTable.
+
 Unlike STL comparators & hashers, for simplicity reasons, CDS comparators & hashers are C-compliant static inline functions. One can decide not to use the default implementations provided for long & char*, in which case users must supply an additional comparator/hasher template/method argument, akin one sees in STL. 
 
 ####Comparators####
@@ -107,7 +110,124 @@ static inline std::size_t hash(const TYPE&)
 
 ##Reference guide##
 
-By virtue of implementing a blueprint, all applied components have almost identical signature to their abstract parent. For that reason  
+By virtue of implementing a blueprint, all applied components have almost identical signature to their abstract parent. What changes is the way those methods are implemented and their guaranteed Ocomplexity.
+
+###List###
+
+Method signatures defined by List class:
+<table>
+	<thead>
+		<tr>
+			<td>Method</td>
+			<td>Arguments</td>
+			<td>Returns</td>
+			<td>Description</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>addToTop</td>
+			<td>VALUE</td>
+			<td>void</td>
+			<td>Add value on top of list.</td>
+		</tr>
+		<tr>
+			<td>addToBottom</td>
+			<td>VALUE</td>
+			<td>void</td>
+			<td>Add value on bottom of list.</td>
+		</tr>
+		<tr>
+			<td>clear</td>
+			<td>&nbsp;</td>
+			<td>void</td>
+			<td>Clears list of all values.</td>
+		</tr>
+		<tr>
+			<td>containsIndex</td>
+			<td>POSITION</td>
+			<td>bool</td>
+			<td>Checks if position exists in list.</td>
+		</tr>
+		<tr>
+			<td>containsValue</td>
+			<td>VALUE, ?COMPARATOR</td>
+			<td>bool</td>
+			<td>Checks if value exists in list.</td>
+		</tr>
+		<tr>
+			<td>emplace</td>
+			<td>POSITION, VALUE</td>
+			<td>void</td>
+			<td>Inserts value at position, padding existing element to the right.</td>
+		</tr>
+		<tr>
+			<td>get</td>
+			<td>POSITION</td>
+			<td>VALUE</td>
+			<td>Gets value by position.</td>
+		</tr>
+		<tr>
+			<td>set</td>
+			<td>POSITION, VALUE</td>
+			<td>void</td>
+			<td>Sets value by position.</td>
+		</tr>
+		<tr>
+			<td>removeIndex</td>
+			<td>POSITION</td>
+			<td>void</td>
+			<td>Removes element by position.</td>
+		</tr>
+		<tr>
+			<td>removeValue</td>
+			<td>VALUE</td>
+			<td>void</td>
+			<td>Removes all elements that match value.</td>
+		</tr>
+		<tr>
+			<td>isEmpty</td>
+			<td>&nbsp;</td>
+			<td>bool</td>
+			<td>Checks if list is empty</td>
+		</tr>
+		<tr>
+			<td>size</td>
+			<td>&nbsp;</td>
+			<td>size_t</td>
+			<td>Gets list size</td>
+		</tr>
+	</tbody>
+</table>
+
+Parameter signatures used by List class:
+<table>
+	<thead>
+		<tr>
+			<td>Parameter</td>
+			<td>Signature</td>
+			<td>Description</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>VALUE</td>
+			<td>const VALUE_TYPE&</td>
+			<td>Value in list.</td>
+		</tr>
+		<tr>
+			<td>VALUE</td>
+			<td>const VALUE_TYPE&</td>
+			<td>Value in list.</td>
+		</tr>
+		<tr>
+			<td>VALUE</td>
+			<td>const VALUE_TYPE&</td>
+			<td>Value in list.</td>
+		</tr>
+	</tbody>
+</table>
+
 
 Operations complexity @ list:
 <table>
