@@ -115,7 +115,7 @@ By virtue of implementing a blueprint, all applied components have almost identi
 ###List###
 
 Method signatures defined by List class:
-<table style="font-size:12px;">
+<table style="font-family: 'Lucida Console';font-size:12px;">
 	<thead>
 		<tr>
 			<td>Method</td>
@@ -156,11 +156,11 @@ Method signatures defined by List class:
 				int (*comparator)(const VALUE_TYPE&, const VALUE_TYPE&)
 			</td>
 			<td>bool</td>
-			<td>Checks if value exists in list.</td>
+			<td>Checks if value exists in list by comparator.</td>
 		</tr>
 		<tr>
 			<td>emplace</td>
-			<td>const size_t&, const VALUE_TYPE&</td>
+			<td>const size_t&,<br/>const VALUE_TYPE&</td>
 			<td>void</td>
 			<td>Inserts value at position, padding existing element to the right.</td>
 		</tr>
@@ -172,7 +172,7 @@ Method signatures defined by List class:
 		</tr>
 		<tr>
 			<td>set</td>
-			<td>const size_t&, VALUE</td>
+			<td>const size_t&,<br/>const VALUE_TYPE&</td>
 			<td>void</td>
 			<td>Sets value by position.</td>
 		</tr>
