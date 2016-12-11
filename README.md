@@ -1,66 +1,113 @@
 # c-data-structures-api
 
-##Genesis##
+##Introduction##
 
-Building another STL instead of using the fast super-stable time-tested library that is already used by virtually all C++ programmers seems like a textbook example of "reinventing the wheel", which happens to be a most damning stigma in today's world of programming (especially in higher level languages such as Java, but increasingly so in C++ as well). 
-
-###Reinventing the Wheel 101###
-
-Why is "reinventing the wheel" so bad? Because  apparently some people long before you had a godly intelligence to create something that is beyond redesign! You, as a "senior developer" should just use your mind as a bucket of others' ideas and concoct solutions based on those. The more you learn, the more your bucket enlarges so you will ultimatly reach a level of no "wheel reinvention" and finally achieved ultimate "seniorship". Sounds like a mindless religion? Sure is! The end result of this mindset is:
-
-- overly complicated code. Chances are nobody made a solution PRECISELY for your needs, so you end up using something that is needlessly complex, which taxes performance as well as making code hard to understand. In the world of Java or PHP (the other languages I'm competent at) you encounter a profusion of frameworks geared at making above-mentioned bucket enormous enough to fit "everything" a coder will ever possibly need. 
-- abominable code made by programmers who never got their chance to exercise their mind. Obviously, years or even decades of experience while working like a factory robot doesn't increase your intelligence and problem-solving skills. The things you write will always reflect the lack of fundamental logic: zero concern on performance, simplicity, elegance or even common sense. Typically here we find classes doing EVERYTHING, technologies used because developer could not write two lines of proper code, orgies of pre-processor macros (in C/C++) and an omnious messy look from top to bottom.
-- the standards. Factory work would not be complete without standards. A worker is supposed to obey standards as his second nature! Generally the standards have themselves become standardized, so companies have created tools that check if your code obeys the standards (be it test coverage, code quality, design patterns or whatever). The end result gives the impression of a quality improvement, but real life experience tells you they are to a large extent useless hindrance. Hiring a few competent developers is always a better long term solution (in terms of quality & performance) than imposing standards to sub-standard workers.
-- WARNING: this may hurt feelings! Because programming is a well-payed job, it has lately attracted an army of people unsuitable for this job, incapable to do any better EVEN IF they are trained "the standards" or to think for themselves.
-
-Are all of above responsable for the steady decline in the quality of programming? You bet! What is the alternative then? The alternative is to "reinvent the wheel" whenever you can think you can do better, learn from your/others' mistakes and move your level ever higher while maintaining rock-solid allegiance to above-mentioned principles of performance, simplicity and elegance. Why only these three abstract ideas I qualify as standards? Because they define a working methodology that imposes no constraints except striving for clarity and perfection. This way programming becomes an ungoing quest to intellectual discovery and delight! 
+Building another STL instead of using the fast super-stable time-tested library that is already used by virtually all C++ programmers seems like a textbook example of "reinventing the wheel", which happens to be a most damning stigma in today's world of programming.
 
 ###What's Wrong with STL?###
-There is nothing inherently wrong with STL. It's a very robust and heavily tested solution that proved itself to be a good companion to programmer needs, BUT there is nothing ultimate about it. It's just one IMPLEMENTATION of "data structure & algorithms" concepts, not perfect like everything else in life, with its own qualities and defects.
+There is nothing inherently wrong with STL! It's a very robust and heavily tested solution that proved itself to be a good companion to programmer needs, BUT there is nothing ultimate about it. It's just one IMPLEMENTATION of "data structure & algorithms" concepts, not perfect like everything else in life, with its own qualities and defects.
 
-What I liked about STL implementation is its iterators. STL iterators are without doubt more advanced/complete than anything done on that topic (at least in languages I know: Java and PHP). They have unbeatable flexibility, but they have the major defect of being non-extensible. It is fiendishly complicated to employ a STL iterator for a custom-defined (non-STL) data structure, which is why I unfortunately had to give up and implement my own (more primitive) versions of it. 
+What I loved about STL:
 
-What I failed to like about STL and made me think I can do better:
+- Its iterators. STL iterators are without doubt more advanced/complete than anything done on that topic at least in languages I know: Java or PHP. Clearly a LOT of effort has been put to make them as flexible as they are, with the unfortunate side effect of becoming fiendishly complicated to employ for a non-STL list.
 
-- It's unstructured. What I liked about Collections API in Java is the interface-implementation paradigm that suits data structures the best. In C++ as well, a list should be a concept (class with pure virtual methods), while a dynamic array / linked list / doubly linked list should be different implementations of same concept. Not only should programmer abstract the list implementation by using List* only (which is a no-cost operation), but he will be assured whatever functionality is defined by List will have an implementation for whatever list type he uses (eg: linked list). In STL, because data structures are not designed hierarchically, there is an absolute chaos in method names (who aren't very intuitive BTW) and functionality (which may or may not have been implemented) so one needs to constantly check documentation. This was DEFINITELY something that needed to be changed.
+What I failed to love about STL:
+
+- It's disorderly. What I liked about Collections API in Java is the interface-implementation paradigm that suits data structures the best. In C++ as well, a list should be a concept (class with pure virtual methods), while a dynamic array / linked list / doubly linked list should be different implementations of same concept. Not only should programmer abstract the list implementation by using List* only (which is a no-cost operation), but he will be assured whatever functionality is defined by List will have an implementation for whatever list type he uses (eg: linked list). In STL, because data structures are not designed hierarchically, there is an absolute chaos in method names (who aren't very intuitive BTW) and functionality (which may or may not have been implemented) so one needs to constantly check documentation.
 - It's coupled. It's extremely difficult to glue its components (be it iterators or dependency classes/structs) with non-STL components. It's clear that the very good programmers who have worked for it, even though they went overboard with decoupling to largest extent imaginable (which is why STL structures' implementations are so complex), the end result has been something so complicated that it becomes uninviting to understand (leaving the impression of overprogrammed code).     
-- Its HashTable implementations (unordered_map, unordered_set @ C++11) are too slow and could definitely be improved. For example, my implementations are TWO TIMES faster for char* keys (using same hashing algorithm: DJBX33A) than unordered_map/unordered_set.
-- Stacks are queues expose too much functionality when theory requires them to only include two functionalities: push/pop(/peek), enqueue/dequeue
+- Performance of HashTable implementations (unordered_map, unordered_set @ C++11), inferior to others I've tested
+- Design decisions (for example, stacks and queues expose too much functionality when theory requires them to only include two functionalities: push/pop(/peek), enqueue/dequeue)
 
-What I found missing in STL, but found useful enough to be included in my implementation:
+What I missed in STL:
 
-- LinkedHashTable (and its LinkedHashMap, LinkedHashSet implementations): this is a hashtable where entries are iterated by insertion order (by adding doubly-linked-list functionality to hash table nodes). Actually, in languages such as PHP or Python that's the only HashTable known. Even in C++, I frequently missed this option, which in my implementation only adds less than 10% performance taxation.
-- Trees & Graphs. I always found incredible how n-ary trees lack an "official" implementation in all languages I know, even though they are routinely needed and can easily be abstracted.
+- LinkedHashTable (and its LinkedHashMap, LinkedHashSet implementations): this is a hashtable where entries are iterated by insertion order (by adding doubly-linked-list behavior to hash table nodes). Actually, in languages such as PHP or Python that's the only HashTable known. While coding in C++, I frequently missed this option, which actually adds less than 10% performance taxation.
+- Trees & Graphs. For some reason there is no "official" implementation in any language I know of, even though they are both routinely needed and can be abstracted with not much of an effort.
 
-###What's Data Structures API###
-This is my own implementation of data structures and algorithms in C++, built on principles of performance, simplicity and elegance described above, different from STL in being much lighter weight, tightly organized through polymorphism and with equal or greater performance. Its principles are somewhat inspired by Java Collections API in concept-implementation separation: here we have pure virtual classes defining concept (abstract data structure) requires (eg: List) followed by implementations of that concept using real data structures (eg: LinkedList). The former will be classes with pure-virtual methods, while the latter will be classes that extend them and implement all methods defined in parent.
+Clearly STL did not fully fit what I wanted: something complete & beautiful, standing on natural unbreakable order and coded on principles of simplicity and elegance. Therefore, I decided to "reinvent the wheel"! The point is always to learn from each other's mistakes and try creating something better instead: if not fuelled by ignorance/arrogance "reinventing the wheel" becomes an invaluable vector of progress. 
 
-Supported data structures:
+###What is C++ Data Structures API (CDS)?###
+CDS is my own implementation of data structures and algorithms in C++ addressing all requirements mentioned above, different from STL in being much lighter weight, structured on polymorphism (because if naturally fits the concepts of data structures) and with equal or greater performance.  
 
+##How it works##
+
+The API itself is nothing more than a collection of decoupled independent components and their dependencies. Each component corresponds to a data structure designed polymorphically by an interface-implementation principle. Each component has a polymorphic iterator attached that mirrors component structure. Shared behavior was delegated to dependency classes/functions for encapsulation and maximum reusal.
+
+###Components###
+
+Components fall into three categories:
+
+- abstract: a pure-virtual class defining data structure operations (Eg: class Map implementing map data structure operations)
+- applied: one or more classes implementing operations defined by above in their respective way (Eg: class HashMap extends Map and implements latter operations via a hash table).
+- shared: shared dependencies of applied components
+
+Unlike STL components, CDS components are polymorphic. This means, for example, we can use abstract List* to work with a list instead of its aplied ArrayList implementation: 
+List<long>* list = new ArrayList<long>;
+The advantage of this is hiding complexity: we can at any point decide to use a DoublyLinkedList instead and no other lines of code will need being changed. Another advantage is predictability of method names.
+
+Supported abstract & applied components:
 - List: defines signatures for list abstract data structure 
 	- ArrayList: implements a list of dynamic array type (akin STL std::vector)
 	- LinkedList: implements a list of singly linked type (akin STL std::forward_list @ C++11, but keeping a pointer to tail, making insertions on bottom as fast as on top) 
 	- DoublyLinkedList: implements a list of doubly linked type (akin STL std::list)
 - Map: defines signatures for map abstract data structure
-	- HashMap: implements a map of hash table type (akin STL std::unordered_map @ C++11, but faster and lighter weight)
-	- LinkedHashMap: implements a map of hash table type with entries iterated by insertion order (no STL equivalent)
-	- TreeMap: implements a map of red black tree type (akin STL std::map)
+	- HashMap: implements a map of HashTable type (akin std::unordered_map @ C++11)
+	- LinkedHashMap: implements a map of LinkedHashTable type with entries iterated by insertion order (no STL equivalent)
+	- TreeMap: implements a map of RedBlackTree type (akin std::map)
 - Set: defines signatures for set abstract data structure
-	- HashSet: implements a set of hash table type (akin std::unordered_set @ C++11, but faster and lighter weight)
-	- LinkedHashSet: implements a set of hash table type with entries iterated by insertion order (no STL equivalent)
-	- TreeSet: implements a set of red black tree type (akin STL std::set)
+	- HashSet: implements a set of HashTable type (akin std::unordered_set @ C++11)
+	- LinkedHashSet: implements a set of LinkedHashTable type with entries iterated by insertion order (no STL equivalent)
+	- TreeSet: implements a set of RedBlackTree type (akin std::set)
 - Container: defines signatures for container adaptors into which all read/write operations are performed only on head or tail
-	- Stack: implements a LIFO container adaptor where data is pushed to head and popped from head (similar to std::stack, but using dynamic arrays)
-	- Queue: implements a FIFO container adaptor where data is pushed to bottom and popped from head (similar to std::queue, but using dynamic arrays)
-- Tree: none 
-	- RedBlackTree: A binary search tree balanced on red-black principles.
-	- Tree: A n-ary tree (no STL equivalent)
-	- UniqueTree: A n-ary tree guaranteed to hold unique values per node (no STL equivalent)
-- Graph: none
-	- Graph: A non-weighted graph. (no STL equivalent)
-	- UniqueGraph: A non-weighted graph guaranteed to hold unique values per vertex (no STL equivalent)
-	- WeightedGraph: A weighted graph. (no STL equivalent)
-	- UniqueWeightedGraph: A weighted graph guaranteed to hold unique values per vertex (no STL equivalent)  
+	- Stack: implements a LIFO container adaptor on top of a dynamic array (akin std::stack)
+	- Queue: implements a FIFO container adaptor on top of a dynamic array (akin std::queue)
+- Tree: no common signatures so far  (no STL equivalent)
+	- Tree: A n-ary tree
+	- UniqueTree: A n-ary tree also holding a HashTable, in order to guarantee unique values per node
+- Graph: no common signatures so far  (no STL equivalent)
+	- Graph: A non-weighted graph.
+	- UniqueGraph: A non-weighted graph on top of a HashTable, in order to guarantee unique values per vertex
+	- WeightedGraph: A weighted graph.
+	- UniqueWeightedGraph: A weighted graph on top of a HashTable, in order to guarantee unique values per vertex
+ 
+As one can see above, some components obviously share a structural base. For that reason, these shared components/classes were also added:
+
+- HashTable: implements a hash table, to be used by maps, sets, trees or graphs that rely on it (akin std::hashTable)
+- LinkedHashTable: implements a hash table where entries also behave like a doubly linked list for in-order iteration (no STL equivalent), to be used by maps & sets that rely on it
+- RedBlackTree: implements a binary tree balanced on red-black principles, to be used by maps & sets that rely on it
+
+Shared components are designed in such a way as to allow direct usage and not just be internal dependencies of applied structures. Design takes advantage of Strategy Design Pattern: applied structures will thus use instances of the structure they found upon instead of extending latter behavior. This means HashMap will use an instance of HashTable in order to implement Map operations instead of doubly extending Map and HashTable. The beauty of this can be appreciated when one realizes the decoupling achieved: HashMap, HashSet, UniqueTree are all oblivious of each other and only know of their HashTable service provider.
+
+###Iterators###
+
+Each component (abstract or applied) has a polymorphic iterator attached (Eg: class List has ListIterator attached, whereas class LinkedList has LinkedListIterator friend that extends ListIterator). CDS iterators are inspired by STL iterators, but they are much more simple in design and different in how they behave:
+
+- CDS iterators only use forward iteration. This is a restricting move desiged to keep things simple. Nevertheless, it's easy to add backward iteration later on...
+- CDS iterators invalidate automatically whenever items are added/subtracted from structure while iterating. This is a restricting move designed to GUARANTEE safety and no crashes, but at the same time produces a minor performance overhead. This is because on any loop, a check is made whether or not data structure size has changed.
+- CDS iterators are polymorphic, with their structure mirroring that of components. This means, for example, a LinkedList can be iterated both by an abstract ListIterator* or by an applied LinkedListIterator:
+for(auto it=list.begin(); *it!=list.end; ++*it)) { ... }
+for(auto it=linkedList.begin(); it!=linkedList.end; ++it)) { ... }
+
+###Dependencies###
+
+Some components rely on dependencies in order to be viable:
+- comparators: functions comparing two items of same type and returning an int (>0 if smaller, 0 if equal, 0> if greater), to be used in sorting and by all structures relying on RedBlackTree.
+- hashers: functions compiling a hash code of an item based on type returning an unsigned int, to be used by all structures relying on (Linked)HashTable.
+Unlike STL comparators & hashers, for simplicity reasons, CDS comparators & hashers are C-compliant static inline functions. One can decide not to use the default implementations provided for long & char*, in which case users must supply an additional comparator/hasher template/method argument, akin one sees in STL. 
+
+####Comparators####
+
+The library only comes with two comparators implemented: for long & char*. For any other data type you will have to write your own. Comparator signature is:
+static inline int comparator(const TYPE&, const TYPE&)
+
+####Hashers####
+
+The library only comes with two comparators implemented: for long & char*. For any other data type you will have to write your own. Hasher signature is:
+static inline std::size_t hash(const TYPE&)
+
+
+##Reference guide##
+
+By virtue of implementing a blueprint, all applied components have almost identical signature to their abstract parent. For that reason  
 
 Operations complexity @ list:
 <table>
@@ -514,7 +561,7 @@ Operations complexity @ graphs:
 			<td>Creates vertex in graph.</td>
 		</tr>
 		<tr>
-			<td>removeVertex(V|T)</td>
+			<td>removeVertex(V)</td>
 			<td>O(V*E)</td>
 			<td>O(V*E)</td>
 			<td>O(V*E)</td>
@@ -600,6 +647,14 @@ Operations complexity @ graphs:
 			<td>O(V*E)</td>
 			<td>O(V*E)</td>
 			<td>Iterates all vertexes in graph.</td>
+		</tr>
+		<tr>
+			<td>removeVertex(T,C?)</td>
+			<td>O(V*E)</td>
+			<td>O(1)</td>
+			<td>O(V*E)</td>
+			<td>O(1)</td>
+			<td>Removes vertex from graph and deallocates.</td>
 		</tr>
 		<tr>
 			<td>contains(T,C?)</td>
