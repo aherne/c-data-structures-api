@@ -127,13 +127,13 @@ Method signatures defined by List class:
 	<tbody>
 		<tr>
 			<td>addToTop</td>
-			<td>VALUE</td>
+			<td>const VALUE_TYPE&</td>
 			<td>void</td>
 			<td>Add value on top of list.</td>
 		</tr>
 		<tr>
 			<td>addToBottom</td>
-			<td>VALUE</td>
+			<td>const VALUE_TYPE&</td>
 			<td>void</td>
 			<td>Add value on bottom of list.</td>
 		</tr>
@@ -145,43 +145,46 @@ Method signatures defined by List class:
 		</tr>
 		<tr>
 			<td>containsIndex</td>
-			<td>POSITION</td>
+			<td>const size_t&</td>
 			<td>bool</td>
 			<td>Checks if position exists in list.</td>
 		</tr>
 		<tr>
 			<td>containsValue</td>
-			<td>VALUE, ?COMPARATOR</td>
+			<td nowrap>
+				const VALUE_TYPE&,<br/>
+				int (*comparator)(const VALUE_TYPE&, const VALUE_TYPE&)
+			</td>
 			<td>bool</td>
 			<td>Checks if value exists in list.</td>
 		</tr>
 		<tr>
 			<td>emplace</td>
-			<td>POSITION, VALUE</td>
+			<td>const size_t&, const VALUE_TYPE&</td>
 			<td>void</td>
 			<td>Inserts value at position, padding existing element to the right.</td>
 		</tr>
 		<tr>
 			<td>get</td>
-			<td>POSITION</td>
-			<td>VALUE</td>
+			<td>const size_t&</td>
+			<td>const VALUE_TYPE&</td>
 			<td>Gets value by position.</td>
 		</tr>
 		<tr>
 			<td>set</td>
-			<td>POSITION, VALUE</td>
+			<td>const size_t&, VALUE</td>
 			<td>void</td>
 			<td>Sets value by position.</td>
 		</tr>
 		<tr>
 			<td>removeIndex</td>
-			<td>POSITION</td>
+			<td>const size_t&</td>
 			<td>void</td>
 			<td>Removes element by position.</td>
 		</tr>
 		<tr>
 			<td>removeValue</td>
-			<td>VALUE</td>
+			<td>const VALUE_TYPE&</td>
 			<td>void</td>
 			<td>Removes all elements that match value.</td>
 		</tr>
@@ -194,36 +197,8 @@ Method signatures defined by List class:
 		<tr>
 			<td>size</td>
 			<td>&nbsp;</td>
-			<td>size_t</td>
+			<td>const size_t&</td>
 			<td>Gets list size</td>
-		</tr>
-	</tbody>
-</table>
-
-Parameter signatures used by List class:
-<table>
-	<thead>
-		<tr>
-			<td>Parameter</td>
-			<td>Signature</td>
-			<td>Description</td>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>VALUE</td>
-			<td>const VALUE_TYPE&</td>
-			<td>Value in list.</td>
-		</tr>
-		<tr>
-			<td>VALUE</td>
-			<td>const VALUE_TYPE&</td>
-			<td>Value in list.</td>
-		</tr>
-		<tr>
-			<td>VALUE</td>
-			<td>const VALUE_TYPE&</td>
-			<td>Value in list.</td>
 		</tr>
 	</tbody>
 </table>
