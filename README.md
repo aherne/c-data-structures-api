@@ -115,7 +115,7 @@ By virtue of implementing a blueprint, all applied components have almost identi
 ###List###
 
 Method signatures defined by List class:
-<table>
+<table style="font-size:12px;">
 	<thead>
 		<tr>
 			<td>Method</td>
