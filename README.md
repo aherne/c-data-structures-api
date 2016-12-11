@@ -151,7 +151,7 @@ Method signatures defined by List class:
 		</tr>
 		<tr>
 			<td>containsValue</td>
-			<td>
+			<td nowrap>
 				VALUE, COMPARATOR
 			</td>
 			<td>bool</td>
@@ -200,6 +200,18 @@ Method signatures defined by List class:
 			<td>Gets list size</td>
 		</tr>
 		<tr>
+			<td>begin</td>
+			<td>&nbsp;</td>
+			<td>ITERATOR</td>
+			<td>Starts iterator</td>
+		</tr>
+		<tr>
+			<td>end</td>
+			<td>&nbsp;</td>
+			<td>ITERATOR</td>
+			<td>Ends iterator</td>
+		</tr>
+		<tr>
 			<td colspan=4>
 				<strong>Parameter signatures:</strong>
 				<table>
@@ -214,6 +226,10 @@ Method signatures defined by List class:
 					<tr>
 						<td>COMPARATOR</td>
 						<td>int (comparator*) (const VALUE_TYPE&, const VALUE_TYPE&)</td>
+					</tr>
+					<tr>
+						<td>ITERATOR</td>
+						<td>ListIterator<T>*</td>
 					</tr>
 				</table>
 			</td>
