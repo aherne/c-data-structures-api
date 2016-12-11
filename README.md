@@ -127,13 +127,13 @@ Method signatures defined by List class:
 	<tbody>
 		<tr>
 			<td>addToTop</td>
-			<td>const VALUE_TYPE&</td>
+			<td>VALUE</td>
 			<td>void</td>
 			<td>Add value on top of list.</td>
 		</tr>
 		<tr>
 			<td>addToBottom</td>
-			<td>const VALUE_TYPE&</td>
+			<td>VALUE</td>
 			<td>void</td>
 			<td>Add value on bottom of list.</td>
 		</tr>
@@ -145,46 +145,45 @@ Method signatures defined by List class:
 		</tr>
 		<tr>
 			<td>containsIndex</td>
-			<td>const size_t&</td>
+			<td>POSITION</td>
 			<td>bool</td>
 			<td>Checks if position exists in list.</td>
 		</tr>
 		<tr>
 			<td>containsValue</td>
-			<td nowrap>
-				const VALUE_TYPE&,<br/>
-				int (*comparator)(const VALUE_TYPE&, const VALUE_TYPE&)
+			<td>
+				VALUE, COMPARATOR
 			</td>
 			<td>bool</td>
 			<td>Checks if value exists in list by comparator.</td>
 		</tr>
 		<tr>
 			<td>emplace</td>
-			<td>const size_t&,<br/>const VALUE_TYPE&</td>
+			<td>POSITION, VALUE</td>
 			<td>void</td>
 			<td>Inserts value at position, padding existing element to the right.</td>
 		</tr>
 		<tr>
 			<td>get</td>
-			<td>const size_t&</td>
-			<td>const VALUE_TYPE&</td>
+			<td>POSITION</td>
+			<td>VALUE</td>
 			<td>Gets value by position.</td>
 		</tr>
 		<tr>
 			<td>set</td>
-			<td>const size_t&,<br/>const VALUE_TYPE&</td>
+			<td>POSITION, VALUE</td>
 			<td>void</td>
 			<td>Sets value by position.</td>
 		</tr>
 		<tr>
 			<td>removeIndex</td>
-			<td>const size_t&</td>
+			<td>POSITION</td>
 			<td>void</td>
 			<td>Removes element by position.</td>
 		</tr>
 		<tr>
 			<td>removeValue</td>
-			<td>const VALUE_TYPE&</td>
+			<td>VALUE</td>
 			<td>void</td>
 			<td>Removes all elements that match value.</td>
 		</tr>
@@ -200,6 +199,25 @@ Method signatures defined by List class:
 			<td>const size_t&</td>
 			<td>Gets list size</td>
 		</tr>
+		<tr>
+			<td colspan=4>
+				<strong>Parameter signatures:</strong>
+				<table>
+					<tr>
+						<td>POSITION</td>
+						<td>const std::size_t&</td>
+					</tr>
+					<tr>
+						<td>VALUE</td>
+						<td>const VALUE_TYPE&</td>
+					</tr>
+					<tr>
+						<td>COMPARATOR</td>
+						<td>int (comparator*) (const VALUE_TYPE&, const VALUE_TYPE&)</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
 	</tbody>
 </table>
 
@@ -212,7 +230,6 @@ Operations complexity @ list:
 			<td>ArrayList</td>
 			<td>LinkedList</td>
 			<td>DoublyLinkedList</td>
-			<td>Description</td>
 		</tr>
 	</thead>
 	<tbody>
@@ -221,91 +238,72 @@ Operations complexity @ list:
 			<td>O(N*2)</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
-			<td>Add value on top of list.</td>
 		</tr>
 		<tr>
 			<td>addToBottom(V)</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
-			<td>Add value on bottom of list.</td>
 		</tr>
 		<tr>
 			<td>clear()</td>
 			<td>O(N)</td>
 			<td>O(N)</td>
 			<td>O(N)</td>
-			<td>Clears list of all values.</td>
 		</tr>
 		<tr>
 			<td>containsIndex(K)</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
-			<td>Checks if position exists in list.</td>
 		</tr>
 		<tr>
 			<td>containsValue(V)</td>
 			<td>O(N)</td>
 			<td>O(N)</td>
 			<td>O(N)</td>
-			<td>Checks if value exists in list.</td>
 		</tr>
 		<tr>
 			<td>emplace(K,V)</td>
 			<td>O((N-K)*2)</td>
 			<td>O(K)/O(K-P)</td>
 			<td>O(K)/O(N-K)/O(K-P)/O(P-K)</td>
-			<td>Inserts value at position, padding existing element to the right.</td>
 		</tr>
 		<tr>
 			<td>get(K)</td>
 			<td>O(1)</td>
 			<td>O(K)/O(K-P)</td>
 			<td>O(K)/O(N-K)/O(K-P)/O(P-K)</td>
-			<td>Gets value by position.</td>
 		</tr>
 		<tr>
 			<td>set(K,V)</td>
 			<td>O(1)</td>
 			<td>O(K)/O(K-P)</td>
 			<td>O(K)/O(N-K)/O(K-P)/O(P-K)</td>
-			<td>Sets value by position.</td>
 		</tr>
 		<tr>
 			<td>removeIndex(K)</td>
 			<td>O((N-K)*2)</td>
 			<td>O(K)/O(K-P)</td>
 			<td>O(K)/O(N-K)/O(K-P)/O(P-K)</td>
-			<td>Removes element by position.</td>
 		</tr>
 		<tr>
 			<td>removeValue(V)</td>
 			<td>O(N*2)</td>
 			<td>O(N)</td>
 			<td>O(N)</td>
-			<td>Removes all elements that match value.</td>
 		</tr>
 		<tr>
 			<td>isEmpty()</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
-			<td>Checks if list is empty</td>
 		</tr>
 		<tr>
 			<td>size()</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
-			<td>Gets list size</td>
-		</tr>
-		<tr>
-			<td>sort(C)</td>
-			<td>O(N+log(N))</td>
-			<td>O(N*2+log(N))</td>
-			<td>O(N*2+log(N))</td>
-			<td>Sorts list by comparator.</td>
 		</tr>
 		<tr>
 			<td colspan=5>
