@@ -355,7 +355,7 @@ Constructors:
 
 Templates:
 
-- all lists (abstract or applied) have a single template argument: 
+- all lists (abstract or applied) have a single template argument:  
 template < typename VALUE_TYPE >
 
 ###Map###
