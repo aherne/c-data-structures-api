@@ -352,7 +352,6 @@ Constructors:
 - ArrayList also supports being preallocated with a reserved size via constructor:
 	ArrayList(const std::size_t& reservedSize)
 
-
 Templates:
 
 - all lists (abstract or applied) have a single template argument:  
