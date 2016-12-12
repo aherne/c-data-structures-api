@@ -110,11 +110,11 @@ static inline std::size_t hash(const TYPE&)
 
 ##Reference guide##
 
-By virtue of implementing a blueprint, all applied components have almost identical signature to their abstract parent. What changes is the way those methods are implemented and their guaranteed Ocomplexity.
+By virtue of implementing a pure virtual blueprint, all applied components have almost identical signature to their abstract parent. What changes is the way those methods are implemented and their guaranteed Ocomplexity.
 
 ###List###
 
-Method signatures defined by List class:
+Pure virtual methods of abstract List class:
 <table style="font-family: 'Lucida Console';font-size:12px;">
 	<thead>
 		<tr>
@@ -238,7 +238,7 @@ Method signatures defined by List class:
 </table>
 
 
-Operations complexity @ list:
+Overriding methods of applied lists and their O complexity:
 <table>
 	<thead>
 		<tr>
@@ -333,6 +333,20 @@ Operations complexity @ list:
 		</tr>
 	</tbody>
 </table>
+
+Applied list constructors:
+
+- all applied lists work primarily with a no-arg constructor
+- ArrayList also supports being preallocated with a reserved size via constructor:
+	ArrayList(const std::size_t& reservedSize)
+
+
+Template arguments:
+
+- all lists (abstract or applied) have a single template argument: 
+template<typename VALUE_TYPE>
+
+###Map###
 
 Operations complexity @ map:
 <table>
