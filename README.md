@@ -250,73 +250,85 @@ Overriding methods of applied lists and their O complexity:
 	</thead>
 	<tbody>
 		<tr>
-			<td>addToTop(V)</td>
+			<td>addToTop</td>
 			<td>O(N*2)</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
 		</tr>
 		<tr>
-			<td>addToBottom(V)</td>
+			<td>addToBottom</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
 		</tr>
 		<tr>
-			<td>clear()</td>
+			<td>clear</td>
 			<td>O(N)</td>
 			<td>O(N)</td>
 			<td>O(N)</td>
 		</tr>
 		<tr>
-			<td>containsIndex(K)</td>
+			<td>containsIndex</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
 		</tr>
 		<tr>
-			<td>containsValue(V)</td>
+			<td>containsValue</td>
 			<td>O(N)</td>
 			<td>O(N)</td>
 			<td>O(N)</td>
 		</tr>
 		<tr>
-			<td>emplace(K,V)</td>
+			<td>emplace</td>
 			<td>O((N-K)*2)</td>
 			<td>O(K)/O(K-P)</td>
 			<td>O(K)/O(N-K)/O(K-P)/O(P-K)</td>
 		</tr>
 		<tr>
-			<td>get(K)</td>
+			<td>get</td>
 			<td>O(1)</td>
 			<td>O(K)/O(K-P)</td>
 			<td>O(K)/O(N-K)/O(K-P)/O(P-K)</td>
 		</tr>
 		<tr>
-			<td>set(K,V)</td>
+			<td>set</td>
 			<td>O(1)</td>
 			<td>O(K)/O(K-P)</td>
 			<td>O(K)/O(N-K)/O(K-P)/O(P-K)</td>
 		</tr>
 		<tr>
-			<td>removeIndex(K)</td>
+			<td>removeIndex</td>
 			<td>O((N-K)*2)</td>
 			<td>O(K)/O(K-P)</td>
 			<td>O(K)/O(N-K)/O(K-P)/O(P-K)</td>
 		</tr>
 		<tr>
-			<td>removeValue(V)</td>
+			<td>removeValue</td>
 			<td>O(N*2)</td>
 			<td>O(N)</td>
 			<td>O(N)</td>
 		</tr>
 		<tr>
-			<td>isEmpty()</td>
+			<td>isEmpty</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
 		</tr>
 		<tr>
-			<td>size()</td>
+			<td>size</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+		</tr>
+		<tr>
+			<td>begin</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+		</tr>
+		<tr>
+			<td>end</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
@@ -334,17 +346,17 @@ Overriding methods of applied lists and their O complexity:
 	</tbody>
 </table>
 
-Applied list constructors:
+Constructors:
 
 - all applied lists work primarily with a no-arg constructor
 - ArrayList also supports being preallocated with a reserved size via constructor:
 	ArrayList(const std::size_t& reservedSize)
 
 
-Template arguments:
+Templates:
 
 - all lists (abstract or applied) have a single template argument: 
-template<typename VALUE_TYPE>
+template < typename VALUE_TYPE >
 
 ###Map###
 
