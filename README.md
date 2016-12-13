@@ -48,35 +48,35 @@ List<long>* list = new ArrayList<long>;
 The advantage of this is hiding complexity: we can at any point decide to use a DoublyLinkedList instead and no other lines of code will need being changed. Another advantage, much unlike STL, is predictability of method names across structures of same family (eg: List, Map).
 
 Supported abstract & applied components and their corresponding classes:
-- <u>List</u>: defines signatures for list abstract data structure 
+- **List**: defines signatures for list abstract data structure 
 	- **ArrayList**: implements a list of dynamic array type (akin STL std::vector)
 	- **LinkedList**: implements a list of singly linked type (akin STL std::forward_list @ C++11, but keeping a pointer to tail, making insertions on bottom as fast as on top) 
 	- **DoublyLinkedList**: implements a list of doubly linked type (akin STL std::list)
-- <u>Map</u>: defines signatures for map abstract data structure
-	- **HashMap**: implements a map of HashTable type (akin std::unordered_map @ C++11)
-	- **LinkedHashMap**: implements a map of LinkedHashTable type with entries iterated by insertion order (no STL equivalent)
-	- **TreeMap**: implements a map of RedBlackTree type (akin std::map)
-- <u>Set</u>: defines signatures for set abstract data structure
-	- **HashSet**: implements a set of HashTable type (akin std::unordered_set @ C++11)
-	- **LinkedHashSet**: implements a set of LinkedHashTable type with entries iterated by insertion order (no STL equivalent)
-	- **TreeSet**: implements a set of RedBlackTree type (akin std::set)
-- <u>Container</u>: defines signatures for container adaptors into which all read/write operations are performed only on head or tail
+- **Map**: defines signatures for map abstract data structure
+	- **HashMap**: implements a map of **HashTable** type (akin std::unordered_map @ C++11)
+	- **LinkedHashMap**: implements a map of **LinkedHashTable** type with entries iterated by insertion order (no STL equivalent)
+	- **TreeMap**: implements a map of **RedBlackTree** type (akin std::map)
+- **Set**: defines signatures for set abstract data structure
+	- **HashSet**: implements a set of **HashTable** type (akin std::unordered_set @ C++11)
+	- **LinkedHashSet**: implements a set of **LinkedHashTable** type with entries iterated by insertion order (no STL equivalent)
+	- **TreeSet**: implements a set of **RedBlackTree** type (akin std::set)
+- **Container**: defines signatures for container adaptors into which all read/write operations are performed only on head or tail
 	- **Stack**: implements a LIFO container adaptor on top of a dynamic array (akin std::stack)
 	- **Queue**: implements a FIFO container adaptor on top of a dynamic array (akin std::queue)
-- tree: no common signatures so far  (no STL equivalent)
+- Tree: no common signatures so far  (no STL equivalents)
 	- **Tree**: A n-ary tree
 	- **UniqueTree**: A n-ary tree also holding a HashTable, in order to guarantee unique values per node
-- graph: no common signatures so far  (no STL equivalent)
+- Graph: no common signatures so far  (no STL equivalents)
 	- **Graph**: A non-weighted graph.
-	- **UniqueGraph**: A non-weighted graph on top of a HashTable, in order to guarantee unique values per vertex
+	- **UniqueGraph**: A non-weighted graph on top of a **HashTable**, in order to guarantee unique values per vertex
 	- **WeightedGraph**: A weighted graph.
-	- **UniqueWeightedGraph**: A weighted graph on top of a HashTable, in order to guarantee unique values per vertex
+	- **UniqueWeightedGraph**: A weighted graph on top of a **HashTable**, in order to guarantee unique values per vertex
  
 As one can see above, some components obviously share a structural base. For that reason, these shared components/classes were also added:
 
-- HashTable: implements a hash table, to be used by maps, sets, trees or graphs that rely on it (akin std::hashTable)
-- LinkedHashTable: implements a hash table where entries also behave like a doubly linked list for in-order iteration (no STL equivalent), to be used by maps & sets that rely on it
-- RedBlackTree: implements a binary tree balanced on red-black principles, to be used by maps & sets that rely on it
+- **HashTable**: implements a hash table, to be used by maps, sets, trees or graphs that rely on it (akin std::hashTable)
+- **LinkedHashTable**: implements a hash table where entries also behave like a doubly linked list for in-order iteration (no STL equivalent), to be used by maps & sets that rely on it
+- **RedBlackTree**: implements a binary tree balanced on red-black principles, to be used by maps & sets that rely on it
 
 Shared components are designed in such a way as to allow direct usage and not just be internal dependencies of applied structures. Design takes advantage of Strategy Design Pattern: applied structures will thus use instances of the structure they found upon instead of extending latter behavior. This means HashMap will use an instance of HashTable in order to implement Map operations instead of doubly extending Map and HashTable. The beauty of this can be appreciated when one realizes the decoupling achieved: HashMap, HashSet, UniqueTree are all oblivious of each other and only know of their HashTable service provider.
 
