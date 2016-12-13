@@ -30,7 +30,7 @@ CDS is my own implementation of data structures and algorithms in C++ addressing
 
 ##How it works##
 
-The API itself is nothing more than a collection of decoupled independent components and their dependencies. Each component corresponds to a data structure designed polymorphically by an interface-implementation principle. Each component has a polymorphic iterator attached that mirrors component structure. Shared behavior was delegated to dependency classes/functions for encapsulation and maximum reusal.
+The API itself is nothing more than a collection of decoupled independent components and their dependencies. Each component corresponds to a data structure designed polymorphically by an interface-implementation principle. Each component has a polymorphic iterator attached that mirrors component structure. Shared behavior was delegated to dependency classes/functions for encapsulation and independent reusal.
 
 ###Components###
 
@@ -44,7 +44,7 @@ Unlike STL components, CDS components are polymorphic. This means, for example, 
 
 List<long>* list = new ArrayList<long>;
 
-The advantage of this is hiding complexity: we can at any point decide to use a DoublyLinkedList instead and no other lines of code will need being changed. Another advantage is predictability of method names.
+The advantage of this is hiding complexity: we can at any point decide to use a DoublyLinkedList instead and no other lines of code will need being changed. Another advantage, much unlike STL, is predictability of method names across structures of same family (eg: List, Map).
 
 Supported abstract & applied components:
 - List: defines signatures for list abstract data structure 
@@ -86,7 +86,7 @@ Each component (abstract or applied) has a polymorphic iterator attached (Eg: cl
 - CDS iterators only use forward iteration. This is a restricting move desiged to keep things simple. Nevertheless, it's easy to add backward iteration later on...
 - CDS iterators invalidate automatically whenever items are added/subtracted from structure while iterating. This is a restricting move designed to GUARANTEE safety and no crashes, but at the same time produces a minor performance overhead. This is because on any loop, a check is made whether or not data structure size has changed.
 - CDS iterators are polymorphic, with their structure mirroring that of components. This means, for example, a LinkedList can be iterated both by an abstract ListIterator* or by an applied LinkedListIterator:<br/>
-for(auto it=list.begin(); *it!=list.end; ++*it)) { ... }<br/>
+for(auto it=list.begin(); * it!=list.end; ++* it)) { ... }<br/>
 for(auto it=linkedList.begin(); it!=linkedList.end; ++it)) { ... }
 
 ###Dependencies###
@@ -356,6 +356,7 @@ Templates:
 
 - all lists (abstract or applied) have a single template argument:  
 template < typename VALUE_TYPE >
+
 
 ###Map###
 
