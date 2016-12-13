@@ -122,7 +122,7 @@ By virtue of implementing a pure virtual blueprint, all applied components have 
 ###List###
 
 Pure virtual methods of abstract List class:
-<table style="font-family: 'Lucida Console';font-size:12px;">
+<table>
 	<thead>
 		<tr>
 			<td>Method</td>
@@ -357,13 +357,16 @@ Constructors:
 
 - all applied lists work primarily with a no-arg constructor
 - ArrayList also supports being preallocated with a reserved size via constructor:
+```c++
 	ArrayList(const std::size_t& reservedSize)
+```
 
 Templates:
 
 - all lists (abstract or applied) have a single template argument:  
-template < typename VALUE_TYPE >
-
+```c++
+template<typename VALUE_TYPE>
+```
 
 ###Map###
 
