@@ -224,11 +224,7 @@ Pure virtual methods of abstract List class:
 				<table>
 					<tr>
 						<td>POSITION</td>
-						<td>
-							```c++
-							const std::size_t&
-							```
-						</td>
+						<td>const std::size_t&</td>
 					</tr>
 					<tr>
 						<td>VALUE</td>
