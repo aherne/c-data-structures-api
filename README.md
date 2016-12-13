@@ -41,7 +41,7 @@ Components fall into three categories:
 - shared: shared dependencies of applied components
 
 Unlike STL components, CDS components are polymorphic. This means, for example, we can use abstract List* to work with a list instead of its aplied ArrayList implementation: 
-```clike
+```c++
 List<long>* list = new ArrayList<long>;
 ```
 
