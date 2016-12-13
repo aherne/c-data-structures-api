@@ -358,7 +358,7 @@ Constructors:
 - all applied lists work primarily with a no-arg constructor
 - ArrayList also supports being preallocated with a reserved size via constructor:
 ```c++
-	ArrayList(const std::size_t& reservedSize)
+ArrayList(const std::size_t& reservedSize)
 ```
 
 Templates:
