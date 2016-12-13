@@ -203,7 +203,7 @@ Pure virtual methods of abstract List class:
 		<tr>
 			<td>size</td>
 			<td>&nbsp;</td>
-			<td>const size_t&</td>
+			<td nowrap>const size_t&</td>
 			<td>Gets list size</td>
 		</tr>
 		<tr>
