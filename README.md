@@ -53,19 +53,19 @@ Supported abstract & applied components and their corresponding classes:
 	- **LinkedList**: implements a list of singly linked type (akin STL std::forward_list @ C++11, but keeping a pointer to tail, making insertions on bottom as fast as on top) 
 	- **DoublyLinkedList**: implements a list of doubly linked type (akin STL std::list)
 - **Map**: defines signatures for map abstract data structure
-	- **HashMap**: implements a map of **HashTable** type (akin std::unordered_map @ C++11)
-	- **LinkedHashMap**: implements a map of **LinkedHashTable** type with entries iterated by insertion order (no STL equivalent)
-	- **TreeMap**: implements a map of **RedBlackTree** type (akin std::map)
+	- **HashMap**: implements a map on top of a **HashTable** (akin std::unordered_map @ C++11)
+	- **LinkedHashMap**: implements a map on top of a **LinkedHashTable** with entries iterable by insertion order (no STL equivalent)
+	- **TreeMap**: implements a map on top of a **RedBlackTree** (akin std::map)
 - **Set**: defines signatures for set abstract data structure
-	- **HashSet**: implements a set of **HashTable** type (akin std::unordered_set @ C++11)
-	- **LinkedHashSet**: implements a set of **LinkedHashTable** type with entries iterated by insertion order (no STL equivalent)
-	- **TreeSet**: implements a set of **RedBlackTree** type (akin std::set)
+	- **HashSet**: implements a set on top of a **HashTable** (akin std::unordered_set @ C++11)
+	- **LinkedHashSet**: implements a set on top of a **LinkedHashTable** with entries iterable by insertion order (no STL equivalent)
+	- **TreeSet**: implements a set on top of a **RedBlackTree** (akin std::set)
 - **Container**: defines signatures for container adaptors into which all read/write operations are performed only on head or tail
 	- **Stack**: implements a LIFO container adaptor on top of a dynamic array (akin std::stack)
 	- **Queue**: implements a FIFO container adaptor on top of a dynamic array (akin std::queue)
 - Tree: no common signatures so far  (no STL equivalents)
 	- **Tree**: A n-ary tree
-	- **UniqueTree**: A n-ary tree also holding a HashTable, in order to guarantee unique values per node
+	- **UniqueTree**: A n-ary tree also holding a **HashTable**, in order to guarantee unique values per node
 - Graph: no common signatures so far  (no STL equivalents)
 	- **Graph**: A non-weighted graph.
 	- **UniqueGraph**: A non-weighted graph on top of a **HashTable**, in order to guarantee unique values per vertex
