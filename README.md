@@ -87,8 +87,10 @@ Each component (abstract or applied) has a polymorphic iterator attached (Eg: cl
 - CDS iterators only use forward iteration. This is a restricting move desiged to keep things simple. Nevertheless, it's easy to add backward iteration later on...
 - CDS iterators invalidate automatically whenever items are added/subtracted from structure while iterating. This is a restricting move designed to GUARANTEE safety and no crashes, but at the same time produces a minor performance overhead. This is because on any loop, a check is made whether or not data structure size has changed.
 - CDS iterators are polymorphic, with their structure mirroring that of components. This means, for example, a LinkedList can be iterated both by an abstract ListIterator* or by an applied LinkedListIterator:<br/>
-for(auto it=list.begin(); * it!=list.end; ++* it)) { ... }<br/>
+```c++
+for(auto it=list.begin(); *it!=list.end; ++*it)) { ... }
 for(auto it=linkedList.begin(); it!=linkedList.end; ++it)) { ... }
+```
 
 ###Dependencies###
 
