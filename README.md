@@ -125,10 +125,10 @@ Pure virtual methods of abstract List class:
 <table>
 	<thead>
 		<tr>
-			<td>Method</td>
-			<td>Arguments</td>
-			<td>Returns</td>
-			<td>Description</td>
+			<td><strong>Method</strong></td>
+			<td><strong>Arguments</strong></td>
+			<td><strong>Returns</strong></td>
+			<td><strong>Description</strong></td>
 		</tr>
 	</thead>
 	<tbody>
