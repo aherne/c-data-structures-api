@@ -103,12 +103,16 @@ Unlike STL comparators & hashers, for simplicity reasons, CDS comparators & hash
 ####Comparators####
 
 The library only comes with two comparators implemented: for long & char*. For any other data type you will have to write your own. Comparator signature is:
-static inline int comparator(const TYPE&, const TYPE&)
+```c++
+static inline int comparator(const VALUE_TYPE&, const VALUE_TYPE&)
+```
 
 ####Hashers####
 
 The library only comes with two comparators implemented: for long & char*. For any other data type you will have to write your own. Hasher signature is:
-static inline std::size_t hash(const TYPE&)
+```c++
+static inline std::size_t hash(const VALUE_TYPE&)
+```
 
 
 ##Reference guide##
