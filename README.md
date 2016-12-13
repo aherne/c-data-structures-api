@@ -41,8 +41,9 @@ Components fall into three categories:
 - shared: shared dependencies of applied components
 
 Unlike STL components, CDS components are polymorphic. This means, for example, we can use abstract List* to work with a list instead of its aplied ArrayList implementation: 
-
+```clike
 List<long>* list = new ArrayList<long>;
+```
 
 The advantage of this is hiding complexity: we can at any point decide to use a DoublyLinkedList instead and no other lines of code will need being changed. Another advantage, much unlike STL, is predictability of method names across structures of same family (eg: List, Map).
 
