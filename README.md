@@ -23,7 +23,7 @@ What I missed in STL:
 - LinkedHashTable (and its LinkedHashMap, LinkedHashSet implementations): this is a hashtable where entries are iterated by insertion order (by adding doubly-linked-list behavior to hash table nodes). Actually, in languages such as PHP or Python that's the only HashTable known. While coding in C++, I frequently missed this option, which actually adds less than 10% performance taxation.
 - Trees & Graphs. For some reason there is no "official" implementation in any language I know of, even though they are both routinely needed and can be abstracted with not much of an effort.
 
-Clearly STL did not fully fit what I wanted: something complete & beautiful, standing on natural unbreakable order and coded on principles of simplicity and elegance. Therefore, I decided to "reinvent the wheel"! The point is always to learn from each other's mistakes and try creating something better instead: if not fuelled by ignorance/arrogance "reinventing the wheel" becomes an invaluable vector of progress. 
+Clearly STL did not fully fit what I wanted: something complete & beautiful, standing on natural unbreakable order and coded on principles of simplicity and elegance. Therefore, I decided to "reinvent the wheel"! The point is always to learn from each other's mistakes and try creating something better instead: if not fuelled by ignorance/arrogance "reinventing the wheel" becomes an invaluable vector of progress.
 
 ###What is C++ Data Structures API (CDS)?###
 CDS is my own implementation of data structures and algorithms in C++ addressing all requirements mentioned above, different from STL in being much lighter weight, structured on polymorphism (because if naturally fits the concepts of data structures) and with equal or greater performance.  
@@ -40,7 +40,7 @@ Components fall into three categories:
 - applied: one or more classes implementing operations defined by above in their respective way (Eg: class HashMap extends Map and implements latter operations via a hash table).
 - shared: shared dependencies of applied components
 
-Unlike STL components, CDS components are polymorphic. This means, for example, we can use abstract List* to work with a list instead of its aplied ArrayList implementation: 
+Unlike STL components, CDS components are polymorphic. This means, for example, we can use abstract List* to work with a list instead of its aplied ArrayList implementation:
 ```c++
 List<long>* list = new ArrayList<long>;
 ```
@@ -48,9 +48,9 @@ List<long>* list = new ArrayList<long>;
 The advantage of this is hiding complexity: we can at any point decide to use a DoublyLinkedList instead and no other lines of code will need being changed. Another advantage, much unlike STL, is predictability of method names across structures of same family (eg: List, Map).
 
 Supported abstract & applied components and their corresponding classes:
-- **List**: defines signatures for list abstract data structure 
+- **List**: defines signatures for list abstract data structure
 	- **ArrayList**: implements a list of dynamic array type (akin STL std::vector)
-	- **LinkedList**: implements a list of singly linked type (akin STL std::forward_list @ C++11, but keeping a pointer to tail, making insertions on bottom as fast as on top) 
+	- **LinkedList**: implements a list of singly linked type (akin STL std::forward_list @ C++11, but keeping a pointer to tail, making insertions on bottom as fast as on top)
 	- **DoublyLinkedList**: implements a list of doubly linked type (akin STL std::list)
 - **Map**: defines signatures for map abstract data structure
 	- **HashMap**: implements a map on top of a **HashTable** (akin std::unordered_map @ C++11)
@@ -71,7 +71,7 @@ Supported abstract & applied components and their corresponding classes:
 	- **UniqueGraph**: A non-weighted graph on top of a **HashTable**, in order to guarantee unique values per vertex
 	- **WeightedGraph**: A weighted graph.
 	- **UniqueWeightedGraph**: A weighted graph on top of a **HashTable**, in order to guarantee unique values per vertex
- 
+
 As one can see above, some components obviously share a structural base. For that reason, these shared components/classes were also added:
 
 - **HashTable**: implements a hash table, to be used by maps, sets, trees or graphs that rely on it (akin std::hashTable)
@@ -98,28 +98,28 @@ Some components rely on dependencies in order to be viable:
 - comparators: functions comparing two items of same type and returning an int (>0 if smaller, 0 if equal, 0> if greater), to be used in sorting and by all structures relying on RedBlackTree.
 - hashers: functions compiling a hash code of an item based on type returning an unsigned int, to be used by all structures relying on (Linked)HashTable.
 
-Unlike STL comparators & hashers, for simplicity reasons, CDS comparators & hashers are C-compliant static inline functions. One can decide not to use the default implementations provided for long & char*, in which case users must supply an additional comparator/hasher template/method argument, akin one sees in STL. 
+Unlike STL comparators & hashers, for simplicity reasons, CDS comparators & hashers are C-compliant static inline functions. One can decide not to use the default implementations provided for long & char*, in which case users must supply an additional comparator/hasher template/method argument, akin one sees in STL.
 
 ####Comparators####
 
 The library only comes with two comparators implemented: for long & char*. For any other data type you will have to write your own. Comparator signature is:
 ```c++
-static inline int comparator(const VALUE_TYPE&, const VALUE_TYPE&)
+static inline int comparator(const VALUE&, const VALUE&)
 ```
 
 ####Hashers####
 
 The library only comes with two comparators implemented: for long & char*. For any other data type you will have to write your own. Hasher signature is:
 ```c++
-static inline std::size_t hash(const VALUE_TYPE&)
+static inline std::size_t hash(const VALUE&)
 ```
 
 
 ##Reference guide##
 
-By virtue of implementing a pure virtual blueprint, all applied components have almost identical signature to their abstract parent. What changes is the way those methods are implemented and their guaranteed Ocomplexity.
+By virtue of merely implementing a pure virtual blueprint, all applied components have almost identical signature to their parent. What changes is how those methods are implemented and their O complexity.
 
-###List###
+###Lists###
 
 Pure virtual methods of abstract List class:
 <table>
@@ -132,6 +132,12 @@ Pure virtual methods of abstract List class:
 		</tr>
 	</thead>
 	<tbody>
+		<tr>
+			<td>operator[]</td>
+			<td>POSITION</td>
+			<td>VALUE</td>
+			<td>Gets value by position.</td>
+		</tr>
 		<tr>
 			<td>addToTop</td>
 			<td>VALUE</td>
@@ -220,7 +226,7 @@ Pure virtual methods of abstract List class:
 		</tr>
 		<tr>
 			<td colspan=4>
-				<strong>Parameter signatures:</strong>
+				<strong>Signatures:</strong>
 				<table>
 					<tr>
 						<td>POSITION</td>
@@ -236,7 +242,7 @@ Pure virtual methods of abstract List class:
 					</tr>
 					<tr>
 						<td>ITERATOR</td>
-						<td>ListIterator<T>*</td>
+						<td>```ListIterator<VALUE_TYPE>*```</td>
 					</tr>
 				</table>
 			</td>
@@ -249,13 +255,19 @@ Overriding methods of applied lists and their O complexity:
 <table>
 	<thead>
 		<tr>
-			<td>Operation</td>
-			<td>ArrayList</td>
-			<td>LinkedList</td>
-			<td>DoublyLinkedList</td>
+			<td><strong>Method</strong></td>
+			<td><strong>ArrayList</strong></td>
+			<td><strong>LinkedList</strong></td>
+			<td><strong>DoublyLinkedList</strong></td>
 		</tr>
 	</thead>
 	<tbody>
+		<tr>
+			<td>operator[]</td>
+			<td>O(1)</td>
+			<td>O(K)/O(K-P)</td>
+			<td>O(K)/O(N-K)/O(K-P)/O(P-K)</td>
+		</tr>
 		<tr>
 			<td>addToTop</td>
 			<td>O(N*2)</td>
@@ -369,6 +381,112 @@ template<typename VALUE_TYPE>
 ```
 
 ###Map###
+
+Pure virtual methods of abstract Map class:
+<table>
+	<thead>
+		<tr>
+			<td><strong>Method</strong></td>
+			<td><strong>Arguments</strong></td>
+			<td><strong>Returns</strong></td>
+			<td><strong>Description</strong></td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>operator[]</td>
+			<td>KEY</td>
+			<td>VALUE</td>
+			<td>Gets value by key.</td>
+		</tr>
+		<tr>
+			<td>clear</td>
+			<td>&nbsp;</td>
+			<td>void</td>
+			<td>Clears map of all values.</td>
+		</tr>
+		<tr>
+			<td>containsKey</td>
+			<td>KEY</td>
+			<td>bool</td>
+			<td>Checks if key exists in map.</td>
+		</tr>
+		<tr>
+			<td>containsValue</td>
+			<td>VALUE</td>
+			<td>bool</td>
+			<td>Checks if value exists in map.</td>
+		</tr>
+		<tr>
+			<td>get</td>
+			<td>KEY</td>
+			<td>VALUE</td>
+			<td>Gets value by key.</td>
+		</tr>
+		<tr>
+			<td>set</td>
+			<td nowrap>KEY, VALUE</td>
+			<td>void</td>
+			<td>Sets value by key.</td>
+		</tr>
+		<tr>
+			<td>removeKey</td>
+			<td>KEY</td>
+			<td>void</td>
+			<td>Removes element by key.</td>
+		</tr>
+		<tr>
+			<td>removeValue(V)</td>
+			<td>VALUE</td>
+			<td>void</td>
+			<td>Removes all elements that match value.</td>
+		</tr>
+		<tr>
+			<td>isEmpty</td>
+			<td>&nbsp;</td>
+			<td>void</td>
+			<td>Checks if map is empty</td>
+		</tr>
+		<tr>
+			<td>size</td>
+			<td>&nbsp;</td>
+			<td nowrap>const std::size_t&</td>
+			<td>Gets map size</td>
+		</tr>
+		<tr>
+			<td>begin</td>
+			<td>&nbsp;</td>
+			<td>ITERATOR</td>
+			<td>Starts iterator</td>
+		</tr>
+		<tr>
+			<td>end</td>
+			<td>&nbsp;</td>
+			<td>ITERATOR</td>
+			<td>Ends iterator</td>
+		</tr>
+		<tr>
+			<td colspan=4>
+				<strong>Signatures:</strong>
+				<table>
+					<tr>
+						<td>KEY</td>
+						<td>const KEY_TYPE&</td>
+					</tr>
+					<tr>
+						<td>VALUE</td>
+						<td>const VALUE_TYPE&</td>
+					</tr>
+					<tr>
+						<td>ITERATOR</td>
+						<td>```MapIterator<KEY_TYPE, VALUE_TYPE>*```</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
 
 Operations complexity @ map:
 <table>
@@ -849,7 +967,7 @@ Test case:
 1. checking memory allocated by a list containing a million entries
 2. checking duration of a million rows insertion on list's bottom
 3. checking duration of iterating all list from top to bottom
-4. checking duration of getting all list element values by offset from top to bottom 
+4. checking duration of getting all list element values by offset from top to bottom
 5. removing all list elements based on offset from bottom to top (for dynamic arrays) and top to bottom (for [doubly-]linked lists)
 
 Results:
