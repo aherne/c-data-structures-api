@@ -174,31 +174,31 @@ Pure virtual methods of abstract List class:
 			<td>emplace</td>
 			<td>POSITION, VALUE</td>
 			<td>void</td>
-			<td>Inserts value at position, padding existing element to the right.</td>
+			<td>Inserts value at position, padding existing element to the right.<br/>Throws <u>std::out_of_range</u> if position exceeds size.</td>
 		</tr>
 		<tr>
 			<td>get</td>
 			<td>POSITION</td>
 			<td>VALUE</td>
-			<td>Gets value by position.</td>
+			<td>Gets value by position.<br/>Throws <u>std::out_of_range</u> if position not found.</td>
 		</tr>
 		<tr>
 			<td>set</td>
 			<td>POSITION, VALUE</td>
 			<td>void</td>
-			<td>Sets value by position.</td>
+			<td>Sets value by position.<br/>Throws <u>std::out_of_range</u> if position not found.</td>
 		</tr>
 		<tr>
 			<td>removeIndex</td>
 			<td>POSITION</td>
 			<td>void</td>
-			<td>Removes element by position.</td>
+			<td>Removes element by position.<br/>Throws <u>std::out_of_range</u> if position not found.</td>
 		</tr>
 		<tr>
 			<td>removeValue</td>
 			<td>VALUE</td>
 			<td>void</td>
-			<td>Removes all elements that match value.</td>
+			<td>Removes all elements that match value.<br/>Throws <u>std::out_of_range</u> if value not found.</td>
 		</tr>
 		<tr>
 			<td>isEmpty</td>
@@ -242,7 +242,7 @@ Pure virtual methods of abstract List class:
 					</tr>
 					<tr>
 						<td>ITERATOR</td>
-						<td>```ListIterator<VALUE_TYPE>*```</td>
+						<td>ListIterator&lt;VALUE_TYPE&gt;*</td>
 					</tr>
 				</table>
 			</td>
@@ -250,8 +250,7 @@ Pure virtual methods of abstract List class:
 	</tbody>
 </table>
 
-
-Overriding methods of applied lists and their O complexity:
+Overriding methods in applied lists and their O complexity:
 <table>
 	<thead>
 		<tr>
@@ -357,9 +356,7 @@ Overriding methods of applied lists and their O complexity:
 				<strong>Glossary:</strong><br/>
 				K = position in list<br/>
 				N = number of elements in list<br/>
-				V = value to be stored in list<br/>
-				P = internal iterator position<br/>
-				C = comparator
+				P = internal iterator position
 			</td>
 		</tr>
 	</tbody>
@@ -368,7 +365,7 @@ Overriding methods of applied lists and their O complexity:
 Constructors:
 
 - all applied lists work primarily with a no-arg constructor
-- ArrayList also supports being preallocated with a reserved size via constructor:
+- ArrayList also supports being preallocated with a reserved size by constructor:
 ```c++
 ArrayList(const std::size_t& reservedSize)
 ```
@@ -380,7 +377,20 @@ Templates:
 template<typename VALUE_TYPE>
 ```
 
-###Map###
+Iterators:
+
+- all lists are iterable via polymorphic ListIterator*:
+```c++
+List<long>* list = new ArrayList<long>;
+list.addToBottom(1);
+list.addToBottom(2);
+for(auto it=list.begin(); *it!=*(list->end()); ++(*it)) {
+	std::cout << *(*it) << std::endl;
+}
+// outputs: 1 (new line) 2
+```
+
+###Maps###
 
 Pure virtual methods of abstract Map class:
 <table>
@@ -479,7 +489,7 @@ Pure virtual methods of abstract Map class:
 					</tr>
 					<tr>
 						<td>ITERATOR</td>
-						<td>```MapIterator<KEY_TYPE, VALUE_TYPE>*```</td>
+						<td>MapIterator&lt;KEY_TYPE, VALUE_TYPE&gt;*</td>
 					</tr>
 				</table>
 			</td>
@@ -487,121 +497,123 @@ Pure virtual methods of abstract Map class:
 	</tbody>
 </table>
 
-
-Operations complexity @ map:
+Overriding methods in applied maps and their O complexity:
 <table>
 	<thead>
 		<tr>
-			<td>Operation</td>
-			<td>HashMap</td>
-			<td>LinkedHashMap</td>
-			<td>TreeMap</td>
-			<td>Description</td>
+			<td><strong>Method</strong></td>
+			<td><strong>HashMap</strong></td>
+			<td><strong>LinkedHashMap</strong></td>
+			<td><strong>TreeMap</strong></td>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td>clear()</td>
+			<td>clear</td>
 			<td>O(N)</td>
 			<td>O(N)</td>
 			<td>O(N)</td>
-			<td>Clears map of all values.</td>
 		</tr>
 		<tr>
-			<td>containsKey(K)</td>
+			<td>containsKey</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
 			<td>O(log(N))</td>
-			<td>Checks if key exists in map.</td>
 		</tr>
 		<tr>
-			<td>containsValue(V)</td>
+			<td>containsValue</td>
 			<td>O(N)</td>
 			<td>O(N)</td>
 			<td>O(N)</td>
-			<td>Checks if value exists in map.</td>
 		</tr>
 		<tr>
-			<td>get(K)</td>
+			<td>get</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
 			<td>O(log(N))</td>
-			<td>Gets value by key.</td>
 		</tr>
 		<tr>
-			<td>set(K,V)</td>
+			<td>set</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
 			<td>O(log(N))</td>
-			<td>Sets value by key.</td>
 		</tr>
 		<tr>
-			<td>removeKey(K)</td>
+			<td>removeKey</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
 			<td>O(log(N))</td>
-			<td>Removes element by key.</td>
 		</tr>
 		<tr>
-			<td>removeValue(V)</td>
+			<td>removeValue</td>
 			<td>O(N)</td>
 			<td>O(N)</td>
 			<td>O(N)</td>
-			<td>Removes all elements that match value.</td>
 		</tr>
 		<tr>
-			<td>isEmpty()</td>
+			<td>isEmpty</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
-			<td>Checks if map is empty</td>
 		</tr>
 		<tr>
-			<td>size()</td>
+			<td>size</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
-			<td>Gets map size</td>
 		</tr>
 		<tr>
-			<td>getKeys()</td>
-			<td>O(N*2)</td>
-			<td>O(N*2)</td>
-			<td>O(N*2)</td>
-			<td>Gets map keys as std::vector.</td>
+			<td>begin</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
 		</tr>
 		<tr>
-			<td>getValues()</td>
-			<td>O(N*2)</td>
-			<td>O(N*2)</td>
-			<td>O(N*2)</td>
-			<td>Gets map values as std::vector.</td>
-		</tr>
-		<tr>
-			<td>sortByKey(C)</td>
-			<td>-</td>
-			<td>O(N*2+log(N))</td>
-			<td>-</td>
-			<td>Sorts map by keys and comparator.</td>
-		</tr>
-		<tr>
-			<td>sortByValue(C)</td>
-			<td>-</td>
-			<td>O(N*2+log(N))</td>
-			<td>-</td>
-			<td>Sorts map by values and comparator.</td>
+			<td>end</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
 		</tr>
 		<tr>
 			<td colspan=5>
 				<strong>Glossary:</strong><br/>
-				K = position in list<br/>
-				N = number of elements in list<br/>
-				V = value to be stored in map<br/>
-				C = comparator
+				N = number of elements in list
 			</td>
 		</tr>
 	</tbody>
 </table>
+
+Constructors:
+
+- all applied maps work primarily with a no-arg constructor
+- HashTable-based maps (HashMap & LinkedHashMap) also support being preallocated with a reserved size by constructor:
+```c++
+HashMap(const std::size_t& reservedSize)
+LinkedHashMap(const std::size_t& reservedSize)
+```
+
+Templates:
+
+- HashTable-based maps (HashMap & LinkedHashMap) have four template arguments:
+  	- typename _KEY<br/> This defines key data type.
+  	- typename _VALUE<br/> This defines value data type.
+  	- int (*compare)(const MapEntry<_KEY,_VALUE>&, const MapEntry<_KEY,_VALUE>&)<br/> This defines the comparison function required by HashTable implementation.
+  	- std::size_t (*hash)(const MapEntry<_KEY,_VALUE>&)><br/> This defines the hasher function required by HashTable implementation.
+
+Iterators:
+
+- all lists are iterable via polymorphic ListIterator*:
+```c++
+List<long>* list = new ArrayList<long>;
+list.addToBottom(1);
+list.addToBottom(2);
+for(auto it=list.begin(); *it!=*(list->end()); ++(*it)) {
+	std::cout << *(*it) << std::endl;
+}
+// outputs: 1 (new line) 2
+```
+
+###Sets###
 
 Operations complexity @ set:
 <table>
