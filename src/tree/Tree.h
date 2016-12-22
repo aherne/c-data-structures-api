@@ -9,43 +9,16 @@
 #define TREE_H_
 
 #include "TreeNode.h"
-#include "TreeIterator.h"
 #include "TreeDealocator.h"
-#include "../container/Queue.h"
-
-template<typename T>
-class SearchVisitor : public TreeNodeVisitor<T> {
-public:
-	SearchVisitor(T data, int (*comparator)(const T&, const T&)) {
-		this->data = data;
-		this->comparator = comparator;
-	}
-
-	~SearchVisitor() {}
-
-	void visit(TreeNode<T>*& element) {
-		if(comparator(data, element->getData())==0) {
-			results.push_back(element);
-		}
-	}
-
-	const std::vector<TreeNode<T>*>& getResults() {
-		return results;
-	}
-private:
-	std::vector<TreeNode<T>*> results;
-	T data;
-	int (*comparator)(const T&, const T&);
-};
 
 template<typename T>
 class Tree {
 	public:
-		Tree(const T& data) {
+		explicit Tree(const T& data) {
 			root = new TreeNode<T>(data);
 		}
 
-		~Tree() {
+		virtual ~Tree() {
 			TreeDeallocator<T> deallocate(root);
 		}
 
@@ -61,20 +34,13 @@ class Tree {
 			return root->getHeight();
 		}
 
-		std::vector<TreeNode<T>*> search(const T& data, int (*comparator)(const T&, const T&)) {
-			SearchVisitor<T> visitor(data, comparator);
-			LevelOrderTreeIterator(root,&visitor);
-			return visitor.getResults();
-		}
-
-		TreeNode<T>* createNode(const T& data, TreeNode<T>* parent) {
+		virtual TreeNode<T>* createNode(const T& data, TreeNode<T>* parent) {
 			TreeNode<T>* newNode = new TreeNode<T>(data);
 			parent->addChild(newNode);
 			return newNode;
 		}
 
-		// tested
-		void removeNode(TreeNode<T>* node) {
+		virtual void removeNode(TreeNode<T>* node) {
 			if(node == root) throw std::logic_error("Root cannot be removed without deallocating the whole tree!");
 
 			// gets node's parent
@@ -93,29 +59,19 @@ class Tree {
 			delete node;
 		}
 
-		// tested
-		void removeBranch(TreeNode<T>* node) {
+		virtual void removeBranch(TreeNode<T>* node) {
 			if(node == root) throw std::logic_error("Root cannot be removed without deallocating the whole tree!");
+
+			// gets node's parent
 			TreeNode<T>* parent = node->getParent();
+
+			// removes node as child of parent
 			parent->removeChild(node);
+
+			// deallocates node
 			TreeDeallocator<T> deallocate(node);
 		}
-
-		// tested
-		bool contains(const T& data, int (*comparator)(const T&, const T&)) const {
-			Queue<TreeNode<T>*> q;
-			q.push(root);
-			while(!q.isEmpty()) {
-				TreeNode<T>* node = q.pop();
-				if(comparator(data, node->getData())==0) return true;
-				std::vector<TreeNode<T>*> children = node->getChildren();
-				for(auto it = children.begin(); it!=children.end(); ++it) {
-					q.push(*it);
-				}
-			}
-			return false;
-		}
-	private:
+	protected:
 		TreeNode<T>* root;
 };
 

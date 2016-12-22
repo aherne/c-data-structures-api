@@ -1,8 +1,5 @@
-IMPORTANT!!!
-
-	see if elements are iterable if defined @ stack
 Tree
-	If attempting to add list implementations in a tree, a crash occurs on deallocation
+	If attempting to add ArrayList implementation in a tree, a crash occurs on deallocation
 	data @ uniquegraphvector is forced to use my comparator
 List
 	(LATER) unique(valueComparator)

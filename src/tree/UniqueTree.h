@@ -8,9 +8,7 @@
 #ifndef SRC_TREE_UNIQUETREE_H_
 #define SRC_TREE_UNIQUETREE_H_
 
-#include "TreeNode.h"
-#include "TreeDealocator.h"
-#include "TreeIterator.h"
+#include "Tree.h"
 #include "../HashTable.h"
 #include "../Comparator.h"
 #include "../Hashing.h"
@@ -26,27 +24,9 @@ std::size_t hashNode(TreeNode<T>* const& node) {
 }
 
 template<typename T>
-class UniqueTree {
+class UniqueTree : public Tree<T> {
 	public:
-		UniqueTree(const T& data) {
-			root = new TreeNode<T>(data);
-		}
-
-		~UniqueTree() {
-			TreeDeallocator<T> deallocate(root);
-		}
-
-		TreeNode<T>* getRoot() {
-			return root;
-		}
-
-		std::size_t getSize() {
-			return root->getSize();
-		}
-
-		std::size_t getHeight() {
-			return root->getHeight();
-		}
+		using Tree<T>::Tree;
 
 		TreeNode<T>* search(const T& data) {
 			TreeNode<T> temp(data);
@@ -54,45 +34,33 @@ class UniqueTree {
 			return *(hashTable.get(&temp));
 		}
 
+		// tested
+		bool contains(const T& data) const {
+			TreeNode<T> temp(data);
+			return hashTable.contains(&temp);
+		}
+
 		TreeNode<T>* createNode(const T& data, TreeNode<T>* parent) {
-			TreeNode<T>* newNode = new TreeNode<T>(data);
-			if(hashTable.contains(newNode)) {
-				delete newNode;
+			if(contains(data)) {
 				throw std::logic_error("Node with that value already exists!");
 			}
+			TreeNode<T>* newNode = Tree<T>::createNode(data, parent);
 			hashTable.set(newNode);
-			parent->addChild(newNode);
 			return newNode;
 		}
 
 		void removeNode(TreeNode<T>* node) {
-			if(node == root) throw std::logic_error("Root cannot be removed without deallocating the whole tree!");
-
-			// gets node's parent
-			TreeNode<T>* parent = node->getParent();
-
-			// removes node as child of parent
-			parent->removeChild(node);
-
-			// migrate my children to parent
-			std::vector<TreeNode<T>*> children = node->getChildren();
-			for(auto it = children.begin(); it!=children.end(); ++it) {
-				parent->addChild(*it);
-			}
+			if(node == this->root) throw std::logic_error("Root cannot be removed without deallocating the whole tree!");
 
 			// empty parent & children
 			hashTable.remove(node);
-			delete node;
+
+			// deallocates branch
+			Tree<T>::removeNode(node);
 		}
 
 		void removeBranch(TreeNode<T>* node) {
-			if(node == root) throw std::logic_error("Root cannot be removed without deallocating the whole tree!");
-
-			// gets node's parent
-			TreeNode<T>* parent = node->getParent();
-
-			// removes node as child of parent
-			parent->removeChild(node);
+			if(node == this->root) throw std::logic_error("Root cannot be removed without deallocating the whole tree!");
 
 			// removes each descendant from hashtable
 			std::vector<TreeNode<T>*> children = node->getDescendants();
@@ -101,16 +69,10 @@ class UniqueTree {
 			}
 			hashTable.remove(node);
 
-			TreeDeallocator<T> deallocate(node);
-		}
-
-		// tested
-		bool contains(const T& data) const {
-			TreeNode<T> temp(data);
-			return hashTable.contains(&temp);
+			// deallocates branch
+			Tree<T>::removeBranch(node);
 		}
 	private:
-		TreeNode<T>* root;
 		HashTable<TreeNode<T>*, compareNode, hashNode> hashTable;
 };
 

@@ -6,7 +6,7 @@
  */
 
 #include "TreeUnitTest.h"
-#include "../tree/Tree.h"
+#include "../tree/NonUniqueTree.h"
 #include "../tree/UniqueTree.h"
 
 int comparator1(const long& left, const long& right) {
@@ -35,16 +35,16 @@ void TreeUnitTest::execute() {
 	 * 	  |
 	 * 	  11
 	 */
-	std::cout << "=====Tree<long>=====" << std::endl;
-	treeTest();
+//	std::cout << "=====NonUniqueTree<long>=====" << std::endl;
+//	treeTest();
 	std::cout << "=====UniqueTree<long>=====" << std::endl;
 	uniqueTreeTest();
-	std::cout << "=====[ITERATORS]=====" << std::endl;
-	iteratorsTest();
+//	std::cout << "=====[ITERATORS]=====" << std::endl;
+//	iteratorsTest();
 }
 
 void TreeUnitTest::treeTest() {
-	Tree<long>* tree = new Tree<long>(1);
+	NonUniqueTree<long>* tree = new NonUniqueTree<long>(1);
 	TreeNode<long>* root = tree->getRoot();
 	TreeNode<long>* c1 = tree->createNode(2, root);
 	TreeNode<long>* c2 = tree->createNode(3, root);

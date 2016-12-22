@@ -38,11 +38,11 @@ int main() {
 //	ContainerUnitTest containerUnitTest;
 //	containerUnitTest.execute();
 //
-//	TreeUnitTest treeUnitTest;
-//	treeUnitTest.execute();
-
-	GraphUnitTest graphUnitTest;
-	graphUnitTest.execute();
+	TreeUnitTest treeUnitTest;
+	treeUnitTest.execute();
+//
+//	GraphUnitTest graphUnitTest;
+//	graphUnitTest.execute();
 	return 1;
 }
 
