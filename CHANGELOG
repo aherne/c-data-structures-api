@@ -1,4 +1,7 @@
-Tree 
+IMPORTANT!!!
+
+	see if elements are iterable if defined @ stack
+Tree
 	If attempting to add list implementations in a tree, a crash occurs on deallocation
 	data @ uniquegraphvector is forced to use my comparator
 List
@@ -16,3 +19,4 @@ Graph
 Document all code
 test what happens whe we try to use another data type than long/char* @ all data structures
 CONVERT COMPARATORS TO STRUCT?
++ bounded containers

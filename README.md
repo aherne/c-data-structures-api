@@ -50,7 +50,7 @@ The advantage of this is hiding complexity: we can at any point decide to use a 
 Supported abstract & applied components and their corresponding classes:
 - **List**: defines signatures for list abstract data structure
 	- **ArrayList**: implements a list of dynamic array type (akin STL std::vector)
-	- **LinkedList**: implements a list of singly linked type (akin STL std::forward_list @ C++11, but keeping a pointer to tail, making insertions on bottom as fast as on top)
+	- **LinkedList**: implements a list of singly linked type (akin STL std::forward_list @ C++11, but maintaining a pointer to tail, making insertions on bottom as fast as on top)
 	- **DoublyLinkedList**: implements a list of doubly linked type (akin STL std::list)
 - **Map**: defines signatures for map abstract data structure
 	- **HashMap**: implements a map on top of a **HashTable** (akin std::unordered_map @ C++11)
@@ -86,10 +86,9 @@ Each component (abstract or applied) has a polymorphic iterator attached (Eg: cl
 
 - CDS iterators only use forward iteration. This is a restricting move desiged to keep things simple. Nevertheless, it's easy to add backward iteration later on...
 - CDS iterators invalidate automatically whenever items are added/subtracted from structure while iterating. This is a restricting move designed to GUARANTEE safety and no crashes, but at the same time produces a minor performance overhead. This is because on any loop, a check is made whether or not data structure size has changed.
-- CDS iterators are polymorphic, with their structure mirroring that of components. This means, for example, a LinkedList can be iterated both by an abstract ListIterator* or by an applied LinkedListIterator:<br/>
+- CDS iterators are polymorphic, with their structure mirroring that of components. This means, for example, a LinkedList can be iterated through an abstract ListIterator*:<br/>
 ```c++
-for(auto it=list.begin(); *it!=list.end; ++*it)) { ... }
-for(auto it=linkedList.begin(); it!=linkedList.end; ++it)) { ... }
+for(auto it=list.begin(); *it!=*(list.end()); ++(*it))) { ... }
 ```
 
 ###Dependencies###
@@ -121,7 +120,7 @@ By virtue of merely implementing a pure virtual blueprint, all applied component
 
 ###Lists###
 
-Pure virtual methods of abstract List class:
+Pure virtual methods of List class:
 <table>
 	<thead>
 		<tr>
@@ -250,7 +249,7 @@ Pure virtual methods of abstract List class:
 	</tbody>
 </table>
 
-Overriding methods in applied lists and their O complexity:
+O complexity of above methods by their implementation:
 <table>
 	<thead>
 		<tr>
@@ -352,7 +351,7 @@ Overriding methods in applied lists and their O complexity:
 			<td>O(1)</td>
 		</tr>
 		<tr>
-			<td colspan=5>
+			<td colspan=4>
 				<strong>Glossary:</strong><br/>
 				K = position in list<br/>
 				N = number of elements in list<br/>
@@ -392,7 +391,7 @@ for(auto it=list.begin(); *it!=*(list->end()); ++(*it)) {
 
 ###Maps###
 
-Pure virtual methods of abstract Map class:
+Pure virtual methods of Map class:
 <table>
 	<thead>
 		<tr>
@@ -423,7 +422,7 @@ Pure virtual methods of abstract Map class:
 		</tr>
 		<tr>
 			<td>containsValue</td>
-			<td>VALUE</td>
+			<td>VALUE, COMPARATOR</td>
 			<td>bool</td>
 			<td>Checks if value exists in map.</td>
 		</tr>
@@ -447,7 +446,7 @@ Pure virtual methods of abstract Map class:
 		</tr>
 		<tr>
 			<td>removeValue</td>
-			<td>VALUE</td>
+			<td>VALUE, COMPARATOR</td>
 			<td>void</td>
 			<td>Removes all elements that match value.<br/>Throws <u>std::out_of_range</u> if value is not found.</td>
 		</tr>
@@ -491,13 +490,17 @@ Pure virtual methods of abstract Map class:
 						<td>ITERATOR</td>
 						<td>MapIterator&lt;KEY_TYPE, VALUE_TYPE&gt;*</td>
 					</tr>
+					<tr>
+						<td>COMPARATOR</td>
+						<td>int (*comparer)(const MapEntry<_KEY,_VALUE>&, const MapEntry<_KEY,_VALUE>&)</td>
+					</tr>
 				</table>
 			</td>
 		</tr>
 	</tbody>
 </table>
 
-Overriding methods in applied maps and their O complexity:
+O complexity of above methods by their implementation:
 <table>
 	<thead>
 		<tr>
@@ -575,7 +578,7 @@ Overriding methods in applied maps and their O complexity:
 			<td>O(1)</td>
 		</tr>
 		<tr>
-			<td colspan=5>
+			<td colspan=4>
 				<strong>Glossary:</strong><br/>
 				N = number of elements in map
 			</td>
@@ -589,7 +592,6 @@ Constructors:
 - HashTable-based maps (HashMap & LinkedHashMap) also support being preallocated with a reserved size by constructor:
 ```c++
 HashMap(const std::size_t& reservedSize)
-LinkedHashMap(const std::size_t& reservedSize)
 ```
 
 Templates:
@@ -628,7 +630,7 @@ for(auto it=map.begin(); *it!=*(map->end()); ++(*it)) {
 
 ###Sets###
 
-Pure virtual methods of abstract Set class:
+Pure virtual methods of Set class:
 <table>
 	<thead>
 		<tr>
@@ -639,6 +641,12 @@ Pure virtual methods of abstract Set class:
 		</tr>
 	</thead>
 	<tbody>
+		<tr>
+			<td>add</td>
+			<td>VALUE</td>
+			<td>void</td>
+			<td>Adds value to set.</td>
+		</tr>
 		<tr>
 			<td>clear</td>
 			<td>&nbsp;</td>
@@ -682,7 +690,7 @@ Pure virtual methods of abstract Set class:
 			<td>Ends iterator</td>
 		</tr>
 		<tr>
-			<td colspan=5>
+			<td colspan=4>
 				<strong>Signatures:</strong>
 				<table>
 					<tr>
@@ -699,7 +707,7 @@ Pure virtual methods of abstract Set class:
 	</tbody>
 </table>
 
-Operations complexity @ set:
+O complexity of above methods by their implementation:
 <table>
 	<thead>
 		<tr>
@@ -710,6 +718,12 @@ Operations complexity @ set:
 		</tr>
 	</thead>
 	<tbody>
+		<tr>
+			<td>add</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
+			<td>O(log(N))</td>
+		</tr>
 		<tr>
 			<td>clear</td>
 			<td>O(N)</td>
@@ -753,7 +767,7 @@ Operations complexity @ set:
 			<td>O(1)</td>
 		</tr>
 		<tr>
-			<td colspan=5>
+			<td colspan=4>
 				<strong>Glossary:</strong><br/>
 				N = number of elements in set
 			</td>
@@ -791,72 +805,143 @@ template <typename _KEY, typename _VALUE, int (*comparer)(const MapEntry<_KEY,_V
 
 Iterators:
 
-- all maps are iterable via polymorphic MapIterator*:
+- all sets are iterable via polymorphic MapIterator*:
 ```c++
-Map<long,long>* map = new LinkedHashMap<long,long>;
-map.set(1,2);
-map.set(3,4);
+Set<long>* set = new LinkedHashSet<long>;
+set.set(1);
+set.set(2);
 for(auto it=map.begin(); *it!=*(map->end()); ++(*it)) {
-	std::cout << (*(*it)).first << ":" << (*(*it)).last << std::endl;
+	std::cout << *(*it) << std::endl;
 }
-// outputs: 1:2 (new line) 3:4
+// outputs: 1 (new line) 2
 ```
 
-Operations complexity @ container:
+###Containers###
+
+Pure virtual methods of Container class:
+<table>
+	<thead>
+		<tr>
+			<td><strong>Method</strong></td>
+			<td><strong>Arguments</strong></td>
+			<td><strong>Returns</strong></td>
+			<td><strong>Description</strong></td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>clear</td>
+			<td>&nbsp;</td>
+			<td>void</td>
+			<td>Clears container of all values.</td>
+		</tr>
+		<tr>
+			<td>size</td>
+			<td>&nbsp;</td>
+			<td>const std::size_t&</td>
+			<td>Gets container size</td>
+		</tr>
+		<tr>
+			<td>isEmpty</td>
+			<td>&nbsp;</td>
+			<td>bool</td>
+			<td>Checks if container is empty</td>
+		</tr>
+		<tr>
+			<td>push</td>
+			<td>const VALUE_TYPE&</td>
+			<td>void</td>
+			<td>Pushes value to head @ stack or tail @ queue.<br/>
+			Throws <u>std::out_of_range</u> if container is bounded and exceeds limit.
+			</td>
+		</tr>
+		<tr>
+			<td>peek</td>
+			<td>&nbsp;</td>
+			<td>const VALUE_TYPE&</td>
+			<td>Gets value in container head/tail.<br/>
+			Throws <u>std::out_of_range</u> if container is empty.</td>
+		</tr>
+		<tr>
+			<td>pop</td>
+			<td>&nbsp;</td>
+			<td>VALUE_TYPE</td>
+			<td>Removes entry in container head @ stack or tail @ queue and returns its value.<br/>
+			Throws <u>std::out_of_range</u> if container is empty.</td>
+		</tr>
+	</tbody>
+</table>
+
+O complexity of above methods by their implementation:
 <table>
 	<thead>
 		<tr>
 			<td>Operation</td>
 			<td>Stack</td>
 			<td>Queue</td>
-			<td>Description</td>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td>clear()</td>
+			<td>clear</td>
 			<td>O(N)</td>
 			<td>O(N)</td>
-			<td>Clears container of all values.</td>
 		</tr>
 		<tr>
-			<td>size()</td>
+			<td>size</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
-			<td>Gets container size</td>
 		</tr>
 		<tr>
-			<td>isEmpty()</td>
+			<td>isEmpty</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
-			<td>Checks if container is empty</td>
 		</tr>
 		<tr>
-			<td>push(V)</td>
+			<td>push</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
-			<td>Pushes value to head @ stack or tail @ queue.</td>
 		</tr>
 		<tr>
-			<td>peek()</td>
+			<td>peek</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
-			<td>Gets value in container head.</td>
 		</tr>
 		<tr>
-			<td>pop()</td>
+			<td>pop</td>
 			<td>O(1)</td>
 			<td>O(1)</td>
-			<td>Removes head element of container and returns its value.</td>
 		</tr>
 		<tr>
-			<td colspan=5>
+			<td colspan=3>
 				<strong>Glossary:</strong><br/>
 				N = number of elements in container
 			</td>
 		</tr>
 	</tbody>
 </table>
+
+Constructors:
+
+- both applied containers work primarily with a no-arg constructor
+- both applied containers also support having a bounded capacity via constructor:
+```c++
+Stack(const std::size_t& capacity)
+Queue(const std::size_t& capacity)
+```
+Iterators:
+
+- by virtue of conception as black boxes whose contents only become available through push/pop, containers do not support iterators
+
+###Trees###
+
+Unlike data structures above, operations a tree performs are irreducible to a common ground. Each tree type chosen reflects a very different need, which results into fundamentally different operations. For that reason, no common Tree interface has been defined and trees exist only as disparate implementations.
+
+(In my experience as a programmer, these are the ones most commonly needed:)
+
+- RedBlackTree: a balanced binary search tree using red-black principles, used internally as a foundation for structures that need to stay sorted (TreeMap and TreeSet classes above), with algorithms based on Introduction to Algorithms 3rd Edition by Thomas Cormen, Charles Leiserson & Ronald Rivest.
+- Tree: a regular n-ary tree with no children size bounds, used to store node hierarchies, allowing nodes with duplicate values
+	- UniqueTree: a version of above where pointers to nodes are also saved in a HashTable to prevent duplicates and allow O(1) access to any entry in tree.
 
 Operations complexity @ n-ary trees:
 <table>
