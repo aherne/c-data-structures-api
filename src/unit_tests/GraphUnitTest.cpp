@@ -9,7 +9,7 @@
 #include "../graph1/NonUniqueGraph.h"
 #include "../Comparator.h"
 #include "../graph1/UniqueGraph.h"
-//#include "../graph/WeightedGraph.h"
+#include "../graph1/NonUniqueWeightedGraph.h"
 //#include "../graph/UniqueWeightedGraph.h"
 
 //template<typename T>
@@ -84,10 +84,10 @@ void GraphUnitTest::execute() {
 	 */
 //	std::cout << "=====NonUniqueGraph<long>=====" << std::endl;
 //	simpleGraphTest();
-	std::cout << "=====UniqueGraph<long>=====" << std::endl;
-	simpleUniqueGraphTest();
-//	std::cout << "=====WeightedGraph<long,long>=====" << std::endl;
-//	weightedGraphTest();
+//	std::cout << "=====UniqueGraph<long>=====" << std::endl;
+//	simpleUniqueGraphTest();
+	std::cout << "=====WeightedGraph<long,long>=====" << std::endl;
+	weightedGraphTest();
 //	std::cout << "=====WeightedUniqueGraph<long,long>=====" << std::endl;
 //	weightedUniqueGraphTest();
 }
@@ -185,7 +185,7 @@ void GraphUnitTest::simpleUniqueGraphTest() {
 }
 
 void GraphUnitTest::weightedGraphTest() {
-//	WeightedGraph<long,long> graph;
+	NonUniqueWeightedGraph<long,long> graph;
 //	// create vertexes
 //	WeightedGraphVertex<long,long>* v1 = graph.createVertex(1);
 //	WeightedGraphVertex<long,long>* v2 = graph.createVertex(2);

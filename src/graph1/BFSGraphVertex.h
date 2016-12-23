@@ -9,8 +9,7 @@
 #define SRC_GRAPH1_BFSGRAPHVERTEX_H_
 
 #include "GraphVertex.h"
-
-enum BFSColor { WHITE, GREY, BLACK };
+#include "BFS.h"
 
 template<typename T>
 class BFSGraphVertex : public GraphVertex<T> {
