@@ -34,13 +34,13 @@ class Tree {
 			return root->getHeight();
 		}
 
-		virtual TreeNode<T>* createNode(const T& data, TreeNode<T>* parent) {
+		virtual TreeNode<T>* createNode(const T& data, TreeNode<T>*& parent) {
 			TreeNode<T>* newNode = new TreeNode<T>(data);
 			parent->addChild(newNode);
 			return newNode;
 		}
 
-		virtual void removeNode(TreeNode<T>* node) {
+		virtual void removeNode(TreeNode<T>*& node) {
 			if(node == root) throw std::logic_error("Root cannot be removed without deallocating the whole tree!");
 
 			// gets node's parent
@@ -59,7 +59,7 @@ class Tree {
 			delete node;
 		}
 
-		virtual void removeBranch(TreeNode<T>* node) {
+		virtual void removeBranch(TreeNode<T>*& node) {
 			if(node == root) throw std::logic_error("Root cannot be removed without deallocating the whole tree!");
 
 			// gets node's parent
