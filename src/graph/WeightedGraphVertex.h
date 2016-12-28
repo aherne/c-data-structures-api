@@ -5,8 +5,8 @@
  *      Author: aherne
  */
 
-#ifndef SRC_GRAPH1_WEIGHTEDGRAPHVERTEX_H_
-#define SRC_GRAPH1_WEIGHTEDGRAPHVERTEX_H_
+#ifndef SRC_GRAPH_WEIGHTEDGRAPHVERTEX_H_
+#define SRC_GRAPH_WEIGHTEDGRAPHVERTEX_H_
 
 #include <vector>
 
@@ -96,4 +96,4 @@ struct WeightedGraphEdge {
 
 
 
-#endif /* SRC_GRAPH1_WEIGHTEDGRAPHVERTEX_H_ */
+#endif /* SRC_GRAPH_WEIGHTEDGRAPHVERTEX_H_ */

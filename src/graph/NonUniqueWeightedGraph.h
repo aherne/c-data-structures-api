@@ -5,8 +5,8 @@
  *      Author: aherne
  */
 
-#ifndef SRC_GRAPH1_NONUNIQUEWEIGHTEDGRAPH_H_
-#define SRC_GRAPH1_NONUNIQUEWEIGHTEDGRAPH_H_
+#ifndef SRC_GRAPH_NONUNIQUEWEIGHTEDGRAPH_H_
+#define SRC_GRAPH_NONUNIQUEWEIGHTEDGRAPH_H_
 
 
 #include "../container/Queue.h"
@@ -187,4 +187,4 @@ public:
 		std::vector<BFSWeightedGraphVertex<T,W>*> vertexes;
 };
 
-#endif /* SRC_GRAPH1_NONUNIQUEWEIGHTEDGRAPH_H_ */
+#endif /* SRC_GRAPH_NONUNIQUEWEIGHTEDGRAPH_H_ */

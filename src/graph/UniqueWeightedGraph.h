@@ -14,69 +14,38 @@
 #include "../map/HashMap.h"
 #include <vector>
 
-template<typename T, typename W>
-struct UniqueWeightedGraphEdge;
-
 template<typename T,typename W>
-struct UniqueWeightedGraphVertex {
-	T data;
-	std::vector<UniqueWeightedGraphEdge<T,W>*> edges;
-};
-
-template<typename T, typename W>
-struct UniqueWeightedGraphEdge {
-	UniqueWeightedGraphVertex<T,W>* vertex;
-	W weight;
-};
-
-template<typename T,typename W>
-int compareVertex(UniqueWeightedGraphVertex<T,W>* const& left, UniqueWeightedGraphVertex<T,W>* const& right) {
-	return comparator(left->data, right->data);
+int compareVertex(WeightedGraphVertex<T,W>* const& left, WeightedGraphVertex<T,W>* const& right) {
+	return comparator(left->getData(), right->getData());
 }
 
 template<typename T,typename W>
-std::size_t hashVertex(UniqueWeightedGraphVertex<T,W>* const& node) {
-	return hash(node->data);
+std::size_t hashVertex(WeightedGraphVertex<T,W>* const& node) {
+	return hash(node->getData());
 }
 
 template<typename T,typename W>
-std::size_t hashVertexDistance(const MapEntry<UniqueWeightedGraphVertex<T,W>*, long>& entry) {
-	return hash(entry.key->data);
+std::size_t hashVertexDistance(const MapEntry<WeightedGraphVertex<T,W>*, long>& entry) {
+	return hash(entry.key->getData());
 }
 
 template<typename T,typename W>
-int compareVertexDistance(const MapEntry<UniqueWeightedGraphVertex<T,W>*, long>& left, const MapEntry<UniqueWeightedGraphVertex<T,W>*, long>& right) {
-	return comparator(left.key->data, right.key->data);
+int compareVertexDistance(const MapEntry<WeightedGraphVertex<T,W>*, long>& left, const MapEntry<WeightedGraphVertex<T,W>*, long>& right) {
+	return comparator(left.key->getData(), right.key->getData());
 }
 
 template<typename T,typename W>
-std::size_t hashVertexParent(const MapEntry<UniqueWeightedGraphEdge<T,W>*, UniqueWeightedGraphEdge<T,W>*>& entry) {
-	return hash(entry.key->vertex->data);
+std::size_t hashVertexParent(const MapEntry<WeightedGraphEdge<T,W>*, WeightedGraphEdge<T,W>*>& entry) {
+	return hash(entry.key->vertex->getData());
 }
 
 template<typename T,typename W>
-int compareVertexParent(const MapEntry<UniqueWeightedGraphEdge<T,W>*, UniqueWeightedGraphEdge<T,W>*>& left, const MapEntry<UniqueWeightedGraphEdge<T,W>*, UniqueWeightedGraphEdge<T,W>*>& right) {
-	return comparator(left.key->vertex->data, right.key->vertex->data);
+int compareVertexParent(const MapEntry<WeightedGraphEdge<T,W>*, WeightedGraphEdge<T,W>*>& left, const MapEntry<WeightedGraphEdge<T,W>*, WeightedGraphEdge<T,W>*>& right) {
+	return comparator(left.key->vertex->getData(), right.key->vertex->getData());
 }
 
 template<typename T,typename W>
-class UniqueWeightedGraphVertexVisitor {
-public:
-	virtual ~UniqueWeightedGraphVertexVisitor(){};
-
-	virtual void visit(UniqueWeightedGraphVertex<T,W>* const element) = 0;
-};
-
-template<typename T,typename W>
-class UniqueWeightedGraphEdgeVisitor {
-public:
-	virtual ~UniqueWeightedGraphEdgeVisitor(){};
-
-	virtual void visit(UniqueWeightedGraphEdge<T,W>* const element) = 0;
-};
-
-template<typename T,typename W>
-class UniqueWeightedGraph {
+class UniqueWeightedGraph : public WeightedGraph<T,W> {
 public:
 	UniqueWeightedGraph(){
 
@@ -86,109 +55,48 @@ public:
 	~UniqueWeightedGraph(){
 		// deallocate all vertexes
 		for(auto it = vertexes.begin(); *it!=*(vertexes.end()); ++(*it)) {
-			for(auto it1 = (*(*it))->edges.begin(); it1 != (*(*it))->edges.end(); ++it1) {
-				delete (*it1);
-			}
 			delete (*(*it));
 		}
 	}
 
 	// O(2)
-	UniqueWeightedGraphVertex<T,W>* createVertex(const T& data) {
-		UniqueWeightedGraphVertex<T,W>* temp = new UniqueWeightedGraphVertex<T,W>;
-		temp->data=data;
-		if(vertexes.contains(temp)) {
-			delete temp;
+	WeightedGraphVertex<T,W>* createVertex(const T& data) {
+		WeightedGraphVertex<T,W> stack(data);
+		if(vertexes.contains(&stack)) {
 			throw std::logic_error("Vertex with that value already exists!");
 		}
+		WeightedGraphVertex<T,W>* temp = new WeightedGraphVertex<T,W>(data);
 		vertexes.add(temp);
 		return temp;
 	}
 
 	// O(V*E)
-	void removeVertex(UniqueWeightedGraphVertex<T,W>* vertex) {
-		for(auto it1 = vertexes.begin(); *it1!=*(vertexes.end()); ++(*it1)) {
-			// remove edges connecting to vertex
-			std::vector<UniqueWeightedGraphEdge<T,W>*>& edges = (*(*it1))->edges;
-			for(auto it2 = edges.begin(); it2!=edges.end(); ++it2) {
-				if((*it2)->vertex ==  vertex) {
-					UniqueWeightedGraphEdge<T,W>* edgeToRemove = (*it2);
-					it2 = edges.erase(it2);
-					delete edgeToRemove;
-					break;
-				}
-			}
-
-			// remove edges starting from vertex
-			if(*(*it1) ==  vertex) {
-				for(auto it2 = edges.begin(); it2!=edges.end(); ++it2) {
-					delete (*it2);
-				}
-			}
+	void removeVertex(WeightedGraphVertex<T,W>*& vertex) {
+		// remove edges that connect to vertex
+		for(auto it = vertexes.begin(); *it!=*(vertexes.end()); ++(*it)) {
+			(*(*it))->removeEdge(vertex);
 		}
 		vertexes.remove(vertex);
+		// deallocates vertex
 		delete vertex;
 	}
 
-	// O(E)
-	bool isEdge(UniqueWeightedGraphVertex<T,W>* left, UniqueWeightedGraphVertex<T,W>* right) const {
-		// check if edge doesn't already exist
-		for(auto it = left->edges.begin(); it != left->edges.end(); ++it) {
-			if((*it)->vertex==right) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	// O(1|2)
-	void createEdge(UniqueWeightedGraphVertex<T,W>* left, UniqueWeightedGraphVertex<T,W>* right, const W& weight, const bool& directed = true) {
-		UniqueWeightedGraphEdge<T,W>* wge = new UniqueWeightedGraphEdge<T,W>;
-		wge->vertex = right;
-		wge->weight = weight;
-		left->edges.push_back(wge);
-		if(!directed) createEdge(right, left, weight, true);
-	}
-
-	// O(E|2E)
-	void removeEdge(UniqueWeightedGraphVertex<T,W>* left, UniqueWeightedGraphVertex<T,W>* right, const bool& directed = true) {
-		for(auto it = left->edges.begin(); it != left->edges.end(); ++it) {
-			if((*it)->vertex==right) {
-				delete (*it);
-				it = left->edges.erase(it);
-				return;
-			}
-		}
-		throw std::out_of_range("Edge not found!");
-		if(!directed) removeEdge(right, left, true);
-	}
-
-	// O(E)
-	const W& getWeight(UniqueWeightedGraphVertex<T,W>* left, UniqueWeightedGraphVertex<T,W>* right) const {
-		for(auto it = left->edges.begin(); it != left->edges.end(); ++it) {
-			if((*it)->vertex==right) {
-				return (*it)->weight;
-			}
-		}
-		throw std::out_of_range("Edge not found!");
-	}
-
 	// O(1)
-	const std::size_t& getSize() const {
+	std::size_t getSize() const {
 		return vertexes.size();
 	}
 
 	// O(V*E)
-	bool isPath(UniqueWeightedGraphVertex<T,W>* left, UniqueWeightedGraphVertex<T,W>* right) const {
-		HashSet<UniqueWeightedGraphVertex<T,W>*, compareVertex, hashVertex> visited;
-		Queue<UniqueWeightedGraphVertex<T,W>*> queue;
+	bool isPath(WeightedGraphVertex<T,W>*& left, WeightedGraphVertex<T,W>*& right) const {
+		HashSet<WeightedGraphVertex<T,W>*, compareVertex, hashVertex> visited;
+		Queue<WeightedGraphVertex<T,W>*> queue;
 		queue.push(left);
 		visited.add(left);
 		while(!queue.isEmpty()) {
-			UniqueWeightedGraphVertex<T,W>* node = queue.pop();
-			std::vector<UniqueWeightedGraphEdge<T,W>*> children = node->edges;
+			WeightedGraphVertex<T,W>* node = queue.pop();
+			std::vector<WeightedGraphEdge<T,W>*> children = node->getEdges();
 			for(auto it = children.begin(); it != children.end(); ++it){
-				UniqueWeightedGraphVertex<T,W>* tmp = (*it)->vertex;
+				WeightedGraphVertex<T,W>* tmp = (*it)->vertex;
 				if(!visited.contains(tmp)) {
 					if(tmp==right) return true;
 					visited.add(tmp);
@@ -200,16 +108,16 @@ public:
 	}
 
 	// O(V*E)
-	std::size_t getDistance(UniqueWeightedGraphVertex<T,W>* left, UniqueWeightedGraphVertex<T,W>* right) const {
-		HashMap<UniqueWeightedGraphVertex<T,W>*, long, compareVertexDistance, hashVertexDistance> visited;
-		Queue<UniqueWeightedGraphVertex<T,W>*> queue;
+	std::size_t getDistance(WeightedGraphVertex<T,W>*& left, WeightedGraphVertex<T,W>*& right) const {
+		HashMap<WeightedGraphVertex<T,W>*, long, compareVertexDistance, hashVertexDistance> visited;
+		Queue<WeightedGraphVertex<T,W>*> queue;
 		queue.push(left);
 		visited.set(left,0);
 		while(!queue.isEmpty()) {
-			UniqueWeightedGraphVertex<T,W>* node = queue.pop();
-			std::vector<UniqueWeightedGraphEdge<T,W>*> children = node->edges;
+			WeightedGraphVertex<T,W>* node = queue.pop();
+			std::vector<WeightedGraphEdge<T,W>*> children = node->getEdges();
 			for(auto it = children.begin(); it != children.end(); ++it){
-				UniqueWeightedGraphVertex<T,W>* tmp = (*it)->vertex;
+				WeightedGraphVertex<T,W>* tmp = (*it)->vertex;
 				if(!visited.containsKey(tmp)) {
 					if(tmp==right) return visited.get(node)+1;
 					visited.set(tmp, visited.get(node)+1);
@@ -221,24 +129,24 @@ public:
 	}
 
 	// O(V*E)
-	std::vector<UniqueWeightedGraphEdge<T,W>*> getPath(UniqueWeightedGraphVertex<T,W>* left, UniqueWeightedGraphVertex<T,W>* right) {
-		UniqueWeightedGraphEdge<T,W> element;
+	std::vector<WeightedGraphEdge<T,W>*> getPath(WeightedGraphVertex<T,W>*& left, WeightedGraphVertex<T,W>*& right) const {
+		WeightedGraphEdge<T,W> element;
 		element.vertex = left;
 		element.weight = 0;
 
-		HashMap<UniqueWeightedGraphEdge<T,W>*, UniqueWeightedGraphEdge<T,W>*, compareVertexParent, hashVertexParent> visited;
-		Queue<UniqueWeightedGraphEdge<T,W>*> queue;
+		HashMap<WeightedGraphEdge<T,W>*, WeightedGraphEdge<T,W>*, compareVertexParent, hashVertexParent> visited;
+		Queue<WeightedGraphEdge<T,W>*> queue;
 		queue.push(&element);
 		visited.set(&element,nullptr);
 		while(!queue.isEmpty()) {
-			UniqueWeightedGraphEdge<T,W>* node = queue.pop();
-			std::vector<UniqueWeightedGraphEdge<T,W>*> children = node->vertex->edges;
+			WeightedGraphEdge<T,W>* node = queue.pop();
+			std::vector<WeightedGraphEdge<T,W>*> children = node->vertex->getEdges();
 			for(auto it = children.begin(); it != children.end(); ++it){
 				if(!visited.containsKey(*it)) {
 					if((*it)->vertex==right) {
-						std::vector<UniqueWeightedGraphEdge<T,W>*> response;
+						std::vector<WeightedGraphEdge<T,W>*> response;
 						response.push_back(*it);
-						UniqueWeightedGraphEdge<T,W>* parent = node;
+						WeightedGraphEdge<T,W>* parent = node;
 						while(parent!=nullptr) {
 							if(parent->vertex == left) break;
 							response.push_back(parent);
@@ -254,49 +162,20 @@ public:
 		throw std::out_of_range("Vertexes not connected!");
 	}
 
-	// O(V*E)
-	void iterate(UniqueWeightedGraphVertex<T,W>* start, UniqueWeightedGraphEdgeVisitor<T,W>* visitor) {
-		HashSet<UniqueWeightedGraphVertex<T,W>*, compareVertex, hashVertex> visited;
-		Queue<UniqueWeightedGraphVertex<T,W>*> queue;
-		queue.push(start);
-		visited.add(start);
-		while(!queue.isEmpty()) {
-			UniqueWeightedGraphVertex<T,W>* node = queue.pop();
-			std::vector<UniqueWeightedGraphEdge<T,W>*> children = node->edges;
-			for(auto it = children.begin(); it != children.end(); ++it){
-				UniqueWeightedGraphVertex<T,W>* tmp = (*it)->vertex;
-				if(!visited.contains(tmp)) {
-					visitor->visit(*it);
-					visited.add(tmp);
-					queue.push(tmp);
-				}
-			}
-		}
-	}
-
-	// O(V)
-	void iterate(UniqueWeightedGraphVertexVisitor<T,W>* visitor) {
-		for(auto it = vertexes.begin(); *it!=*(vertexes.end()); ++(*it)) {
-			visitor->visit(*(*it));
-		}
-	}
-
 	// O(1)
 	bool contains(const T& data) const {
-		UniqueWeightedGraphVertex<T,W> temp;
-		temp.data = data;
+		WeightedGraphVertex<T,W> temp(data);
 		return vertexes.contains(&temp);
 	}
 
 	// O(2)
-	UniqueWeightedGraphVertex<T,W>* search(const T& data) {
-		UniqueWeightedGraphVertex<T,W> temp;
-		temp.data = data;
+	WeightedGraphVertex<T,W>* search(const T& data) {
+		WeightedGraphVertex<T,W> temp(data);
 		if(!vertexes.contains(&temp)) return nullptr;
 		return *(vertexes.find(&temp));
 	}
 private:
-	HashSet<UniqueWeightedGraphVertex<T,W>*, compareVertex, hashVertex> vertexes;
+	HashSet<WeightedGraphVertex<T,W>*, compareVertex, hashVertex> vertexes;
 };
 
 

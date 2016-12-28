@@ -5,12 +5,12 @@
  *      Author: aherne
  */
 
-#ifndef SRC_GRAPH1_BFSWEIGHTEDGRAPHVERTEX_H_
-#define SRC_GRAPH1_BFSWEIGHTEDGRAPHVERTEX_H_
+#ifndef SRC_GRAPH_BFSWEIGHTEDGRAPHVERTEX_H_
+#define SRC_GRAPH_BFSWEIGHTEDGRAPHVERTEX_H_
 
 
-#include "WeightedGraphVertex.h"
 #include "BFS.h"
+#include "WeightedGraphVertex.h"
 
 template<typename T,typename W>
 class BFSWeightedGraphVertex : public WeightedGraphVertex<T,W> {
@@ -39,4 +39,4 @@ class BFSWeightedGraphVertex : public WeightedGraphVertex<T,W> {
 
 
 
-#endif /* SRC_GRAPH1_BFSWEIGHTEDGRAPHVERTEX_H_ */
+#endif /* SRC_GRAPH_BFSWEIGHTEDGRAPHVERTEX_H_ */
