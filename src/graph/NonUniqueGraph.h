@@ -169,6 +169,37 @@ public:
 			}
 			return response;
 		}
+
+		// O(V*E+V)
+		void iterate(GraphVertex<T>*& start, GraphVertexVisitor<T>& visitor) {
+			for(auto it = vertexes.begin(); it!=vertexes.end(); ++it) {
+				(*it)->setColor(WHITE);
+			}
+			BFSGraphVertex<T>* leftConverted = (BFSGraphVertex<T>*) start;
+			leftConverted->setColor(GREY);
+			Queue<BFSGraphVertex<T>*> queue;
+			queue.push(leftConverted);
+			while(!queue.isEmpty()) {
+				BFSGraphVertex<T>* node = queue.pop();
+				std::vector<GraphVertex<T>*> children = node->getEdges();
+				for(auto it = children.begin(); it != children.end(); ++it){
+					BFSGraphVertex<T>* tmp = (BFSGraphVertex<T>*) *it;
+					if(tmp->getColor() == WHITE) {
+						visitor.visit(tmp);
+						tmp->setColor(GREY);
+						queue.push(tmp);
+					}
+				}
+				node->setColor(BLACK);
+			}
+		}
+
+		// O(V)
+		void iterate(GraphVertexVisitor<T>& visitor) {
+			for(auto it=vertexes.begin(); it!=vertexes.end(); ++it) {
+				visitor.visit(*it);
+			}
+		}
 	private:
 		std::vector<BFSGraphVertex<T>*> vertexes;
 };

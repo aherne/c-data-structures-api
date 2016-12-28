@@ -12,65 +12,26 @@
 #include "../graph/UniqueGraph.h"
 #include "../graph/UniqueWeightedGraph.h"
 
-//template<typename T>
-//class PrintVertexVisitor: public GraphVertexVisitor<T> {
-//public:
-//	virtual ~PrintVertexVisitor(){};
-//
-//	void visit(GraphVertex<T>*& element) {
-//		std::cout << element->data << std::endl;
-//	}
-//};
-//
-//template<typename T>
-//class PrintUniqueVertexVisitor: public UniqueGraphVertexVisitor<T> {
-//public:
-//	virtual ~PrintUniqueVertexVisitor(){};
-//
-//	void visit(UniqueGraphVertex<T>* const element) {
-//		std::cout << element->data << std::endl;
-//	}
-//};
-//
-//template<typename T, typename W>
-//class PrintWeightedVertexVisitor: public WeightedGraphVertexVisitor<T,W> {
-//public:
-//	virtual ~PrintWeightedVertexVisitor(){};
-//
-//	void visit(WeightedGraphVertex<T,W>*& element) {
-//		std::cout << element->data << std::endl;
-//	}
-//};
-//
-//template<typename T, typename W>
-//class PrintWeightedEdgeVisitor: public WeightedGraphEdgeVisitor<T,W> {
-//public:
-//	virtual ~PrintWeightedEdgeVisitor(){};
-//
-//	void visit(WeightedGraphEdge<T,W>* const element) {
-//		std::cout << element->vertex->data << std::endl;
-//	}
-//};
-//
-//template<typename T, typename W>
-//class PrintUniqueWeightedVertexVisitor: public UniqueWeightedGraphVertexVisitor<T,W> {
-//public:
-//	virtual ~PrintUniqueWeightedVertexVisitor(){};
-//
-//	void visit(UniqueWeightedGraphVertex<T,W>* const element) {
-//		std::cout << element->data << std::endl;
-//	}
-//};
-//
-//template<typename T, typename W>
-//class PrintUniqueWeightedEdgeVisitor: public UniqueWeightedGraphEdgeVisitor<T,W> {
-//public:
-//	virtual ~PrintUniqueWeightedEdgeVisitor(){};
-//
-//	void visit(UniqueWeightedGraphEdge<T,W>* const element) {
-//		std::cout << element->vertex->data << std::endl;
-//	}
-//};
+
+template<typename T>
+class PrintVertexVisitor: public GraphVertexVisitor<T> {
+public:
+	virtual ~PrintVertexVisitor(){};
+
+	void visit(GraphVertex<T>* const& element) {
+		std::cout << element->getData() << std::endl;
+	}
+};
+
+template<typename T, typename W>
+class PrintWeightedVertexVisitor: public WeightedGraphVertexVisitor<T,W> {
+public:
+	virtual ~PrintWeightedVertexVisitor(){};
+
+	void visit(WeightedGraphVertex<T,W>* const& element) {
+		std::cout << element->getData() << std::endl;
+	}
+};
 
 void GraphUnitTest::execute() {
 	/**
@@ -136,6 +97,12 @@ void GraphUnitTest::simpleGraphTest() {
 	std::cout << "removeEdge: " << (!graph.isPath(v4,v8)?"OK":"FAILED") << std::endl;
 	std::vector<GraphVertex<long>*> results = graph.search(8,comparator);
 	std::cout << "search: " << (!results.empty() && results[0]->getData()==8?"OK":"FAILED") << std::endl;
+	// iterate
+	std::cout << "ITERATE WHOLE GRAPH:" << std::endl;
+	PrintVertexVisitor<long> pvv;
+	graph.iterate(pvv);
+	std::cout << "ITERATE GRAPH PORTION:" << std::endl;
+	graph.iterate(v2, pvv);
 }
 
 void GraphUnitTest::simpleUniqueGraphTest() {
@@ -182,6 +149,12 @@ void GraphUnitTest::simpleUniqueGraphTest() {
 	std::cout << "removeEdge: " << (!graph.isPath(v4,v8)?"OK":"FAILED") << std::endl;
 	GraphVertex<long>* results = graph.search(8);
 	std::cout << "search: " << (results!=nullptr && results->getData()==8?"OK":"FAILED") << std::endl;
+	// iterate
+	std::cout << "ITERATE WHOLE GRAPH:" << std::endl;
+	PrintVertexVisitor<long> pvv;
+	graph.iterate(pvv);
+	std::cout << "ITERATE GRAPH PORTION:" << std::endl;
+	graph.iterate(v2, pvv);
 }
 
 void GraphUnitTest::weightedGraphTest() {
@@ -233,6 +206,12 @@ void GraphUnitTest::weightedGraphTest() {
 	std::cout << "removeEdge: " << (!graph.isPath(v4,v8)?"OK":"FAILED") << std::endl;
 	std::vector<WeightedGraphVertex<long,long>*> results = graph.search(8,comparator);
 	std::cout << "search: " << (!results.empty() && results[0]->getData()==8?"OK":"FAILED") << std::endl;
+	// iterate
+	std::cout << "ITERATE WHOLE GRAPH:" << std::endl;
+	PrintWeightedVertexVisitor<long,long> pvv;
+	graph.iterate(pvv);
+	std::cout << "ITERATE GRAPH PORTION:" << std::endl;
+	graph.iterate(v2, pvv);
 }
 
 void GraphUnitTest::weightedUniqueGraphTest() {
@@ -284,7 +263,10 @@ void GraphUnitTest::weightedUniqueGraphTest() {
 	std::cout << "removeEdge: " << (!graph.isPath(v4,v8)?"OK":"FAILED") << std::endl;
 	WeightedGraphVertex<long,long>* results = graph.search(8);
 	std::cout << "search: " << (results != nullptr && results->getData()==8?"OK":"FAILED") << std::endl;
-
-//	PrintUniqueWeightedVertexVisitor<long,long> pvv;
-//	graph.iterate(&pvv);
+	// iterate
+	std::cout << "ITERATE WHOLE GRAPH:" << std::endl;
+	PrintWeightedVertexVisitor<long,long> pvv;
+	graph.iterate(pvv);
+	std::cout << "ITERATE GRAPH PORTION:" << std::endl;
+	graph.iterate(v2, pvv);
 }

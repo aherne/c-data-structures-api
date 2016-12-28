@@ -163,6 +163,32 @@ class UniqueGraph : public Graph<T> {
 			if(!vertexes.contains(&temp)) return nullptr;
 			return *(vertexes.find(&temp));
 		}
+
+		// O(V*E+V)
+		void iterate(GraphVertex<T>*& start, GraphVertexVisitor<T>& visitor) {
+			HashSet<GraphVertex<T>*, compareVertex, hashVertex> visited;
+			Queue<GraphVertex<T>*> queue;
+			queue.push(start);
+			visited.add(start);
+			while(!queue.isEmpty()) {
+				GraphVertex<T>* node = queue.pop();
+				std::vector<GraphVertex<T>*> children = node->getEdges();
+				for(auto it = children.begin(); it != children.end(); ++it){
+					if(!visited.contains(*it)) {
+						visitor.visit(*it);
+						visited.add(*it);
+						queue.push(*it);
+					}
+				}
+			}
+		}
+
+		// O(V)
+		void iterate(GraphVertexVisitor<T>& visitor) {
+			for(auto it = vertexes.begin(); *it!=*(vertexes.end()); ++(*it)) {
+				visitor.visit(*(*it));
+			}
+		}
 	private:
 		HashSet<GraphVertex<T>*, compareVertex, hashVertex> vertexes;
 };

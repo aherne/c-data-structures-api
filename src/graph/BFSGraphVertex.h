@@ -12,7 +12,7 @@
 #include "GraphVertex.h"
 
 template<typename T>
-class WBFSGraphVertex : public GraphVertex<T> {
+class BFSGraphVertex : public GraphVertex<T> {
 	public:
 		using GraphVertex<T>::GraphVertex;
 

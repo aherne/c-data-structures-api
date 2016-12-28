@@ -11,6 +11,9 @@
 #include "GraphVertex.h"
 
 template<typename T>
+class GraphVertexVisitor;
+
+template<typename T>
 class Graph {
 public:
 	virtual ~Graph() {}
@@ -20,7 +23,16 @@ public:
 	virtual bool isPath(GraphVertex<T>*& left, GraphVertex<T>*& right) const = 0;
 	virtual std::size_t getDistance(GraphVertex<T>*& left, GraphVertex<T>*& right) const = 0;
 	virtual std::vector<GraphVertex<T>*> getPath(GraphVertex<T>*& left, GraphVertex<T>*& right) const = 0;
-};
 
+	virtual void iterate(GraphVertexVisitor<T>& visitor) = 0;
+	virtual void iterate(GraphVertex<T>*& start, GraphVertexVisitor<T>& visitor) = 0;
+};
+template<typename T>
+class GraphVertexVisitor {
+public:
+	virtual ~GraphVertexVisitor(){};
+
+	virtual void visit(GraphVertex<T>* const& element) = 0;
+};
 
 #endif /* SRC_GRAPH_GRAPH_H_ */

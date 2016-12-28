@@ -174,6 +174,33 @@ public:
 		if(!vertexes.contains(&temp)) return nullptr;
 		return *(vertexes.find(&temp));
 	}
+
+	// O(V*E)
+	void iterate(WeightedGraphVertex<T,W>*& start, WeightedGraphVertexVisitor<T,W>& visitor) {
+		HashSet<WeightedGraphVertex<T,W>*, compareVertex, hashVertex> visited;
+		Queue<WeightedGraphVertex<T,W>*> queue;
+		queue.push(start);
+		visited.add(start);
+		while(!queue.isEmpty()) {
+			WeightedGraphVertex<T,W>* node = queue.pop();
+			std::vector<WeightedGraphEdge<T,W>*> children = node->getEdges();
+			for(auto it = children.begin(); it != children.end(); ++it){
+				WeightedGraphVertex<T,W>* tmp = (*it)->vertex;
+				if(!visited.contains(tmp)) {
+					visitor.visit(tmp);
+					visited.add(tmp);
+					queue.push(tmp);
+				}
+			}
+		}
+	}
+
+	// O(V)
+	void iterate(WeightedGraphVertexVisitor<T,W>& visitor) {
+		for(auto it = vertexes.begin(); *it!=*(vertexes.end()); ++(*it)) {
+			visitor.visit(*(*it));
+		}
+	}
 private:
 	HashSet<WeightedGraphVertex<T,W>*, compareVertex, hashVertex> vertexes;
 };
