@@ -21,6 +21,9 @@ class WeightedGraphVertex {
 		}
 
 		~WeightedGraphVertex() {
+			for(auto it = edges.begin(); it != edges.end(); ++it) {
+				delete *it;
+			}
 		}
 
 		void setData(const T& data) {
@@ -31,13 +34,13 @@ class WeightedGraphVertex {
 			return this->data;
 		}
 
-		const std::vector<WeightedGraphEdge<T,W>>& getEdges() const {
+		const std::vector<WeightedGraphEdge<T,W>*>& getEdges() const {
 			return edges;
 		}
 
 		bool isEdge(WeightedGraphVertex<T,W>*& vertex) const {
 			for(auto it = edges.begin(); it != edges.end(); ++it) {
-				if((*it).vertex==vertex) {
+				if((*it)->vertex==vertex) {
 					return true;
 				}
 			}
@@ -46,8 +49,8 @@ class WeightedGraphVertex {
 
 		const W& getEdgeWeight(WeightedGraphVertex<T,W>*& vertex) const {
 			for(auto it = edges.begin(); it != edges.end(); ++it) {
-				if((*it).vertex==vertex) {
-					return  (*it).weight;
+				if((*it)->vertex==vertex) {
+					return  (*it)->weight;
 				}
 			}
 			throw std::out_of_range("Edge not found!");
@@ -55,8 +58,8 @@ class WeightedGraphVertex {
 
 		void setEdgeWeight(WeightedGraphVertex<T,W>*& vertex, const W& weight) {
 			for(auto it = edges.begin(); it != edges.end(); ++it) {
-				if((*it).vertex==vertex) {
-					(*it).weight = weight;
+				if((*it)->vertex==vertex) {
+					(*it)->weight = weight;
 					return;
 				}
 			}
@@ -64,15 +67,16 @@ class WeightedGraphVertex {
 		}
 
 		void addEdge(WeightedGraphVertex<T,W>*& vertex, const W& weight) {
-			WeightedGraphEdge<T,W> wge;
-			wge.vertex = vertex;
-			wge.weight = weight;
+			WeightedGraphEdge<T,W>* wge = new WeightedGraphEdge<T,W>;
+			wge->vertex = vertex;
+			wge->weight = weight;
 			edges.push_back(wge);
 		}
 
 		void removeEdge(WeightedGraphVertex<T,W>*& vertex) {
 			for(auto it=edges.begin(); it!=edges.end(); ++it) {
-				if((*it).vertex == vertex) {
+				if((*it)->vertex == vertex) {
+					delete (*it);
 					it = edges.erase(it);
 					return;
 				}
@@ -80,7 +84,7 @@ class WeightedGraphVertex {
 		}
 	protected:
 		T data;
-		std::vector<WeightedGraphEdge<T,W>> edges;
+		std::vector<WeightedGraphEdge<T,W>*> edges;
 };
 
 

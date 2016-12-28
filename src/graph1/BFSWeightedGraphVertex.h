@@ -25,16 +25,16 @@ class BFSWeightedGraphVertex : public WeightedGraphVertex<T,W> {
 			return this->color;
 		}
 
-		void setParent(BFSWeightedGraphVertex<T,W>* const& parent) {
+		void setParent(WeightedGraphEdge<T,W>* const& parent) {
 			this->parent = parent;
 		}
 
-		BFSWeightedGraphVertex<T,W>* const& getParent() const {
+		WeightedGraphEdge<T,W>* const& getParent() const {
 			return this->parent;
 		}
 	protected:
 		BFSColor color;
-		BFSWeightedGraphVertex<T,W>* parent;
+		WeightedGraphEdge<T,W>* parent;
 };
 
 

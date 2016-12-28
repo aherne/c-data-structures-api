@@ -63,14 +63,17 @@ Supported abstract & applied components and their corresponding classes:
 - **Container**: defines signatures for container adaptors into which all read/write operations are performed only on head or tail
 	- **Stack**: implements a LIFO container adaptor on top of a dynamic array (akin std::stack)
 	- **Queue**: implements a FIFO container adaptor on top of a dynamic array (akin std::queue)
-- Tree: no common signatures so far  (no STL equivalents)
-	- **Tree**: A n-ary tree
-	- **UniqueTree**: A n-ary tree also holding a **HashTable**, in order to guarantee unique values per node
-- Graph: no common signatures so far  (no STL equivalents)
-	- **Graph**: A non-weighted graph.
-	- **UniqueGraph**: A non-weighted graph on top of a **HashTable**, in order to guarantee unique values per vertex
-	- **WeightedGraph**: A weighted graph.
-	- **UniqueWeightedGraph**: A weighted graph on top of a **HashTable**, in order to guarantee unique values per vertex
+- Tree: no common implementation is possible
+	- **Tree**: A basic n-ary tree.
+		- **NonUniqueTree**: A n-ary tree with no guaranteed node value uniqueness
+		- **UniqueTree**: A n-ary tree also holding a **HashTable**, in order to guarantee unique values per node
+- Graph: no common implementation is possible
+	- **Graph**: A basic non-weighted graph basic implementation
+		- **NonUniqueGraph**: A non-weighted graph  with no guaranteed node value uniqueness
+		- **UniqueGraph**: A non-weighted graph on top of a **HashSet**, in order to guarantee unique values per vertex
+	- **WeightedGraph**: A basic weighted graph.
+		- **NonUniqueWeightedGraph**: A weighted graph  with no guaranteed node value uniqueness
+		- **UniqueWeightedGraph**: A weighted graph on top of a **HashSet**, in order to guarantee unique values per vertex
 
 As one can see above, some components obviously share a structural base. For that reason, these shared components/classes were also added:
 
