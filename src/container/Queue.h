@@ -47,7 +47,7 @@ public:
 
 	const T& peek() const {
 		if(count==0) throw std::out_of_range("Container is empty!");
-		return contents[0];
+		return contents[position_start];
 	}
 
 	T pop() {
