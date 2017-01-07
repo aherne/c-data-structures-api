@@ -1,15 +1,15 @@
-## What are lists? ##
+## Lists
 
 Lists are data structures in which:
 
-- all elements are stored sequentially from position 0 to position length-1 without empty gaps
+- all elements are stored sequentially from head to tail without empty gaps
 - any element is accessible by its position in sequence
 - a single value can exist at multiple positions
 - a single position can only hold a single value 
 
-###Abstract lists###
+### Abstract lists
 
-Abstract lists implement blueprints for operations one can perform on a list. This is done via pure virtual methods of **List** class:
+Abstract lists implement blueprints for operations one can perform on a list. This is done via methods of **List** class, which defines following pure virtual methods:
 <table>
 	<thead>
 		<tr>
@@ -138,46 +138,47 @@ Abstract lists implement blueprints for operations one can perform on a list. Th
 	</tbody>
 </table>
 
-###Implemented lists###
+### Implemented lists
 
-Implemented lists extend **List** class and provide specific implementations for blueprints above, each with its own strength and weaknesses:
+Implemented lists are classes that extend **List** class and provide specific implementations for methods above:
 
-- **ArrayList**: implements a list that works like a dynamic array. Entries are stored in a continuous block of memory that expands (via realloc) whenever capacity is reached.
+- **ArrayList**: implements a list that works like a dynamic array. Entries are stored in a continuous block of memory that grows (via *realloc*)  by doubling its capacity whenever latter is reached.
 	- Strengths:
-		- by far the fastest in accessing random position: because it only involves navigating through the C array it wraps.
-		- by far the fastest in adding element to bottom of list: because it only requires incrementing count and adding value to next position in already preallocated (unless an expand is pending) block 
-		- by far the fastest in removing element from bottom of list: because it only requires decrementing count value.
-		- smallest in memory consumption: because nothing but elements themselves plus remaining empty slots in preallocated block are stored 
+		- By far the fastest in accessing element by random position: because it only involves navigating through the C array it wraps.
+		- By far the fastest in adding element to bottom of list: because it only requires incrementing count and adding value to next position in already preallocated (unless an expand is pending) block 
+		- By far the fastest in removing element from bottom of list: because it only requires decrementing count value.
+		- Smallest in memory consumption: because nothing but elements themselves plus remaining empty slots in preallocated block are stored 
 	- Weaknesses:
-		- by far the slowest in deleting element at random position: because it involves padding all entries after position one step left.
-		- by far the slowest in adding element at random position: because it involves padding all entries after position one step right.
+		- By far the slowest in deleting element at random position: because it involves padding all entries after position one step left.
+		- By far the slowest in adding element at random position: because it involves padding all entries after position one step right.
+		- Growth is somewhat costly because if realloc cannot expand block, it creates a new one and moves entries to that location. When size of list is already known, it's MUCH faster to use a reserved size.
+		- Because of the mechanism of growth, it allocates more space than it actually uses. When size of list is already known, it's MUCH more optimal to use a reserved size so no space is wasted.
 - **LinkedList**: implements a list that works like a linked list. Entries are stored in random places in memory, always keeping track of the next entry. 
 	- Strengths:
 		- fast in deleting element on top position: because it only requires swapping head element with the next.
-		- fast in deleting element on next position: because it keeps track of element after the one deleted.
-		- fast in adding element on top of list: because it only involves switching top position with the new one and next position with the old top.
+		- fast in adding element on top of list: because it only involves switching head position with the new one and next position with the old head.
 		- fast in adding element on bottom of list: because it keeps track of list tail.
+		- fast in accessing/inserting/deleting element on next position: because list keeps track of last element accessed/inserted/deleted.
 	- Weaknesses:
 		- relatively slow in traversal: because it needs to move from random memory position to the other.
-		- slow at deleting/accessing/inserting element on random position: because it needs to traverse all entries in list until position.
+		- slow at deleting/accessing/inserting element on random position: because it needs to traverse all entries in list until position if last element accessed is none or grater than position or from last position accessed to current position if latter is smaller.
 		- slow at deleting element on bottom: because it needs to traverse the whole list.
 		- higher in memory consumption: because every element needs to store a pointer to the next
 - **DoublyLinkedList**: implements a list that works like a doubly linked list. Entries are stored in random places in memory, always keeping track of the next and previous entry.
 	- Strengths:
 		- fast in deleting element on top position: because it only requires swapping head element with the next.
+		- fast in adding element on top of list: because it only involves switching head position with the new one and next position with the old head.
 		- fast in deleting element on bottom position: because it only requires swapping tail element with the previous.
-		- fast in deleting element on next position: because it keeps track of element before the one deleted.
-		- fast in deleting element on previous position: because it keeps track of element before the one deleted.
-		- fast in adding element on top of list: because it only involves switching top position with the new one and next position with the old top.
 		- fast in adding element on bottom of list: because it keeps track of list tail.
+		- fast in accessing/inserting/deleting element on next position: because list keeps track of last element accessed/inserted/deleted.
+		- fast in accessing/inserting/deleting element on previous position: because list keeps track of last element accessed/inserted/deleted.
 	- Weaknesses:
-		- slow at deleting/accessing/inserting element on random position: because it needs to traverse all entries in list until position.
+		- relatively slow in traversal: because it needs to move from random memory position to the other.
+		- slow at deleting/accessing/inserting element on random position: because it needs to traverse all entries from previous position to current position or from tail/head to current position depending on .
 		- slow at deleting element on bottom: because it needs to traverse the whole list.
-		- higher in memory consumption: because every element needs to store a pointer to the next
+		- highest in memory consumption: because every element needs to store a pointer to the an another to previous elements
 
-
-
-O complexity of above methods by their implementation:
+Because of above considerations, O complexity of **List** methods varies by implementation:
 <table>
 	<thead>
 		<tr>
@@ -289,24 +290,25 @@ O complexity of above methods by their implementation:
 	</tbody>
 </table>
 
-Constructors:
+Because of its many advantages in terms of speed and memory consumption, **ArrayList** should be solution of choice, unless one routinely needs to insert entries to head instead of tail or emplace/delete entries in position other than tail (in which case  **LinkedList** or **DoublyLinkedList** should be used).
 
-- all applied lists work primarily with a no-arg constructor
-- ArrayList also supports being preallocated with a reserved size by constructor:
+#### Constructors
+
+All lists work primarily with a no-arg constructor. **ArrayList** also supports being preallocated with a reserved size (which cuts down to zero growth time and lost space costss):
 ```c++
 ArrayList(const std::size_t& reservedSize)
 ```
 
-Templates:
+#### Templates
 
-- all lists (abstract or applied) have a single template argument:  
+All lists have a single template argument:  
 ```c++
 template<typename VALUE_TYPE>
 ```
 
-Iterators:
+#### Iterators
 
-- all lists are iterable via polymorphic ListIterator*:
+All lists are iterable via polymorphic ListIterator*:
 ```c++
 List<long>* list = new ArrayList<long>;
 list.addToBottom(1);
@@ -316,3 +318,4 @@ for(auto it=list.begin(); *it!=*(list->end()); ++(*it)) {
 }
 // outputs: 1 (new line) 2
 ```
+Currently, only forward iteration is supported. Unlike STL iterators, this one self-invalidates (iteration ends gracefully) when an item is added to /deleted from list while iterating.
