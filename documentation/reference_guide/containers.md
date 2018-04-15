@@ -130,3 +130,13 @@ Queue(const std::size_t& capacity)
 A stack with bounded capacity will have a fixed size (so it won't regrow). When it reaches capacity, any new insertion will result into an std::out_of_bounds exception thrown.
 
 A queue with bounded capacity will also have a fixed size. When it reaches capacity, any new insertion will result into a regrowth on same capacity (if dynamic array inside contains popped entries) or a std::out_of_bounds exception (otherwise).
+
+#### Templates
+
+All containers have a single template argument:  
+```c++
+template<typename VALUE_TYPE>
+```
+#### Iterators
+
+By virtue of design, stacks and queues function like black boxes that only expose their heads or tails, so no iterators were implemented.
