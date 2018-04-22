@@ -17,10 +17,10 @@ One of the reasons why no programming language comes with an official implementa
 
 Out of the sheer variety of trees available, only most common ones were chosen to be implemented: 
 
-- **Tree**: an *n-ary tree* used to store node hierarchies. Nodes and their operations are encapsulated by **TreeNode** class.
+- **Tree**: a generic (*n-ary*) tree used to store node hierarchies. Nodes and their operations are encapsulated by **TreeNode** class.
 	- **NonUniqueTree**: extends **Tree**, allowing nodes with duplicate values
 		- Strengths:
-			- smallest memory footprint: because it uses nothing but 
+			- smallest memory footprint: because it holds nothing but nodes themselves
 			- very fast on insert/delete: because it's just setting a couple of local relationships
 		- Weaknesses:
 			- very slow on searches: because it requires scanning the whole tree hierarchy.
@@ -29,7 +29,7 @@ Out of the sheer variety of trees available, only most common ones were chosen t
 			- very fast on insert/lookup/delete: because it's backed by a hash table
 		- Weaknesses:
 			- biggest memory footprint: because node locations duplicate in hash table
-- **RedBlackTree**: a *balanced binary search tree* using red-black principles, used internally as a foundation for structures that need to stay sorted (see TreeMap and TreeSet classes above) and algorithms based on *Introduction to Algorithms 3rd Edition by Thomas Cormen, Charles Leiserson & Ronald Rivest*.
+- **RedBlackTree**: a special *balanced binary search*  tree using red-black principles, used internally as a foundation for structures that need to stay sorted (see TreeMap and TreeSet classes above) and algorithms based on *Introduction to Algorithms 3rd Edition by Thomas Cormen, Charles Leiserson & Ronald Rivest*.
 	- Strengths:
 		- makes structure self-sorted
 		- acceptable performance on searches/inserts/deletes
