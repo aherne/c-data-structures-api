@@ -19,7 +19,7 @@ Because they are structures without any rules other than being composed of linke
 
 For graphs that just behave like graphs and set no further rules other than those in graph theory, I've implemented following classes:
 
-- **Graph**: a graph where *edges have no weights*. Makes no implementation assumptions, so it remains pure virtual. Its vertexes, encapsulated by **GraphVertex** class, are able to be traversed by **GraphVertexVisitor** class
+- **Graph**: a directed graph where *edges have no weights*. Makes no implementation assumptions, so it remains pure virtual. Its vertexes, encapsulated by **GraphVertex** class, are able to be traversed by **GraphVertexVisitor** class
 	- **NonUniqueGraph**: a **Graph** implementation allowing vertexes with duplicate values, storing vertexes in a *std::vector* structure.
 		- Strengths:
 			- small memory footprint: because it uses nothing but vertexes themselves inside a self-expandable memory block
@@ -35,13 +35,13 @@ For graphs that just behave like graphs and set no further rules other than thos
 			- heavy memory footprint: because it needs to maintain a hash table underneath.
 			- for VALUE_TYPE vertex holds, developers MUST implement matching *comparator* and *hash* functions and load them before.
 			- slow on delete: apart of inherently slow graph vertex removal requirements (traversing the entire graph to make sure no edges start from / point to vertex to be deleted), it just needs to delete from hashtable
-- **WeightedGraph**: a graph where *edges have weights*. Makes no implementation assumptions, so it remains pure virtual. Its vertexes, encapsulated by **WeightedGraphVertex** class, and edges, encapsulated by **WeightedGraphEdge** struct, are able to be traversed by **WeightedGraphVertexVisitor** class
+- **WeightedGraph**: a directed graph where *edges have weights*. Makes no implementation assumptions, so it remains pure virtual. Its vertexes, encapsulated by **WeightedGraphVertex** class, and edges, encapsulated by **WeightedGraphEdge** struct, are able to be traversed by **WeightedGraphVertexVisitor** class
 	- **NonUniqueWeightedGraph**: a **WeightedGraph** implementation allowing vertexes with duplicate values, storing vertexes in a *std::vector* structure. Same strength and weaknesses as **NonUniqueGraph** above, only with higher memory consumption because edges weights need to be stored as well.
-	- **UniqueGraph**: a **WeightedGraph** implementation storing its vertexes in a **HashTable**, which insures their value uniqueness. Same strength and weaknesses as **UniqueGraph** above, only with higher memory consumption because edges weights need to be stored as well.
+	- **UniqueWeightedGraph**: a **WeightedGraph** implementation storing its vertexes in a **HashTable**, which insures their value uniqueness. Same strength and weaknesses as **UniqueGraph** above, only with higher memory consumption because edges weights need to be stored as well.
 
 #### Graph
 
-Class **Graph**, holding blueprints of unweighted graph operations, which defines following pure virtual methods:
+Class **Graph**, holding blueprints of unweighted graph operations, defines following pure virtual methods:
 
 <table>
 	<thead>
@@ -81,13 +81,13 @@ Class **Graph**, holding blueprints of unweighted graph operations, which define
 			<td>getDistance</td>
 			<td>VERTEX, VERTEX</td>
 			<td>std::size_t</td>
-			<td>Gets minimal number of edges between two vertexes in graph.</td>
+			<td>Gets minimal number of edges between two vertexes in graph.<br/>Throws std::out_of_range if vertexes are not connected.</td>
 		</tr>
 		<tr>
 			<td>getPath</td>
 			<td>VERTEX, VERTEX</td>
 			<td>std::vector&lt;VERTEX&gt;</td>
-			<td></td>
+			<td>Gets shortest vertex path between two vertexes in graph.<br/>Throws std::out_of_range if vertexes are not connected.</td>
 		</tr>
 		<tr>
 			<td>iterate</td>
@@ -170,6 +170,12 @@ Vertexes and their operations are encapsulated by **GraphVertex** class defining
 			<td>VALUE</td>
 			<td>void</td>
 			<td>Overrides vertex value with the one inputed.</td>
+		</tr>
+		<tr>
+			<td>getData</td>
+			<td></td>
+			<td>VALUE</td>
+			<td>Gets vertex data.</td>
 		</tr>
 		<tr>
 			<td colspan=4>
@@ -300,151 +306,231 @@ Class **UniqueGraph** extends **Graph** and encapsulates a unweighted graph that
 		</tr>
 </table>
 
-^ Notice that, unlike extra methods by same name in NonUniqueGraph, no comparator is supplied! This is because HashTable inside assumes you already loaded a int (comparator*) (const VALUE_TYPE&, const VALUE_TYPE&) and a std::size_t hash(char* const& item) function for VALUE_TYPE. Failure to create any will result into undefined behavior!
-		
-Operations complexity @ graphs:
+^ Notice that, unlike extra methods by same name in NonUniqueGraph, no comparator is supplied! This is because HashTable inside assumes you already created and loaded int (comparator*) (const VALUE_TYPE&, const VALUE_TYPE&) and a std::size_t hash(const VALUE_TYPE&) functions beforehand. Failure to do so will result into undefined behavior!
+
+#### WeightedGraph
+
+Classes **WeightedGraph**, **WeightedGraphVisitor**, **NonUniqueWeightedGraph**, **UniqueWeightedGraph** have identical structure to **Graph**, **GraphVisitor**, **NonUniqueGraph**, **UniqueGraph**, only that they are working with **WeightedGraphVertex** objects. I've opted to implement them separately instead of templating the differences because that would have added great difficulty to whoever wants to use them.
+
+Class **WeightedGraphVertex** differs fundamentally from **GraphVertex** by having edges encapsulated by **WeightedGraphEdge** struct. It thus defines following public methods:
+
 <table>
 	<thead>
 		<tr>
-			<td>Operation</td>
-			<td>Graph</td>
-			<td>UniqueGraph</td>
-			<td>WeightedGraph</td>
-			<td>UniqueWeightedGraph</td>
-			<td>Description</td>
+			<td><strong>Method</strong></td>
+			<td><strong>Arguments</strong></td>
+			<td><strong>Returns</strong></td>
+			<td><strong>Description</strong></td>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td>createVertex(T)</td>
+			<td>WeightedGraphVertex</td>
+			<td>VALUE</td>
+			<td>void</td>
+			<td>Constructs a vertex using input value</td>
+		</tr>
+		<tr>
+			<td>addEdge</td>
+			<td>VERTEX, WEIGHT</td>
+			<td>void</td>
+			<td>Creates an edge between current vertex and the one inputed.</td>
+		</tr>
+		<tr>
+			<td>getEdges</td>
+			<td></td>
+			<td>EDGES</td>
+			<td>Gets all edges that start from current vertex.</td>
+		</tr>
+		<tr>
+			<td>isEdge</td>
+			<td>VERTEX</td>
+			<td>bool</td>
+			<td>Checks if there is an edge between current vertex and the one inputed.</td>
+		</tr>
+		<tr>
+			<td>removeEdge</td>
+			<td>VERTEX</td>
+			<td>void</td>
+			<td>Removes edge between current vertex and the one inputed.</td>
+		</tr>
+		<tr>
+			<td>setData</td>
+			<td>VALUE</td>
+			<td>void</td>
+			<td>Overrides vertex value with the one inputed.</td>
+		</tr>
+		<tr>
+			<td>getData</td>
+			<td></td>
+			<td>VALUE</td>
+			<td>Gets vertex data.</td>
+		</tr>
+		<tr>
+			<td>getEdgeWeight</td>
+			<td>VERTEX</td>
+			<td>WEIGHT</td>
+			<td>Gets weight of edge between current vertex and the one inputed.</td>
+		</tr>
+		<tr>
+			<td>setEdgeWeight</td>
+			<td>VERTEX, WEIGHT</td>
+			<td>void</td>
+			<td>Sets weight of edge between current vertex and the one inputed.</td>
+		</tr>
+		<tr>
+			<td colspan=4>
+				<strong>Signatures:</strong>
+				<table>
+					<tr>
+						<td>VALUE</td>
+						<td>const VALUE_TYPE&</td>
+					</tr>
+					<tr>
+						<td>WEIGHT</td>
+						<td>const WEIGHT_TYPE&</td>
+					</tr>
+					<tr>
+						<td>VERTEX</td>
+						<td>WeightedGraphVertex&lt;VALUE_TYPE, WEIGHT_TYPE&gt;*</td>
+					</tr>
+					<tr>
+						<td>EDGES</td>
+						<td>const std::vector&lt;WeightedGraphEdge&lt;VALUE_TYPE, WEIGHT_TYPE&gt;*&gt;&</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+Struct **WeightedGraphEdge** encapsulates, as its name suggests, a weighted graph's edge and thus defines following public fields:
+
+<table>
+	<thead>
+		<tr>
+			<td><strong>Field</strong></td>
+			<td><strong>Type</strong></td>
+			<td><strong>Description</strong></td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>vertex</td>
+			<td>WeightedGraphVertex&lt;VALUE_TYPE, WEIGHT_TYPE&gt;*</td>
+			<td>Vertex edge points to</td>
+		</tr>
+		<tr>
+			<td>weight</td>
+			<td>const WEIGHT_TYPE&</td>
+			<td>Weight of edge vertex points to</td>
+		</tr>
+	</tbody>
+</table>
+
+Classes **WeightedGraphVisitor**, **NonUniqueWeightedGraph**, **UniqueWeightedGraph** have identical structure to **GraphVisitor**, **NonUniqueGraph**, **UniqueGraph**, only that they are working with **WeightedGraphVertex** objects. 
+	
+### Constructors
+
+All implemented graphs (weighted or not) use a no-arg constructor.
+
+### Templates
+
+All classes related to **Graph** require a single template argument:  
+```c++
+template<typename VALUE_TYPE, typename WEIGTH_TYPE>
+```
+
+All classes related to **WeightedGraph** require two template arguments:
+```c++
+template<typename VALUE_TYPE, typename WEIGTH_TYPE>
+```
+
+### Iterators
+
+Because structure is not RAII compliant, no standalone iterator was defined. In order to iterate, it is sufficient to search for a vertex, then apply graph traversal algorithms from that point on. 
+
+### Operations complexity
+In order to better illustrate the advantages and disadvantages of each graph solution, please consult below table that shows O complexity of each graph class methods described above:
+<table>
+	<thead>
+		<tr>
+			<td>Operation</td>
+			<td>NonUniqueGraph</td>
+			<td>UniqueGraph</td>
+			<td>NonUniqueWeightedGraph</td>
+			<td>UniqueWeightedGraph</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>createVertex</td>
 			<td>O(1)</td>
-			<td>O(2)</td>
 			<td>O(1)</td>
-			<td>O(2)</td>
-			<td>Creates vertex in graph.</td>
-		</tr>
-		<tr>
-			<td>removeVertex(V)</td>
-			<td>O(V*E)</td>
-			<td>O(V*E)</td>
-			<td>O(V*E)</td>
-			<td>O(V*E)</td>
-			<td>Removes vertex from graph and deallocates.</td>
-		</tr>
-		<tr>
-			<td>createEdge(V,V,B)</td>
-			<td>O(1|2)</td>
-			<td>O(1|2)</td>
-			<td>O(1|2)</td>
-			<td>O(1|2)</td>
-			<td>Creates edge between vertexes.</td>
-		</tr>
-		<tr>
-			<td>removeEdge(V,V,B)</td>
-			<td>O(E|2E)</td>
-			<td>O(E|2E)</td>
-			<td>O(E|2E)</td>
-			<td>O(E|2E)</td>
-			<td>Removes edge between vertexes.</td>
-		</tr>
-		<tr>
-			<td>getDistance(V,V)</td>
-			<td>O(V*E)</td>
-			<td>O(V*E)</td>
-			<td>O(V*E)</td>
-			<td>O(V*E)</td>
-			<td>Gets number of vertexes in path between vertexes using BFS.</td>
-		</tr>
-		<tr>
-			<td>getPath(V,V)</td>
-			<td>O(V*E)</td>
-			<td>O(V*E)</td>
-			<td>O(V*E)</td>
-			<td>O(V*E)</td>
-			<td>Gets vertexes in path between vertexes using BFS.</td>
-		</tr>
-		<tr>
-			<td>getSize()</td>
-			<td>O(V*E)</td>
 			<td>O(1)</td>
-			<td>O(V*E)</td>
 			<td>O(1)</td>
-			<td>Gets number of vertexes in graph.</td>
 		</tr>
 		<tr>
-			<td>getWeight(V,V)</td>
-			<td>-</td>
-			<td>-</td>
-			<td>O(E)</td>
-			<td>O(E)</td>
-			<td>Gets weight of direct edge between vertexes.</td>
+			<td>removeVertex</td>
+			<td>O(V*E)</td>
+			<td>O(V*E)</td>
+			<td>O(V*E)</td>
+			<td>O(V*E)</td>
 		</tr>
 		<tr>
-			<td>isEdge(V,V)</td>
-			<td>O(E)</td>
-			<td>O(E)</td>
-			<td>O(E)</td>
-			<td>O(E)</td>
-			<td>Checks if there is a direct edge between vertexes.</td>
+			<td>getDistance</td>
+			<td>O(V+E)</td>
+			<td>O(V+E)</td>
+			<td>O(V+E)</td>
+			<td>O(V+E)</td>
 		</tr>
 		<tr>
-			<td>isPath(V,V)</td>
-			<td>O(V*E)</td>
-			<td>O(V*E)</td>
-			<td>O(V*E)</td>
-			<td>O(V*E)</td>
-			<td>Checks if there is a path between vertexes using BFS.</td>
+			<td>getPath</td>
+			<td>O(V+E)</td>
+			<td>O(V+E)</td>
+			<td>O(V+E)</td>
+			<td>O(V+E)</td>
 		</tr>
 		<tr>
-			<td>iterate(V,Z)</td>
-			<td>O(V*E)</td>
-			<td>O(V*E)</td>
-			<td>O(V*E)</td>
-			<td>O(V*E)</td>
-			<td>Iterates vertex's descendant tree using BFS.</td>
+			<td>isPath</td>
+			<td>O(V+E)</td>
+			<td>O(V+E)</td>
+			<td>O(V+E)</td>
+			<td>O(V+E)</td>
 		</tr>
 		<tr>
-			<td>iterate(Z)</td>
-			<td>O(V*E)</td>
-			<td>O(V*E)</td>
-			<td>O(V*E)</td>
-			<td>O(V*E)</td>
-			<td>Iterates all vertexes in graph.</td>
-		</tr>
-		<tr>
-			<td>removeVertex(T,C?)</td>
-			<td>O(V*E)</td>
+			<td>getSize</td>
 			<td>O(1)</td>
-			<td>O(V*E)</td>
 			<td>O(1)</td>
-			<td>Removes vertex from graph and deallocates.</td>
+			<td>O(1)</td>
+			<td>O(1)</td>
 		</tr>
 		<tr>
-			<td>contains(T,C?)</td>
-			<td>O(V*E)</td>
-			<td>O(1)</td>
-			<td>O(V*E)</td>
-			<td>O(1)</td>
-			<td>Checks if graph contains vertex value.</td>
+			<td>iterate</td>
+			<td>O(V+E)</td>
+			<td>O(V+E)</td>
+			<td>O(V+E)</td>
+			<td>O(V+E)</td>
 		</tr>
 		<tr>
-			<td>search(T,C?)</td>
-			<td>O(V*E)</td>
+			<td>contains</td>
+			<td>O(V+E)</td>
 			<td>O(1)</td>
-			<td>O(V*E)</td>
+			<td>O(V+E)</td>
 			<td>O(1)</td>
-			<td>Searches vertexes by their value.</td>
+		</tr>
+		<tr>
+			<td>search</td>
+			<td>O(V+E)</td>
+			<td>O(1)</td>
+			<td>O(V+E)</td>
+			<td>O(1)</td>
 		</tr>
 		<tr>
 			<td colspan=5>
 				<strong>Glossary:</strong><br/>
-				T = value<br/>
-				V = vertex<br/>
-				E = edge<br/>
-				C = comparator (?: not needed when vertexes are guaranteed to hold unique values)<br/>
-				B = whether or not operation should be bidirectional<br/>
-				Z = vertex visitor to use during iteration<br/>
-				N = number of nodes in tree<br/>
+				V = number of vertexes<br/>
+				E = number of edges<br/>
 			</td>
 		</tr>
 	</tbody>
