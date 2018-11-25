@@ -8,6 +8,7 @@
 #ifndef LIST_DOUBLYLINKEDLIST_H_
 #define LIST_DOUBLYLINKEDLIST_H_
 
+#include "List.h"
 #include "DoublyLinkedListSorter.h"
 #include <iostream>
 

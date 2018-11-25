@@ -33,38 +33,38 @@ struct my_hash_function{
 };
 
 void SetBenchmark::execute() {
-//	std::cout << "std::set<long>" << std::endl;
-//	testSetLong();
-//
-//	std::cout << "std::set<char*>" << std::endl;
-//	testSetString();
-//
-//	std::cout << "std::unordered_set<long>" << std::endl;
-//	testUnorderedSetLong();
-//
-//	std::cout << "std::unordered_set<char*>" << std::endl;
-//	testUnorderedSetString();
-//
-//	HashSet<long> hml(1000001);
-//	std::cout << "HashSet<long>" << std::endl;
-//	test(&hml);
-//
-//	LinkedHashSet<long> lhml(1000001);
-//	std::cout << "LinkedHashSet<long>" << std::endl;
-//	test(&lhml);
-//
-//	TreeSet<long> tml;
-//	std::cout << "TreeSet<long>" << std::endl;
-//	test(&tml);
-//
-//	TreeSet<char*> tms;
-//	std::cout << "TreeSet<char*>" << std::endl;
-//	test(&tms);
-//
-//	HashSet<char*> hms(1000001);
-//	std::cout << "HashSet<char*>" << std::endl;
-//	test(&hms);
-//
+	std::cout << "std::set<long>" << std::endl;
+	testSetLong();
+
+	std::cout << "std::set<char*>" << std::endl;
+	testSetString();
+
+	std::cout << "std::unordered_set<long>" << std::endl;
+	testUnorderedSetLong();
+
+	std::cout << "std::unordered_set<char*>" << std::endl;
+	testUnorderedSetString();
+
+	HashSet<long> hml(1000001);
+	std::cout << "HashSet<long>" << std::endl;
+	test(&hml);
+
+	LinkedHashSet<long> lhml(1000001);
+	std::cout << "LinkedHashSet<long>" << std::endl;
+	test(&lhml);
+
+	TreeSet<long> tml;
+	std::cout << "TreeSet<long>" << std::endl;
+	test(&tml);
+
+	TreeSet<char*> tms;
+	std::cout << "TreeSet<char*>" << std::endl;
+	test(&tms);
+
+	HashSet<char*> hms(1000001);
+	std::cout << "HashSet<char*>" << std::endl;
+	test(&hms);
+
 	LinkedHashSet<char*> lhms(1000001);
 	std::cout << "LinkedHashSet<char*>" << std::endl;
 	test(&lhms);

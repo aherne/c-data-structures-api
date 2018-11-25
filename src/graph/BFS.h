@@ -9,6 +9,6 @@
 #ifndef SRC_GRAPH_BFS_H_
 #define SRC_GRAPH_BFS_H_
 
-enum BFSColor { WHITE, GREY, BLACK };
+enum BFSColor { White, Grey, Black };
 
 #endif /* SRC_GRAPH_BFS_H_ */

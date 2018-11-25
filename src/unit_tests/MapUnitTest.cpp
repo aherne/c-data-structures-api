@@ -13,33 +13,32 @@
 #include "../list/ArrayList.h"
 
 void MapUnitTest::execute() {
-	std::cout << "=====LinkedHashMap<long,long>=====" << std::endl;
+	std::cout << "LinkedHashMap<long,long>" << std::endl;
 	LinkedHashMap<long, long> lhml;
 	test(&lhml);
+	testLinkedHashMap();
 
-	std::cout << "=====HashMap<long,long>=====" << std::endl;
+	std::cout << "HashMap<long,long>" << std::endl;
 	HashMap<long, long> hml;
 	test(&hml);
+	testHashMap();
 
-	std::cout << "=====TreeMap<long,long>=====" << std::endl;
+	std::cout << "TreeMap<long,long>" << std::endl;
 	TreeMap<long, long> tml;
 	test(&tml);
+	testTreeMap();
 
-	std::cout << "=====LinkedHashMap<char*,char*>=====" << std::endl;
+	std::cout << "LinkedHashMap<char*,char*>" << std::endl;
 	LinkedHashMap<char*, char*> lhms;
 	test(&lhms);
 
-	std::cout << "=====HashMap<char*,char*>=====" << std::endl;
+	std::cout << "HashMap<char*,char*>" << std::endl;
 	HashMap<char*, char*> hms;
 	test(&hms);
 
-	std::cout << "=====TreeMap<char*,char*>=====" << std::endl;
+	std::cout << "TreeMap<char*,char*>" << std::endl;
 	TreeMap<char*, char*> tms;
 	test(&tms);
-
-	testLinkedHashMap();
-	testHashMap();
-	testTreeMap();
 }
 
 void MapUnitTest::test(Map<long, long>* ht) {
@@ -48,21 +47,21 @@ void MapUnitTest::test(Map<long, long>* ht) {
 	}
 
 	long keyToCheck = 1820;
-	std::cout << "containsKey: " << (ht->containsKey(keyToCheck)?"OK":"ERROR") << std::endl;
-	std::cout << "containsValue: " << (ht->containsValue(keyToCheck)?"OK":"ERROR") << std::endl;
-	std::cout << "isEmpty: " << (!ht->isEmpty()?"OK":"ERROR") << std::endl;
-	std::cout << "size: " << (ht->size()==2000?"OK":"ERROR") << std::endl;
-	std::cout << "get&set: " << (ht->get(keyToCheck)==keyToCheck?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "containsKey: " << (ht->containsKey(keyToCheck)?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "containsValue: " << (ht->containsValue(keyToCheck)?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "isEmpty: " << (!ht->isEmpty()?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "size: " << (ht->size()==2000?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "get&set: " << (ht->get(keyToCheck)==keyToCheck?"OK":"ERROR") << std::endl;
 	ht->removeKey(keyToCheck);
-	std::cout << "removeKey: " << (!ht->containsKey(keyToCheck)?"OK":"ERROR") << std::endl;
-	std::cout << "size: " << (ht->size()==1999?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "removeKey: " << (!ht->containsKey(keyToCheck)?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "size: " << (ht->size()==1999?"OK":"ERROR") << std::endl;
 
 	long valueToCheck = 123;
 	ht->removeValue(valueToCheck);
-	std::cout << "removeValue: " << (!ht->containsValue(valueToCheck)?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "removeValue: " << (!ht->containsValue(valueToCheck)?"OK":"ERROR") << std::endl;
 
 	ht->clear();
-	std::cout << "clear: " << (ht->size()==0?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "clear: " << (ht->size()==0?"OK":"ERROR") << std::endl;
 }
 
 void MapUnitTest::test(Map<char*, char*>* ht) {
@@ -73,21 +72,21 @@ void MapUnitTest::test(Map<char*, char*>* ht) {
 	}
 
 	char* keyToCheck = strdup("1820");
-	std::cout << "containsKey: " << (ht->containsKey(keyToCheck)?"OK":"ERROR") << std::endl;
-	std::cout << "containsValue: " << (ht->containsValue(keyToCheck)?"OK":"ERROR") << std::endl;
-	std::cout << "isEmpty: " << (!ht->isEmpty()?"OK":"ERROR") << std::endl;
-	std::cout << "size: " << (ht->size()==2000?"OK":"ERROR") << std::endl;
-	std::cout << "get&set: " << (strcmp(ht->get(keyToCheck),keyToCheck)==0?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "containsKey: " << (ht->containsKey(keyToCheck)?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "containsValue: " << (ht->containsValue(keyToCheck)?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "isEmpty: " << (!ht->isEmpty()?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "size: " << (ht->size()==2000?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "get&set: " << (strcmp(ht->get(keyToCheck),keyToCheck)==0?"OK":"ERROR") << std::endl;
 	ht->removeKey(keyToCheck);
-	std::cout << "removeKey: " << (!ht->containsKey(keyToCheck)?"OK":"ERROR") << std::endl;
-	std::cout << "size: " << (ht->size()==1999?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "removeKey: " << (!ht->containsKey(keyToCheck)?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "size: " << (ht->size()==1999?"OK":"ERROR") << std::endl;
 
 	char* valueToCheck = strdup("123");
 	ht->removeValue(valueToCheck);
-	std::cout << "removeValue: " << (!ht->containsValue(valueToCheck)?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "removeValue: " << (!ht->containsValue(valueToCheck)?"OK":"ERROR") << std::endl;
 
 	ht->clear();
-	std::cout << "clear: " << (ht->size()==0?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "clear: " << (ht->size()==0?"OK":"ERROR") << std::endl;
 
 
 	// deallocate pointers
@@ -113,17 +112,17 @@ void MapUnitTest::testLinkedHashMap() {
 //			long valueToRemove = 5;
 //			ht.removeValue(valueToRemove);
 
-	std::cout << "sortByKey:" << std::endl;
+	std::cout << "\t" << "sortByKey:" << std::endl;
 	ht.sortByKey(&compareAsc<long>);
 	for(auto it = ht.begin(); *it!=*(ht.end()); ++(*it)) {
-		std::cout <<"\t"<< (*(*it)).first << ":" << (*(*it)).second << std::endl;
+		std::cout << "\t" << "\t" << (*(*it)).first << ":" << (*(*it)).second << std::endl;
 	}
 
-	std::cout << "sortByValue:" << std::endl;
+	std::cout << "\t" << "sortByValue:" << std::endl;
 	ht.sortByValue(&compareDesc<long>);
 	long i=0;
 	for(auto it = ht.begin(); *it!=*(ht.end()); ++(*it)) {
-		std::cout <<"\t"<< (*(*it)).first << ":" << (*(*it)).second << std::endl;
+		std::cout << "\t" << "\t" << (*(*it)).first << ":" << (*(*it)).second << std::endl;
 		if(i==2) ht.removeKey(9);
 		++i;
 	}
@@ -146,10 +145,10 @@ void MapUnitTest::testHashMap() {
 	k=11;v=7;ht.set(k,v);
 	k=22;v=1;ht.set(k,v);
 
-	std::cout << "iterator:" << std::endl;
+	std::cout << "\t" << "iterator:" << std::endl;
 	long i=0;
 	for(auto it = ht.begin(); *it!=*(ht.end()); ++(*it)) {
-		std::cout <<"\t" << (*(*it)).first << ":" << (*(*it)).second << std::endl;
+		std::cout << "\t" << "\t" << (*(*it)).first << ":" << (*(*it)).second << std::endl;
 		if(i==2) ht.removeKey(22);
 		++i;
 	}
@@ -172,10 +171,10 @@ void MapUnitTest::testTreeMap() {
 	k=11;v=7;ht.set(k,v);
 	k=22;v=1;ht.set(k,v);
 
-	std::cout << "iterator:" << std::endl;
+	std::cout << "\t" << "iterator:" << std::endl;
 	long i=0;
 	for(auto it = ht.begin(); *it!=*(ht.end()); ++(*it)) {
-		std::cout <<"\t" << (*(*it)).first << ":" << (*(*it)).second << std::endl;
+		std::cout << "\t" << "\t" << (*(*it)).first << ":" << (*(*it)).second << std::endl;
 		if(i==2) ht.removeKey(22);
 		++i;
 	}

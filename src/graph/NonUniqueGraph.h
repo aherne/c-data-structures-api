@@ -58,10 +58,10 @@ public:
 		// O(V*E+V)
 		bool isPath(GraphVertex<T>*& left, GraphVertex<T>*& right) const {
 			for(auto it = vertexes.begin(); it!=vertexes.end(); ++it) {
-				(*it)->setColor(WHITE);
+				(*it)->setColor(White);
 			}
 			BFSGraphVertex<T>* leftConverted = (BFSGraphVertex<T>*) left;
-			leftConverted->setColor(GREY);
+			leftConverted->setColor(Grey);
 			Queue<BFSGraphVertex<T>*> queue;
 			queue.push(leftConverted);
 			while(!queue.isEmpty()) {
@@ -69,13 +69,13 @@ public:
 				std::vector<GraphVertex<T>*> children = node->getEdges();
 				for(auto it = children.begin(); it != children.end(); ++it){
 					BFSGraphVertex<T>* tmp = (BFSGraphVertex<T>*) *it;
-					if(tmp->getColor() == WHITE) {
+					if(tmp->getColor() == White) {
 						if((*it)==right) return true;
-						tmp->setColor(GREY);
+						tmp->setColor(Grey);
 						queue.push(tmp);
 					}
 				}
-				node->setColor(BLACK);
+				node->setColor(Black);
 			}
 			return false;
 		}
@@ -83,11 +83,11 @@ public:
 		// O(V*E+V)
 		std::size_t getDistance(GraphVertex<T>*& left, GraphVertex<T>*& right) const {
 			for(auto it = vertexes.begin(); it!=vertexes.end(); ++it) {
-				(*it)->setColor(WHITE);
+				(*it)->setColor(White);
 				(*it)->setParent(nullptr);
 			}
 			BFSGraphVertex<T>* leftConverted = (BFSGraphVertex<T>*) left;
-			leftConverted->setColor(GREY);
+			leftConverted->setColor(Grey);
 			Queue<BFSGraphVertex<T>*> queue;
 			queue.push(leftConverted);
 			while(!queue.isEmpty()) {
@@ -95,7 +95,7 @@ public:
 				std::vector<GraphVertex<T>*> children = node->getEdges();
 				for(auto it = children.begin(); it != children.end(); ++it){
 					BFSGraphVertex<T>* tmp = (BFSGraphVertex<T>*) *it;
-					if(tmp->getColor() == WHITE) {
+					if(tmp->getColor() == White) {
 						if((*it)==right) {
 							std::size_t response = 0;
 							BFSGraphVertex<T>* parent = node;
@@ -105,12 +105,12 @@ public:
 							}
 							return response;
 						}
-						tmp->setColor(GREY);
+						tmp->setColor(Grey);
 						tmp->setParent(node);
 						queue.push(tmp);
 					}
 				}
-				node->setColor(BLACK);
+				node->setColor(Black);
 			}
 			throw std::out_of_range("Vertexes not connected!");
 		}
@@ -118,11 +118,11 @@ public:
 		// O(V*E+V)
 		std::vector<GraphVertex<T>*> getPath(GraphVertex<T>*& left, GraphVertex<T>*& right) const {
 			for(auto it = vertexes.begin(); it!=vertexes.end(); ++it) {
-				(*it)->setColor(WHITE);
+				(*it)->setColor(White);
 				(*it)->setParent(nullptr);
 			}
 			BFSGraphVertex<T>* leftConverted = (BFSGraphVertex<T>*) left;
-			leftConverted->setColor(GREY);
+			leftConverted->setColor(Grey);
 			Queue<BFSGraphVertex<T>*> queue;
 			queue.push(leftConverted);
 			while(!queue.isEmpty()) {
@@ -130,7 +130,7 @@ public:
 				std::vector<GraphVertex<T>*> children = node->getEdges();
 				for(auto it = children.begin(); it != children.end(); ++it){
 					BFSGraphVertex<T>* tmp = (BFSGraphVertex<T>*) *it;
-					if(tmp->getColor() == WHITE) {
+					if(tmp->getColor() == White) {
 						if((*it)==right) {
 							std::vector<GraphVertex<T>*> response;
 							response.push_back(right);
@@ -141,12 +141,12 @@ public:
 							}
 							return response;
 						}
-						tmp->setColor(GREY);
+						tmp->setColor(Grey);
 						tmp->setParent(node);
 						queue.push(tmp);
 					}
 				}
-				node->setColor(BLACK);
+				node->setColor(Black);
 			}
 			throw std::out_of_range("Vertexes not connected!");
 		}
@@ -173,10 +173,10 @@ public:
 		// O(V*E+V)
 		void iterate(GraphVertex<T>*& start, GraphVertexVisitor<T>& visitor) {
 			for(auto it = vertexes.begin(); it!=vertexes.end(); ++it) {
-				(*it)->setColor(WHITE);
+				(*it)->setColor(White);
 			}
 			BFSGraphVertex<T>* leftConverted = (BFSGraphVertex<T>*) start;
-			leftConverted->setColor(GREY);
+			leftConverted->setColor(Grey);
 			Queue<BFSGraphVertex<T>*> queue;
 			queue.push(leftConverted);
 			while(!queue.isEmpty()) {
@@ -184,13 +184,13 @@ public:
 				std::vector<GraphVertex<T>*> children = node->getEdges();
 				for(auto it = children.begin(); it != children.end(); ++it){
 					BFSGraphVertex<T>* tmp = (BFSGraphVertex<T>*) *it;
-					if(tmp->getColor() == WHITE) {
+					if(tmp->getColor() == White) {
 						visitor.visit(tmp);
-						tmp->setColor(GREY);
+						tmp->setColor(Grey);
 						queue.push(tmp);
 					}
 				}
-				node->setColor(BLACK);
+				node->setColor(Black);
 			}
 		}
 

@@ -59,10 +59,10 @@ public:
 		// O(V*E+V)
 		bool isPath(WeightedGraphVertex<T,W>*& left, WeightedGraphVertex<T,W>*& right) const {
 			for(auto it = vertexes.begin(); it!=vertexes.end(); ++it) {
-				(*it)->setColor(WHITE);
+				(*it)->setColor(White);
 			}
 			BFSWeightedGraphVertex<T,W>* leftConverted = (BFSWeightedGraphVertex<T,W>*) left;
-			leftConverted->setColor(GREY);
+			leftConverted->setColor(Grey);
 			Queue<BFSWeightedGraphVertex<T,W>*> queue;
 			queue.push(leftConverted);
 			while(!queue.isEmpty()) {
@@ -70,13 +70,13 @@ public:
 				std::vector<WeightedGraphEdge<T,W>*> children = node->getEdges();
 				for(auto it = children.begin(); it != children.end(); ++it){
 					BFSWeightedGraphVertex<T,W>* tmp = (BFSWeightedGraphVertex<T,W>*) (*it)->vertex;
-					if(tmp->getColor() == WHITE) {
+					if(tmp->getColor() == White) {
 						if((*it)->vertex==right) return true;
-						tmp->setColor(GREY);
+						tmp->setColor(Grey);
 						queue.push(tmp);
 					}
 				}
-				node->setColor(BLACK);
+				node->setColor(Black);
 			}
 			return false;
 		}
@@ -84,12 +84,12 @@ public:
 		// O(V*E+V)
 		std::size_t getDistance(WeightedGraphVertex<T,W>*& left, WeightedGraphVertex<T,W>*& right) const {
 			for(auto it = vertexes.begin(); it!=vertexes.end(); ++it) {
-				(*it)->setColor(WHITE);
+				(*it)->setColor(White);
 				(*it)->setParent(nullptr);
 			}
 
 			BFSWeightedGraphVertex<T,W>* leftConverted = (BFSWeightedGraphVertex<T,W>*) left;
-			leftConverted->setColor(GREY);
+			leftConverted->setColor(Grey);
 
 			WeightedGraphEdge<T,W> baseEdge;
 			baseEdge.vertex = leftConverted;
@@ -102,7 +102,7 @@ public:
 				std::vector<WeightedGraphEdge<T,W>*> children = node->vertex->getEdges();
 				for(auto it = children.begin(); it != children.end(); ++it){
 					BFSWeightedGraphVertex<T,W>* tmp = (BFSWeightedGraphVertex<T,W>*) (*it)->vertex;
-					if(tmp->getColor() == WHITE) {
+					if(tmp->getColor() == White) {
 						if((*it)->vertex==right) {
 							std::size_t response = 0;
 							WeightedGraphEdge<T,W>* parent = node;
@@ -112,12 +112,12 @@ public:
 							}
 							return response;
 						}
-						tmp->setColor(GREY);
+						tmp->setColor(Grey);
 						tmp->setParent(node);
 						queue.push((*it));
 					}
 				}
-				((BFSWeightedGraphVertex<T,W>*) node->vertex)->setColor(BLACK);
+				((BFSWeightedGraphVertex<T,W>*) node->vertex)->setColor(Black);
 			}
 			throw std::out_of_range("Vertexes not connected!");
 		}
@@ -125,12 +125,12 @@ public:
 		// O(V*E+V)
 		std::vector<WeightedGraphEdge<T,W>*> getPath(WeightedGraphVertex<T,W>*& left, WeightedGraphVertex<T,W>*& right) const {
 			for(auto it = vertexes.begin(); it!=vertexes.end(); ++it) {
-				(*it)->setColor(WHITE);
+				(*it)->setColor(White);
 				(*it)->setParent(nullptr);
 			}
 
 			BFSWeightedGraphVertex<T,W>* leftConverted = (BFSWeightedGraphVertex<T,W>*) left;
-			leftConverted->setColor(GREY);
+			leftConverted->setColor(Grey);
 
 			WeightedGraphEdge<T,W> baseEdge;
 			baseEdge.vertex = leftConverted;
@@ -143,7 +143,7 @@ public:
 				std::vector<WeightedGraphEdge<T,W>*> children = node->vertex->getEdges();
 				for(auto it = children.begin(); it != children.end(); ++it){
 					BFSWeightedGraphVertex<T,W>* tmp = (BFSWeightedGraphVertex<T,W>*) (*it)->vertex;
-					if(tmp->getColor() == WHITE) {
+					if(tmp->getColor() == White) {
 						if((*it)->vertex==right) {
 							std::vector<WeightedGraphEdge<T,W>*> response;
 							response.push_back(*it);
@@ -155,12 +155,12 @@ public:
 							}
 							return response;
 						}
-						tmp->setColor(GREY);
+						tmp->setColor(Grey);
 						tmp->setParent(node);
 						queue.push((*it));
 					}
 				}
-				((BFSWeightedGraphVertex<T,W>*) node->vertex)->setColor(BLACK);
+				((BFSWeightedGraphVertex<T,W>*) node->vertex)->setColor(Black);
 			}
 			throw std::out_of_range("Vertexes not connected!");
 		}
@@ -187,10 +187,10 @@ public:
 		// O(V*E+V)
 		void iterate(WeightedGraphVertex<T,W>*& start, WeightedGraphVertexVisitor<T,W>& visitor) {
 			for(auto it = vertexes.begin(); it!=vertexes.end(); ++it) {
-				(*it)->setColor(WHITE);
+				(*it)->setColor(White);
 			}
 			BFSWeightedGraphVertex<T,W>* leftConverted = (BFSWeightedGraphVertex<T,W>*) start;
-			leftConverted->setColor(GREY);
+			leftConverted->setColor(Grey);
 			Queue<BFSWeightedGraphVertex<T,W>*> queue;
 			queue.push(leftConverted);
 			while(!queue.isEmpty()) {
@@ -198,13 +198,13 @@ public:
 				std::vector<WeightedGraphEdge<T,W>*> children = node->getEdges();
 				for(auto it = children.begin(); it != children.end(); ++it){
 					BFSWeightedGraphVertex<T,W>* tmp = (BFSWeightedGraphVertex<T,W>*) (*it)->vertex;
-					if(tmp->getColor() == WHITE) {
+					if(tmp->getColor() == White) {
 						visitor.visit(tmp);
-						tmp->setColor(GREY);
+						tmp->setColor(Grey);
 						queue.push(tmp);
 					}
 				}
-				node->setColor(BLACK);
+				node->setColor(Black);
 			}
 		}
 

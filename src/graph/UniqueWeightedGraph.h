@@ -12,6 +12,8 @@
 #include "../container/Queue.h"
 #include "../set/HashSet.h"
 #include "../map/HashMap.h"
+#include "BFSWeightedGraphVertex.h"
+#include "WeightedGraph.h"
 #include <vector>
 
 template<typename T,typename W>

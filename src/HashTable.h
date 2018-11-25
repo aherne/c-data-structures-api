@@ -8,6 +8,9 @@
 #ifndef SRC_HASHTABLE_H_
 #define SRC_HASHTABLE_H_
 
+#include <cstddef>
+#include <stdexcept>
+
 template<typename VALUE>
 struct HashTableEntry {
 	std::size_t hash;

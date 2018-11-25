@@ -14,33 +14,32 @@
 #include "../set/TreeSet.h"
 
 void SetUnitTest::execute() {
-	std::cout << "=====LinkedHashSet<long>=====" << std::endl;
+	std::cout << "LinkedHashSet<long>" << std::endl;
 	LinkedHashSet<long> lhml;
 	test(&lhml);
+	testLinkedHashSet();
 
-	std::cout << "=====HashSet<long>=====" << std::endl;
+	std::cout << "HashSet<long>" << std::endl;
 	HashSet<long> hml;
 	test(&hml);
+	testHashSet();
 
-	std::cout << "=====TreeSet<long>=====" << std::endl;
+	std::cout << "TreeSet<long>" << std::endl;
 	TreeSet<long> tml;
 	test(&tml);
+	testTreeSet();
 
-	std::cout << "=====LinkedHashSet<char*>=====" << std::endl;
+	std::cout << "LinkedHashSet<char*>" << std::endl;
 	LinkedHashSet<char*> lhms;
 	test(&lhms);
 
-	std::cout << "=====HashSet<char*>=====" << std::endl;
+	std::cout << "HashSet<char*>" << std::endl;
 	HashSet<char*> hms;
 	test(&hms);
 
-	std::cout << "=====TreeSet<char*>=====" << std::endl;
+	std::cout << "TreeSet<char*>" << std::endl;
 	TreeSet<char*> tms;
 	test(&tms);
-
-	testLinkedHashSet();
-	testHashSet();
-	testTreeSet();
 }
 
 void SetUnitTest::test(Set<long>* ht) {
@@ -49,14 +48,14 @@ void SetUnitTest::test(Set<long>* ht) {
 	}
 
 	long keyToCheck = 1820;
-	std::cout << "containsValue: " << (ht->contains(keyToCheck)?"OK":"ERROR") << std::endl;
-	std::cout << "isEmpty: " << (!ht->isEmpty()?"OK":"ERROR") << std::endl;
-	std::cout << "size: " << (ht->size()==2000?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "containsValue: " << (ht->contains(keyToCheck)?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "isEmpty: " << (!ht->isEmpty()?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "size: " << (ht->size()==2000?"OK":"ERROR") << std::endl;
 	ht->remove(keyToCheck);
-	std::cout << "removeKey: " << (!ht->contains(keyToCheck)?"OK":"ERROR") << std::endl;
-	std::cout << "size: " << (ht->size()==1999?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "removeKey: " << (!ht->contains(keyToCheck)?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "size: " << (ht->size()==1999?"OK":"ERROR") << std::endl;
 	ht->clear();
-	std::cout << "clear: " << (ht->size()==0?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "clear: " << (ht->size()==0?"OK":"ERROR") << std::endl;
 }
 
 void SetUnitTest::test(Set<char*>* ht) {
@@ -67,14 +66,14 @@ void SetUnitTest::test(Set<char*>* ht) {
 	}
 
 	char* keyToCheck = strdup("1820");
-	std::cout << "containsKey: " << (ht->contains(keyToCheck)?"OK":"ERROR") << std::endl;
-	std::cout << "isEmpty: " << (!ht->isEmpty()?"OK":"ERROR") << std::endl;
-	std::cout << "size: " << (ht->size()==2000?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "containsKey: " << (ht->contains(keyToCheck)?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "isEmpty: " << (!ht->isEmpty()?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "size: " << (ht->size()==2000?"OK":"ERROR") << std::endl;
 	ht->remove(keyToCheck);
-	std::cout << "removeKey: " << (!ht->contains(keyToCheck)?"OK":"ERROR") << std::endl;
-	std::cout << "size: " << (ht->size()==1999?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "removeKey: " << (!ht->contains(keyToCheck)?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "size: " << (ht->size()==1999?"OK":"ERROR") << std::endl;
 	ht->clear();
-	std::cout << "clear: " << (ht->size()==0?"OK":"ERROR") << std::endl;
+	std::cout << "\t" << "clear: " << (ht->size()==0?"OK":"ERROR") << std::endl;
 
 
 	// deallocate pointers
@@ -100,10 +99,10 @@ void SetUnitTest::testLinkedHashSet() {
 
 	ht.sort(&compareAsc<long>);
 
-	std::cout << "sort:" << std::endl;
+	std::cout << "\t" << "sort:" << std::endl;
 	long i=0;
 	for(auto it = ht.begin(); *it!=*(ht.end()); ++(*it)) {
-		std::cout <<"\t" << (*(*it)) << std::endl;
+		std::cout << "\t" << "\t" << (*(*it)) << std::endl;
 		if(i==2) ht.remove(9);
 		++i;
 	}
@@ -126,10 +125,10 @@ void SetUnitTest::testHashSet() {
 	k=11;ht.add(k);
 	k=22;ht.add(k);
 
-	std::cout << "iterator:" << std::endl;
+	std::cout << "\t" << "iterator:" << std::endl;
 	long i=0;
 	for(auto it = ht.begin(); *it!=*(ht.end()); ++(*it)) {
-		std::cout <<"\t" << (*(*it)) << std::endl;
+		std::cout << "\t" << "\t" << (*(*it)) << std::endl;
 		if(i==2) ht.remove(9);
 		++i;
 	}
@@ -152,10 +151,10 @@ void SetUnitTest::testTreeSet() {
 	k=11;ht.add(k);
 	k=22;ht.add(k);
 
-	std::cout << "iterator:" << std::endl;
+	std::cout << "\t" << "iterator:" << std::endl;
 	long i=0;
 	for(auto it = ht.begin(); *it!=*(ht.end()); ++(*it)) {
-		std::cout <<"\t" << (*(*it)) << std::endl;
+		std::cout << "\t" << "\t" << (*(*it)) << std::endl;
 		if(i==2) ht.remove(9);
 		++i;
 	}

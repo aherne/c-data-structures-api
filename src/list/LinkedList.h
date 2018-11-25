@@ -28,6 +28,8 @@ private:
 	bool (*compareFunction)(const T&,const T&);
 };
 
+#include "List.h"
+#include <stdexcept>
 #include "LinkedListSorter.h"
 
 template<typename T>
