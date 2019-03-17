@@ -1,19 +1,14 @@
-Tree
-	If attempting to add ArrayList implementation in a tree, a crash occurs on deallocation
-	data @ uniquegraphvector is forced to use my comparator
 List
 	(LATER) unique(valueComparator)
 	(LATER) sort has complexity 2N+logN (because changing tail requires full iteration)
 Map
-	(LATER) convert MapEntry comparators into key comparators (like @ STL)
 	LinkedHashMap
 		(LATER) unique(valueComparator)
 Graph
 	(LATER) test for cycles @ (non-unique) Graph
-	data @ uniquegraphvector is forced to use my comparator
-	weighted
-		getEdges (array of connecting weights)
 Document all code
 test what happens whe we try to use another data type than long/char* @ all data structures
-CONVERT COMPARATORS TO STRUCT?
 + bounded containers
+
+USE ArrayList instead of std:vector for tree and graph
+USE template<> for comparators; value comparison in lists should use template arguments

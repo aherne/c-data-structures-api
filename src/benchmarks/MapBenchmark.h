@@ -10,6 +10,8 @@
 
 #include "../Benchmark.h"
 #include <cstring>
+#include "../Hashing.h"
+#include "../Comparator.h"
 #include "../map/Map.h"
 
 class MapBenchmark {

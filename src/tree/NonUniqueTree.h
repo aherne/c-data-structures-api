@@ -22,10 +22,11 @@ public:
 
 	~SearchVisitor() {}
 
-	void visit(TreeNode<T>*& element) {
+	bool visit(TreeNode<T>*& element) {
 		if(comparator(data, element->getData())==0) {
 			results.push_back(element);
 		}
+		return true;
 	}
 
 	const std::vector<TreeNode<T>*>& getResults() {
@@ -37,23 +38,23 @@ private:
 	int (*comparator)(const T&, const T&);
 };
 
-template<typename T>
+template<typename T, int (*compare)(const T&, const T&)>
 class NonUniqueTree : public Tree<T> {
 	public:
 		using Tree<T>::Tree;
 
-		std::vector<TreeNode<T>*> search(const T& data, int (*comparator)(const T&, const T&)) {
-			SearchVisitor<T> visitor(data, comparator);
+		std::vector<TreeNode<T>*> search(const T& data) {
+			SearchVisitor<T> visitor(data, compare);
 			LevelOrderTreeIterator(this->root,&visitor);
 			return visitor.getResults();
 		}
 
-		bool contains(const T& data, int (*comparator)(const T&, const T&)) const {
+		bool contains(const T& data) const {
 			Queue<TreeNode<T>*> q;
 			q.push(this->root);
 			while(!q.isEmpty()) {
 				TreeNode<T>* node = q.pop();
-				if(comparator(data, node->getData())==0) return true;
+				if(compare(data, node->getData())==0) return true;
 				std::vector<TreeNode<T>*> children = node->getChildren();
 				for(auto it = children.begin(); it!=children.end(); ++it) {
 					q.push(*it);

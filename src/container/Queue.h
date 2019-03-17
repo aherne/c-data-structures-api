@@ -66,15 +66,6 @@ public:
 		++ count;
 		++ position_end;
 	}
-
-	T* begin() {
-		if(count==0) return nullptr;
-		return &contents[position_start];
-	}
-
-	T* end() {
-		return &contents[position_end];
-	}
 private:
 	void resize() {
 		if((position_end - position_start) > (maximum_size*load_factor)) {

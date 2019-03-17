@@ -21,17 +21,21 @@ struct LinkedHashTableEntry {
 	LinkedHashTableEntry<VALUE>* next;
 };
 
-template<typename VALUE, int (*compare)(const VALUE&,const VALUE&), std::size_t (*hashingFunc)(const VALUE&)>
+template<typename VALUE>
 class LinkedHashTable {
 public:
-	LinkedHashTable(){
+	LinkedHashTable(int (*comparator)(const VALUE&,const VALUE&), std::size_t (*hasher)(const VALUE&)){
+		compare = comparator;
+		hashingFunc = hasher;
 		count=0;
 		bucket_count=8;
 		buckets = new LinkedHashTableEntry<VALUE>*[bucket_count]();
 		head = nullptr;
 		tail = nullptr;
 	}
-	LinkedHashTable(const std::size_t& reservedSize){
+	LinkedHashTable(int (*comparator)(const VALUE&,const VALUE&), std::size_t (*hasher)(const VALUE&), const std::size_t& reservedSize){
+		compare = comparator;
+		hashingFunc = hasher;
 		count=0;
 		bucket_count=reservedSize;
 		buckets = new LinkedHashTableEntry<VALUE>*[bucket_count]();
@@ -262,6 +266,8 @@ private:
 		buckets = new_buckets;
 		bucket_count = new_bucket_count;
 	}
+	int (*compare)(const VALUE&,const VALUE&);
+	std::size_t (*hashingFunc)(const VALUE&);
 
 	std::size_t count;
 	std::size_t bucket_count;

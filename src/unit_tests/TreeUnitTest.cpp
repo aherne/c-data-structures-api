@@ -14,12 +14,23 @@ int comparator1(const long& left, const long& right) {
 }
 
 template<typename T>
+int compareNode(TreeNode<T>* const& left, TreeNode<T>* const& right) {
+	return comparator(left->getData(), right->getData());
+}
+
+template<typename T>
+std::size_t hashNode(TreeNode<T>* const& node) {
+	return hash(node->getData());
+}
+
+template<typename T>
 class PrintNodeVisitor: public TreeNodeVisitor<T> {
 public:
 	virtual ~PrintNodeVisitor(){};
 
-	void visit(TreeNode<T>*& element) {
+	bool visit(TreeNode<T>*& element) {
 		std::cout << "\t" << element->getData() << std::endl;
+		return true;
 	}
 };
 
@@ -44,7 +55,7 @@ void TreeUnitTest::execute() {
 }
 
 void TreeUnitTest::treeTest() {
-	NonUniqueTree<long>* tree = new NonUniqueTree<long>(1);
+	NonUniqueTree<long, comparator>* tree = new NonUniqueTree<long, comparator>(1);
 	TreeNode<long>* root = tree->getRoot();
 	TreeNode<long>* c1 = tree->createNode(2, root);
 	TreeNode<long>* c2 = tree->createNode(3, root);
@@ -98,21 +109,21 @@ void TreeUnitTest::treeTest() {
 		std::cout << "\t" << "\t" << (*it)->getData() << std::endl;
 	}
 
-	std::cout << "\t" << "contains: " << (tree->contains(11, &comparator1)?"OK":"FAILED") << std::endl;
-	std::vector<TreeNode<long>*> search = tree->search(10, &comparator1);
+	std::cout << "\t" << "contains: " << (tree->contains(1)?"OK":"FAILED") << std::endl;
+	std::vector<TreeNode<long>*> search = tree->search(10);
 	std::cout << "\t" << "search: " << (search.size()>0 && search[0]==c3_1?"OK":"FAILED") << std::endl;
 
 	tree->removeNode(c2);
-	std::cout << "\t" << "removeNode: " << (tree->search(3,&comparator1).empty() && root->getChildren()[2]->getData()==9?"OK":"FAILED") << std::endl;
+	std::cout << "\t" << "removeNode: " << (tree->search(3).empty() && root->getChildren()[2]->getData()==9?"OK":"FAILED") << std::endl;
 
 	tree->removeBranch(c1);
-	std::cout << "\t" << "removeBranch: " << (tree->search(2,&comparator1).empty() && tree->search(8,&comparator1).empty() && root->getChildren().size()==2?"OK":"FAILED") << std::endl;
+	std::cout << "\t" << "removeBranch: " << (tree->search(2).empty() && tree->search(8).empty() && root->getChildren().size()==2?"OK":"FAILED") << std::endl;
 
 	delete tree;
 }
 
 void TreeUnitTest::uniqueTreeTest() {
-	UniqueTree<long>* tree = new UniqueTree<long>(1);
+	UniqueTree<long, comparator, hash>* tree = new UniqueTree<long, comparator, hash>(1);
 	TreeNode<long>* root = tree->getRoot();
 	TreeNode<long>* c1 = tree->createNode(2, root);
 	TreeNode<long>* c2 = tree->createNode(3, root);

@@ -15,30 +15,30 @@
 
 void SetUnitTest::execute() {
 	std::cout << "LinkedHashSet<long>" << std::endl;
-	LinkedHashSet<long> lhml;
+	LinkedHashSet<long, comparator, hash> lhml;
 	test(&lhml);
 	testLinkedHashSet();
 
 	std::cout << "HashSet<long>" << std::endl;
-	HashSet<long> hml;
+	HashSet<long, comparator, hash> hml;
 	test(&hml);
 	testHashSet();
 
 	std::cout << "TreeSet<long>" << std::endl;
-	TreeSet<long> tml;
+	TreeSet<long, comparator> tml;
 	test(&tml);
 	testTreeSet();
 
 	std::cout << "LinkedHashSet<char*>" << std::endl;
-	LinkedHashSet<char*> lhms;
+	LinkedHashSet<char*, comparator, hash> lhms;
 	test(&lhms);
 
 	std::cout << "HashSet<char*>" << std::endl;
-	HashSet<char*> hms;
+	HashSet<char*, comparator, hash> hms;
 	test(&hms);
 
 	std::cout << "TreeSet<char*>" << std::endl;
-	TreeSet<char*> tms;
+	TreeSet<char*, comparator> tms;
 	test(&tms);
 }
 
@@ -86,7 +86,7 @@ void SetUnitTest::testLinkedHashSet() {
 	long k;
 	// test collisions
 
-	LinkedHashSet<long> ht;
+	LinkedHashSet<long, comparator, hash> ht;
 	k=18;ht.add(k);
 	k=1;ht.add(k);
 	k=150;ht.add(k);
@@ -114,7 +114,7 @@ void SetUnitTest::testHashSet() {
 	long k;
 	// test collisions
 
-	HashSet<long> ht;
+	HashSet<long, comparator, hash> ht;
 	k=18;ht.add(k);
 	k=1;ht.add(k);
 	k=150;ht.add(k);
@@ -140,7 +140,7 @@ void SetUnitTest::testTreeSet() {
 	long k;
 	// test collisions
 
-	TreeSet<long> ht;
+	TreeSet<long, comparator> ht;
 	k=18;ht.add(k);
 	k=1;ht.add(k);
 	k=150;ht.add(k);

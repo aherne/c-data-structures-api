@@ -12,47 +12,14 @@
 #include "../container/Queue.h"
 #include "../set/HashSet.h"
 #include "../map/HashMap.h"
-#include "BFSWeightedGraphVertex.h"
 #include "WeightedGraph.h"
 #include <vector>
+#include "WeightedGraphUtilities.h"
 
-template<typename T,typename W>
-int compareVertex(WeightedGraphVertex<T,W>* const& left, WeightedGraphVertex<T,W>* const& right) {
-	return comparator(left->getData(), right->getData());
-}
 
-template<typename T,typename W>
-std::size_t hashVertex(WeightedGraphVertex<T,W>* const& node) {
-	return hash(node->getData());
-}
-
-template<typename T,typename W>
-std::size_t hashVertexDistance(const MapEntry<WeightedGraphVertex<T,W>*, long>& entry) {
-	return hash(entry.key->getData());
-}
-
-template<typename T,typename W>
-int compareVertexDistance(const MapEntry<WeightedGraphVertex<T,W>*, long>& left, const MapEntry<WeightedGraphVertex<T,W>*, long>& right) {
-	return comparator(left.key->getData(), right.key->getData());
-}
-
-template<typename T,typename W>
-std::size_t hashVertexParent(const MapEntry<WeightedGraphEdge<T,W>*, WeightedGraphEdge<T,W>*>& entry) {
-	return hash(entry.key->vertex->getData());
-}
-
-template<typename T,typename W>
-int compareVertexParent(const MapEntry<WeightedGraphEdge<T,W>*, WeightedGraphEdge<T,W>*>& left, const MapEntry<WeightedGraphEdge<T,W>*, WeightedGraphEdge<T,W>*>& right) {
-	return comparator(left.key->vertex->getData(), right.key->vertex->getData());
-}
-
-template<typename T,typename W>
+template<typename T,typename W, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
 class UniqueWeightedGraph : public WeightedGraph<T,W> {
 public:
-	UniqueWeightedGraph(){
-
-	}
-
 	// O(V)
 	~UniqueWeightedGraph(){
 		// deallocate all vertexes
@@ -90,7 +57,7 @@ public:
 
 	// O(V*E)
 	bool isPath(WeightedGraphVertex<T,W>*& left, WeightedGraphVertex<T,W>*& right) const {
-		HashSet<WeightedGraphVertex<T,W>*, compareVertex, hashVertex> visited;
+		HashSet<WeightedGraphVertex<T,W>*, compareWeightedVertex<T, W, compare>, hashWeightedVertex<T, W, hash>> visited;
 		Queue<WeightedGraphVertex<T,W>*> queue;
 		queue.push(left);
 		visited.add(left);
@@ -111,7 +78,7 @@ public:
 
 	// O(V*E)
 	std::size_t getDistance(WeightedGraphVertex<T,W>*& left, WeightedGraphVertex<T,W>*& right) const {
-		HashMap<WeightedGraphVertex<T,W>*, long, compareVertexDistance, hashVertexDistance> visited;
+		HashMap<WeightedGraphVertex<T,W>*, long, compareWeightedVertex<T, W, compare>, hashWeightedVertex<T, W, hash>> visited;
 		Queue<WeightedGraphVertex<T,W>*> queue;
 		queue.push(left);
 		visited.set(left,0);
@@ -136,7 +103,7 @@ public:
 		element.vertex = left;
 		element.weight = 0;
 
-		HashMap<WeightedGraphEdge<T,W>*, WeightedGraphEdge<T,W>*, compareVertexParent, hashVertexParent> visited;
+		HashMap<WeightedGraphEdge<T,W>*, WeightedGraphEdge<T,W>*, compareWeightedVertexParent<T, W, compare>, hashWeightedVertexParent<T, W, hash>> visited;
 		Queue<WeightedGraphEdge<T,W>*> queue;
 		queue.push(&element);
 		visited.set(&element,nullptr);
@@ -176,35 +143,8 @@ public:
 		if(!vertexes.contains(&temp)) return nullptr;
 		return *(vertexes.find(&temp));
 	}
-
-	// O(V*E)
-	void iterate(WeightedGraphVertex<T,W>*& start, WeightedGraphVertexVisitor<T,W>& visitor) {
-		HashSet<WeightedGraphVertex<T,W>*, compareVertex, hashVertex> visited;
-		Queue<WeightedGraphVertex<T,W>*> queue;
-		queue.push(start);
-		visited.add(start);
-		while(!queue.isEmpty()) {
-			WeightedGraphVertex<T,W>* node = queue.pop();
-			std::vector<WeightedGraphEdge<T,W>*> children = node->getEdges();
-			for(auto it = children.begin(); it != children.end(); ++it){
-				WeightedGraphVertex<T,W>* tmp = (*it)->vertex;
-				if(!visited.contains(tmp)) {
-					visitor.visit(tmp);
-					visited.add(tmp);
-					queue.push(tmp);
-				}
-			}
-		}
-	}
-
-	// O(V)
-	void iterate(WeightedGraphVertexVisitor<T,W>& visitor) {
-		for(auto it = vertexes.begin(); *it!=*(vertexes.end()); ++(*it)) {
-			visitor.visit(*(*it));
-		}
-	}
 private:
-	HashSet<WeightedGraphVertex<T,W>*, compareVertex, hashVertex> vertexes;
+	HashSet<WeightedGraphVertex<T,W>*, compareWeightedVertex<T, W, compare>, hashWeightedVertex<T, W, hash>> vertexes;
 };
 
 

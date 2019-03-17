@@ -10,34 +10,32 @@
 
 #include "Tree.h"
 #include "../HashTable.h"
-#include "../Comparator.h"
-#include "../Hashing.h"
-
-template<typename T>
-int compareNode(TreeNode<T>* const& left, TreeNode<T>* const& right) {
-	return comparator(left->getData(), right->getData());
-}
-
-template<typename T>
-std::size_t hashNode(TreeNode<T>* const& node) {
-	return hash(node->getData());
-}
-
-template<typename T>
+#include "TreeUtilities.h"
+// http://cdncontribute.geeksforgeeks.org/wp-content/uploads/order-of-constructor.png
+template<typename T, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
 class UniqueTree : public Tree<T> {
 	public:
 		using Tree<T>::Tree;
 
+		UniqueTree(const T& data):Tree<T>(data) {
+			hashTable = new HashTable<TreeNode<T>*>(compareTreeNode<T, compare>, hashTreeNode<T, hash>);
+			hashTable->set(this->root);
+		}
+
+		virtual ~UniqueTree() {
+			delete hashTable;
+		}
+
 		TreeNode<T>* search(const T& data) {
 			TreeNode<T> temp(data);
-			if(!hashTable.contains(&temp)) return nullptr;
-			return *(hashTable.get(&temp));
+			if(!hashTable->contains(&temp)) return nullptr;
+			return *(hashTable->get(&temp));
 		}
 
 		// tested
 		bool contains(const T& data) const {
 			TreeNode<T> temp(data);
-			return hashTable.contains(&temp);
+			return hashTable->contains(&temp);
 		}
 
 		TreeNode<T>* createNode(const T& data, TreeNode<T>*& parent) {
@@ -45,7 +43,7 @@ class UniqueTree : public Tree<T> {
 				throw std::logic_error("Node with that value already exists!");
 			}
 			TreeNode<T>* newNode = Tree<T>::createNode(data, parent);
-			hashTable.set(newNode);
+			hashTable->set(newNode);
 			return newNode;
 		}
 
@@ -53,17 +51,10 @@ class UniqueTree : public Tree<T> {
 			if(node == this->root) throw std::logic_error("Root cannot be removed without deallocating the whole tree!");
 
 			// empty parent & children
-			hashTable.remove(node);
+			hashTable->remove(node);
 
 			// deallocates branch
 			Tree<T>::removeNode(node);
-		}
-
-		void removeNode(const T& data) {
-			TreeNode<T> temp(data);
-			if(!hashTable.contains(&temp)) throw std::logic_error("Node not found!");
-			TreeNode<T>* node = *(hashTable.get(&temp));
-			removeNode(node);
 		}
 
 		void removeBranch(TreeNode<T>*& node) {
@@ -72,22 +63,15 @@ class UniqueTree : public Tree<T> {
 			// removes each descendant from hashtable
 			std::vector<TreeNode<T>*> children = node->getDescendants();
 			for(auto it = children.begin(); it!=children.end(); ++it) {
-				hashTable.remove(*it);
+				hashTable->remove(*it);
 			}
-			hashTable.remove(node);
+			hashTable->remove(node);
 
 			// deallocates branch
 			Tree<T>::removeBranch(node);
 		}
-
-		void removeBranch(const T& data) {
-			TreeNode<T> temp(data);
-			if(!hashTable.contains(&temp)) throw std::logic_error("Node not found!");
-			TreeNode<T>* node = *(hashTable.get(&temp));
-			removeBranch(node);
-		}
 	private:
-		HashTable<TreeNode<T>*, compareNode, hashNode> hashTable;
+		HashTable<TreeNode<T>*>* hashTable;
 };
 
 

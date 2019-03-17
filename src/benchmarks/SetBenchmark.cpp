@@ -17,6 +17,7 @@ struct my_comparator
 	bool operator()(char* const& left, char* const& right) const
 	{ return strcmp( left, right )<0?true:false; }
 };
+
 struct my_hash_function{
 	//BKDR hash algorithm
 	int operator()(char * str)const
@@ -45,27 +46,27 @@ void SetBenchmark::execute() {
 	std::cout << "std::unordered_set<char*>" << std::endl;
 	testUnorderedSetString();
 
-	HashSet<long> hml(1000001);
+	HashSet<long, comparator, hash> hml(1000001);
 	std::cout << "HashSet<long>" << std::endl;
 	test(&hml);
 
-	LinkedHashSet<long> lhml(1000001);
+	LinkedHashSet<long, comparator, hash> lhml(1000001);
 	std::cout << "LinkedHashSet<long>" << std::endl;
 	test(&lhml);
 
-	TreeSet<long> tml;
+	TreeSet<long, comparator> tml;
 	std::cout << "TreeSet<long>" << std::endl;
 	test(&tml);
 
-	TreeSet<char*> tms;
+	TreeSet<char*, comparator> tms;
 	std::cout << "TreeSet<char*>" << std::endl;
 	test(&tms);
 
-	HashSet<char*> hms(1000001);
+	HashSet<char*, comparator, hash> hms(1000001);
 	std::cout << "HashSet<char*>" << std::endl;
 	test(&hms);
 
-	LinkedHashSet<char*> lhms(1000001);
+	LinkedHashSet<char*, comparator, hash> lhms(1000001);
 	std::cout << "LinkedHashSet<char*>" << std::endl;
 	test(&lhms);
 }

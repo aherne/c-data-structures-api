@@ -11,22 +11,22 @@
 #include "../HashTable.h"
 #include "Map.h"
 
-template<typename _KEY, typename _VALUE, int (*compare)(const MapEntry<_KEY,_VALUE>&, const MapEntry<_KEY,_VALUE>&), std::size_t (*hash)(const MapEntry<_KEY,_VALUE>&)>
+template<typename KEY, typename VALUE>
 class HashMapIterator;
 
-template<typename _KEY, typename _VALUE, int (*compare)(const MapEntry<_KEY,_VALUE>&, const MapEntry<_KEY,_VALUE>&) = compareByKey, std::size_t (*hash)(const MapEntry<_KEY,_VALUE>&) = hashByKey>
-class HashMap : public Map<_KEY,_VALUE> {
-	friend class HashMapIterator<_KEY,_VALUE,compare,hash>;
+template<typename KEY, typename VALUE, int (*compareByKey)(const KEY&, const KEY&), std::size_t (*hash)(const KEY&), int (*compareByValue)(const VALUE&, const VALUE&) = nothing<VALUE>>
+class HashMap : public Map<KEY,VALUE> {
+	friend class HashMapIterator<KEY,VALUE>;
 public:
-	typedef HashMapIterator<_KEY,_VALUE,compare,hash> iterator;
+	typedef HashMapIterator<KEY,VALUE> iterator;
 	HashMap(){
-		hashTable = new HashTable<MapEntry<_KEY,_VALUE>,compare, hash>;
+		hashTable = new HashTable<MapEntry<KEY,VALUE>>(compareMapKey<KEY, VALUE, compareByKey>, hashMapKey<KEY, VALUE, hash>);
 		internalIteratorStart = nullptr;
 		internalIteratorEnd = nullptr;
 	}
 
 	HashMap(const std::size_t& reservedSize){
-		hashTable = new HashTable<MapEntry<_KEY,_VALUE>,compare, hash>(reservedSize);
+		hashTable = new HashTable<MapEntry<KEY,VALUE>>(compareMapKey<KEY, VALUE, compareByKey>, hashMapKey<KEY, VALUE, hash>, reservedSize);
 		internalIteratorStart = nullptr;
 		internalIteratorEnd = nullptr;
 	}
@@ -39,10 +39,10 @@ public:
 		delete hashTable;
 	}
 
-	const _VALUE& operator[](const _KEY& key) const {
-		MapEntry<_KEY,_VALUE> mapEntry;
+	const VALUE& operator[](const KEY& key) const {
+		MapEntry<KEY,VALUE> mapEntry;
 		mapEntry.key = key;
-		const MapEntry<_KEY,_VALUE>* result = hashTable->get(mapEntry);
+		const MapEntry<KEY,VALUE>* result = hashTable->get(mapEntry);
 		return result->value;
 	}
 
@@ -55,21 +55,21 @@ public:
 		}
 		delete hashTable;
 
-		hashTable = new HashTable<MapEntry<_KEY,_VALUE>,compare, hash>;
+		hashTable = new HashTable<MapEntry<KEY,VALUE>>(compareMapKey<KEY, VALUE, compareByKey>, hashMapKey<KEY, VALUE, hash>);
 	}
 
-	bool containsKey(const _KEY& key) const{
+	bool containsKey(const KEY& key) const{
 		if(hashTable->isEmpty()) return false;
-		MapEntry<_KEY,_VALUE> mapEntry;
+		MapEntry<KEY,VALUE> mapEntry;
 		mapEntry.key = key;
 		return hashTable->contains(mapEntry);
 	}
 
-	bool containsValue(const _VALUE& value, int (*valueComparator)(const MapEntry<_KEY,_VALUE>&, const MapEntry<_KEY,_VALUE>&)=compareByValue) const{
+	bool containsValue(const VALUE& value) const{
 		if(hashTable->isEmpty()) return false;
-		MapEntry<_KEY,_VALUE> mapEntry;
+		MapEntry<KEY,VALUE> mapEntry;
 		mapEntry.value = value;
-		return hashTable->contains(mapEntry, valueComparator);
+		return hashTable->contains(mapEntry, compareMapValue<KEY, VALUE, compareByValue>);
 	}
 
 	bool isEmpty() const {
@@ -80,35 +80,35 @@ public:
 		return hashTable->size();
 	}
 
-	const _VALUE& get(const _KEY& key) const {
-		MapEntry<_KEY,_VALUE> mapEntry;
+	const VALUE& get(const KEY& key) const {
+		MapEntry<KEY,VALUE> mapEntry;
 		mapEntry.key = key;
-		const MapEntry<_KEY,_VALUE>* result = hashTable->get(mapEntry);
+		const MapEntry<KEY,VALUE>* result = hashTable->get(mapEntry);
 		return result->value;
 	}
 
-	void set(const _KEY& key, const _VALUE& value){
-		MapEntry<_KEY,_VALUE> mapEntry;
+	void set(const KEY& key, const VALUE& value){
+		MapEntry<KEY,VALUE> mapEntry;
 		mapEntry.key = key;
 		mapEntry.value = value;
 		hashTable->set(mapEntry);
 	}
 
-	void removeKey(const _KEY& key){
+	void removeKey(const KEY& key){
 		if(hashTable->isEmpty()) return;
-		MapEntry<_KEY,_VALUE> mapEntry;
+		MapEntry<KEY,VALUE> mapEntry;
 		mapEntry.key = key;
 		hashTable->remove(mapEntry);
 	}
 
-	void removeValue(const _VALUE& value, int (*valueComparator)(const MapEntry<_KEY,_VALUE>&, const MapEntry<_KEY,_VALUE>&)=compareByValue) {
+	void removeValue(const VALUE& value) {
 		if(hashTable->isEmpty()) return;
-		MapEntry<_KEY,_VALUE> mapEntry;
+		MapEntry<KEY,VALUE> mapEntry;
 		mapEntry.value = value;
-		hashTable->remove(mapEntry, valueComparator);
+		hashTable->remove(mapEntry, compareMapValue<KEY, VALUE, compareByValue>);
 	}
 
-	MapIterator<_KEY,_VALUE>* begin(){
+	MapIterator<KEY,VALUE>* begin(){
 		if(internalIteratorStart!=nullptr) {
 			delete internalIteratorStart;
 			internalIteratorStart = nullptr;
@@ -119,7 +119,7 @@ public:
 		return internalIteratorStart;
 	}
 
-	MapIterator<_KEY,_VALUE>* end(){
+	MapIterator<KEY,VALUE>* end(){
 		if(internalIteratorEnd!=nullptr){
 			return internalIteratorEnd;
 		} else {
@@ -129,15 +129,15 @@ public:
 	}
 
 private:
-	HashTable<MapEntry<_KEY,_VALUE>,compare, hash>* hashTable;
-	MapIterator<_KEY,_VALUE>* internalIteratorStart;
-	MapIterator<_KEY,_VALUE>* internalIteratorEnd;
+	HashTable<MapEntry<KEY,VALUE>>* hashTable;
+	MapIterator<KEY,VALUE>* internalIteratorStart;
+	MapIterator<KEY,VALUE>* internalIteratorEnd;
 };
 
-template<typename _KEY, typename _VALUE, int (*compare)(const MapEntry<_KEY,_VALUE>&, const MapEntry<_KEY,_VALUE>&), std::size_t (*hash)(const MapEntry<_KEY,_VALUE>&)>
-class HashMapIterator : public MapIterator<_KEY,_VALUE> {
+template<typename KEY, typename VALUE>
+class HashMapIterator : public MapIterator<KEY,VALUE> {
 	public:
-		HashMapIterator(HashTable<MapEntry<_KEY,_VALUE>,compare, hash>* hashTable){
+		HashMapIterator(HashTable<MapEntry<KEY,VALUE>>* hashTable){
 			content = hashTable;
 			current_bucket = hashTable->getMinBucket();
 			current_position = 0;
@@ -155,8 +155,8 @@ class HashMapIterator : public MapIterator<_KEY,_VALUE> {
 
 		~HashMapIterator() {}
 
-		const std::pair<_KEY, _VALUE> operator*(){
-			HashTableEntry<MapEntry<_KEY, _VALUE>>* currentBucket = content->getCurrentNode(current_bucket, current_position);
+		const std::pair<KEY, VALUE> operator*(){
+			HashTableEntry<MapEntry<KEY, VALUE>>* currentBucket = content->getCurrentNode(current_bucket, current_position);
 			if(currentBucket==nullptr) throw std::out_of_range("Key not found!");
 			return std::make_pair(currentBucket->data.key, currentBucket->data.value);
 		}
@@ -171,7 +171,7 @@ class HashMapIterator : public MapIterator<_KEY,_VALUE> {
 		}
 
 	private:
-		HashTable<MapEntry<_KEY,_VALUE>, compare, hash>* content;
+		HashTable<MapEntry<KEY,VALUE>>* content;
 
 		std::size_t current_bucket;
 		std::size_t current_position;

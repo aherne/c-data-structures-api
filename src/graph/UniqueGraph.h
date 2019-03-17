@@ -14,38 +14,10 @@
 #include "GraphVertex.h"
 #include "../set/HashSet.h"
 #include "../map/HashMap.h"
+#include "GraphUtilities.h"
 
-template<typename T>
-int compareVertex(GraphVertex<T>* const& left, GraphVertex<T>* const& right) {
-	return comparator(left->getData(), right->getData());
-}
 
-template<typename T>
-std::size_t hashVertex(GraphVertex<T>* const& node) {
-	return hash(node->getData());
-}
-
-template<typename T>
-std::size_t hashVertexDistance(const MapEntry<GraphVertex<T>*, long>& entry) {
-	return hash(entry.key->getData());
-}
-
-template<typename T>
-int compareVertexDistance(const MapEntry<GraphVertex<T>*, long>& left, const MapEntry<GraphVertex<T>*, long>& right) {
-	return comparator(left.key->getData(), right.key->getData());
-}
-
-template<typename T>
-std::size_t hashVertexParent(const MapEntry<GraphVertex<T>*, GraphVertex<T>*>& entry) {
-	return hash(entry.key->getData());
-}
-
-template<typename T>
-int compareVertexParent(const MapEntry<GraphVertex<T>*, GraphVertex<T>*>& left, const MapEntry<GraphVertex<T>*, GraphVertex<T>*>& right) {
-	return comparator(left.key->getData(), right.key->getData());
-}
-
-template<typename T>
+template<typename T, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
 class UniqueGraph : public Graph<T> {
 	public:
 		~UniqueGraph(){
@@ -84,7 +56,7 @@ class UniqueGraph : public Graph<T> {
 
 		// O(V*E)
 		bool isPath(GraphVertex<T>*& left, GraphVertex<T>*& right) const {
-			HashSet<GraphVertex<T>*, compareVertex, hashVertex> visited;
+			HashSet<GraphVertex<T>*, compareVertex<T, compare>, hashVertex<T, hash>> visited;
 			Queue<GraphVertex<T>*> queue;
 			queue.push(left);
 			visited.add(left);
@@ -104,7 +76,7 @@ class UniqueGraph : public Graph<T> {
 
 		// O(V*E)
 		std::size_t getDistance(GraphVertex<T>*& left, GraphVertex<T>*& right) const {
-			HashMap<GraphVertex<T>*, long, compareVertexDistance, hashVertexDistance> visited;
+			HashMap<GraphVertex<T>*, long, compareVertex<T, compare>, hashVertex<T, hash>> visited;
 			Queue<GraphVertex<T>*> queue;
 			queue.push(left);
 			visited.set(left,0);
@@ -124,7 +96,7 @@ class UniqueGraph : public Graph<T> {
 
 		// O(V*E)
 		std::vector<GraphVertex<T>*> getPath(GraphVertex<T>*& left, GraphVertex<T>*& right) const {
-			HashMap<GraphVertex<T>*, GraphVertex<T>*, compareVertexParent, hashVertexParent> visited;
+			HashMap<GraphVertex<T>*, GraphVertex<T>*, compareVertex<T, compare>, hashVertex<T, hash>> visited;
 			Queue<GraphVertex<T>*> queue;
 			queue.push(left);
 			visited.set(left,nullptr);
@@ -163,34 +135,8 @@ class UniqueGraph : public Graph<T> {
 			if(!vertexes.contains(&temp)) return nullptr;
 			return *(vertexes.find(&temp));
 		}
-
-		// O(V*E+V)
-		void iterate(GraphVertex<T>*& start, GraphVertexVisitor<T>& visitor) {
-			HashSet<GraphVertex<T>*, compareVertex, hashVertex> visited;
-			Queue<GraphVertex<T>*> queue;
-			queue.push(start);
-			visited.add(start);
-			while(!queue.isEmpty()) {
-				GraphVertex<T>* node = queue.pop();
-				std::vector<GraphVertex<T>*> children = node->getEdges();
-				for(auto it = children.begin(); it != children.end(); ++it){
-					if(!visited.contains(*it)) {
-						visitor.visit(*it);
-						visited.add(*it);
-						queue.push(*it);
-					}
-				}
-			}
-		}
-
-		// O(V)
-		void iterate(GraphVertexVisitor<T>& visitor) {
-			for(auto it = vertexes.begin(); *it!=*(vertexes.end()); ++(*it)) {
-				visitor.visit(*(*it));
-			}
-		}
 	private:
-		HashSet<GraphVertex<T>*, compareVertex, hashVertex> vertexes;
+		HashSet<GraphVertex<T>*, compareVertex<T, compare>, hashVertex<T, hash>> vertexes;
 };
 
 

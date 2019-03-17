@@ -8,6 +8,8 @@
 #ifndef UNIT_TESTS_SETUNITTEST_H_
 #define UNIT_TESTS_SETUNITTEST_H_
 
+#include "../Hashing.h"
+#include "../Comparator.h"
 #include "../set/Set.h"
 
 class SetUnitTest {

@@ -10,25 +10,23 @@
 
 #include "../HashTable.h"
 #include "Set.h"
-#include "../Hashing.h"
-#include "../Comparator.h"
 
-template<typename T, int (*compare)(const T&,const T&), std::size_t (*hash)(const T&)>
+template<typename T>
 class HashSetIterator;
 
-template<typename T, int (*compare)(const T&,const T&)=comparator, std::size_t (*hash)(const T&)=hash>
+template<typename T, int (*compare)(const T&,const T&), std::size_t (*hash)(const T&)>
 class HashSet : public Set<T> {
-	friend class HashSetIterator<T,compare,hash>;
+	friend class HashSetIterator<T>;
 public:
-	typedef HashSetIterator<T,compare,hash> iterator;
+	typedef HashSetIterator<T> iterator;
 
 	HashSet(){
-		hashTable = new HashTable<T, compare, hash>;
+		hashTable = new HashTable<T>(compare, hash);
 		internalIteratorStart = nullptr;
 		internalIteratorEnd = nullptr;
 	}
 	HashSet(const std::size_t& reservedSize){
-		hashTable = new HashTable<T, compare, hash>(reservedSize);
+		hashTable = new HashTable<T>(compare, hash, reservedSize);
 		internalIteratorStart = nullptr;
 		internalIteratorEnd = nullptr;
 	}
@@ -50,7 +48,7 @@ public:
 		}
 		delete hashTable;
 
-		hashTable = new HashTable<T, compare, hash>;
+		hashTable = new HashTable<T>(compare, hash);
 	}
 
 	bool contains(const T& value) const {
@@ -97,16 +95,15 @@ public:
 		}
 	}
 private:
-	HashTable<T, compare, hash>* hashTable;
+	HashTable<T>* hashTable;
 	SetIterator<T>* internalIteratorStart;
 	SetIterator<T>* internalIteratorEnd;
 };
 
-
-template<typename T, int (*compare)(const T&,const T&), std::size_t (*hash)(const T&)>
+template<typename T>
 class HashSetIterator : public SetIterator<T> {
 	public:
-		HashSetIterator(HashTable<T, compare, hash>* hashTable){
+		HashSetIterator(HashTable<T>* hashTable){
 			content = hashTable;
 			current_bucket = hashTable->getMinBucket();
 			current_position = 0;
@@ -140,7 +137,7 @@ class HashSetIterator : public SetIterator<T> {
 		}
 
 	private:
-		HashTable<T, compare, hash>* content;
+		HashTable<T>* content;
 
 		std::size_t current_bucket;
 		std::size_t current_position;

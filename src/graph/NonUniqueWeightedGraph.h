@@ -183,37 +183,6 @@ public:
 			}
 			return response;
 		}
-
-		// O(V*E+V)
-		void iterate(WeightedGraphVertex<T,W>*& start, WeightedGraphVertexVisitor<T,W>& visitor) {
-			for(auto it = vertexes.begin(); it!=vertexes.end(); ++it) {
-				(*it)->setColor(White);
-			}
-			BFSWeightedGraphVertex<T,W>* leftConverted = (BFSWeightedGraphVertex<T,W>*) start;
-			leftConverted->setColor(Grey);
-			Queue<BFSWeightedGraphVertex<T,W>*> queue;
-			queue.push(leftConverted);
-			while(!queue.isEmpty()) {
-				BFSWeightedGraphVertex<T,W>* node = queue.pop();
-				std::vector<WeightedGraphEdge<T,W>*> children = node->getEdges();
-				for(auto it = children.begin(); it != children.end(); ++it){
-					BFSWeightedGraphVertex<T,W>* tmp = (BFSWeightedGraphVertex<T,W>*) (*it)->vertex;
-					if(tmp->getColor() == White) {
-						visitor.visit(tmp);
-						tmp->setColor(Grey);
-						queue.push(tmp);
-					}
-				}
-				node->setColor(Black);
-			}
-		}
-
-		// O(V)
-		void iterate(WeightedGraphVertexVisitor<T,W>& visitor) {
-			for(auto it=vertexes.begin(); it!=vertexes.end(); ++it) {
-				visitor.visit(*it);
-			}
-		}
 	private:
 		std::vector<BFSWeightedGraphVertex<T,W>*> vertexes;
 };

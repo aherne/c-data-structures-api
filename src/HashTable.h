@@ -18,16 +18,20 @@ struct HashTableEntry {
 	HashTableEntry<VALUE>* next;
 };
 
-template<typename VALUE, int (*compare)(const VALUE&,const VALUE&), std::size_t (*hashingFunc)(const VALUE&)>
+template<typename VALUE>
 class HashTable {
 public:
-	HashTable(){
+	HashTable(int (*comparator)(const VALUE&,const VALUE&), std::size_t (*hasher)(const VALUE&)){
+		compare = comparator;
+		hashingFunc = hasher;
 		count=0;
 		bucket_count=8;
 		buckets = new HashTableEntry<VALUE>*[bucket_count]();
 	}
 
-	HashTable(const std::size_t& reservedSize){
+	HashTable(int (*comparator)(const VALUE&,const VALUE&), std::size_t (*hasher)(const VALUE&), const std::size_t& reservedSize){
+		compare = comparator;
+		hashingFunc = hasher;
 		count=0;
 		bucket_count=reservedSize;
 		buckets = new HashTableEntry<VALUE>*[bucket_count]();
@@ -262,7 +266,8 @@ private:
 		buckets = new_buckets;
 		bucket_count = new_bucket_count;
 	}
-
+	int (*compare)(const VALUE&,const VALUE&);
+	std::size_t (*hashingFunc)(const VALUE&);
 	std::size_t count;
 	std::size_t bucket_count;
 	HashTableEntry<VALUE> **buckets;

@@ -11,17 +11,17 @@
 #include "../tree/RedBlackTree.h"
 #include "Map.h"
 
-template<typename _KEY, typename _VALUE, int (*compare)(const MapEntry<_KEY,_VALUE>&, const MapEntry<_KEY,_VALUE>&)>
+template<typename KEY, typename VALUE>
 class TreeMapIterator;
 
-template<typename _KEY, typename _VALUE, int (*compare)(const MapEntry<_KEY,_VALUE>&, const MapEntry<_KEY,_VALUE>&) = compareByKey>
-class TreeMap : public Map<_KEY,_VALUE> {
-	friend class TreeMapIterator<_KEY,_VALUE,compare>;
+template<typename KEY, typename VALUE, int (*compareByKey)(const KEY&, const KEY&), int (*compareByValue)(const VALUE&, const VALUE&) = nothing<VALUE>>
+class TreeMap : public Map<KEY, VALUE> {
+	friend class TreeMapIterator<KEY, VALUE>;
 public:
-	typedef TreeMapIterator<_KEY,_VALUE,compare> iterator;
+	typedef TreeMapIterator<KEY, VALUE> iterator;
 
 	TreeMap() {
-		tree = new RedBlackTree<MapEntry<_KEY,_VALUE>, compare>;
+		tree = new RedBlackTree<MapEntry<KEY, VALUE>>(compareMapKey<KEY, VALUE, compareByKey>);
 		internalIteratorStart = nullptr;
 		internalIteratorEnd = nullptr;
 	}
@@ -33,10 +33,10 @@ public:
 		delete tree;
 	}
 
-	const _VALUE& operator[](const _KEY& key) const {
-		MapEntry<_KEY,_VALUE> mapEntry;
+	const VALUE& operator[](const KEY& key) const {
+		MapEntry<KEY, VALUE> mapEntry;
 		mapEntry.key = key;
-		const MapEntry<_KEY,_VALUE>* result = tree->getNodeValue(mapEntry);
+		const MapEntry<KEY, VALUE>* result = tree->getNodeValue(mapEntry);
 		return result->value;
 	}
 
@@ -48,25 +48,26 @@ public:
 			internalIteratorEnd = nullptr;
 		}
 		delete tree;
-		tree = new RedBlackTree<MapEntry<_KEY,_VALUE>, compare>;
+		tree = new RedBlackTree<MapEntry<KEY, VALUE>>(compareMapKey<KEY, VALUE, compareByKey>);
 	}
 
-	bool containsKey(const _KEY& key) const {
-		MapEntry<_KEY,_VALUE> mapEntry;
+	bool containsKey(const KEY& key) const {
+		MapEntry<KEY, VALUE> mapEntry;
 		mapEntry.key = key;
 		return tree->hasNode(mapEntry);
 	}
 
-	bool containsValue(const _VALUE& value, int (*valueComparator)(const MapEntry<_KEY,_VALUE>&, const MapEntry<_KEY,_VALUE>&)=compareByValue) const {
-		MapEntry<_KEY,_VALUE> mapEntry;
+	bool containsValue(const VALUE& value) const {
+		if(tree->getSize()==0) return false;
+		MapEntry<KEY, VALUE> mapEntry;
 		mapEntry.value = value;
-		return tree->hasMatches(mapEntry, valueComparator);
+		return tree->hasMatches(mapEntry, compareMapValue<KEY, VALUE, compareByValue>);
 	}
 
-	const _VALUE& get(const _KEY& key) const {
-		MapEntry<_KEY,_VALUE> mapEntry;
+	const VALUE& get(const KEY& key) const {
+		MapEntry<KEY, VALUE> mapEntry;
 		mapEntry.key = key;
-		const MapEntry<_KEY,_VALUE>* result = tree->getNodeValue(mapEntry);
+		const MapEntry<KEY, VALUE>* result = tree->getNodeValue(mapEntry);
 		return result->value;
 	}
 
@@ -78,26 +79,27 @@ public:
 		return tree->getSize();
 	}
 
-	void set(const _KEY& key, const _VALUE& value) {
-		MapEntry<_KEY,_VALUE> mapEntry;
+	void set(const KEY& key, const VALUE& value) {
+		MapEntry<KEY, VALUE> mapEntry;
 		mapEntry.key = key;
 		mapEntry.value = value;
 		tree->insertNode(mapEntry);
 	}
 
-	void removeKey(const _KEY& key) {
-		MapEntry<_KEY,_VALUE> mapEntry;
+	void removeKey(const KEY& key) {
+		MapEntry<KEY, VALUE> mapEntry;
 		mapEntry.key = key;
 		tree->deleteNode(mapEntry);
 	}
 
-	void removeValue(const _VALUE& value, int (*valueComparator)(const MapEntry<_KEY,_VALUE>&, const MapEntry<_KEY,_VALUE>&)=compareByValue) {
-		MapEntry<_KEY,_VALUE> mapEntry;
+	void removeValue(const VALUE& value) {
+		if(tree->getSize()==0) return;
+		MapEntry<KEY, VALUE> mapEntry;
 		mapEntry.value = value;
-		tree->deleteMatches(mapEntry, valueComparator);
+		tree->deleteMatches(mapEntry, compareMapValue<KEY, VALUE, compareByValue>);
 	}
 
-	MapIterator<_KEY,_VALUE>* begin(){
+	MapIterator<KEY, VALUE>* begin(){
 		if(internalIteratorStart!=nullptr) {
 			delete internalIteratorStart;
 			internalIteratorStart = nullptr;
@@ -108,7 +110,7 @@ public:
 		return internalIteratorStart;
 	}
 
-	MapIterator<_KEY,_VALUE>* end(){
+	MapIterator<KEY, VALUE>* end(){
 		if(internalIteratorEnd!=nullptr){
 			return internalIteratorEnd;
 		} else {
@@ -117,15 +119,15 @@ public:
 		}
 	}
 private:
-	RedBlackTree<MapEntry<_KEY,_VALUE>, compare>* tree;
-	MapIterator<_KEY,_VALUE>* internalIteratorStart;
-	MapIterator<_KEY,_VALUE>* internalIteratorEnd;
+	RedBlackTree<MapEntry<KEY, VALUE>>* tree;
+	MapIterator<KEY, VALUE>* internalIteratorStart;
+	MapIterator<KEY, VALUE>* internalIteratorEnd;
 };
 
-template<typename _KEY, typename _VALUE, int (*compare)(const MapEntry<_KEY,_VALUE>&, const MapEntry<_KEY,_VALUE>&)>
-class TreeMapIterator : public MapIterator<_KEY,_VALUE> {
+template<typename KEY, typename VALUE>
+class TreeMapIterator : public MapIterator<KEY, VALUE> {
 	public:
-		TreeMapIterator(RedBlackTree<MapEntry<_KEY,_VALUE>, compare>* tree){
+		TreeMapIterator(RedBlackTree<MapEntry<KEY, VALUE>>* tree){
 			this->content = tree;
 			current_item = tree->min();
 			this->offset = 0;
@@ -141,7 +143,7 @@ class TreeMapIterator : public MapIterator<_KEY,_VALUE> {
 
 		~TreeMapIterator(){}
 
-		const std::pair<_KEY, _VALUE> operator*(){
+		const std::pair<KEY, VALUE> operator*(){
 			if(current_item==nullptr) throw std::out_of_range("Key not found!");
 			return std::make_pair(current_item->data.key, current_item->data.value);
 		}
@@ -156,8 +158,8 @@ class TreeMapIterator : public MapIterator<_KEY,_VALUE> {
 		}
 
 	private:
-		RedBlackTree<MapEntry<_KEY,_VALUE>, compare>* content;
-		RedBlackTreeNode<MapEntry<_KEY,_VALUE>>* current_item;
+		RedBlackTree<MapEntry<KEY, VALUE>>* content;
+		RedBlackTreeNode<MapEntry<KEY, VALUE>>* current_item;
 		std::size_t total;
 };
 

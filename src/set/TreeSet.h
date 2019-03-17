@@ -10,20 +10,18 @@
 
 #include "../tree/RedBlackTree.h"
 #include "Set.h"
-#include "../Hashing.h"
-#include "../Comparator.h"
 
-template<typename T, int (*compare)(const T&,const T&)>
+template<typename T>
 class TreeSetIterator;
 
-template<typename T, int (*compare)(const T&,const T&)=comparator>
+template<typename T, int (*compare)(const T&,const T&)>
 class TreeSet : public Set<T> {
-	friend class TreeSetIterator<T,compare>;
+	friend class TreeSetIterator<T>;
 public:
-	typedef TreeSetIterator<T,compare> iterator;
+	typedef TreeSetIterator<T> iterator;
 
 	TreeSet() {
-		tree = new RedBlackTree<T, compare>;
+		tree = new RedBlackTree<T>(compare);
 		internalIteratorStart = nullptr;
 		internalIteratorEnd = nullptr;
 	}
@@ -43,7 +41,7 @@ public:
 			internalIteratorEnd = nullptr;
 		}
 		delete tree;
-		tree = new RedBlackTree<T, compare>;
+		tree = new RedBlackTree<T>(compare);
 	}
 
 	bool contains(const T& value) const {
@@ -86,15 +84,15 @@ public:
 		}
 	}
 private:
-	RedBlackTree<T, compare>* tree;
+	RedBlackTree<T>* tree;
 	SetIterator<T>* internalIteratorStart;
 	SetIterator<T>* internalIteratorEnd;
 };
 
-template<typename T, int (*compare)(const T&,const T&)>
+template<typename T>
 class TreeSetIterator : public SetIterator<T> {
 	public:
-		TreeSetIterator(RedBlackTree<T, compare>* tree){
+		TreeSetIterator(RedBlackTree<T>* tree){
 			content = tree;
 			current_item = tree->min();
 			this->offset = 0;
@@ -125,7 +123,7 @@ class TreeSetIterator : public SetIterator<T> {
 		}
 
 	private:
-		RedBlackTree<T, compare>* content;
+		RedBlackTree<T>* content;
 		RedBlackTreeNode<T>* current_item;
 		std::size_t total;
 };

@@ -14,30 +14,30 @@
 
 void MapUnitTest::execute() {
 	std::cout << "LinkedHashMap<long,long>" << std::endl;
-	LinkedHashMap<long, long> lhml;
+	LinkedHashMap<long, long, comparator, hash, comparator> lhml;
 	test(&lhml);
 	testLinkedHashMap();
 
 	std::cout << "HashMap<long,long>" << std::endl;
-	HashMap<long, long> hml;
+	HashMap<long, long, comparator, hash, comparator> hml;
 	test(&hml);
 	testHashMap();
 
 	std::cout << "TreeMap<long,long>" << std::endl;
-	TreeMap<long, long> tml;
+	TreeMap<long, long, comparator, comparator> tml;
 	test(&tml);
 	testTreeMap();
 
 	std::cout << "LinkedHashMap<char*,char*>" << std::endl;
-	LinkedHashMap<char*, char*> lhms;
+	LinkedHashMap<char*, char*, comparator, hash, comparator> lhms;
 	test(&lhms);
 
 	std::cout << "HashMap<char*,char*>" << std::endl;
-	HashMap<char*, char*> hms;
+	HashMap<char*, char*, comparator, hash, comparator> hms;
 	test(&hms);
 
 	std::cout << "TreeMap<char*,char*>" << std::endl;
-	TreeMap<char*, char*> tms;
+	TreeMap<char*, char*, comparator, comparator> tms;
 	test(&tms);
 }
 
@@ -98,7 +98,7 @@ void MapUnitTest::testLinkedHashMap() {
 	long k,v;
 	// test collisions
 
-	LinkedHashMap<long, long> ht;
+	LinkedHashMap<long, long, comparator, hash> ht;
 	k=18;v=8;ht.set(k,v);
 	k=1;v=2;ht.set(k,v);
 	k=150;v=4;ht.set(k,v);
@@ -108,6 +108,7 @@ void MapUnitTest::testLinkedHashMap() {
 	k=9;v=6;ht.set(k,v);
 	k=11;v=7;ht.set(k,v);
 	k=22;v=1;ht.set(k,v);
+	std::cout << "\t"  << "containsValue (no comparator): \t"  << (!ht.containsValue(3)?"OK":"ERROR") << std::endl;
 
 //			long valueToRemove = 5;
 //			ht.removeValue(valueToRemove);
@@ -134,7 +135,7 @@ void MapUnitTest::testHashMap() {
 	long k,v;
 	// test collisions
 
-	HashMap<long, long> ht;
+	HashMap<long, long, comparator, hash> ht;
 	k=18;v=8;ht.set(k,v);
 	k=1;v=2;ht.set(k,v);
 	k=150;v=4;ht.set(k,v);
@@ -144,6 +145,7 @@ void MapUnitTest::testHashMap() {
 	k=9;v=6;ht.set(k,v);
 	k=11;v=7;ht.set(k,v);
 	k=22;v=1;ht.set(k,v);
+	std::cout << "\t"  << "containsValue (no comparator): \t"  << (!ht.containsValue(3)?"OK":"ERROR") << std::endl;
 
 	std::cout << "\t" << "iterator:" << std::endl;
 	long i=0;
@@ -160,7 +162,7 @@ void MapUnitTest::testTreeMap() {
 	long k,v;
 	// test collisions
 
-	TreeMap<long, long> ht;
+	TreeMap<long, long, comparator> ht;
 	k=18;v=8;ht.set(k,v);
 	k=1;v=2;ht.set(k,v);
 	k=150;v=4;ht.set(k,v);
@@ -170,6 +172,7 @@ void MapUnitTest::testTreeMap() {
 	k=9;v=6;ht.set(k,v);
 	k=11;v=7;ht.set(k,v);
 	k=22;v=1;ht.set(k,v);
+	std::cout << "\t"  << "containsValue (no comparator): \t"  << (!ht.containsValue(3)?"OK":"ERROR") << std::endl;
 
 	std::cout << "\t" << "iterator:" << std::endl;
 	long i=0;
@@ -180,4 +183,10 @@ void MapUnitTest::testTreeMap() {
 	}
 
 	ht.clear();
+
+	// test different types
+	TreeMap<long, char*, comparator> test;
+	char* valueToCheck = strdup("1820");
+	test.set(1, valueToCheck);
+	free(valueToCheck);
 }

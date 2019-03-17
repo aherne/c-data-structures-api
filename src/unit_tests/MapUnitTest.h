@@ -8,6 +8,8 @@
 #ifndef UNIT_TESTS_MAPUNITTEST_H_
 #define UNIT_TESTS_MAPUNITTEST_H_
 
+#include "../Hashing.h"
+#include "../Comparator.h"
 #include "../map/Map.h"
 
 class MapUnitTest {

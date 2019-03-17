@@ -11,8 +11,6 @@
 #include "../LinkedHashTable.h"
 #include <algorithm>
 #include "Set.h"
-#include "../Hashing.h"
-#include "../Comparator.h"
 #include "../list/DoublyLinkedListSorter.h"
 
 
@@ -29,23 +27,23 @@ class SetBucketComparator {
 		bool (*compare)(const T&,const T&);
 };
 
-template<typename T, int (*compare)(const T&,const T&), std::size_t (*hash)(const T&)>
+template<typename T>
 class LinkedHashSetIterator;
 
-template<typename T, int (*compare)(const T&,const T&)=comparator, std::size_t (*hash)(const T&)=hash>
+template<typename T, int (*compare)(const T&,const T&), std::size_t (*hash)(const T&)>
 class LinkedHashSet : public Set<T> {
-	friend class LinkedHashSetIterator<T,compare,hash>;
+	friend class LinkedHashSetIterator<T>;
 public:
-	typedef LinkedHashSetIterator<T,compare,hash> iterator;
+	typedef LinkedHashSetIterator<T> iterator;
 
 	LinkedHashSet(){
-		hashTable = new LinkedHashTable<T, compare, hash>;
+		hashTable = new LinkedHashTable<T>(compare, hash);
 		internalIteratorStart = nullptr;
 		internalIteratorEnd = nullptr;
 	}
 
 	LinkedHashSet(const std::size_t& reservedSize){
-		hashTable = new LinkedHashTable<T, compare, hash>(reservedSize);
+		hashTable = new LinkedHashTable<T>(compare, hash, reservedSize);
 		internalIteratorStart = nullptr;
 		internalIteratorEnd = nullptr;
 	}
@@ -67,7 +65,7 @@ public:
 		}
 		delete hashTable;
 
-		hashTable = new LinkedHashTable<T, compare, hash>;
+		hashTable = new LinkedHashTable<T>(compare, hash);
 	}
 
 	bool contains(const T& value) const {
@@ -115,15 +113,15 @@ public:
 		DoublyLinkedListSorter<LinkedHashTableEntry<T>, SetBucketComparator<T>> sort(&hashTable->getHead(), &hashTable->getTail(), lhsc);
 	}
 private:
-	LinkedHashTable<T, compare, hash>* hashTable;
+	LinkedHashTable<T>* hashTable;
 	SetIterator<T>* internalIteratorStart;
 	SetIterator<T>* internalIteratorEnd;
 };
 
-template<typename T, int (*compare)(const T&,const T&), std::size_t (*hash)(const T&)>
+template<typename T>
 class LinkedHashSetIterator : public SetIterator<T> {
 	public:
-		LinkedHashSetIterator(LinkedHashTable<T, compare, hash>* set){
+		LinkedHashSetIterator(LinkedHashTable<T>* set){
 			content = set;
 			current_item = set->getHead();
 			this->offset = 0;
@@ -156,7 +154,7 @@ class LinkedHashSetIterator : public SetIterator<T> {
 		}
 
 	private:
-		LinkedHashTable<T, compare, hash>* content;
+		LinkedHashTable<T>* content;
 		LinkedHashTableEntry<T>* current_item;
 		std::size_t total;
 };

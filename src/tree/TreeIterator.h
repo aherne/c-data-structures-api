@@ -15,12 +15,12 @@ class TreeNodeVisitor {
 public:
 	virtual ~TreeNodeVisitor(){};
 
-	virtual void visit(TreeNode<T>*& element) = 0;
+	virtual bool visit(TreeNode<T>*& element) = 0;
 };
 
 template<typename T>
 inline void PreOrderTreeIterator(TreeNode<T>* node, TreeNodeVisitor<T>* visitor) {
-	visitor->visit(node);
+	if(!visitor->visit(node)) return;
 	std::vector<TreeNode<T>*> children = node->getChildren();
 	for(auto it = children.begin(); it!=children.end(); ++it) {
 		PreOrderTreeIterator(*it, visitor);
@@ -33,7 +33,7 @@ inline void PostOrderTreeIterator(TreeNode<T>* node, TreeNodeVisitor<T>* visitor
 	for(auto it = children.begin(); it!=children.end(); ++it) {
 		PreOrderTreeIterator(*it, visitor);
 	}
-	visitor->visit(node);
+	if(!visitor->visit(node)) return;
 }
 
 template<typename T>
@@ -42,7 +42,7 @@ inline void LevelOrderTreeIterator(TreeNode<T>* root, TreeNodeVisitor<T>* visito
 	q.push(root);
 	while(!q.isEmpty()) {
 		TreeNode<T>* node = q.pop();
-		visitor->visit(node);
+		if(!visitor->visit(node)) return;
 		std::vector<TreeNode<T>*> children = node->getChildren();
 		for(auto it = children.begin(); it!=children.end(); ++it) {
 			q.push(*it);

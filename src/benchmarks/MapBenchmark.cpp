@@ -46,27 +46,27 @@ void MapBenchmark::execute() {
 	std::cout << "std::unordered_map<char*,char*>" << std::endl;
 	testUnorderedMapString();
 
-	HashMap<long, long> hml;
+	HashMap<long, long, comparator, hash> hml;
 	std::cout << "HashMap<long,long>" << std::endl;
 	test(&hml);
 
-	LinkedHashMap<long, long> lhml;
+	LinkedHashMap<long, long, comparator, hash> lhml;
 	std::cout << "LinkedHashMap<long,long>" << std::endl;
 	test(&lhml);
 
-	TreeMap<long, long> tml;
+	TreeMap<long, long, comparator> tml;
 	std::cout << "TreeMap<long,long>" << std::endl;
 	test(&tml);
 
-	HashMap<char*, char*> hms;
+	HashMap<char*, char*, comparator, hash> hms;
 	std::cout << "HashMap<char*,char*>" << std::endl;
 	test(&hms);
 
-	LinkedHashMap<char*, char*> lhms;
+	LinkedHashMap<char*, char*, comparator, hash> lhms;
 	std::cout << "LinkedHashMap<char*,char*>" << std::endl;
 	test(&lhms);
 
-	TreeMap<char*, char*> tms;
+	TreeMap<char*, char*, comparator> tms;
 	std::cout << "TreeMap<char*,char*>" << std::endl;
 	test(&tms);
 }

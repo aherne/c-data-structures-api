@@ -9,7 +9,7 @@
 #define LIST_ARRAYLIST_H_
 
 #include "List.h"
-#include "../Comparator.h"
+#include <stdexcept>
 
 template<typename T>
 class ArrayListIterator;
@@ -219,7 +219,6 @@ class ArrayListIterator : public ListIterator<T> {
 	private:
 		ArrayList<T>* content;
 		std::size_t total;
-
 };
 
 #endif /* LIST_ARRAYLIST_H_ */

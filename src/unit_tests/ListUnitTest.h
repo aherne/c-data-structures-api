@@ -8,6 +8,8 @@
 #ifndef UNIT_TESTS_LISTUNITTEST_H_
 #define UNIT_TESTS_LISTUNITTEST_H_
 
+#include "../Hashing.h"
+#include "../Comparator.h"
 #include "../list/List.h"
 
 class ListUnitTest {

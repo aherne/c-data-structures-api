@@ -58,15 +58,6 @@ public:
 		contents[count] = item;
 		++count;
 	}
-
-	T* begin() {
-		if(count==0) return nullptr;
-		return &contents[0];
-	}
-
-	T* end() {
-		return &contents[count];
-	}
 private:
 	void resize() {
 		maximum_size = 2*maximum_size;

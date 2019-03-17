@@ -8,6 +8,8 @@
 #ifndef SRC_UNIT_TESTS_GRAPHUNITTEST_H_
 #define SRC_UNIT_TESTS_GRAPHUNITTEST_H_
 
+#include "../Hashing.h"
+#include "../Comparator.h"
 #include <iostream>
 
 class GraphUnitTest {

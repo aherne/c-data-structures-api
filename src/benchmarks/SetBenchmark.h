@@ -10,6 +10,8 @@
 
 #include "../Benchmark.h"
 #include <cstring>
+#include "../Hashing.h"
+#include "../Comparator.h"
 #include "../set/Set.h"
 
 class SetBenchmark {

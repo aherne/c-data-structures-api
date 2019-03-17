@@ -6,32 +6,48 @@
  */
 
 #include "GraphUnitTest.h"
-#include "../Comparator.h"
 #include "../graph/NonUniqueGraph.h"
 #include "../graph/NonUniqueWeightedGraph.h"
 #include "../graph/UniqueGraph.h"
 #include "../graph/UniqueWeightedGraph.h"
+#include "../graph/GraphIterator.h"
+#include "../graph/WeightedGraphIterator.h"
 
 
-template<typename T>
+template<typename T, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
 class PrintVertexVisitor: public GraphVertexVisitor<T> {
 public:
 	virtual ~PrintVertexVisitor(){};
 
-	void visit(GraphVertex<T>* const& element) {
-		std::cout << "\t" << "\t" << element->getData() << std::endl;
+	bool isVisited(GraphVertex<T>* const& element) {
+		return vertexes.contains(element);
 	}
+	bool visit(GraphVertex<T>* const& element) {
+		vertexes.add(element);
+		std::cout << "\t" << "\t" << element->getData() << std::endl;
+		return true;
+	}
+private:
+	HashSet<GraphVertex<T>*, compareVertex<T, compare>, hashVertex<T, hash>> vertexes;
 };
 
-template<typename T, typename W>
+template<typename T, typename W,int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
 class PrintWeightedVertexVisitor: public WeightedGraphVertexVisitor<T,W> {
 public:
 	virtual ~PrintWeightedVertexVisitor(){};
 
-	void visit(WeightedGraphVertex<T,W>* const& element) {
-		std::cout << "\t" << "\t" << element->getData() << std::endl;
+	bool isVisited(WeightedGraphVertex<T,W>* const& element) {
+		return vertexes.contains(element);
 	}
+	bool visit(WeightedGraphVertex<T,W>* const& element) {
+		vertexes.add(element);
+		std::cout << "\t" << "\t" << element->getData() << std::endl;
+		return true;
+	}
+private:
+	HashSet<WeightedGraphVertex<T,W>*, compareWeightedVertex<T, W, compare>, hashWeightedVertex<T, W, hash>> vertexes;
 };
+
 
 void GraphUnitTest::execute() {
 	/**
@@ -97,16 +113,10 @@ void GraphUnitTest::simpleGraphTest() {
 	std::cout << "\t" << "removeEdge: " << (!graph.isPath(v4,v8)?"OK":"FAILED") << std::endl;
 	std::vector<GraphVertex<long>*> results = graph.search(8,comparator);
 	std::cout << "\t" << "search: " << (!results.empty() && results[0]->getData()==8?"OK":"FAILED") << std::endl;
-	// iterate
-	std::cout << "ITERATE WHOLE GRAPH:" << std::endl;
-	PrintVertexVisitor<long> pvv;
-	graph.iterate(pvv);
-	std::cout << "ITERATE GRAPH PORTION:" << std::endl;
-	graph.iterate(v2, pvv);
 }
 
 void GraphUnitTest::simpleUniqueGraphTest() {
-	UniqueGraph<long> graph;
+	UniqueGraph<long, comparator, hash> graph;
 	// create vertexes
 	GraphVertex<long>* v1 = graph.createVertex(1);
 	GraphVertex<long>* v2 = graph.createVertex(2);
@@ -136,6 +146,13 @@ void GraphUnitTest::simpleUniqueGraphTest() {
 	v7->addEdge(v8);
 	v8->addEdge(v9);
 	v8->addEdge(v10);
+	// iterate
+	std::cout << "\t" << "BFS iteration: " << std::endl;
+	PrintVertexVisitor<long, comparator, hash> pvv1;
+	BreadthFirstSearchGraphIterator(v1, &pvv1);
+	std::cout << "\t" << "DFS iteration: " << std::endl;
+	PrintVertexVisitor<long, comparator, hash> pvv2;
+	DepthFirstSearchGraphIterator(v1, &pvv2);
 	// unit test
 	std::cout << "\t" << "getSize: " << (graph.getSize()==10?"OK":"FAILED") << std::endl;
 	std::cout << "\t" << "isEdge: " << (v1->isEdge(v2)?"OK":"FAILED") << std::endl;
@@ -149,12 +166,6 @@ void GraphUnitTest::simpleUniqueGraphTest() {
 	std::cout << "\t" << "removeEdge: " << (!graph.isPath(v4,v8)?"OK":"FAILED") << std::endl;
 	GraphVertex<long>* results = graph.search(8);
 	std::cout << "\t" << "search: " << (results!=nullptr && results->getData()==8?"OK":"FAILED") << std::endl;
-	// iterate
-	std::cout << "ITERATE WHOLE GRAPH:" << std::endl;
-	PrintVertexVisitor<long> pvv;
-	graph.iterate(pvv);
-	std::cout << "ITERATE GRAPH PORTION:" << std::endl;
-	graph.iterate(v2, pvv);
 }
 
 void GraphUnitTest::weightedGraphTest() {
@@ -206,16 +217,10 @@ void GraphUnitTest::weightedGraphTest() {
 	std::cout << "\t" << "removeEdge: " << (!graph.isPath(v4,v8)?"OK":"FAILED") << std::endl;
 	std::vector<WeightedGraphVertex<long,long>*> results = graph.search(8,comparator);
 	std::cout << "\t" << "search: " << (!results.empty() && results[0]->getData()==8?"OK":"FAILED") << std::endl;
-	// iterate
-	std::cout << "ITERATE WHOLE GRAPH:" << std::endl;
-	PrintWeightedVertexVisitor<long,long> pvv;
-	graph.iterate(pvv);
-	std::cout << "ITERATE GRAPH PORTION:" << std::endl;
-	graph.iterate(v2, pvv);
 }
 
 void GraphUnitTest::weightedUniqueGraphTest() {
-	UniqueWeightedGraph<long,long> graph;
+	UniqueWeightedGraph<long,long, comparator, hash> graph;
 	// create vertexes
 	WeightedGraphVertex<long,long>* v1 = graph.createVertex(1);
 	WeightedGraphVertex<long,long>* v2 = graph.createVertex(2);
@@ -245,6 +250,13 @@ void GraphUnitTest::weightedUniqueGraphTest() {
 	v7->addEdge(v8,15);
 	v8->addEdge(v9,16);
 	v8->addEdge(v10,17);
+	// iterate
+	std::cout << "\t" << "BFS iteration: " << std::endl;
+	PrintWeightedVertexVisitor<long, long, comparator, hash> pvv1;
+	BreadthFirstSearchGraphIterator(v1, &pvv1);
+	std::cout << "\t" << "DFS iteration: " << std::endl;
+	PrintWeightedVertexVisitor<long, long, comparator, hash> pvv2;
+	DepthFirstSearchGraphIterator(v1, &pvv2);
 	// unit test
 	std::cout << "\t" << "getSize: " << (graph.getSize()==10?"OK":"FAILED") << std::endl;
 	std::cout << "\t" << "isEdge: " << (v1->isEdge(v2)?"OK":"FAILED") << std::endl;
@@ -263,10 +275,4 @@ void GraphUnitTest::weightedUniqueGraphTest() {
 	std::cout << "\t" << "removeEdge: " << (!graph.isPath(v4,v8)?"OK":"FAILED") << std::endl;
 	WeightedGraphVertex<long,long>* results = graph.search(8);
 	std::cout << "\t" << "search: " << (results != nullptr && results->getData()==8?"OK":"FAILED") << std::endl;
-	// iterate
-	std::cout << "ITERATE WHOLE GRAPH:" << std::endl;
-	PrintWeightedVertexVisitor<long,long> pvv;
-	graph.iterate(pvv);
-	std::cout << "ITERATE GRAPH PORTION:" << std::endl;
-	graph.iterate(v2, pvv);
 }

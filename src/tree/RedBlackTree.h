@@ -25,10 +25,11 @@ struct RedBlackTreeNode {
 /**
  * Red Black Tree implementation with fundamentally based on pseudocode from CLR Introduction to Algorithms: 3rd Edition
  */
-template<typename VALUE, int (*compare)(const VALUE&,const VALUE&)>
+template<typename VALUE>
 class RedBlackTree {
 public:
-	RedBlackTree() {
+	RedBlackTree(int (*comparator)(const VALUE&,const VALUE&)) {
+		compare = comparator;
 		nil = new RedBlackTreeNode<VALUE>;
 		nil->color = BLACK;
 		nil->left = nil->right = nil->parent = nil;
@@ -100,12 +101,14 @@ public:
 	}
 
 	bool hasMatches(const VALUE& value, int (*custom_comparator)(const VALUE&,const VALUE&)) {
+		if(custom_comparator == nullptr) return false;
 		std::vector<RedBlackTreeNode<VALUE>*> results;
 		findNodes(root, value, custom_comparator, results);
 		return results.size()>0;
 	}
 
 	void deleteMatches(const VALUE& value, int (*custom_comparator)(const VALUE&,const VALUE&)) {
+		if(custom_comparator == nullptr) return;
 		std::vector<RedBlackTreeNode<VALUE>*> results;
 		findNodes(root, value, custom_comparator, results);
 		if(results.size()==0) throw std::out_of_range("No match found!");
@@ -369,6 +372,7 @@ private:
 	std::size_t count;
 	RedBlackTreeNode<VALUE>* root;
 	RedBlackTreeNode<VALUE>* nil;
+	int (*compare)(const VALUE&,const VALUE&);
 };
 
 
