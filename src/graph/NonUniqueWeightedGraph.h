@@ -12,8 +12,9 @@
 #include "../container/Queue.h"
 #include "BFSWeightedGraphVertex.h"
 #include "WeightedGraph.h"
+#include "../Comparator.h"
 
-template<typename T, typename W>
+template<typename T, typename W, int (*comparator)(const T&, const T&)=comparator<T>>
 class NonUniqueWeightedGraph : public WeightedGraph<T,W> {
 public:
 		// O(V)
@@ -57,7 +58,7 @@ public:
 		}
 
 		// O(V*E+V)
-		bool isPath(WeightedGraphVertex<T,W>*& left, WeightedGraphVertex<T,W>*& right) const {
+		bool isConnected(WeightedGraphVertex<T,W>*& left, WeightedGraphVertex<T,W>*& right) const {
 			for(auto it = vertexes.begin(); it!=vertexes.end(); ++it) {
 				(*it)->setColor(White);
 			}
@@ -82,48 +83,7 @@ public:
 		}
 
 		// O(V*E+V)
-		std::size_t getDistance(WeightedGraphVertex<T,W>*& left, WeightedGraphVertex<T,W>*& right) const {
-			for(auto it = vertexes.begin(); it!=vertexes.end(); ++it) {
-				(*it)->setColor(White);
-				(*it)->setParent(nullptr);
-			}
-
-			BFSWeightedGraphVertex<T,W>* leftConverted = (BFSWeightedGraphVertex<T,W>*) left;
-			leftConverted->setColor(Grey);
-
-			WeightedGraphEdge<T,W> baseEdge;
-			baseEdge.vertex = leftConverted;
-			baseEdge.weight = 0;
-
-			Queue<WeightedGraphEdge<T,W>*> queue;
-			queue.push(&baseEdge);
-			while(!queue.isEmpty()) {
-				WeightedGraphEdge<T,W>* node = queue.pop();
-				std::vector<WeightedGraphEdge<T,W>*> children = node->vertex->getEdges();
-				for(auto it = children.begin(); it != children.end(); ++it){
-					BFSWeightedGraphVertex<T,W>* tmp = (BFSWeightedGraphVertex<T,W>*) (*it)->vertex;
-					if(tmp->getColor() == White) {
-						if((*it)->vertex==right) {
-							std::size_t response = 0;
-							WeightedGraphEdge<T,W>* parent = node;
-							while(parent!=nullptr) {
-								parent = ((BFSWeightedGraphVertex<T,W>*) parent->vertex)->getParent();
-								++response;
-							}
-							return response;
-						}
-						tmp->setColor(Grey);
-						tmp->setParent(node);
-						queue.push((*it));
-					}
-				}
-				((BFSWeightedGraphVertex<T,W>*) node->vertex)->setColor(Black);
-			}
-			throw std::out_of_range("Vertexes not connected!");
-		}
-
-		// O(V*E+V)
-		std::vector<WeightedGraphEdge<T,W>*> getPath(WeightedGraphVertex<T,W>*& left, WeightedGraphVertex<T,W>*& right) const {
+		std::vector<WeightedGraphEdge<T,W>*> getShortestPath(WeightedGraphVertex<T,W>*& left, WeightedGraphVertex<T,W>*& right) const {
 			for(auto it = vertexes.begin(); it!=vertexes.end(); ++it) {
 				(*it)->setColor(White);
 				(*it)->setParent(nullptr);
@@ -166,7 +126,7 @@ public:
 		}
 
 		// O(V)
-		bool contains(const T& data, int (*comparator)(const T&, const T&)) const {
+		bool contains(const T& data) const {
 			for(auto it=vertexes.begin(); it!=vertexes.end(); ++it) {
 				if(comparator(data, (*it)->getData())==0) return true;
 			}
@@ -174,7 +134,7 @@ public:
 		}
 
 		// O(V)
-		std::vector<WeightedGraphVertex<T,W>*> search(const T& data, int (*comparator)(const T&, const T&)) const {
+		std::vector<WeightedGraphVertex<T,W>*> search(const T& data) const {
 			std::vector<WeightedGraphVertex<T,W>*> response;
 			for(auto it=vertexes.begin(); it!=vertexes.end(); ++it) {
 				if(comparator(data, (*it)->getData())==0) {

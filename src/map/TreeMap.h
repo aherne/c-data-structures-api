@@ -10,11 +10,12 @@
 
 #include "../tree/RedBlackTree.h"
 #include "Map.h"
+#include "../Comparator.h"
 
 template<typename KEY, typename VALUE>
 class TreeMapIterator;
 
-template<typename KEY, typename VALUE, int (*compareByKey)(const KEY&, const KEY&), int (*compareByValue)(const VALUE&, const VALUE&) = nothing<VALUE>>
+template<typename KEY, typename VALUE, int (*compareByKey)(const KEY&, const KEY&), int (*compareByValue)(const VALUE&, const VALUE&) = comparator<VALUE>>
 class TreeMap : public Map<KEY, VALUE> {
 	friend class TreeMapIterator<KEY, VALUE>;
 public:

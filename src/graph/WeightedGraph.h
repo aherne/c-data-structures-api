@@ -17,9 +17,8 @@ public:
 	virtual WeightedGraphVertex<T,W>* createVertex(const T& data) = 0;
 	virtual void removeVertex(WeightedGraphVertex<T,W>*& vertex) = 0;
 	virtual std::size_t getSize() const = 0;
-	virtual bool isPath(WeightedGraphVertex<T,W>*& left, WeightedGraphVertex<T,W>*& right) const = 0;
-	virtual std::size_t getDistance(WeightedGraphVertex<T,W>*& left, WeightedGraphVertex<T,W>*& right) const = 0;
-	virtual std::vector<WeightedGraphEdge<T,W>*> getPath(WeightedGraphVertex<T,W>*& left, WeightedGraphVertex<T,W>*& right) const = 0;
+	virtual bool isConnected(WeightedGraphVertex<T,W>*& left, WeightedGraphVertex<T,W>*& right) const = 0;
+	virtual std::vector<WeightedGraphEdge<T,W>*> getShortestPath(WeightedGraphVertex<T,W>*& left, WeightedGraphVertex<T,W>*& right) const = 0;
 };
 
 #endif /* SRC_GRAPH_WEIGHTEDGRAPH_H_ */

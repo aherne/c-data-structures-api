@@ -12,3 +12,13 @@ test what happens whe we try to use another data type than long/char* @ all data
 
 USE ArrayList instead of std:vector for tree and graph
 USE template<> for comparators; value comparison in lists should use template arguments
+
+DFS:
+	isCyclic
+	isPath
+BFS:
+	getShortestPath
+	
+Support for undirected graphs
+
+make removeValue throw exception when no

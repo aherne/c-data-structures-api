@@ -8,11 +8,13 @@
 #ifndef LINKEDHASHMAP_H_
 #define LINKEDHASHMAP_H_
 
+#include <stdexcept>
 #include <algorithm>
 #include <utility>
 #include "../LinkedHashTable.h"
 #include "Map.h"
 #include "../list/DoublyLinkedListSorter.h"
+#include "../Comparator.h"
 
 
 template<typename KEY, typename VALUE>
@@ -46,7 +48,7 @@ private:
 template<typename KEY, typename VALUE>
 class LinkedHashMapIterator;
 
-template<typename KEY, typename VALUE, int (*compareByKey)(const KEY&, const KEY&), std::size_t (*hash)(const KEY&), int (*compareByValue)(const VALUE&, const VALUE&) = nothing<VALUE>>
+template<typename KEY, typename VALUE, int (*compareByKey)(const KEY&, const KEY&), std::size_t (*hash)(const KEY&), int (*compareByValue)(const VALUE&, const VALUE&) = comparator<VALUE>>
 class LinkedHashMap : public Map<KEY, VALUE> {
 	friend class LinkedHashMapIterator<KEY, VALUE>;
 public:

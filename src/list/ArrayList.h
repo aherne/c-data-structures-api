@@ -10,11 +10,12 @@
 
 #include "List.h"
 #include <stdexcept>
+#include "../Comparator.h"
 
 template<typename T>
 class ArrayListIterator;
 
-template<typename T>
+template<typename T, int (*comparator)(const T&, const T&)=comparator<T>>
 class ArrayList: public List<T> {
 	friend class ArrayListIterator<T>;
 public:
@@ -116,7 +117,7 @@ public:
 		return (index>=count?false:true);
 	}
 
-	bool containsValue(const T& value, int (*comparator)(const T&, const T&)) const {
+	bool containsValue(const T& value) const {
 		for(std::size_t i=0; i<count; ++i) {
 			if(comparator(contents[i], value)==0) {
 				return true;
@@ -135,7 +136,7 @@ public:
 		--count;
 	}
 
-	void removeValue(const T& value, int (*comparator)(const T&, const T&)) {
+	void removeValue(const T& value) {
 		int reduce = 0;
 		for(std::size_t j=0; j< count; ++j) {
 			if(comparator(contents[j], value)==0) {
@@ -150,8 +151,8 @@ public:
 		count -= reduce;
 	}
 
-	void sort(bool (*comparator) (const T&, const T&)) {
-		std::sort(&contents[0], &contents[count], comparator);
+	void sort(bool (*compare) (const T&, const T&)) {
+		std::sort(&contents[0], &contents[count], compare);
 	}
 
 	ListIterator<T>* begin() {

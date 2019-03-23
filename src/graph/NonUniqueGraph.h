@@ -11,8 +11,9 @@
 #include "../container/Queue.h"
 #include "BFSGraphVertex.h"
 #include "Graph.h"
+#include "../Comparator.h"
 
-template<typename T>
+template<typename T, int (*comparator)(const T&, const T&)=comparator<T>>
 class NonUniqueGraph : public Graph<T> {
 public:
 		// O(V)
@@ -56,7 +57,7 @@ public:
 		}
 
 		// O(V*E+V)
-		bool isPath(GraphVertex<T>*& left, GraphVertex<T>*& right) const {
+		bool isConnected(GraphVertex<T>*& left, GraphVertex<T>*& right) const {
 			for(auto it = vertexes.begin(); it!=vertexes.end(); ++it) {
 				(*it)->setColor(White);
 			}
@@ -81,42 +82,7 @@ public:
 		}
 
 		// O(V*E+V)
-		std::size_t getDistance(GraphVertex<T>*& left, GraphVertex<T>*& right) const {
-			for(auto it = vertexes.begin(); it!=vertexes.end(); ++it) {
-				(*it)->setColor(White);
-				(*it)->setParent(nullptr);
-			}
-			BFSGraphVertex<T>* leftConverted = (BFSGraphVertex<T>*) left;
-			leftConverted->setColor(Grey);
-			Queue<BFSGraphVertex<T>*> queue;
-			queue.push(leftConverted);
-			while(!queue.isEmpty()) {
-				BFSGraphVertex<T>* node = queue.pop();
-				std::vector<GraphVertex<T>*> children = node->getEdges();
-				for(auto it = children.begin(); it != children.end(); ++it){
-					BFSGraphVertex<T>* tmp = (BFSGraphVertex<T>*) *it;
-					if(tmp->getColor() == White) {
-						if((*it)==right) {
-							std::size_t response = 0;
-							BFSGraphVertex<T>* parent = node;
-							while(parent!=nullptr) {
-								parent = parent->getParent();
-								++ response;
-							}
-							return response;
-						}
-						tmp->setColor(Grey);
-						tmp->setParent(node);
-						queue.push(tmp);
-					}
-				}
-				node->setColor(Black);
-			}
-			throw std::out_of_range("Vertexes not connected!");
-		}
-
-		// O(V*E+V)
-		std::vector<GraphVertex<T>*> getPath(GraphVertex<T>*& left, GraphVertex<T>*& right) const {
+		std::vector<GraphVertex<T>*> getShortestPath(GraphVertex<T>*& left, GraphVertex<T>*& right) const {
 			for(auto it = vertexes.begin(); it!=vertexes.end(); ++it) {
 				(*it)->setColor(White);
 				(*it)->setParent(nullptr);
@@ -152,7 +118,7 @@ public:
 		}
 
 		// O(V)
-		bool contains(const T& data, int (*comparator)(const T&, const T&)) const {
+		bool contains(const T& data) const {
 			for(auto it=vertexes.begin(); it!=vertexes.end(); ++it) {
 				if(comparator(data, (*it)->getData())==0) return true;
 			}
@@ -160,7 +126,7 @@ public:
 		}
 
 		// O(V)
-		std::vector<GraphVertex<T>*> search(const T& data, int (*comparator)(const T&, const T&)) const {
+		std::vector<GraphVertex<T>*> search(const T& data) const {
 			std::vector<GraphVertex<T>*> response;
 			for(auto it=vertexes.begin(); it!=vertexes.end(); ++it) {
 				if(comparator(data, (*it)->getData())==0) {

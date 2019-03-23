@@ -55,7 +55,7 @@ class UniqueGraph : public Graph<T> {
 		}
 
 		// O(V*E)
-		bool isPath(GraphVertex<T>*& left, GraphVertex<T>*& right) const {
+		bool isConnected(GraphVertex<T>*& left, GraphVertex<T>*& right) const {
 			HashSet<GraphVertex<T>*, compareVertex<T, compare>, hashVertex<T, hash>> visited;
 			Queue<GraphVertex<T>*> queue;
 			queue.push(left);
@@ -75,27 +75,7 @@ class UniqueGraph : public Graph<T> {
 		}
 
 		// O(V*E)
-		std::size_t getDistance(GraphVertex<T>*& left, GraphVertex<T>*& right) const {
-			HashMap<GraphVertex<T>*, long, compareVertex<T, compare>, hashVertex<T, hash>> visited;
-			Queue<GraphVertex<T>*> queue;
-			queue.push(left);
-			visited.set(left,0);
-			while(!queue.isEmpty()) {
-				GraphVertex<T>* node = queue.pop();
-				std::vector<GraphVertex<T>*> children = node->getEdges();
-				for(auto it = children.begin(); it != children.end(); ++it){
-					if(!visited.containsKey(*it)) {
-						if((*it)==right) return visited.get(node)+1;
-						visited.set(*it, visited.get(node)+1);
-						queue.push(*it);
-					}
-				}
-			}
-			throw std::out_of_range("Vertexes not connected!");
-		}
-
-		// O(V*E)
-		std::vector<GraphVertex<T>*> getPath(GraphVertex<T>*& left, GraphVertex<T>*& right) const {
+		std::vector<GraphVertex<T>*> getShortestPath(GraphVertex<T>*& left, GraphVertex<T>*& right) const {
 			HashMap<GraphVertex<T>*, GraphVertex<T>*, compareVertex<T, compare>, hashVertex<T, hash>> visited;
 			Queue<GraphVertex<T>*> queue;
 			queue.push(left);

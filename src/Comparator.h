@@ -12,13 +12,20 @@
 #include <stdexcept>
 #include <typeinfo>
 
-static inline int comparator(const long& left, const long& right) {
+template<typename T>
+inline int comparator(const T& left, const T& right) {
+	return 1;
+}
+
+template<>
+inline int comparator(const long& left, const long& right) {
 	if(left<right) return -1;
 	else if (left>right) return 1;
 	else return 0;
 }
 
-static inline int comparator(char* const& left, char* const& right) {
+template<>
+inline int comparator(char* const& left, char* const& right) {
 	return strcmp(left, right);
 }
 

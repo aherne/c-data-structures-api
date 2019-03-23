@@ -56,7 +56,7 @@ public:
 	}
 
 	// O(V*E)
-	bool isPath(WeightedGraphVertex<T,W>*& left, WeightedGraphVertex<T,W>*& right) const {
+	bool isConnected(WeightedGraphVertex<T,W>*& left, WeightedGraphVertex<T,W>*& right) const {
 		HashSet<WeightedGraphVertex<T,W>*, compareWeightedVertex<T, W, compare>, hashWeightedVertex<T, W, hash>> visited;
 		Queue<WeightedGraphVertex<T,W>*> queue;
 		queue.push(left);
@@ -77,28 +77,7 @@ public:
 	}
 
 	// O(V*E)
-	std::size_t getDistance(WeightedGraphVertex<T,W>*& left, WeightedGraphVertex<T,W>*& right) const {
-		HashMap<WeightedGraphVertex<T,W>*, long, compareWeightedVertex<T, W, compare>, hashWeightedVertex<T, W, hash>> visited;
-		Queue<WeightedGraphVertex<T,W>*> queue;
-		queue.push(left);
-		visited.set(left,0);
-		while(!queue.isEmpty()) {
-			WeightedGraphVertex<T,W>* node = queue.pop();
-			std::vector<WeightedGraphEdge<T,W>*> children = node->getEdges();
-			for(auto it = children.begin(); it != children.end(); ++it){
-				WeightedGraphVertex<T,W>* tmp = (*it)->vertex;
-				if(!visited.containsKey(tmp)) {
-					if(tmp==right) return visited.get(node)+1;
-					visited.set(tmp, visited.get(node)+1);
-					queue.push(tmp);
-				}
-			}
-		}
-		throw std::out_of_range("Vertexes not connected!");
-	}
-
-	// O(V*E)
-	std::vector<WeightedGraphEdge<T,W>*> getPath(WeightedGraphVertex<T,W>*& left, WeightedGraphVertex<T,W>*& right) const {
+	std::vector<WeightedGraphEdge<T,W>*> getShortestPath(WeightedGraphVertex<T,W>*& left, WeightedGraphVertex<T,W>*& right) const {
 		WeightedGraphEdge<T,W> element;
 		element.vertex = left;
 		element.weight = 0;

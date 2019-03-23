@@ -23,9 +23,4 @@ static inline std::size_t hashMapKey(const MapEntry<KEY, VALUE>& element) {
 	return hash(element.key);
 }
 
-template<typename VALUE>
-static inline int nothing(const VALUE& left, const VALUE& right) {
-	return 1;
-}
-
 #endif /* SRC_MAP_MAPUTILITIES_H_ */

@@ -11,6 +11,7 @@
 #include "Tree.h"
 #include "TreeIterator.h"
 #include "../container/Queue.h"
+#include "../Comparator.h"
 
 template<typename T>
 class SearchVisitor : public TreeNodeVisitor<T> {
@@ -38,13 +39,13 @@ private:
 	int (*comparator)(const T&, const T&);
 };
 
-template<typename T, int (*compare)(const T&, const T&)>
+template<typename T, int (*comparator)(const T&, const T&)=comparator<T>>
 class NonUniqueTree : public Tree<T> {
 	public:
 		using Tree<T>::Tree;
 
 		std::vector<TreeNode<T>*> search(const T& data) {
-			SearchVisitor<T> visitor(data, compare);
+			SearchVisitor<T> visitor(data, comparator);
 			LevelOrderTreeIterator(this->root,&visitor);
 			return visitor.getResults();
 		}
@@ -54,7 +55,7 @@ class NonUniqueTree : public Tree<T> {
 			q.push(this->root);
 			while(!q.isEmpty()) {
 				TreeNode<T>* node = q.pop();
-				if(compare(data, node->getData())==0) return true;
+				if(comparator(data, node->getData())==0) return true;
 				std::vector<TreeNode<T>*> children = node->getChildren();
 				for(auto it = children.begin(); it!=children.end(); ++it) {
 					q.push(*it);

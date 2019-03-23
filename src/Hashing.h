@@ -9,11 +9,18 @@
 #define SRC_HASHING_H_
 #include <stdexcept>
 
-static inline std::size_t hash(const long& item) {
+template<typename T>
+inline std::size_t hash(const T& item) {
+	return 0;
+}
+
+template<>
+inline std::size_t hash(const long& item) {
 	return item;
 }
 
-static inline std::size_t hash(char* const& item) {
+template<>
+inline std::size_t hash(char* const& item) {
 	unsigned long hash = 5381;
 	int c;
 	char* temp  = item;

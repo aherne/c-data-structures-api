@@ -31,11 +31,12 @@ private:
 #include "List.h"
 #include <stdexcept>
 #include "LinkedListSorter.h"
+#include "../Comparator.h"
 
 template<typename T>
 class LinkedListIterator;
 
-template<typename T>
+template<typename T, int (*comparator)(const T&, const T&)=comparator<T>>
 class LinkedList: public List<T> {
 	friend class LinkedListIterator<T>;
 	public:
@@ -178,7 +179,7 @@ class LinkedList: public List<T> {
 			return (index>=count?false:true);
 		}
 
-		bool containsValue(const T& value, int (*comparator)(const T&, const T&)) const {
+		bool containsValue(const T& value) const {
 			LinkedListEntry<T>* temp = head;
 			while(temp!=nullptr) {
 				if(comparator(temp->value, value)==0) {
@@ -200,7 +201,7 @@ class LinkedList: public List<T> {
 			}
 		}
 
-		void removeValue(const T& value, int (*comparator)(const T&, const T&)) {
+		void removeValue(const T& value) {
 			if(count==0) return;
 
 			std::size_t oldCount = count;
@@ -231,12 +232,12 @@ class LinkedList: public List<T> {
 			if(oldCount == count) throw std::out_of_range("Value not found!");
 		}
 
-		void sort(bool (*comparator) (const T&, const T&)) {
+		void sort(bool (*compare) (const T&, const T&)) {
 			// reset internal iterator
 			currentIndex = 0;
 			currentItem = nullptr;
 			// sort
-			LinkedListComparator<T> comparison(comparator);
+			LinkedListComparator<T> comparison(compare);
 			LinkedListSorter<LinkedListEntry<T>, LinkedListComparator<T>> dlls(&head, &tail, comparison);
 		}
 

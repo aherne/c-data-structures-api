@@ -10,11 +10,12 @@
 
 #include "../HashTable.h"
 #include "Map.h"
+#include "../Comparator.h"
 
 template<typename KEY, typename VALUE>
 class HashMapIterator;
 
-template<typename KEY, typename VALUE, int (*compareByKey)(const KEY&, const KEY&), std::size_t (*hash)(const KEY&), int (*compareByValue)(const VALUE&, const VALUE&) = nothing<VALUE>>
+template<typename KEY, typename VALUE, int (*compareByKey)(const KEY&, const KEY&), std::size_t (*hash)(const KEY&), int (*compareByValue)(const VALUE&, const VALUE&) = comparator<VALUE>>
 class HashMap : public Map<KEY,VALUE> {
 	friend class HashMapIterator<KEY,VALUE>;
 public:
