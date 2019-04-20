@@ -12,6 +12,7 @@
 #include "../list/DoublyLinkedList.h"
 #include <forward_list>
 #include <typeinfo>
+#include <iostream>
 
 void ListUnitTest::execute() {
 	std::cout << "ArrayList<long>" << std::endl;

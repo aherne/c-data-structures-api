@@ -11,8 +11,11 @@
 #include "Tree.h"
 #include "../HashTable.h"
 #include "TreeUtilities.h"
+#include "../Comparator.h"
+#include "../Hashing.h"
+
 // http://cdncontribute.geeksforgeeks.org/wp-content/uploads/order-of-constructor.png
-template<typename T, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
+template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class UniqueTree : public Tree<T> {
 	public:
 		using Tree<T>::Tree;

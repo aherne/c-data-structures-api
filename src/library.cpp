@@ -10,8 +10,5 @@
 #include "container/Queue.h"
 #include "container/Stack.h"
 #include "tree/UniqueTree.h"
-#include "tree/NonUniqueTree.h"
 #include "graph/UniqueGraph.h"
-#include "graph/NonUniqueGraph.h"
 #include "graph/UniqueWeightedGraph.h"
-#include "graph/NonUniqueWeightedGraph.h"

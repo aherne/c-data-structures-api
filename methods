@@ -29,7 +29,7 @@ class ListIterator {
 }
 
 // Class that implements DYNAMIC ARRAY data structure on top of LIST abstract data type
-template<typename T, int (*comparator)(const T&, const T&)=comparator<T>>
+template<typename T, int (*comparator)(const T&, const T&) = comparator<T>>
 class ArrayList: public List<T> {
 	ArrayList()
 	ArrayList(const std::size_t& reservedSize)
@@ -44,7 +44,7 @@ class ArrayListIterator : public ListIterator<T> {
 }
 
 // Class that implements DOUBLY LINKED LIST data structure on top of LIST abstract data type
-template<typename T, int (*comparator)(const T&, const T&)=comparator<T>>
+template<typename T, int (*comparator)(const T&, const T&) = comparator<T>>
 class DoublyLinkedList: public List<T> {
 	DoublyLinkedList()
 	void sort(bool (*comparator) (const T&, const T&))
@@ -58,7 +58,7 @@ class DoublyLinkedListIterator : public ListIterator<T>{
 }
 
 // Class that implements LINKED LIST data structure on top of LIST abstract data type
-template<typename T, int (*comparator)(const T&, const T&)=comparator<T>>
+template<typename T, int (*comparator)(const T&, const T&) = comparator<T>>
 class LinkedList: public List<T> {
 	LinkedList()
 	void sort(bool (*comparator) (const T&, const T&))
@@ -281,7 +281,7 @@ class TreeNode {
 }
 
 // Class that specializes TREE data structure with no node values uniqueness guarantee
-template<typename T, int (*comparator)(const T&, const T&)=comparator<T>>
+template<typename T, int (*comparator)(const T&, const T&) = comparator<T>>
 class NonUniqueTree : public Tree<T> {
 	std::vector<TreeNode<T>*> search(const T& data)
 	bool contains(const T& data) const
@@ -344,7 +344,7 @@ class Graph {
 }
 
 // Class that implements an ADJANCENCY LIST data structure backed by a DYNAMIC ARRAY (to let vertex values be duplicate) on top of unweighted GRAPH abstract data type. 
-template<typename T, int (*compare)(const T&, const T&)=comparator<T>>
+template<typename T, int (*compare)(const T&, const T&) = comparator<T>>
 class NonUniqueGraph : public Graph<T> {
 	bool contains(const T& data, int (*comparator)(const T&, const T&)) const
 	std::vector<GraphVertex<T>*> search(const T& data, int (*comparator)(const T&, const T&)) const
@@ -553,13 +553,14 @@ bool compareDesc(const T& left, const T& right)
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// Function implementing a hasher that by default does nothing
+// Function implementing a hasher (requirement of HASH TABLE) that by default does nothing
 template<typename T>
 inline std::size_t hash(const T& item)
 
-// Function implementing a comparator for LONG data type
+// Function implementing a hasher (requirement of HASH TABLE) for LONG data type
 template<>
 inline std::size_t hash(const long& item)
 
+// Function implementing a hasher (requirement of HASH TABLE) for CHAR* data type
 template<>
 inline std::size_t hash(const char*& item)

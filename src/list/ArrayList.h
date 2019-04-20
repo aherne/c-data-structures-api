@@ -29,6 +29,15 @@ public:
 		internalIteratorEnd = nullptr;
 	}
 
+	ArrayList(const ArrayList<T,comparator>& other) {
+		maximum_size = other.size();
+		contents = (T*) malloc(maximum_size * sizeof(T));
+		memcpy(contents, other.contents, maximum_size*sizeof(T));
+		count = other.size();
+		internalIteratorStart = nullptr;
+		internalIteratorEnd = nullptr;
+	}
+
 	ArrayList(const std::size_t& reservedSize) {
 		maximum_size = reservedSize;
 		contents = (T*) malloc(maximum_size*sizeof(T));
@@ -173,6 +182,10 @@ public:
 			internalIteratorEnd = new iterator(count);
 			return internalIteratorEnd;
 		}
+	}
+
+	const T* data() {
+		return contents;
 	}
 private:
 	void resize() {

@@ -14,30 +14,30 @@
 
 void MapUnitTest::execute() {
 	std::cout << "LinkedHashMap<long,long>" << std::endl;
-	LinkedHashMap<long, long, comparator, hash, comparator> lhml;
+	LinkedHashMap<long, long> lhml;
 	test(&lhml);
 	testLinkedHashMap();
 
 	std::cout << "HashMap<long,long>" << std::endl;
-	HashMap<long, long, comparator, hash, comparator> hml;
+	HashMap<long, long> hml;
 	test(&hml);
 	testHashMap();
 
 	std::cout << "TreeMap<long,long>" << std::endl;
-	TreeMap<long, long, comparator, comparator> tml;
+	TreeMap<long, long> tml;
 	test(&tml);
 	testTreeMap();
 
 	std::cout << "LinkedHashMap<char*,char*>" << std::endl;
-	LinkedHashMap<char*, char*, comparator, hash, comparator> lhms;
+	LinkedHashMap<char*, char*> lhms;
 	test(&lhms);
 
 	std::cout << "HashMap<char*,char*>" << std::endl;
-	HashMap<char*, char*, comparator, hash, comparator> hms;
+	HashMap<char*, char*> hms;
 	test(&hms);
 
 	std::cout << "TreeMap<char*,char*>" << std::endl;
-	TreeMap<char*, char*, comparator, comparator> tms;
+	TreeMap<char*, char*> tms;
 	test(&tms);
 }
 
@@ -108,7 +108,6 @@ void MapUnitTest::testLinkedHashMap() {
 	k=9;v=6;ht.set(k,v);
 	k=11;v=7;ht.set(k,v);
 	k=22;v=1;ht.set(k,v);
-	std::cout << "\t"  << "containsValue (no comparator): \t"  << (!ht.containsValue(3)?"OK":"ERROR") << std::endl;
 
 //			long valueToRemove = 5;
 //			ht.removeValue(valueToRemove);
@@ -145,7 +144,6 @@ void MapUnitTest::testHashMap() {
 	k=9;v=6;ht.set(k,v);
 	k=11;v=7;ht.set(k,v);
 	k=22;v=1;ht.set(k,v);
-	std::cout << "\t"  << "containsValue (no comparator): \t"  << (!ht.containsValue(3)?"OK":"ERROR") << std::endl;
 
 	std::cout << "\t" << "iterator:" << std::endl;
 	long i=0;
@@ -172,7 +170,6 @@ void MapUnitTest::testTreeMap() {
 	k=9;v=6;ht.set(k,v);
 	k=11;v=7;ht.set(k,v);
 	k=22;v=1;ht.set(k,v);
-	std::cout << "\t"  << "containsValue (no comparator): \t"  << (!ht.containsValue(3)?"OK":"ERROR") << std::endl;
 
 	std::cout << "\t" << "iterator:" << std::endl;
 	long i=0;

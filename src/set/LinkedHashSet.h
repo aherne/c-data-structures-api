@@ -12,6 +12,8 @@
 #include <algorithm>
 #include "Set.h"
 #include "../list/DoublyLinkedListSorter.h"
+#include "../Comparator.h"
+#include "../Hashing.h"
 
 
 template<typename T>
@@ -30,7 +32,7 @@ class SetBucketComparator {
 template<typename T>
 class LinkedHashSetIterator;
 
-template<typename T, int (*compare)(const T&,const T&), std::size_t (*hash)(const T&)>
+template<typename T, int (*compare)(const T&,const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class LinkedHashSet : public Set<T> {
 	friend class LinkedHashSetIterator<T>;
 public:
@@ -47,6 +49,8 @@ public:
 		internalIteratorStart = nullptr;
 		internalIteratorEnd = nullptr;
 	}
+
+	LinkedHashSet(const LinkedHashSet<T, compare, hash>& other) = delete;
 
 	~LinkedHashSet(){
 		if(internalIteratorStart!=nullptr) {

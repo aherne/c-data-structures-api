@@ -16,9 +16,7 @@ class GraphUnitTest {
 public:
 	void execute();
 private:
-	void simpleGraphTest();
 	void simpleUniqueGraphTest();
-	void weightedGraphTest();
 	void weightedUniqueGraphTest();
 };
 

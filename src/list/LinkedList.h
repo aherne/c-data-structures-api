@@ -52,6 +52,8 @@ class LinkedList: public List<T> {
 			internalIteratorEnd = nullptr;
 		}
 
+		LinkedList(const LinkedList<T, comparator>& other) = delete;
+
 		~LinkedList() {
 			empty();
 		}

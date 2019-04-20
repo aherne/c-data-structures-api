@@ -10,11 +10,13 @@
 
 #include "../HashTable.h"
 #include "Set.h"
+#include "../Comparator.h"
+#include "../Hashing.h"
 
 template<typename T>
 class HashSetIterator;
 
-template<typename T, int (*compare)(const T&,const T&), std::size_t (*hash)(const T&)>
+template<typename T, int (*compare)(const T&,const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class HashSet : public Set<T> {
 	friend class HashSetIterator<T>;
 public:
@@ -30,6 +32,8 @@ public:
 		internalIteratorStart = nullptr;
 		internalIteratorEnd = nullptr;
 	}
+
+	HashSet(const HashSet<T, compare, hash>& other) = delete;
 
 	~HashSet(){
 		if(internalIteratorStart!=nullptr) {
@@ -55,7 +59,7 @@ public:
 		return hashTable->contains(value);
 	}
 
-	const T* find(const T& value) {
+	T* find(const T& value) {
 		return hashTable->get(value);
 	}
 

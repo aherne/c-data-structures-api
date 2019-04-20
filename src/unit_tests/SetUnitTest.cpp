@@ -15,30 +15,30 @@
 
 void SetUnitTest::execute() {
 	std::cout << "LinkedHashSet<long>" << std::endl;
-	LinkedHashSet<long, comparator, hash> lhml;
+	LinkedHashSet<long> lhml;
 	test(&lhml);
 	testLinkedHashSet();
 
 	std::cout << "HashSet<long>" << std::endl;
-	HashSet<long, comparator, hash> hml;
+	HashSet<long> hml;
 	test(&hml);
 	testHashSet();
 
 	std::cout << "TreeSet<long>" << std::endl;
-	TreeSet<long, comparator> tml;
+	TreeSet<long> tml;
 	test(&tml);
 	testTreeSet();
 
 	std::cout << "LinkedHashSet<char*>" << std::endl;
-	LinkedHashSet<char*, comparator, hash> lhms;
+	LinkedHashSet<char*> lhms;
 	test(&lhms);
 
 	std::cout << "HashSet<char*>" << std::endl;
-	HashSet<char*, comparator, hash> hms;
+	HashSet<char*> hms;
 	test(&hms);
 
 	std::cout << "TreeSet<char*>" << std::endl;
-	TreeSet<char*, comparator> tms;
+	TreeSet<char*> tms;
 	test(&tms);
 }
 

@@ -11,15 +11,17 @@
 #include "../HashTable.h"
 #include "Map.h"
 #include "../Comparator.h"
+#include "../Hashing.h"
 
 template<typename KEY, typename VALUE>
 class HashMapIterator;
 
-template<typename KEY, typename VALUE, int (*compareByKey)(const KEY&, const KEY&), std::size_t (*hash)(const KEY&), int (*compareByValue)(const VALUE&, const VALUE&) = comparator<VALUE>>
+template<typename KEY, typename VALUE, int (*compareByKey)(const KEY&, const KEY&)=comparator<KEY>, std::size_t (*hash)(const KEY&)=hash<KEY>, int (*compareByValue)(const VALUE&, const VALUE&) = comparator<VALUE>>
 class HashMap : public Map<KEY,VALUE> {
 	friend class HashMapIterator<KEY,VALUE>;
 public:
 	typedef HashMapIterator<KEY,VALUE> iterator;
+
 	HashMap(){
 		hashTable = new HashTable<MapEntry<KEY,VALUE>>(compareMapKey<KEY, VALUE, compareByKey>, hashMapKey<KEY, VALUE, hash>);
 		internalIteratorStart = nullptr;
@@ -31,6 +33,8 @@ public:
 		internalIteratorStart = nullptr;
 		internalIteratorEnd = nullptr;
 	}
+
+	HashMap(const HashMap<KEY, VALUE, compareByKey, hash, compareByValue>& other) = delete;
 
 	~HashMap(){
 		if(internalIteratorStart!=nullptr) {

@@ -2,16 +2,10 @@ List
 	(LATER) unique(valueComparator)
 	(LATER) sort has complexity 2N+logN (because changing tail requires full iteration)
 Map
-	LinkedHashMap
-		(LATER) unique(valueComparator)
-Graph
-	(LATER) test for cycles @ (non-unique) Graph
+	LinkedHashMap: (LATER) unique(valueComparator)
 Document all code
-test what happens whe we try to use another data type than long/char* @ all data structures
-+ bounded containers
 
-USE ArrayList instead of std:vector for tree and graph
-USE template<> for comparators; value comparison in lists should use template arguments
+USE ArrayList instead of std:vector for tree
 
 DFS:
 	isCyclic
@@ -22,3 +16,7 @@ BFS:
 Support for undirected graphs
 
 make removeValue throw exception when no
+
+Implement copy constructors for all structures aside of ArrayList
+Implement const iterators for all structures
+implement const correctness for all methods and classes. avoid at all costs sending non-pointers by copy

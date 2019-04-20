@@ -15,6 +15,7 @@
 #include "Map.h"
 #include "../list/DoublyLinkedListSorter.h"
 #include "../Comparator.h"
+#include "../Hashing.h"
 
 
 template<typename KEY, typename VALUE>
@@ -48,7 +49,7 @@ private:
 template<typename KEY, typename VALUE>
 class LinkedHashMapIterator;
 
-template<typename KEY, typename VALUE, int (*compareByKey)(const KEY&, const KEY&), std::size_t (*hash)(const KEY&), int (*compareByValue)(const VALUE&, const VALUE&) = comparator<VALUE>>
+template<typename KEY, typename VALUE, int (*compareByKey)(const KEY&, const KEY&) = comparator<KEY>, std::size_t (*hash)(const KEY&) = hash<KEY>, int (*compareByValue)(const VALUE&, const VALUE&) = comparator<VALUE>>
 class LinkedHashMap : public Map<KEY, VALUE> {
 	friend class LinkedHashMapIterator<KEY, VALUE>;
 public:
@@ -65,6 +66,8 @@ public:
 		internalIteratorStart = nullptr;
 		internalIteratorEnd = nullptr;
 	}
+
+	LinkedHashMap(const LinkedHashMap<KEY, VALUE, compareByKey, hash, compareByValue>& other) = delete;
 
 	~LinkedHashMap(){
 		if(internalIteratorStart!=nullptr) {

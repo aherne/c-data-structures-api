@@ -12,14 +12,19 @@
 #include "../container/Queue.h"
 #include "../set/HashSet.h"
 #include "../map/HashMap.h"
-#include "WeightedGraph.h"
 #include <vector>
-#include "WeightedGraphUtilities.h"
+#include "../Comparator.h"
+#include "../Hashing.h"
+#include "UndirectedWeightedGraphVertex.h"
 
 
-template<typename T,typename W, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
-class UniqueWeightedGraph : public WeightedGraph<T,W> {
+template<typename T,typename W, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
+class UniqueWeightedGraph {
 public:
+	UniqueWeightedGraph(bool directed = true) {
+		this->directed = directed;
+	}
+
 	// O(V)
 	~UniqueWeightedGraph(){
 		// deallocate all vertexes
@@ -29,18 +34,18 @@ public:
 	}
 
 	// O(2)
-	WeightedGraphVertex<T,W>* createVertex(const T& data) {
-		WeightedGraphVertex<T,W> stack(data);
+	WeightedGraphVertex<T,W,compare,hash>* createVertex(const T& data) {
+		WeightedGraphVertex<T,W,compare,hash> stack(data);
 		if(vertexes.contains(&stack)) {
 			throw std::logic_error("Vertex with that value already exists!");
 		}
-		WeightedGraphVertex<T,W>* temp = new WeightedGraphVertex<T,W>(data);
+		WeightedGraphVertex<T,W,compare,hash>* temp = directed?new WeightedGraphVertex<T,W,compare,hash>(data):new UndirectedWeightedGraphVertex<T,W,compare,hash>(data);
 		vertexes.add(temp);
 		return temp;
 	}
 
 	// O(V*E)
-	void removeVertex(WeightedGraphVertex<T,W>*& vertex) {
+	void removeVertex(WeightedGraphVertex<T,W,compare,hash>*& vertex) {
 		// remove edges that connect to vertex
 		for(auto it = vertexes.begin(); *it!=*(vertexes.end()); ++(*it)) {
 			(*(*it))->removeEdge(vertex);
@@ -55,75 +60,21 @@ public:
 		return vertexes.size();
 	}
 
-	// O(V*E)
-	bool isConnected(WeightedGraphVertex<T,W>*& left, WeightedGraphVertex<T,W>*& right) const {
-		HashSet<WeightedGraphVertex<T,W>*, compareWeightedVertex<T, W, compare>, hashWeightedVertex<T, W, hash>> visited;
-		Queue<WeightedGraphVertex<T,W>*> queue;
-		queue.push(left);
-		visited.add(left);
-		while(!queue.isEmpty()) {
-			WeightedGraphVertex<T,W>* node = queue.pop();
-			std::vector<WeightedGraphEdge<T,W>*> children = node->getEdges();
-			for(auto it = children.begin(); it != children.end(); ++it){
-				WeightedGraphVertex<T,W>* tmp = (*it)->vertex;
-				if(!visited.contains(tmp)) {
-					if(tmp==right) return true;
-					visited.add(tmp);
-					queue.push(tmp);
-				}
-			}
-		}
-		return false;
-	}
-
-	// O(V*E)
-	std::vector<WeightedGraphEdge<T,W>*> getShortestPath(WeightedGraphVertex<T,W>*& left, WeightedGraphVertex<T,W>*& right) const {
-		WeightedGraphEdge<T,W> element;
-		element.vertex = left;
-		element.weight = 0;
-
-		HashMap<WeightedGraphEdge<T,W>*, WeightedGraphEdge<T,W>*, compareWeightedVertexParent<T, W, compare>, hashWeightedVertexParent<T, W, hash>> visited;
-		Queue<WeightedGraphEdge<T,W>*> queue;
-		queue.push(&element);
-		visited.set(&element,nullptr);
-		while(!queue.isEmpty()) {
-			WeightedGraphEdge<T,W>* node = queue.pop();
-			std::vector<WeightedGraphEdge<T,W>*> children = node->vertex->getEdges();
-			for(auto it = children.begin(); it != children.end(); ++it){
-				if(!visited.containsKey(*it)) {
-					if((*it)->vertex==right) {
-						std::vector<WeightedGraphEdge<T,W>*> response;
-						response.push_back(*it);
-						WeightedGraphEdge<T,W>* parent = node;
-						while(parent!=nullptr) {
-							if(parent->vertex == left) break;
-							response.push_back(parent);
-							parent = visited.get(parent);
-						}
-						return response;
-					}
-					visited.set(*it, node);
-					queue.push(*it);
-				}
-			}
-		}
-		throw std::out_of_range("Vertexes not connected!");
-	}
-
 	// O(1)
 	bool contains(const T& data) const {
-		WeightedGraphVertex<T,W> temp(data);
+		WeightedGraphVertex<T,W,compare,hash> temp(data);
 		return vertexes.contains(&temp);
 	}
 
 	// O(2)
-	WeightedGraphVertex<T,W>* search(const T& data) {
-		WeightedGraphVertex<T,W> temp(data);
+	WeightedGraphVertex<T,W,compare,hash>* search(const T& data) {
+		WeightedGraphVertex<T,W,compare,hash> temp(data);
 		if(!vertexes.contains(&temp)) return nullptr;
 		return *(vertexes.find(&temp));
 	}
 private:
-	HashSet<WeightedGraphVertex<T,W>*, compareWeightedVertex<T, W, compare>, hashWeightedVertex<T, W, hash>> vertexes;
+	HashSet<WeightedGraphVertex<T,W,compare,hash>*, compareWeightedVertex<T, W, compare, hash>, hashWeightedVertex<T, W, compare, hash>> vertexes;
+	bool directed;
 };
 
 

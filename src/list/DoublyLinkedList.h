@@ -10,7 +10,6 @@
 
 #include "List.h"
 #include "DoublyLinkedListSorter.h"
-#include <iostream>
 #include "../Comparator.h"
 
 template<typename T>
@@ -52,6 +51,9 @@ class DoublyLinkedList: public List<T> {
 			internalIteratorStart = nullptr;
 			internalIteratorEnd = nullptr;
 		}
+
+		DoublyLinkedList(const DoublyLinkedList<T, comparator>& other) = delete;
+
 
 		~DoublyLinkedList() {
 			empty();

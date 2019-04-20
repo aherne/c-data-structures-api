@@ -13,42 +13,42 @@
 #include "WeightedGraphVertex.h"
 #include "../container/Queue.h"
 
-template<typename T, typename W>
+template<typename T, typename W, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
 class WeightedGraphVertexVisitor {
 public:
 	virtual ~WeightedGraphVertexVisitor(){};
 
-	virtual bool visit(WeightedGraphVertex<T,W>* const& element) = 0;
+	virtual bool visit(WeightedGraphVertex<T,W,compare,hash>* const& element) = 0;
 
-	virtual bool isVisited(WeightedGraphVertex<T,W>* const& element) = 0;
+	virtual bool isVisited(WeightedGraphVertex<T,W,compare,hash>* const& element) = 0;
 };
 
-template<typename T, typename W>
-inline void BreadthFirstSearchGraphIterator(WeightedGraphVertex<T,W>* vertex, WeightedGraphVertexVisitor<T,W>* visitor) {
-	Queue<WeightedGraphVertex<T,W>*> queue;
+template<typename T, typename W, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
+inline void BreadthFirstSearchGraphIterator(WeightedGraphVertex<T,W,compare,hash>* vertex, WeightedGraphVertexVisitor<T,W,compare,hash>* visitor) {
+	Queue<WeightedGraphVertex<T,W,compare,hash>*> queue;
 	visitor->visit(vertex);
 	queue.push(vertex);
 	while(!queue.isEmpty()) {
-		WeightedGraphVertex<T,W>* node = queue.pop();
-		std::vector<WeightedGraphEdge<T,W>*> children = node->getEdges();
-		for(auto it = children.begin(); it != children.end(); ++it){
-			WeightedGraphEdge<T,W>* tmp = (WeightedGraphEdge<T,W>*) *it;
-			if(!visitor->isVisited(tmp->vertex)) {
-				visitor->visit(tmp->vertex);
-				queue.push(tmp->vertex);
+		WeightedGraphVertex<T,W,compare,hash>* node = queue.pop();
+		HashMap<WeightedGraphVertex<T, W, compare, hash>*, W, compareWeightedVertex<T, W, compare, hash>, hashWeightedVertex<T, W, compare, hash>>* children = node->getEdges();
+		for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
+			std::pair<WeightedGraphVertex<T,W,compare,hash>*,W> tmp = (std::pair<WeightedGraphVertex<T,W,compare,hash>*,W>) (*(*it));
+			if(!visitor->isVisited(tmp.first)) {
+				visitor->visit(tmp.first);
+				queue.push(tmp.first);
 			}
 		}
 	}
 }
 
-template<typename T, typename W>
-inline void DepthFirstSearchGraphIterator(WeightedGraphVertex<T,W>* vertex, WeightedGraphVertexVisitor<T,W>* visitor) {
+template<typename T, typename W, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
+inline void DepthFirstSearchGraphIterator(WeightedGraphVertex<T,W,compare,hash>* vertex, WeightedGraphVertexVisitor<T,W,compare,hash>* visitor) {
 	visitor->visit(vertex);
-	std::vector<WeightedGraphEdge<T,W>*> children = vertex->getEdges();
-	for(auto it = children.begin(); it != children.end(); ++it){
-		WeightedGraphEdge<T,W>* tmp = (WeightedGraphEdge<T,W>*) *it;
-		if(!visitor->isVisited(tmp->vertex)) {
-			DepthFirstSearchGraphIterator(tmp->vertex, visitor);
+	HashMap<WeightedGraphVertex<T, W, compare, hash>*, W, compareWeightedVertex<T, W, compare, hash>, hashWeightedVertex<T, W, compare, hash>>* children = vertex->getEdges();
+	for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
+		std::pair<WeightedGraphVertex<T,W,compare,hash>*,W> tmp = (std::pair<WeightedGraphVertex<T,W,compare,hash>*,W>) (*(*it));
+		if(!visitor->isVisited(tmp.first)) {
+			DepthFirstSearchGraphIterator(tmp.first, visitor);
 		}
 	}
 }

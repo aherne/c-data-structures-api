@@ -32,4 +32,6 @@ inline std::size_t hash(char* const& item) {
 	return hash;
 }
 
+
+
 #endif /* SRC_HASHING_H_ */

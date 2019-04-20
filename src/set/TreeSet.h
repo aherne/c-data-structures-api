@@ -10,11 +10,12 @@
 
 #include "../tree/RedBlackTree.h"
 #include "Set.h"
+#include "../Comparator.h"
 
 template<typename T>
 class TreeSetIterator;
 
-template<typename T, int (*compare)(const T&,const T&)>
+template<typename T, int (*compare)(const T&,const T&) = comparator<T>>
 class TreeSet : public Set<T> {
 	friend class TreeSetIterator<T>;
 public:
@@ -25,6 +26,9 @@ public:
 		internalIteratorStart = nullptr;
 		internalIteratorEnd = nullptr;
 	}
+
+	TreeSet(const TreeSet<T, compare>& other) = delete;
+
 	~TreeSet() {
 		if(internalIteratorStart!=nullptr) {
 			delete internalIteratorStart;
