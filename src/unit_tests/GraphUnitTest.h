@@ -16,8 +16,10 @@ class GraphUnitTest {
 public:
 	void execute();
 private:
-	void simpleUniqueGraphTest();
-	void weightedUniqueGraphTest();
+	void simpleDirectedGraphTest();
+	void weightedDirectedGraphTest();
+	void simpleUndirectedGraphTest();
+	void weightedUndirectedGraphTest();
 };
 
 #endif /* SRC_UNIT_TESTS_GRAPHUNITTEST_H_ */

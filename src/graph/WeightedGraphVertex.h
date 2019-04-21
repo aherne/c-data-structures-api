@@ -8,6 +8,13 @@
 #ifndef SRC_GRAPH_WEIGHTEDGRAPHVERTEX_H_
 #define SRC_GRAPH_WEIGHTEDGRAPHVERTEX_H_
 
+#include "../Comparator.h"
+#include "../Hashing.h"
+#include "../set/HashSet.h"
+#include "../list/ArrayList.h"
+#include "../container/Queue.h"
+#include "../map/HashMap.h"
+
 template<typename T, typename W, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
 class WeightedGraphVertex;
 

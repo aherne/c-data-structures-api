@@ -36,7 +36,7 @@ class GraphVertex {
 			this->edges = new HashSet<GraphVertex<T, compare, hash>*, compareVertex<T, compare, hash>, hashVertex<T, compare, hash>>;
 		}
 
-		virtual ~GraphVertex() {
+		~GraphVertex() {
 			delete edges;
 		}
 
@@ -56,11 +56,11 @@ class GraphVertex {
 			return edges->contains(vertex);
 		}
 
-		void addEdge(GraphVertex<T, compare, hash>*& vertex) {
+		void addEdge(GraphVertex<T, compare, hash>* vertex) {
 			edges->add(vertex);
 		}
 
-		void removeEdge(GraphVertex<T, compare, hash>*& vertex) {
+		void removeEdge(GraphVertex<T, compare, hash>* vertex) {
 			if(edges->contains(vertex)) {
 				edges->remove(vertex);
 			}

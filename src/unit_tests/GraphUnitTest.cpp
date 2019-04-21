@@ -6,10 +6,13 @@
  */
 
 #include "GraphUnitTest.h"
-#include "../graph/UniqueGraph.h"
-#include "../graph/UniqueWeightedGraph.h"
-#include "../graph/GraphIterator.h"
+
+#include "../graph/DirectedWeightedGraph.h"
+#include "../graph/UndirectedWeightedGraph.h"
 #include "../graph/WeightedGraphIterator.h"
+#include "../graph/DirectedGraph.h"
+#include "../graph/UndirectedGraph.h"
+#include "../graph/GraphIterator.h"
 
 
 template<typename T, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
@@ -57,14 +60,18 @@ void GraphUnitTest::execute() {
 	 * |/   \|/      \
 	 * 10----8--------7
 	 */
-	std::cout << "UniqueGraph<long>" << std::endl;
-//	simpleUniqueGraphTest();
-	std::cout << "WeightedUniqueGraph<long,long>" << std::endl;
-	weightedUniqueGraphTest();
+	std::cout << "DirectedGraph<long>" << std::endl;
+	simpleDirectedGraphTest();
+	std::cout << "WeightedDirectedGraph<long,long>" << std::endl;
+	weightedDirectedGraphTest();
+	std::cout << "UndirectedGraph<long>" << std::endl;
+	simpleUndirectedGraphTest();
+	std::cout << "UndirectedWeightedGraph<long,long>" << std::endl;
+	weightedUndirectedGraphTest();
 }
 
-void GraphUnitTest::simpleUniqueGraphTest() {
-	UniqueGraph<long> graph;
+void GraphUnitTest::simpleDirectedGraphTest() {
+	DirectedGraph<long> graph;
 	// create vertexes
 	GraphVertex<long, comparator, hash>* v1 = graph.createVertex(1);
 	GraphVertex<long, comparator, hash>* v2 = graph.createVertex(2);
@@ -77,23 +84,23 @@ void GraphUnitTest::simpleUniqueGraphTest() {
 	GraphVertex<long, comparator, hash>* v9 = graph.createVertex(9);
 	GraphVertex<long, comparator, hash>* v10 = graph.createVertex(10);
 	// create edges
-	v1->addEdge(v3);
-	v1->addEdge(v2);
-	v1->addEdge(v10);
-	v2->addEdge(v3);
-	v2->addEdge(v5);
-	v2->addEdge(v8);
-	v2->addEdge(v10);
-	v3->addEdge(v4);
-	v4->addEdge(v5);
-	v4->addEdge(v6);
-	v5->addEdge(v6);
-	v5->addEdge(v8);
-	v6->addEdge(v9);
-	v6->addEdge(v7);
-	v7->addEdge(v8);
-	v8->addEdge(v9);
-	v8->addEdge(v10);
+	graph.createEdge(v1,v3);
+	graph.createEdge(v1,v2);
+	graph.createEdge(v1,v10);
+	graph.createEdge(v2,v3);
+	graph.createEdge(v2,v5);
+	graph.createEdge(v2,v8);
+	graph.createEdge(v2,v10);
+	graph.createEdge(v3,v4);
+	graph.createEdge(v4,v5);
+	graph.createEdge(v4,v6);
+	graph.createEdge(v5,v6);
+	graph.createEdge(v5,v8);
+	graph.createEdge(v6,v9);
+	graph.createEdge(v6,v7);
+	graph.createEdge(v7,v8);
+	graph.createEdge(v8,v9);
+	graph.createEdge(v8,v10);
 	// iterate
 	std::cout << "\t" << "BFS iteration: " << std::endl;
 	PrintVertexVisitor<long, comparator, hash> pvv1;
@@ -109,14 +116,14 @@ void GraphUnitTest::simpleUniqueGraphTest() {
 	graph.removeVertex(v6);
 	std::cout << "\t" << "removeVertex: " << (!graph.contains(6)?"OK":"FAILED") << std::endl;
 	std::cout << "\t" << "contains: " << (graph.contains(9)?"OK":"FAILED") << std::endl;
-	v4->removeEdge(v5);
+	graph.removeEdge(v4,v5);
 	std::cout << "\t" << "removeEdge: " << (!v4->isEdge(v5)?"OK":"FAILED") << std::endl;
 	GraphVertex<long, comparator, hash>* results = graph.search(8);
 	std::cout << "\t" << "search: " << (results!=nullptr && results->getData()==8?"OK":"FAILED") << std::endl;
 }
 
-void GraphUnitTest::weightedUniqueGraphTest() {
-	UniqueWeightedGraph<long,long> graph;
+void GraphUnitTest::weightedDirectedGraphTest() {
+	DirectedWeightedGraph<long,long> graph;
 	// create vertexes
 	WeightedGraphVertex<long,long,comparator,hash>* v1 = graph.createVertex(1);
 	WeightedGraphVertex<long,long,comparator,hash>* v2 = graph.createVertex(2);
@@ -129,23 +136,23 @@ void GraphUnitTest::weightedUniqueGraphTest() {
 	WeightedGraphVertex<long,long,comparator,hash>* v9 = graph.createVertex(9);
 	WeightedGraphVertex<long,long,comparator,hash>* v10 = graph.createVertex(10);
 	// create edges
-	v1->addEdge(v3,1);
-	v1->addEdge(v2,2);
-	v1->addEdge(v10,3);
-	v2->addEdge(v3,4);
-	v2->addEdge(v5,5);
-	v2->addEdge(v8,6);
-	v2->addEdge(v10,7);
-	v3->addEdge(v4,8);
-	v4->addEdge(v5,9);
-	v4->addEdge(v6,10);
-	v5->addEdge(v6,11);
-	v5->addEdge(v8,12);
-	v6->addEdge(v9,13);
-	v6->addEdge(v7,14);
-	v7->addEdge(v8,15);
-	v8->addEdge(v9,16);
-	v8->addEdge(v10,17);
+	graph.createEdge(v1,v3,1);
+	graph.createEdge(v1,v2,2);
+	graph.createEdge(v1,v10,3);
+	graph.createEdge(v2,v3,4);
+	graph.createEdge(v2,v5,5);
+	graph.createEdge(v2,v8,6);
+	graph.createEdge(v2,v10,7);
+	graph.createEdge(v3,v4,8);
+	graph.createEdge(v4,v5,9);
+	graph.createEdge(v4,v6,10);
+	graph.createEdge(v5,v6,11);
+	graph.createEdge(v5,v8,12);
+	graph.createEdge(v6,v9,13);
+	graph.createEdge(v6,v7,14);
+	graph.createEdge(v7,v8,15);
+	graph.createEdge(v8,v9,16);
+	graph.createEdge(v8,v10,17);
 	// iterate
 	std::cout << "\t" << "BFS iteration: " << std::endl;
 	PrintWeightedVertexVisitor<long, long, comparator, hash> pvv1;
@@ -164,7 +171,112 @@ void GraphUnitTest::weightedUniqueGraphTest() {
 	graph.removeVertex(v6);
 	std::cout << "\t" << "removeVertex: " << (!graph.contains(6)?"OK":"FAILED") << std::endl;
 	std::cout << "\t" << "contains: " << (graph.contains(9)?"OK":"FAILED") << std::endl;
-	v4->removeEdge(v5);
+	graph.removeEdge(v4,v5);
+	std::cout << "\t" << "removeEdge: " << (!v4->isEdge(v5)?"OK":"FAILED") << std::endl;
+	WeightedGraphVertex<long,long, comparator, hash>* results = graph.search(8);
+	std::cout << "\t" << "search: " << (results!=nullptr && results->getData()==8?"OK":"FAILED") << std::endl;
+}
+void GraphUnitTest::simpleUndirectedGraphTest() {
+	UndirectedGraph<long> graph;
+	// create vertexes
+	GraphVertex<long, comparator, hash>* v1 = graph.createVertex(1);
+	GraphVertex<long, comparator, hash>* v2 = graph.createVertex(2);
+	GraphVertex<long, comparator, hash>* v3 = graph.createVertex(3);
+	GraphVertex<long, comparator, hash>* v4 = graph.createVertex(4);
+	GraphVertex<long, comparator, hash>* v5 = graph.createVertex(5);
+	GraphVertex<long, comparator, hash>* v6 = graph.createVertex(6);
+	GraphVertex<long, comparator, hash>* v7 = graph.createVertex(7);
+	GraphVertex<long, comparator, hash>* v8 = graph.createVertex(8);
+	GraphVertex<long, comparator, hash>* v9 = graph.createVertex(9);
+	GraphVertex<long, comparator, hash>* v10 = graph.createVertex(10);
+	// create edges
+	graph.createEdge(v1,v3);
+	graph.createEdge(v1,v2);
+	graph.createEdge(v1,v10);
+	graph.createEdge(v2,v3);
+	graph.createEdge(v2,v5);
+	graph.createEdge(v2,v8);
+	graph.createEdge(v2,v10);
+	graph.createEdge(v3,v4);
+	graph.createEdge(v4,v5);
+	graph.createEdge(v4,v6);
+	graph.createEdge(v5,v6);
+	graph.createEdge(v5,v8);
+	graph.createEdge(v6,v9);
+	graph.createEdge(v6,v7);
+	graph.createEdge(v7,v8);
+	graph.createEdge(v8,v9);
+	graph.createEdge(v8,v10);
+	// iterate
+	std::cout << "\t" << "BFS iteration: " << std::endl;
+	PrintVertexVisitor<long, comparator, hash> pvv1;
+	BreadthFirstSearchGraphIterator(v1, &pvv1);
+	std::cout << "\t" << "DFS iteration: " << std::endl;
+	PrintVertexVisitor<long, comparator, hash> pvv2;
+	DepthFirstSearchGraphIterator(v1, &pvv2);
+	// unit test
+	std::cout << "\t" << "getSize: " << (graph.getSize()==10?"OK":"FAILED") << std::endl;
+	std::cout << "\t" << "isEdge: " << (v1->isEdge(v2)?"OK":"FAILED") << std::endl;
+	std::cout << "\t" << "isConnected: " << (v1->isConnected(v8)?"OK":"FAILED") << std::endl;
+	std::cout << "\t" << "getShortestPath: " << (v1->getShortestPath(v7).size()==4?"OK":"FAILED") << std::endl;
+	graph.removeVertex(v6);
+	std::cout << "\t" << "removeVertex: " << (!graph.contains(6)?"OK":"FAILED") << std::endl;
+	std::cout << "\t" << "contains: " << (graph.contains(9)?"OK":"FAILED") << std::endl;
+	graph.removeEdge(v4,v5);
+	std::cout << "\t" << "removeEdge: " << (!v4->isEdge(v5)?"OK":"FAILED") << std::endl;
+	GraphVertex<long, comparator, hash>* results = graph.search(8);
+	std::cout << "\t" << "search: " << (results!=nullptr && results->getData()==8?"OK":"FAILED") << std::endl;
+}
+void GraphUnitTest::weightedUndirectedGraphTest() {
+	UndirectedWeightedGraph<long,long> graph;
+	// create vertexes
+	WeightedGraphVertex<long,long,comparator,hash>* v1 = graph.createVertex(1);
+	WeightedGraphVertex<long,long,comparator,hash>* v2 = graph.createVertex(2);
+	WeightedGraphVertex<long,long,comparator,hash>* v3 = graph.createVertex(3);
+	WeightedGraphVertex<long,long,comparator,hash>* v4 = graph.createVertex(4);
+	WeightedGraphVertex<long,long,comparator,hash>* v5 = graph.createVertex(5);
+	WeightedGraphVertex<long,long,comparator,hash>* v6 = graph.createVertex(6);
+	WeightedGraphVertex<long,long,comparator,hash>* v7 = graph.createVertex(7);
+	WeightedGraphVertex<long,long,comparator,hash>* v8 = graph.createVertex(8);
+	WeightedGraphVertex<long,long,comparator,hash>* v9 = graph.createVertex(9);
+	WeightedGraphVertex<long,long,comparator,hash>* v10 = graph.createVertex(10);
+	// create edges
+	graph.createEdge(v1,v3,1);
+	graph.createEdge(v1,v2,2);
+	graph.createEdge(v1,v10,3);
+	graph.createEdge(v2,v3,4);
+	graph.createEdge(v2,v5,5);
+	graph.createEdge(v2,v8,6);
+	graph.createEdge(v2,v10,7);
+	graph.createEdge(v3,v4,8);
+	graph.createEdge(v4,v5,9);
+	graph.createEdge(v4,v6,10);
+	graph.createEdge(v5,v6,11);
+	graph.createEdge(v5,v8,12);
+	graph.createEdge(v6,v9,13);
+	graph.createEdge(v6,v7,14);
+	graph.createEdge(v7,v8,15);
+	graph.createEdge(v8,v9,16);
+	graph.createEdge(v8,v10,17);
+	// iterate
+	std::cout << "\t" << "BFS iteration: " << std::endl;
+	PrintWeightedVertexVisitor<long, long, comparator, hash> pvv1;
+	BreadthFirstSearchGraphIterator(v1, &pvv1);
+	std::cout << "\t" << "DFS iteration: " << std::endl;
+	PrintWeightedVertexVisitor<long, long, comparator, hash> pvv2;
+	DepthFirstSearchGraphIterator(v1, &pvv2);
+	// unit test
+	std::cout << "\t" << "getSize: " << (graph.getSize()==10?"OK":"FAILED") << std::endl;
+	std::cout << "\t" << "isEdge: " << (v1->isEdge(v2)?"OK":"FAILED") << std::endl;
+	std::cout << "\t" << "getWeight: " << (v2->getEdgeWeight(v10)==7?"OK":"FAILED") << std::endl;
+	v2->setEdgeWeight(v10,11);
+	std::cout << "\t" << "setWeight: " << (v2->getEdgeWeight(v10)==11?"OK":"FAILED") << std::endl;
+	std::cout << "\t" << "isConnected: " << (v1->isConnected(v8)?"OK":"FAILED") << std::endl;
+	std::cout << "\t" << "getShortestPath: " << (v1->getShortestPath(v7).size()==4?"OK":"FAILED") << std::endl;
+	graph.removeVertex(v6);
+	std::cout << "\t" << "removeVertex: " << (!graph.contains(6)?"OK":"FAILED") << std::endl;
+	std::cout << "\t" << "contains: " << (graph.contains(9)?"OK":"FAILED") << std::endl;
+	graph.removeEdge(v4,v5);
 	std::cout << "\t" << "removeEdge: " << (!v4->isEdge(v5)?"OK":"FAILED") << std::endl;
 	WeightedGraphVertex<long,long, comparator, hash>* results = graph.search(8);
 	std::cout << "\t" << "search: " << (results!=nullptr && results->getData()==8?"OK":"FAILED") << std::endl;

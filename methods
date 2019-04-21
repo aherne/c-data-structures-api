@@ -345,14 +345,14 @@ class Graph {
 
 // Class that implements an ADJANCENCY LIST data structure backed by a DYNAMIC ARRAY (to let vertex values be duplicate) on top of unweighted GRAPH abstract data type. 
 template<typename T, int (*compare)(const T&, const T&) = comparator<T>>
-class NonUniqueGraph : public Graph<T> {
+class NonDirectedGraph : public Graph<T> {
 	bool contains(const T& data, int (*comparator)(const T&, const T&)) const
 	std::vector<GraphVertex<T>*> search(const T& data, int (*comparator)(const T&, const T&)) const
 }
 
 // Class that implements an ADJANCENCY LIST data structure backed by a HASH TABLE (to guarantee vertex value uniqueness) on top of unweighted GRAPH abstract data type.
 template<typename T, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
-class UniqueGraph : public Graph<T> {
+class DirectedGraph : public Graph<T> {
 	bool contains(const T& data) const
 	GraphVertex<T>* search(const T& data)
 }
