@@ -65,55 +65,6 @@ class GraphVertex {
 				edges->remove(vertex);
 			}
 		}
-
-		bool isConnected(GraphVertex<T, compare, hash>*& right) const {
-			GraphVertex<T, compare, hash>* left = (GraphVertex<T, compare, hash>*) this;
-			HashSet<GraphVertex<T, compare, hash>*, compareVertex<T, compare,hash>, hashVertex<T, compare,hash>> visited;
-			Queue<GraphVertex<T, compare, hash>*> queue;
-			queue.push(left);
-			visited.add(left);
-			while(!queue.isEmpty()) {
-				GraphVertex<T, compare, hash>* node = queue.pop();
-				HashSet<GraphVertex<T, compare, hash>*, compareVertex<T, compare, hash>, hashVertex<T, compare, hash>>* children = node->getEdges();
-				for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
-					if(!visited.contains(*(*it))) {
-						if((*(*it))==right) return true;
-						visited.add(*(*it));
-						queue.push(*(*it));
-					}
-				}
-			}
-			return false;
-		}
-
-		ArrayList<GraphVertex<T, compare, hash>*> getShortestPath(GraphVertex<T, compare, hash>*& right) const {
-			GraphVertex<T, compare, hash>* left = (GraphVertex<T, compare, hash>*) this;
-			HashMap<GraphVertex<T, compare, hash>*, GraphVertex<T, compare, hash>*, compareVertex<T, compare,hash>, hashVertex<T, compare,hash>> visited;
-			Queue<GraphVertex<T, compare, hash>*> queue;
-			queue.push(left);
-			visited.set(left,nullptr);
-			while(!queue.isEmpty()) {
-				GraphVertex<T, compare, hash>* node = queue.pop();
-				HashSet<GraphVertex<T, compare, hash>*, compareVertex<T, compare, hash>, hashVertex<T, compare, hash>>* children = node->getEdges();
-				for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
-					if(!visited.containsKey(*(*it))) {
-						if((*(*it))==right) {
-							ArrayList<GraphVertex<T, compare, hash>*> response;
-							response.addToBottom(right);
-							GraphVertex<T, compare, hash>* parent = node;
-							while(parent!=nullptr) {
-								response.addToBottom(parent);
-								parent = visited.get(parent);
-							}
-							return response;
-						}
-						visited.set(*(*it), node);
-						queue.push(*(*it));
-					}
-				}
-			}
-			throw std::out_of_range("Vertexes not connected!");
-		}
 	protected:
 		T data;
 		HashSet<GraphVertex<T, compare, hash>*, compareVertex<T, compare, hash>, hashVertex<T, compare, hash>>* edges;

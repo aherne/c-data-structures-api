@@ -16,9 +16,27 @@
 
 
 template<typename T, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
-class PrintVertexVisitor: public GraphVertexVisitor<T, compare, hash> {
+class BFS_PrintVertexVisitor: public BFS_GraphVertexVisitor<T, compare, hash> {
 public:
-	virtual ~PrintVertexVisitor(){};
+	virtual ~BFS_PrintVertexVisitor(){};
+
+	bool isVisited(GraphVertex<T,compare,hash>* const& element) {
+		return vertexes.contains(element);
+	}
+
+	bool visit(GraphVertex<T, compare, hash>* const& element, GraphVertex<T, compare, hash>* const& parent) {
+		vertexes.add(element);
+		std::cout << "\t" << "\t" << element->getData() << std::endl;
+		return true;
+	}
+private:
+	HashSet<GraphVertex<T,compare,hash>*, compareVertex<T,compare,hash>, hashVertex<T,compare,hash>> vertexes;
+};
+
+template<typename T, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
+class DFS_PrintVertexVisitor: public DFS_GraphVertexVisitor<T, compare, hash> {
+public:
+	virtual ~DFS_PrintVertexVisitor(){};
 
 	bool isVisited(GraphVertex<T,compare,hash>* const& element) {
 		return vertexes.contains(element);
@@ -28,14 +46,20 @@ public:
 		std::cout << "\t" << "\t" << element->getData() << std::endl;
 		return true;
 	}
+
+	bool visit(GraphVertex<T, compare, hash>* const& element, GraphVertex<T, compare, hash>* const& parent) {
+		vertexes.add(element);
+		std::cout << "\t" << "\t" << element->getData() << std::endl;
+		return true;
+	}
 private:
 	HashSet<GraphVertex<T,compare,hash>*, compareVertex<T,compare,hash>, hashVertex<T,compare,hash>> vertexes;
 };
 
 template<typename T, typename W,int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
-class PrintWeightedVertexVisitor: public WeightedGraphVertexVisitor<T,W,compare,hash> {
+class DFS_PrintWeightedVertexVisitor: public DFS_WeightedGraphVertexVisitor<T,W,compare,hash> {
 public:
-	virtual ~PrintWeightedVertexVisitor(){};
+	virtual ~DFS_PrintWeightedVertexVisitor(){};
 
 	bool isVisited(WeightedGraphVertex<T,W,compare,hash>* const& element) {
 		return vertexes.contains(element);
@@ -49,6 +73,22 @@ private:
 	HashSet<WeightedGraphVertex<T,W,compare,hash>*, compareWeightedVertex<T, W,compare,hash>, hashWeightedVertex<T, W,compare,hash>> vertexes;
 };
 
+template<typename T, typename W,int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
+class BFS_PrintWeightedVertexVisitor: public BFS_WeightedGraphVertexVisitor<T,W,compare,hash> {
+public:
+	virtual ~BFS_PrintWeightedVertexVisitor(){};
+
+	bool isVisited(WeightedGraphVertex<T,W,compare,hash>* const& element) {
+		return vertexes.contains(element);
+	}
+	bool visit(WeightedGraphVertex<T,W,compare,hash>* const& element, WeightedGraphVertex<T,W,compare,hash>* const& parent) {
+		vertexes.add(element);
+		std::cout << "\t" << "\t" << element->getData() << std::endl;
+		return true;
+	}
+private:
+	HashSet<WeightedGraphVertex<T,W,compare,hash>*, compareWeightedVertex<T, W,compare,hash>, hashWeightedVertex<T, W,compare,hash>> vertexes;
+};
 
 void GraphUnitTest::execute() {
 	/**
@@ -101,18 +141,24 @@ void GraphUnitTest::simpleDirectedGraphTest() {
 	graph.createEdge(v7,v8);
 	graph.createEdge(v8,v9);
 	graph.createEdge(v8,v10);
-	// iterate
+
 	std::cout << "\t" << "BFS iteration: " << std::endl;
-	PrintVertexVisitor<long, comparator, hash> pvv1;
+	BFS_PrintVertexVisitor<long, comparator, hash> pvv1;
 	BreadthFirstSearchGraphIterator(v1, &pvv1);
+
 	std::cout << "\t" << "DFS iteration: " << std::endl;
-	PrintVertexVisitor<long, comparator, hash> pvv2;
+	DFS_PrintVertexVisitor<long, comparator, hash> pvv2;
 	DepthFirstSearchGraphIterator(v1, &pvv2);
+
+	GraphVertexVisitor__IsPath<long, comparator, hash> gvvip(v1,v8);
+	std::cout << "\t" << "isConnected: " << (gvvip.isFound()?"OK":"FAILED") << std::endl;
+
+	GraphVertexVisitor__ShortestPath<long, comparator, hash> gvvsp(v1,v7);
+	std::cout << "\t" << "getShortestPath: " << (gvvsp.getResponse().size()==5?"OK":"FAILED") << std::endl;
+
 	// unit test
 	std::cout << "\t" << "getSize: " << (graph.getSize()==10?"OK":"FAILED") << std::endl;
 	std::cout << "\t" << "isEdge: " << (v1->isEdge(v2)?"OK":"FAILED") << std::endl;
-	std::cout << "\t" << "isConnected: " << (v1->isConnected(v8)?"OK":"FAILED") << std::endl;
-	std::cout << "\t" << "getShortestPath: " << (v1->getShortestPath(v7).size()==5?"OK":"FAILED") << std::endl;
 	graph.removeVertex(v6);
 	std::cout << "\t" << "removeVertex: " << (!graph.contains(6)?"OK":"FAILED") << std::endl;
 	std::cout << "\t" << "contains: " << (graph.contains(9)?"OK":"FAILED") << std::endl;
@@ -154,20 +200,27 @@ void GraphUnitTest::weightedDirectedGraphTest() {
 	graph.createEdge(v8,v9,16);
 	graph.createEdge(v8,v10,17);
 	// iterate
+
 	std::cout << "\t" << "BFS iteration: " << std::endl;
-	PrintWeightedVertexVisitor<long, long, comparator, hash> pvv1;
+	BFS_PrintWeightedVertexVisitor<long, long, comparator, hash> pvv1;
 	BreadthFirstSearchGraphIterator(v1, &pvv1);
+
 	std::cout << "\t" << "DFS iteration: " << std::endl;
-	PrintWeightedVertexVisitor<long, long, comparator, hash> pvv2;
+	DFS_PrintWeightedVertexVisitor<long, long, comparator, hash> pvv2;
 	DepthFirstSearchGraphIterator(v1, &pvv2);
+
+	WeightedGraphVertexVisitor__IsPath<long, long, comparator, hash> gvvip(v1,v8);
+	std::cout << "\t" << "isConnected: " << (gvvip.isFound()?"OK":"FAILED") << std::endl;
+
+	WeightedGraphVertexVisitor__ShortestPath<long, long, comparator, hash> gvvsp(v1,v7);
+	std::cout << "\t" << "getShortestPath: " << (gvvsp.getResponse().size()==5?"OK":"FAILED") << std::endl;
+
 	// unit test
 	std::cout << "\t" << "getSize: " << (graph.getSize()==10?"OK":"FAILED") << std::endl;
 	std::cout << "\t" << "isEdge: " << (v1->isEdge(v2)?"OK":"FAILED") << std::endl;
 	std::cout << "\t" << "getWeight: " << (v2->getEdgeWeight(v10)==7?"OK":"FAILED") << std::endl;
 	v2->setEdgeWeight(v10,11);
 	std::cout << "\t" << "setWeight: " << (v2->getEdgeWeight(v10)==11?"OK":"FAILED") << std::endl;
-	std::cout << "\t" << "isConnected: " << (v1->isConnected(v8)?"OK":"FAILED") << std::endl;
-	std::cout << "\t" << "getShortestPath: " << (v1->getShortestPath(v7).size()==5?"OK":"FAILED") << std::endl;
 	graph.removeVertex(v6);
 	std::cout << "\t" << "removeVertex: " << (!graph.contains(6)?"OK":"FAILED") << std::endl;
 	std::cout << "\t" << "contains: " << (graph.contains(9)?"OK":"FAILED") << std::endl;
@@ -209,16 +262,22 @@ void GraphUnitTest::simpleUndirectedGraphTest() {
 	graph.createEdge(v8,v10);
 	// iterate
 	std::cout << "\t" << "BFS iteration: " << std::endl;
-	PrintVertexVisitor<long, comparator, hash> pvv1;
+	BFS_PrintVertexVisitor<long, comparator, hash> pvv1;
 	BreadthFirstSearchGraphIterator(v1, &pvv1);
+
 	std::cout << "\t" << "DFS iteration: " << std::endl;
-	PrintVertexVisitor<long, comparator, hash> pvv2;
+	DFS_PrintVertexVisitor<long, comparator, hash> pvv2;
 	DepthFirstSearchGraphIterator(v1, &pvv2);
+
+	GraphVertexVisitor__IsPath<long, comparator, hash> gvvip(v1,v8);
+	std::cout << "\t" << "isConnected: " << (gvvip.isFound()?"OK":"FAILED") << std::endl;
+
+	GraphVertexVisitor__ShortestPath<long, comparator, hash> gvvsp(v1,v7);
+	std::cout << "\t" << "getShortestPath: " << (gvvsp.getResponse().size()==4?"OK":"FAILED") << std::endl;
+
 	// unit test
 	std::cout << "\t" << "getSize: " << (graph.getSize()==10?"OK":"FAILED") << std::endl;
 	std::cout << "\t" << "isEdge: " << (v1->isEdge(v2)?"OK":"FAILED") << std::endl;
-	std::cout << "\t" << "isConnected: " << (v1->isConnected(v8)?"OK":"FAILED") << std::endl;
-	std::cout << "\t" << "getShortestPath: " << (v1->getShortestPath(v7).size()==4?"OK":"FAILED") << std::endl;
 	graph.removeVertex(v6);
 	std::cout << "\t" << "removeVertex: " << (!graph.contains(6)?"OK":"FAILED") << std::endl;
 	std::cout << "\t" << "contains: " << (graph.contains(9)?"OK":"FAILED") << std::endl;
@@ -259,20 +318,27 @@ void GraphUnitTest::weightedUndirectedGraphTest() {
 	graph.createEdge(v8,v9,16);
 	graph.createEdge(v8,v10,17);
 	// iterate
+
 	std::cout << "\t" << "BFS iteration: " << std::endl;
-	PrintWeightedVertexVisitor<long, long, comparator, hash> pvv1;
+	BFS_PrintWeightedVertexVisitor<long, long, comparator, hash> pvv1;
 	BreadthFirstSearchGraphIterator(v1, &pvv1);
+
 	std::cout << "\t" << "DFS iteration: " << std::endl;
-	PrintWeightedVertexVisitor<long, long, comparator, hash> pvv2;
+	DFS_PrintWeightedVertexVisitor<long, long, comparator, hash> pvv2;
 	DepthFirstSearchGraphIterator(v1, &pvv2);
+
+	WeightedGraphVertexVisitor__IsPath<long, long, comparator, hash> gvvip(v1,v8);
+	std::cout << "\t" << "isConnected: " << (gvvip.isFound()?"OK":"FAILED") << std::endl;
+
+	WeightedGraphVertexVisitor__ShortestPath<long, long, comparator, hash> gvvsp(v1,v7);
+	std::cout << "\t" << "getShortestPath: " << (gvvsp.getResponse().size()==4?"OK":"FAILED") << std::endl;
+
 	// unit test
 	std::cout << "\t" << "getSize: " << (graph.getSize()==10?"OK":"FAILED") << std::endl;
 	std::cout << "\t" << "isEdge: " << (v1->isEdge(v2)?"OK":"FAILED") << std::endl;
 	std::cout << "\t" << "getWeight: " << (v2->getEdgeWeight(v10)==7?"OK":"FAILED") << std::endl;
 	v2->setEdgeWeight(v10,11);
 	std::cout << "\t" << "setWeight: " << (v2->getEdgeWeight(v10)==11?"OK":"FAILED") << std::endl;
-	std::cout << "\t" << "isConnected: " << (v1->isConnected(v8)?"OK":"FAILED") << std::endl;
-	std::cout << "\t" << "getShortestPath: " << (v1->getShortestPath(v7).size()==4?"OK":"FAILED") << std::endl;
 	graph.removeVertex(v6);
 	std::cout << "\t" << "removeVertex: " << (!graph.contains(6)?"OK":"FAILED") << std::endl;
 	std::cout << "\t" << "contains: " << (graph.contains(9)?"OK":"FAILED") << std::endl;

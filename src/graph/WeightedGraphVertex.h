@@ -73,59 +73,6 @@ class WeightedGraphVertex {
 				edges->removeKey(vertex);
 			}
 		}
-
-		// O(V*E)
-		bool isConnected(WeightedGraphVertex<T,W,compare,hash>*& right) const {
-			WeightedGraphVertex<T,W, compare, hash>* left = (WeightedGraphVertex<T,W, compare, hash>*) this;
-			HashSet<WeightedGraphVertex<T,W,compare,hash>*, compareWeightedVertex<T, W, compare,hash>, hashWeightedVertex<T, W, compare,hash>> visited;
-			Queue<WeightedGraphVertex<T,W,compare,hash>*> queue;
-			queue.push(left);
-			visited.add(left);
-			while(!queue.isEmpty()) {
-				WeightedGraphVertex<T,W,compare,hash>* node = queue.pop();
-				HashMap<WeightedGraphVertex<T, W, compare, hash>*, W, compareWeightedVertex<T, W, compare, hash>, hashWeightedVertex<T, W, compare, hash>>* children = node->getEdges();
-				for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
-					WeightedGraphVertex<T,W,compare,hash>* tmp = (*(*it)).first;
-					if(!visited.contains(tmp)) {
-						if(tmp==right) return true;
-						visited.add(tmp);
-						queue.push(tmp);
-					}
-				}
-			}
-			return false;
-		}
-
-		// O(V*E)
-		ArrayList<WeightedGraphVertex<T,W,compare,hash>*> getShortestPath(WeightedGraphVertex<T,W,compare,hash>*& right) const {
-			WeightedGraphVertex<T,W,compare,hash>* left = (WeightedGraphVertex<T,W,compare,hash>*) this;
-			HashMap<WeightedGraphVertex<T,W,compare,hash>*, WeightedGraphVertex<T,W,compare,hash>*, compareWeightedVertex<T,W,compare,hash>, hashWeightedVertex<T, W, compare, hash>> visited;
-			Queue<WeightedGraphVertex<T,W,compare,hash>*> queue;
-			queue.push(left);
-			visited.set(left,nullptr);
-			while(!queue.isEmpty()) {
-				WeightedGraphVertex<T,W,compare,hash>* node = queue.pop();
-				HashMap<WeightedGraphVertex<T,W,compare,hash>*, W, compareWeightedVertex<T,W,compare,hash>, hashWeightedVertex<T, W, compare, hash>>* children = node->getEdges();
-				for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
-					WeightedGraphVertex<T,W,compare,hash>* tmp = (*(*it)).first;
-					if(!visited.containsKey(tmp)) {
-						if(tmp==right) {
-							ArrayList<WeightedGraphVertex<T,W,compare,hash>*> response;
-							response.addToBottom(right);
-							WeightedGraphVertex<T,W,compare,hash>* parent = node;
-							while(parent!=nullptr) {
-								response.addToBottom(parent);
-								parent = visited.get(parent);
-							}
-							return response;
-						}
-						visited.set(tmp, node);
-						queue.push(tmp);
-					}
-				}
-			}
-			throw std::out_of_range("Vertexes not connected!");
-		}
 	protected:
 		T data;
 		HashMap<WeightedGraphVertex<T, W, compare, hash>*, W, compareWeightedVertex<T, W, compare, hash>, hashWeightedVertex<T, W, compare, hash>>* edges;
