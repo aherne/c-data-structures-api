@@ -10,6 +10,7 @@
 
 #include "GraphVertex.h"
 #include "../container/Queue.h"
+#include "../container/Stack.h"
 
 template<typename T, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
 class BFS_GraphVertexVisitor {
@@ -51,12 +52,18 @@ inline void BreadthFirstSearchGraphIterator(GraphVertex<T, compare, hash>* const
 
 template<typename T, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
 inline void DepthFirstSearchGraphIterator(GraphVertex<T, compare, hash>* const& vertex, DFS_GraphVertexVisitor<T, compare, hash>* const& visitor) {
+	Stack<GraphVertex<T, compare, hash>*> stack;
 	if(!visitor->visit(vertex)) return;
-	HashSet<GraphVertex<T, compare, hash>*, compareVertex<T, compare, hash>, hashVertex<T, compare, hash>>* children = vertex->getEdges();
-	for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
-		GraphVertex<T, compare, hash>* tmp = (GraphVertex<T, compare, hash>*) (*(*it));
-		if(!visitor->isVisited(tmp)) {
-			DepthFirstSearchGraphIterator(tmp, visitor);
+	stack.push(vertex);
+	while(!stack.isEmpty()) {
+		GraphVertex<T, compare, hash>* element = stack.pop();
+		HashSet<GraphVertex<T, compare, hash>*, compareVertex<T, compare, hash>, hashVertex<T, compare, hash>>* children = element->getEdges();
+		for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
+			GraphVertex<T, compare, hash>* tmp = (GraphVertex<T, compare, hash>*) (*(*it));
+			if(!visitor->isVisited(tmp)) {
+				if(!visitor->visit(tmp)) return;
+				stack.push(tmp);
+			}
 		}
 	}
 }
