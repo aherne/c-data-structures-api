@@ -5,11 +5,8 @@ Map
 	LinkedHashMap: (LATER) unique(valueComparator)
 Document all code
 
-USE ArrayList instead of std:vector for tree
-
 Implement copy constructors for all structures aside of ArrayList
 Implement const iterators for all structures
-implement const correctness for all methods and classes. DO NOT send non-pointers by copy
 
 (Weighted)DirectedGraph: isCyclic using DFS
 Weighted(Directed/Undirected)Graph: getShortestPath

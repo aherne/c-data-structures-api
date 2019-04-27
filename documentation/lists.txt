@@ -1,0 +1,72 @@
+// Interface that defines operations one can perform on a LIST abstract data type
+template<typename T>
+class List {
+	virtual ~List()
+	virtual const T& operator[](const size_t& index) const = 0
+	virtual void clear() = 0
+	virtual void addToTop(const T& value) = 0
+	virtual void addToBottom(const T& value) = 0
+	virtual const T& get(const size_t& index) const = 0
+	virtual void set(const size_t& index, const T& value) = 0
+	virtual void emplace(const size_t& index, const T& value) = 0
+	virtual bool isEmpty() const = 0
+	virtual const std::size_t& size() const = 0
+	virtual bool containsIndex(const size_t& index) const = 0
+	virtual bool containsValue(const T& value) const = 0
+	virtual void removeIndex(const size_t& index) = 0
+	virtual void removeValue(const T& value) = 0
+	virtual ListIterator<T>* begin() = 0
+	virtual ListIterator<T>* end() = 0
+}
+
+// Abstract class that defines iteration prototype of a LIST abstract data type
+template<typename T>
+class ListIterator {
+	virtual ~ListIterator()
+	virtual const T& operator*() = 0
+	virtual void operator++() = 0
+	bool operator!=(const ListIterator<T>& it)
+}
+
+// Class that implements DYNAMIC ARRAY data structure on top of LIST abstract data type
+template<typename T, int (*comparator)(const T&, const T&) = comparator<T>>
+class ArrayList: public List<T> {
+	ArrayList()
+	ArrayList(const std::size_t& reservedSize)
+	void sort(bool (*comparator) (const T&, const T&))
+}
+
+// Class that implements DYNAMIC ARRAY iteration on top of ListIterator
+template<typename T>
+class ArrayListIterator : public ListIterator<T> {
+	ArrayListIterator(ArrayList<T>* list)
+	ArrayListIterator(std::size_t total)
+}
+
+// Class that implements DOUBLY LINKED LIST data structure on top of LIST abstract data type
+template<typename T, int (*comparator)(const T&, const T&) = comparator<T>>
+class DoublyLinkedList: public List<T> {
+	DoublyLinkedList()
+	void sort(bool (*comparator) (const T&, const T&))
+}
+
+// Class that implements DOUBLY LINKED LIST iteration on top of ListIterator
+template<typename T>
+class DoublyLinkedListIterator : public ListIterator<T>{
+	DoublyLinkedListIterator(DoublyLinkedList<T>* list)
+	DoublyLinkedListIterator(std::size_t total)
+}
+
+// Class that implements LINKED LIST data structure on top of LIST abstract data type
+template<typename T, int (*comparator)(const T&, const T&) = comparator<T>>
+class LinkedList: public List<T> {
+	LinkedList()
+	void sort(bool (*comparator) (const T&, const T&))
+}
+
+// Class that implements LINKED LIST iteration on top of ListIterator
+template<typename T>
+class LinkedListIterator : public ListIterator<T>{
+	LinkedListIterator(LinkedList<T>* list)
+	LinkedListIterator(std::size_t total)
+}

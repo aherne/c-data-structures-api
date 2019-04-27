@@ -1,0 +1,65 @@
+// Class that implements a node in a TREE data structure along with operations it can perform
+template<typename T>
+class TreeNode {
+	TreeNode(const T& data)
+	~TreeNode()
+	void setParent(TreeNode<T>* const& parent)
+	TreeNode<T>*& getParent()
+	void setData(const T& data)
+	const T& getData() const
+	ArrayList<TreeNode<T>*>* const& getChildren()
+	void addChild(TreeNode<T>*& node)
+	void removeChild(TreeNode<T>*& node)
+	void removeChildren()
+	bool isDescendantOf(TreeNode<T>*& node)
+	bool isAncestorOf(TreeNode<T>*& node)
+	TreeNode<T>* getRoot()
+	ArrayList<TreeNode<T>*>* getAncestors()
+	ArrayList<TreeNode<T>*>* getDescendants()
+	std::size_t getSize() const
+	std::size_t getHeight() const
+	std::size_t getDepth() const
+}
+
+// Class that implements operations one can perform on a TREE data structure (abstract data type)
+template<typename T>
+class Tree {
+	explicit Tree(const T& data)
+	virtual ~Tree()
+	TreeNode<T>* getRoot()
+	std::size_t getSize()
+	std::size_t getHeight()
+	virtual TreeNode<T>* createNode(const T& data, TreeNode<T>*& parent)
+	virtual void removeNode(TreeNode<T>*& node)
+	virtual void removeBranch(TreeNode<T>*& node)
+}
+
+// Class that specializes TREE data structure with node value uniqueness guarantee, by virtue of being backed by a HASH TABLE
+template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
+class UniqueTree : public Tree<T> {
+	TreeNode<T>* search(const T& data)
+	bool contains(const T& data) const
+}
+
+// Interface that defines prototype of a node visitor while TREE iteration is performed
+template<typename T>
+class TreeNodeVisitor {
+	virtual ~TreeNodeVisitor()
+	virtual bool visit(TreeNode<T>*& element) = 0
+}
+
+// Function that implements pre-order tree iteration
+template<typename T>
+inline void PreOrderTreeIterator(TreeNode<T>* node, TreeNodeVisitor<T>*  = comparator<Tvisitor)
+
+// Function that implements post-order tree iteration
+template<typename T>
+inline void PostOrderTreeIterator(TreeNode<T>* node, TreeNodeVisitor<T>* visitor)
+
+// Function that implements level-order tree iteration
+template<typename T>
+inline void LevelOrderTreeIterator(TreeNode<T>* root, TreeNodeVisitor<T>* visitor)
+
+// Function that implements level-order tree iteration with limited depth
+template<typename T>
+inline void LevelOrderTreeIterator(TreeNode<T>* root, std::size_t depth, TreeNodeVisitor<T>* visitor)

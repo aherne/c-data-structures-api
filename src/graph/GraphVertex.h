@@ -28,7 +28,7 @@ std::size_t hashVertex(GraphVertex<T, comparator, hash>* const& node) {
 	return hash(node->getData());
 }
 
-template<typename T, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
+template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class GraphVertex {
 	public:
 		GraphVertex(const T& data) {

@@ -8,8 +8,8 @@
 #ifndef SRC_REDBLACKTREE_H_
 #define SRC_REDBLACKTREE_H_
 
-#include <vector>
 #include <iostream>
+#include "../list/ArrayList.h"
 
 enum RedBlackTreeNodeColor { RED, BLACK };
 
@@ -102,18 +102,18 @@ public:
 
 	bool hasMatches(const VALUE& value, int (*custom_comparator)(const VALUE&,const VALUE&)) {
 		if(custom_comparator == nullptr) return false;
-		std::vector<RedBlackTreeNode<VALUE>*> results;
-		findNodes(root, value, custom_comparator, results);
+		ArrayList<RedBlackTreeNode<VALUE>*> results;
+		findNodes(root, value, custom_comparator, &results);
 		return results.size()>0;
 	}
 
 	void deleteMatches(const VALUE& value, int (*custom_comparator)(const VALUE&,const VALUE&)) {
 		if(custom_comparator == nullptr) return;
-		std::vector<RedBlackTreeNode<VALUE>*> results;
-		findNodes(root, value, custom_comparator, results);
+		ArrayList<RedBlackTreeNode<VALUE>*> results;
+		findNodes(root, value, custom_comparator, &results);
 		if(results.size()==0) throw std::out_of_range("No match found!");
-		for(auto it = results.begin(); it!=results.end(); ++it) {
-			deleteNode((*it));
+		for(auto it = results.begin(); *it!=*(results.end()); ++(*it)) {
+			deleteNode(*(*it));
 		}
 
 	}
@@ -155,10 +155,10 @@ private:
 		}
 	}
 
-	void findNodes(RedBlackTreeNode<VALUE>*& h, const VALUE& value, int (*custom_comparator)(const VALUE&,const VALUE&), std::vector<RedBlackTreeNode<VALUE>*>& results) {
+	void findNodes(RedBlackTreeNode<VALUE>*& h, const VALUE& value, int (*custom_comparator)(const VALUE&,const VALUE&), ArrayList<RedBlackTreeNode<VALUE>*>* const& results) {
 		if(h->left!=nil) findNodes(h->left, value, custom_comparator, results);
 		if(custom_comparator(value, h->data)==0) {
-			results.push_back(h);
+			results->addToBottom(h);
 		}
 		if(h->right!=nil) findNodes(h->right, value, custom_comparator, results);
 	}

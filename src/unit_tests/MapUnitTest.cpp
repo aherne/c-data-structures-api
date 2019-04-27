@@ -98,7 +98,7 @@ void MapUnitTest::testLinkedHashMap() {
 	long k,v;
 	// test collisions
 
-	LinkedHashMap<long, long, comparator, hash> ht;
+	LinkedHashMap<long, long> ht;
 	k=18;v=8;ht.set(k,v);
 	k=1;v=2;ht.set(k,v);
 	k=150;v=4;ht.set(k,v);
@@ -134,7 +134,7 @@ void MapUnitTest::testHashMap() {
 	long k,v;
 	// test collisions
 
-	HashMap<long, long, comparator, hash> ht;
+	HashMap<long, long> ht;
 	k=18;v=8;ht.set(k,v);
 	k=1;v=2;ht.set(k,v);
 	k=150;v=4;ht.set(k,v);
@@ -160,7 +160,7 @@ void MapUnitTest::testTreeMap() {
 	long k,v;
 	// test collisions
 
-	TreeMap<long, long, comparator> ht;
+	TreeMap<long, long> ht;
 	k=18;v=8;ht.set(k,v);
 	k=1;v=2;ht.set(k,v);
 	k=150;v=4;ht.set(k,v);
@@ -182,7 +182,7 @@ void MapUnitTest::testTreeMap() {
 	ht.clear();
 
 	// test different types
-	TreeMap<long, char*, comparator> test;
+	TreeMap<long, char*> test;
 	char* valueToCheck = strdup("1820");
 	test.set(1, valueToCheck);
 	free(valueToCheck);

@@ -9,6 +9,7 @@
 #define SRC_GRAPH_WEIGHTEDGRAPH_H_
 
 #include "WeightedGraphVertex.h"
+#include "WeightedGraphIterator.h"
 
 
 template<typename T,typename W, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
@@ -37,6 +38,11 @@ public:
 	virtual void createEdge(WeightedGraphVertex<T,W, compare, hash>*& left, WeightedGraphVertex<T,W, compare, hash>*& right, const W& weight) =0;
 
 	virtual void removeEdge(WeightedGraphVertex<T,W, compare, hash>*& left, WeightedGraphVertex<T,W, compare, hash>*& right) =0;
+
+	bool isPath(WeightedGraphVertex<T,W, compare, hash>*& left, WeightedGraphVertex<T,W, compare, hash>*& right) {
+		WeightedGraphVertexVisitor__IsPath<T, W, compare, hash> gvvip(left,right);
+		return gvvip.isFound();
+	}
 
 	// O(1)
 	std::size_t getSize() const {

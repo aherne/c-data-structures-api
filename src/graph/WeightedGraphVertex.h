@@ -28,7 +28,7 @@ std::size_t hashWeightedVertex(WeightedGraphVertex<T,W,compare,hash>* const& nod
 	return hash(node->getData());
 }
 
-template<typename T, typename W, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
+template<typename T, typename W, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class WeightedGraphVertex {
 	public:
 		WeightedGraphVertex(const T& data) {

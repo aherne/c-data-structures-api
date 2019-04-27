@@ -10,6 +10,7 @@
 
 
 #include "GraphVertex.h"
+#include "GraphIterator.h"
 
 template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class Graph {
@@ -36,6 +37,11 @@ class Graph {
 		virtual void createEdge(GraphVertex<T, compare, hash>*& left, GraphVertex<T, compare, hash>*& right) =0;
 
 		virtual void removeEdge(GraphVertex<T, compare, hash>*& left, GraphVertex<T, compare, hash>*& right) =0;
+
+		bool isPath(GraphVertex<T, compare, hash>*& left, GraphVertex<T, compare, hash>*& right) {
+			GraphVertexVisitor__IsPath<T, compare, hash> gvvip(left,right);
+			return gvvip.isFound();
+		}
 
 		// O(1)
 		std::size_t getSize() const {

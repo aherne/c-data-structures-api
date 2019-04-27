@@ -1,0 +1,34 @@
+template<typename T, typename W, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
+class WeightedGraphVertex {
+	WeightedGraphVertex(const T& data)
+	~WeightedGraphVertex()
+	void setData(const T& data)
+	const T& getData() const
+	HashMap<WeightedGraphVertex<T, W, compare, hash>*, W, compareWeightedVertex<T, W, compare, hash>, hashWeightedVertex<T, W, compare, hash>>*& getEdges()
+	bool isEdge(WeightedGraphVertex<T,W,compare,hash>*& vertex) const
+	const W& getEdgeWeight(WeightedGraphVertex<T,W,compare,hash>*& vertex) const
+	void setEdgeWeight(WeightedGraphVertex<T,W,compare,hash>*& vertex, const W& weight)
+	void addEdge(WeightedGraphVertex<T,W,compare,hash>*& vertex, const W& weight)
+	void removeEdge(WeightedGraphVertex<T,W,compare,hash>*& vertex)
+}
+
+template<typename T,typename W, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
+class WeightedGraph {
+	virtual ~WeightedGraph()
+	virtual WeightedGraphVertex<T,W,compare,hash>* createVertex(const T& data)
+	virtual void removeVertex(WeightedGraphVertex<T,W,compare,hash>*& vertex) = 0
+	virtual void createEdge(WeightedGraphVertex<T,W, compare, hash>*& left, WeightedGraphVertex<T,W, compare, hash>*& right, const W& weight) = 0
+	virtual void removeEdge(WeightedGraphVertex<T,W, compare, hash>*& left, WeightedGraphVertex<T,W, compare, hash>*& right) = 0
+	bool isPath(WeightedGraphVertex<T,W, compare, hash>*& left, WeightedGraphVertex<T,W, compare, hash>*& right)
+	std::size_t getSize() const
+	bool contains(const T& data) const
+	WeightedGraphVertex<T,W,compare,hash>* search(const T& data)
+}
+
+template<typename T,typename W, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
+class DirectedWeightedGraph : public WeightedGraph<T,W,compare,hash> {
+}
+
+template<typename T,typename W, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
+class UndirectedWeightedGraph : public WeightedGraph<T,W,compare,hash> {
+}

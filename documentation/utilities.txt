@@ -1,0 +1,85 @@
+// Enum that defines RED BLACK TREE colors
+enum RedBlackTreeNodeColor { RED, BLACK }
+
+// Struct that defines an entry in a RED BLACK TREE node
+template<typename T>
+struct RedBlackTreeNode {
+	T data;
+	RedBlackTreeNode<T>* left;
+	RedBlackTreeNode<T>* right;
+	RedBlackTreeNode<T>* parent;
+	RedBlackTreeNodeColor color;
+}
+
+// Class that implements a RED BLACK TREE specialization of self-balancing BINARY SEARCH TREE data structure
+template<typename T>
+class RedBlackTree {
+	RedBlackTree(int (*comparator)(const T&,const T&))
+	~RedBlackTree()
+	bool hasNode(const T& value) const
+	const T* getNodeValue(const T& value) const
+	void deleteNode(const T& value)
+	void insertNode(const T& value)
+	const std::size_t& getSize() const
+	bool hasMatches(const T& value, int (*custom_comparator)(const T&,const T&))
+	void deleteMatches(const T& value, int (*custom_comparator)(const T&,const T&))
+	RedBlackTreeNode<T>* min() 
+	RedBlackTreeNode<T>* getNextNode(RedBlackTreeNode<T>* node)
+}
+
+// Struct that defines an entry in a HASH TABLE node
+template<typename T>
+struct HashTableEntry {
+	std::size_t hash;
+	T data;
+	HashTableEntry<T>* next;
+}
+
+// Class that implements a HASH TABLE where iteration order is unpredictable
+template<typename T>
+class HashTable {
+	HashTable(int (*comparator)(const T&,const T&), std::size_t (*hasher)(const T&))
+	HashTable(int (*comparator)(const T&,const T&), std::size_t (*hasher)(const T&), const std::size_t& reservedSize)
+	~HashTable()
+	void clear()
+	bool contains(const T& value) const
+	bool contains(const T& value, int (*customCompare)(const T&,const T&)) const
+	bool isEmpty() const
+	const std::size_t& size() const
+	const T* get(const T& value) const
+	void set(const T& value)
+	void remove(const T& value)
+	void remove(const T& value, int (*customCompare)(const T&,const T&))
+	std::size_t getMinBucket() const
+	HashTableEntry<T>* getCurrentNode(const std::size_t& bucket_number, const std::size_t& position) const
+	void nextNode(std::size_t& bucket_number, std::size_t& position)
+}
+
+// Struct that defines an entry in a "LINKED" HASH TABLE node
+template<typename T>
+struct LinkedHashTableEntry {
+	std::size_t hash;
+	T data;
+	LinkedHashTableEntry<T>* nextInBucket;
+	LinkedHashTableEntry<T>* previous;
+	LinkedHashTableEntry<T>* next;
+}
+
+// Class that implements a HASH TABLE backed by a DOUBLY LINKED LIST to make iteration order predictable
+template<typename T>
+class LinkedHashTable {
+	LinkedHashTable(int (*comparator)(const T&,const T&), std::size_t (*hasher)(const T&))
+	LinkedHashTable(int (*comparator)(const T&,const T&), std::size_t (*hasher)(const T&), const std::size_t& reservedSize)
+	~LinkedHashTable()
+	void clear()
+	bool contains(const T& value) const
+	bool contains(const T& value, int (*customCompare)(const T&,const T&)) const
+	bool isEmpty() const
+	const std::size_t& size() const
+	const T* get(const T& value) const
+	void set(const T& value)
+	void remove(const T& value)
+	void remove(const T& value, int (*customCompare)(const T&,const T&))
+	LinkedHashTableEntry<T>*& getHead()
+	LinkedHashTableEntry<T>*& getTail()
+}

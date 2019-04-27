@@ -16,29 +16,29 @@
 
 void ListUnitTest::execute() {
 	std::cout << "ArrayList<long>" << std::endl;
-	ArrayList<long, comparator> all;
+	ArrayList<long> all;
 	testList(&all);
 
 	std::cout << "LinkedList<long>" << std::endl;
-	LinkedList<long, comparator> lll;
+	LinkedList<long> lll;
 	testList(&lll);
 
 	std::cout << "DoublyLinkedList<long>" << std::endl;
-	DoublyLinkedList<long, comparator> dll;
+	DoublyLinkedList<long> dll;
 	testList(&dll);
 
 	std::cout << "ArrayList<char*>" << std::endl;
-	ArrayList<char*, comparator> als;
+	ArrayList<char*> als;
 	testList(&als);
 	testArrayList();
 
 	std::cout << "LinkedList<char*>" << std::endl;
-	LinkedList<char*, comparator> lls;
+	LinkedList<char*> lls;
 	testList(&lls);
 	testLinkedList();
 
 	std::cout << "DoublyLinkedList<char*>" << std::endl;
-	DoublyLinkedList<char*, comparator> dls;
+	DoublyLinkedList<char*> dls;
 	testList(&dls);
 	testDoublyLinkedList();
 }

@@ -1,0 +1,65 @@
+// Abstract class that defines iteration prototype of a SET abstract data type
+template<typename T>
+class SetIterator {
+	SetIterator()
+	virtual ~SetIterator()
+	virtual const T& operator*() = 0
+	virtual void operator++() = 0
+	bool operator!=(const SetIterator<T>& it)
+}
+
+// Interface that defines operations one can perform on a SET abstract data type
+template<typename T>
+class Set {
+	virtual ~Set()
+	virtual void clear() = 0
+	virtual bool contains(const T& value) const = 0
+	virtual bool isEmpty() const = 0
+	virtual const std::size_t& size() const = 0
+	virtual void add(const T& value) = 0
+	virtual void remove(const T& value) = 0
+	virtual SetIterator<T>* begin() = 0
+	virtual SetIterator<T>* end() = 0
+}
+
+// Class that implements HASH TABLE data structure on top of SET abstract data type
+template<typename T, int (*compare)(const T&,const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
+class HashSet : public Set<T> {
+	HashSet()
+	HashSet(const std::size_t& reservedSize)
+}
+
+// Class that implements HASH TABLE iteration on top of SetIterator
+template<typename T>
+class HashSetIterator : public SetIterator<T> {
+	HashSetIterator(HashTable<T>* hashTable)
+	HashSetIterator(std::size_t total)
+}
+
+// Class that implements "LINKED" HASH TABLE data structure (a HASH TABLE backed by a DOUBLY LINKED LIST to allow predictable iteration order) on top of SET abstract data type
+template<typename T, int (*compare)(const T&,const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
+class LinkedHashSet : public Set<T> {
+	LinkedHashSet()
+	LinkedHashSet(const std::size_t& reservedSize)
+	void sort(bool (*comparator) (const T&, const T&))
+}
+
+// Class that implements "LINKED" HASH TABLE iteration on top of SetIterator
+template<typename T>
+class LinkedHashSetIterator : public SetIterator<T> {
+	LinkedHashSetIterator(LinkedHashTable<T>* set)
+	LinkedHashSetIterator(std::size_t total)
+}
+
+// Class that implements RED BLACK TREE data structure on top of SET abstract data type
+template<typename T, int (*compare)(const T&,const T&) = comparator<T>>
+class TreeSet : public Set<T> {
+	TreeSet()
+}
+
+// Class that implements RED BLACK TREE iteration on top of SetIterator
+template<typename T>
+class TreeSetIterator : public SetIterator<T> {
+	TreeSetIterator(RedBlackTree<T>* tree)
+	TreeSetIterator(std::size_t total)
+}

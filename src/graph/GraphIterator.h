@@ -12,7 +12,7 @@
 #include "../container/Queue.h"
 #include "../container/Stack.h"
 
-template<typename T, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
+template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class BFS_GraphVertexVisitor {
 public:
 	virtual ~BFS_GraphVertexVisitor(){};
@@ -22,7 +22,7 @@ public:
 	virtual bool isVisited(GraphVertex<T, compare, hash>* const& element) = 0;
 };
 
-template<typename T, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
+template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class DFS_GraphVertexVisitor {
 public:
 	virtual ~DFS_GraphVertexVisitor(){};
@@ -32,7 +32,7 @@ public:
 	virtual bool isVisited(GraphVertex<T, compare, hash>* const& element) = 0;
 };
 
-template<typename T, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
+template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 inline void BreadthFirstSearchGraphIterator(GraphVertex<T, compare, hash>* const& vertex, BFS_GraphVertexVisitor<T, compare, hash>* const& visitor) {
 	Queue<GraphVertex<T, compare, hash>*> queue;
 	if(!visitor->visit(vertex, nullptr)) return;
@@ -50,7 +50,7 @@ inline void BreadthFirstSearchGraphIterator(GraphVertex<T, compare, hash>* const
 	}
 }
 
-template<typename T, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
+template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 inline void DepthFirstSearchGraphIterator(GraphVertex<T, compare, hash>* const& vertex, DFS_GraphVertexVisitor<T, compare, hash>* const& visitor) {
 	Stack<GraphVertex<T, compare, hash>*> stack;
 	if(!visitor->visit(vertex)) return;
@@ -68,7 +68,7 @@ inline void DepthFirstSearchGraphIterator(GraphVertex<T, compare, hash>* const& 
 	}
 }
 
-template<typename T, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
+template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class GraphVertexVisitor__IsPath : public DFS_GraphVertexVisitor<T,compare,hash> {
 public:
 	GraphVertexVisitor__IsPath(GraphVertex<T, compare, hash>* const& left, GraphVertex<T, compare, hash>* const& right) {
@@ -101,7 +101,7 @@ private:
 };
 
 
-template<typename T, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
+template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class GraphVertexVisitor__ShortestPath : public BFS_GraphVertexVisitor<T,compare,hash> {
 public:
 	GraphVertexVisitor__ShortestPath(GraphVertex<T, compare, hash>* const& left, GraphVertex<T, compare, hash>* const& right) {

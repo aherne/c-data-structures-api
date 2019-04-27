@@ -86,7 +86,7 @@ void SetUnitTest::testLinkedHashSet() {
 	long k;
 	// test collisions
 
-	LinkedHashSet<long, comparator, hash> ht;
+	LinkedHashSet<long> ht;
 	k=18;ht.add(k);
 	k=1;ht.add(k);
 	k=150;ht.add(k);
@@ -114,7 +114,7 @@ void SetUnitTest::testHashSet() {
 	long k;
 	// test collisions
 
-	HashSet<long, comparator, hash> ht;
+	HashSet<long> ht;
 	k=18;ht.add(k);
 	k=1;ht.add(k);
 	k=150;ht.add(k);
@@ -140,7 +140,7 @@ void SetUnitTest::testTreeSet() {
 	long k;
 	// test collisions
 
-	TreeSet<long, comparator> ht;
+	TreeSet<long> ht;
 	k=18;ht.add(k);
 	k=1;ht.add(k);
 	k=150;ht.add(k);
