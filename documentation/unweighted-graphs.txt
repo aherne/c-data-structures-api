@@ -1,4 +1,4 @@
-// Defines logic of a graph vertex and its adjacent edges saved in a SET data structure backed by a hash table
+// Defines logic of a graph vertex and its adjacent unweighted edges saved in a HASH SET data structure
 template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class GraphVertex {
 	GraphVertex(const T& data)
@@ -11,7 +11,7 @@ class GraphVertex {
 	void removeEdge(GraphVertex<T, compare, hash>* vertex)
 }
 
-// Abstract class that defines operations one can perform on a GRAPH abstract data type
+// Abstract class that defines operations one can perform on an UNWEIGHTED GRAPH abstract data type
 template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class Graph {
 	virtual ~Graph()
@@ -25,12 +25,36 @@ class Graph {
 	GraphVertex<T, compare, hash>* search(const T& data)
 }
 
-// Class that implements DIRECTED GRAPH data structure on top of GRAPH abstract data type
+// Class that implements DIRECTED GRAPH data structure on top of UNWEIGHTED GRAPH abstract data type
 template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class DirectedGraph : public Graph<T,compare,hash> {
 }
 
-// Class that implements UNDIRECTED GRAPH data structure on top of GRAPH abstract data type
+// Class that implements UNDIRECTED GRAPH data structure on top of UNWEIGHTED GRAPH abstract data type
 template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class UndirectedGraph : public Graph<T,compare,hash> {
 }
+
+// Abstract class implementing blueprints for vertex visitation during breadth-first-search UNWEIGHTED GRAPH traversal
+template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
+class BFS_GraphVertexVisitor {
+	virtual ~BFS_GraphVertexVisitor(){}
+	virtual bool visit(GraphVertex<T, compare, hash>* const& element, GraphVertex<T, compare, hash>* const& parent) = 0
+	virtual bool isVisited(GraphVertex<T, compare, hash>* const& element) = 0
+}
+
+// Abstract class implementing blueprints for vertex visitation during depth-first-search UNWEIGHTED GRAPH traversal
+template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
+class DFS_GraphVertexVisitor {
+	virtual ~DFS_GraphVertexVisitor(){}
+	virtual bool visit(GraphVertex<T, compare, hash>* const& element) = 0
+	virtual bool isVisited(GraphVertex<T, compare, hash>* const& element) = 0
+}
+
+// Function that implements breadth-first-search traversal for UNWEIGHTED GRAPH from start vertex
+template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
+inline void BreadthFirstSearchGraphIterator(GraphVertex<T, compare, hash>* const& vertex, BFS_GraphVertexVisitor<T, compare, hash>* const& visitor)
+
+// Function that implements depth-first-search traversal for UNWEIGHTED GRAPH from start vertex
+template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
+inline void DepthFirstSearchGraphIterator(GraphVertex<T, compare, hash>* const& vertex, DFS_GraphVertexVisitor<T, compare, hash>* const& visitor)

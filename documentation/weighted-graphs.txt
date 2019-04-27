@@ -1,3 +1,4 @@
+// Defines logic of a graph vertex and its adjacent weighted edges saved in a HASH MAP data structure
 template<typename T, typename W, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class WeightedGraphVertex {
 	WeightedGraphVertex(const T& data)
@@ -12,6 +13,7 @@ class WeightedGraphVertex {
 	void removeEdge(WeightedGraphVertex<T,W,compare,hash>*& vertex)
 }
 
+// Abstract class that defines operations one can perform on a WEIGHTED GRAPH abstract data type
 template<typename T,typename W, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class WeightedGraph {
 	virtual ~WeightedGraph()
@@ -25,10 +27,36 @@ class WeightedGraph {
 	WeightedGraphVertex<T,W,compare,hash>* search(const T& data)
 }
 
+// Class that implements DIRECTED GRAPH data structure on top of WEIGHTED GRAPH abstract data type
 template<typename T,typename W, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class DirectedWeightedGraph : public WeightedGraph<T,W,compare,hash> {
 }
 
+// Class that implements UNDIRECTED GRAPH data structure on top of WEIGHTED GRAPH abstract data type
 template<typename T,typename W, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class UndirectedWeightedGraph : public WeightedGraph<T,W,compare,hash> {
 }
+
+// Abstract class implementing blueprints for vertex visitation during breadth-first-search WEIGHTED GRAPH traversal
+template<typename T, typename W, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
+class BFS_WeightedGraphVertexVisitor {
+	virtual ~BFS_WeightedGraphVertexVisitor(){}
+	virtual bool visit(WeightedGraphVertex<T,W,compare,hash>* const& element, WeightedGraphVertex<T,W,compare,hash>* const& parent) = 0
+	virtual bool isVisited(WeightedGraphVertex<T,W,compare,hash>* const& element) = 0
+};
+
+// Abstract class implementing blueprints for vertex visitation during depth-first-search WEIGHTED GRAPH traversal
+template<typename T, typename W, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
+class DFS_WeightedGraphVertexVisitor {
+	virtual ~DFS_WeightedGraphVertexVisitor(){}
+	virtual bool visit(WeightedGraphVertex<T,W,compare,hash>* const& element) = 0
+	virtual bool isVisited(WeightedGraphVertex<T,W,compare,hash>* const& element) = 0
+}
+
+// Function that implements breadth-first-search traversal for WEIGHTED GRAPH from start vertex
+template<typename T, typename W, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
+inline void BreadthFirstSearchGraphIterator(WeightedGraphVertex<T,W,compare,hash>* vertex, BFS_WeightedGraphVertexVisitor<T,W,compare,hash>* visitor) {
+
+// Function that implements depth-first-search traversal for WEIGHTED GRAPH from start vertex
+template<typename T, typename W, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
+inline void DepthFirstSearchGraphIterator(WeightedGraphVertex<T,W,compare,hash>* vertex, DFS_WeightedGraphVertexVisitor<T,W,compare,hash>* visitor)

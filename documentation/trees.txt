@@ -48,18 +48,18 @@ class TreeNodeVisitor {
 	virtual bool visit(TreeNode<T>*& element) = 0
 }
 
-// Function that implements pre-order tree iteration
+// Function that implements pre-order tree iteration from start node
 template<typename T>
 inline void PreOrderTreeIterator(TreeNode<T>* node, TreeNodeVisitor<T>*  = comparator<Tvisitor)
 
-// Function that implements post-order tree iteration
+// Function that implements post-order tree iteration from start node
 template<typename T>
 inline void PostOrderTreeIterator(TreeNode<T>* node, TreeNodeVisitor<T>* visitor)
 
-// Function that implements level-order tree iteration
+// Function that implements level-order tree iteration from start node
 template<typename T>
 inline void LevelOrderTreeIterator(TreeNode<T>* root, TreeNodeVisitor<T>* visitor)
 
-// Function that implements level-order tree iteration with limited depth
+// Function that implements level-order tree iteration with limited depth from start node
 template<typename T>
 inline void LevelOrderTreeIterator(TreeNode<T>* root, std::size_t depth, TreeNodeVisitor<T>* visitor)
