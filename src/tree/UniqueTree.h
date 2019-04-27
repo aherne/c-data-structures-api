@@ -64,11 +64,12 @@ class UniqueTree : public Tree<T> {
 			if(node == this->root) throw std::logic_error("Root cannot be removed without deallocating the whole tree!");
 
 			// removes each descendant from hashtable
-			std::vector<TreeNode<T>*> children = node->getDescendants();
-			for(auto it = children.begin(); it!=children.end(); ++it) {
-				hashTable->remove(*it);
+			ArrayList<TreeNode<T>*>* children = node->getDescendants();
+			for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
+				hashTable->remove(*(*it));
 			}
 			hashTable->remove(node);
+			delete children;
 
 			// deallocates branch
 			Tree<T>::removeBranch(node);

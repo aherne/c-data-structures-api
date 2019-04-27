@@ -212,9 +212,6 @@ void GraphUnitTest::weightedDirectedGraphTest() {
 	WeightedGraphVertexVisitor__IsPath<long, long, comparator, hash> gvvip(v1,v8);
 	std::cout << "\t" << "isConnected: " << (gvvip.isFound()?"OK":"FAILED") << std::endl;
 
-	WeightedGraphVertexVisitor__ShortestPath<long, long, comparator, hash> gvvsp(v1,v7);
-	std::cout << "\t" << "getShortestPath: " << (gvvsp.getResponse().size()==5?"OK":"FAILED") << std::endl;
-
 	// unit test
 	std::cout << "\t" << "getSize: " << (graph.getSize()==10?"OK":"FAILED") << std::endl;
 	std::cout << "\t" << "isEdge: " << (v1->isEdge(v2)?"OK":"FAILED") << std::endl;
@@ -329,9 +326,6 @@ void GraphUnitTest::weightedUndirectedGraphTest() {
 
 	WeightedGraphVertexVisitor__IsPath<long, long, comparator, hash> gvvip(v1,v8);
 	std::cout << "\t" << "isConnected: " << (gvvip.isFound()?"OK":"FAILED") << std::endl;
-
-	WeightedGraphVertexVisitor__ShortestPath<long, long, comparator, hash> gvvsp(v1,v7);
-	std::cout << "\t" << "getShortestPath: " << (gvvsp.getResponse().size()==4?"OK":"FAILED") << std::endl;
 
 	// unit test
 	std::cout << "\t" << "getSize: " << (graph.getSize()==10?"OK":"FAILED") << std::endl;

@@ -17,11 +17,11 @@ public:
 		delete root;
 	}
 private:
-	void deleteRecursive(TreeNode<T>*& node) {
-		std::vector<TreeNode<T>*> children = node->getChildren();
-		for(auto it = children.begin(); it!=children.end(); ++it) {
-			deleteRecursive(*it);
-			delete (*it);
+	void deleteRecursive(TreeNode<T>* const& node) {
+		ArrayList<TreeNode<T>*>* children = node->getChildren();
+		for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
+			deleteRecursive(*(*it));
+			delete (*(*it));
 		}
 	}
 };

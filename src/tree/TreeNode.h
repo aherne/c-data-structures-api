@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <stdexcept>
+#include "../list/ArrayList.h"
 
 template<typename T>
 class TreeNode {
@@ -17,12 +18,15 @@ public:
 	TreeNode(const T& data) {
 		parent = nullptr;
 		this->data = data;
+		children = new ArrayList<TreeNode<T>*>;
 	}
 
-	~TreeNode() {}
+	~TreeNode() {
+		delete children;
+	}
 
 	// tested
-	void setParent(TreeNode<T>* parent) {
+	void setParent(TreeNode<T>* const& parent) {
 		this->parent = parent;
 	}
 
@@ -42,29 +46,31 @@ public:
 	}
 
 	// tested
-	const std::vector<TreeNode<T>*>& getChildren() const {
+	ArrayList<TreeNode<T>*>* const& getChildren() const {
 		return children;
 	}
 
 	// tested
-	void addChild(TreeNode<T>*& node) {
+	void addChild(TreeNode<T>* const& node) {
 		node->setParent(this);
-		children.push_back(node);
+		children->addToBottom(node);
 	}
 
 	// tested
 	void removeChild(TreeNode<T>*& node) {
-		for(auto it=children.begin(); it!=children.end(); ++it) {
-			if(*it == node) {
-				it = children.erase(it);
+		std::size_t index = 0;
+		for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
+			if(*(*it) == node) {
+				children->removeIndex(index);
 				return;
 			}
+			++ index;
 		}
 		throw std::out_of_range("Child not found!");
 	}
 
 	void removeChildren() {
-		children.clear();
+		children->clear();
 	}
 
 	// tested
@@ -103,22 +109,26 @@ public:
 
 	// Path – a sequence of nodes and edges connecting a node with a descendant.
 	// tested
-	std::vector<TreeNode<T>*> getAncestors() {
-		std::vector<TreeNode<T>*> output;
+	ArrayList<TreeNode<T>*>* getAncestors() {
+		ArrayList<TreeNode<T>*>* output = new ArrayList<TreeNode<T>*>;
 		TreeNode<T>* root = this;
 		while(root->getParent()!=nullptr) {
-			output.push_back(root->getParent());
+			output->addToBottom(root->getParent());
 			root = root->getParent();
 		}
 		return output;
 	}
 
 	// tested
-	std::vector<TreeNode<T>*> getDescendants() const {
-		std::vector<TreeNode<T>*> output = children;
-		for(auto it=children.begin(); it!=children.end(); ++it) {
-			std::vector<TreeNode<T>*> temp = (*it)->getDescendants();
-			output.insert(output.end(),temp.begin(),temp.end());
+	ArrayList<TreeNode<T>*>* getDescendants() const {
+		ArrayList<TreeNode<T>*>* output = new ArrayList<TreeNode<T>*>;
+		for(auto it1 = children->begin(); *it1!=*(children->end()); ++(*it1)) {
+			output->addToBottom(*(*it1));
+			ArrayList<TreeNode<T>*>* temp = (*(*it1))->getDescendants();
+			for(auto it2 = temp->begin(); *it2!=*(temp->end()); ++(*it2)) {
+				output->addToBottom(*(*it2));
+			}
+			delete temp;
 		}
 		return output;
 
@@ -127,9 +137,9 @@ public:
 	// Size - number of elements in tree
 	// tested
 	std::size_t getSize() const {
-		std::size_t output = (parent==nullptr?1:0)+children.size();
-		for(auto it=children.begin(); it!=children.end(); ++it) {
-			output += (*it)->getSize();
+		std::size_t output = (parent==nullptr?1:0)+children->size();
+		for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
+			output += (*(*it))->getSize();
 		}
 		return output;
 	}
@@ -137,8 +147,8 @@ public:
 	// tested
 	std::size_t getHeight() const {
 		std::size_t height = 0;
-		for(auto it=children.begin(); it!=children.end(); ++it) {
-			std::size_t tmp_height = (*it)->getHeight();
+		for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
+			std::size_t tmp_height = (*(*it))->getHeight();
 			if(tmp_height>height) {
 				height = tmp_height;
 			}
@@ -160,7 +170,7 @@ public:
 private:
 	TreeNode<T>* parent;
 	T data;
-	std::vector<TreeNode<T>*> children;
+	ArrayList<TreeNode<T>*>* children;
 };
 
 #endif /* TREENODE_H_ */

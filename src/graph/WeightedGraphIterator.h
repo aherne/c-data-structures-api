@@ -101,41 +101,4 @@ private:
 	WeightedGraphVertex<T, W, compare, hash>* right;
 	HashSet<WeightedGraphVertex<T,W,compare,hash>*, compareWeightedVertex<T, W, compare,hash>, hashWeightedVertex<T, W, compare,hash>> nodes;
 };
-
-
-template<typename T, typename W, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
-class WeightedGraphVertexVisitor__ShortestPath : public BFS_WeightedGraphVertexVisitor<T,W,compare,hash> {
-public:
-	WeightedGraphVertexVisitor__ShortestPath(WeightedGraphVertex<T, W,compare, hash>* const& left, WeightedGraphVertex<T, W,compare, hash>* const& right) {
-		this->right = right;
-		BreadthFirstSearchGraphIterator(left,this);
-	}
-
-	bool visit(WeightedGraphVertex<T, W,compare, hash>* const& element, WeightedGraphVertex<T, W,compare, hash>* const& node) {
-		WeightedGraphVertex<T, W,compare, hash>* parent = node;
-		if(element == right) {
-			response.addToBottom(right);
-			while(parent!=nullptr) {
-				response.addToBottom(parent);
-				parent = nodes.get(parent);
-			}
-			return false;
-		} else {
-			nodes.set(element, parent);
-			return true;
-		}
-	}
-
-	bool isVisited(WeightedGraphVertex<T, W,compare, hash>* const& element) {
-		return nodes.containsKey(element);
-	}
-
-	const ArrayList<WeightedGraphVertex<T, W,compare, hash>*>& getResponse() {
-		return response;
-	}
-private:
-	WeightedGraphVertex<T, W,compare, hash>* right;
-	HashMap<WeightedGraphVertex<T,W,compare,hash>*, WeightedGraphVertex<T,W,compare,hash>*, compareWeightedVertex<T,W,compare,hash>, hashWeightedVertex<T, W, compare, hash>> nodes;
-	ArrayList<WeightedGraphVertex<T, W,compare, hash>*> response;
-};
 #endif /* SRC_GRAPH_WEIGHTEDGRAPHITERATOR_H_ */

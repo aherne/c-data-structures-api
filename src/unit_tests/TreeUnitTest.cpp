@@ -60,13 +60,12 @@ void TreeUnitTest::treeTest() {
 	std::cout << "\t" << "isAncestorOf: " << (root->isAncestorOf(c1_1_1_1)==true?"OK":"FAILED") << std::endl;
 	std::cout << "\t" << "getRoot: " << (c1_1_1_1->getRoot()==root?"OK":"FAILED") << std::endl;
 
-	std::vector<TreeNode<long>*> ancestors = c1_1_1_1->getAncestors();
-	bool success = true;
-	if(ancestors[0] != c1_1_1) success = false;
-	if(ancestors[1] != c1_1) success = false;
-	if(ancestors[2] != c1) success = false;
-	if(ancestors[3] != root) success = false;
-	std::cout << "\t" << "getAncestors: " << (success?"OK":"FAILED") << std::endl;
+	std::cout << "\t" << "getAncestors: " << std::endl;
+	ArrayList<TreeNode<long>*>* ancestors = c1_1_1_1->getAncestors();
+	for(auto it = ancestors->begin(); *it!=*(ancestors->end()); ++(*it)) {
+		std::cout << "\t" << "\t" << (*(*it))->getData() << std::endl;
+	}
+	delete ancestors;
 
 	c1_1_1_1->setParent(c1);
 	std::cout << "\t" << "getParent: " << (c1_1_1_1->getParent()==c1?"OK":"FAILED") << std::endl;
@@ -76,30 +75,32 @@ void TreeUnitTest::treeTest() {
 	std::cout << "\t" << "getData: " << (c1_1_1_1->getData()==17?"OK":"FAILED") << std::endl;
 	c1_1_1_1->setData(11);
 
-	std::vector<TreeNode<long>*> children = root->getChildren();
-	std::cout << "\t" << "getChildren: " << (children[0]==c1 && children[1]==c2 && children[2]==c3?"OK":"FAILED") << std::endl;
+	ArrayList<TreeNode<long>*>* children = root->getChildren();
+	std::cout << "\t" << "getChildren: " << ((*children)[0]==c1 && (*children)[1]==c2 && (*children)[2]==c3?"OK":"FAILED") << std::endl;
 
 	TreeNode<long>* test = new TreeNode<long>(12);
 	c3->addChild(test);
-	std::vector<TreeNode<long>*> children1 = c3->getChildren();
-	std::cout << "\t" << "addChild: " << (children1[1]==test?"OK":"FAILED") << std::endl;
+	ArrayList<TreeNode<long>*>* children1 = c3->getChildren();
+	std::cout << "\t" << "addChild: " << ((*children1)[1]==test?"OK":"FAILED") << std::endl;
 
 	c3->removeChild(test);
 	delete test;
 	children1 = c3->getChildren();
-	std::cout << "\t" << "removeChild: " << (children1.size()==1?"OK":"FAILED") << std::endl;
+	std::cout << "\t" << "removeChild: " << (children1->size()==1?"OK":"FAILED") << std::endl;
 
 	std::cout << "\t" << "getDescendants: " << std::endl;
-	std::vector<TreeNode<long>*> descendants = root->getDescendants();
-	for(auto it=descendants.begin(); it!=descendants.end(); ++it) {
-		std::cout << "\t" << "\t" << (*it)->getData() << std::endl;
+	ArrayList<TreeNode<long>*>* descendants = root->getDescendants();
+	for(auto it = descendants->begin(); *it!=*(descendants->end()); ++(*it)) {
+		std::cout << "\t" << "\t" << (*(*it))->getData() << std::endl;
 	}
+	delete descendants;
 
 	tree->removeNode(c2);
-	std::cout << "\t" << "removeNode: " << (root->getChildren()[2]->getData()==9?"OK":"FAILED") << std::endl;
+	ArrayList<TreeNode<long>*>* children2 = root->getChildren();
+	std::cout << "\t" << "removeNode: " << ((*children2)[2]->getData()==9?"OK":"FAILED") << std::endl;
 
 	tree->removeBranch(c1);
-	std::cout << "\t" << "removeBranch: " << (root->getChildren().size()==2?"OK":"FAILED") << std::endl;
+	std::cout << "\t" << "removeBranch: " << (root->getChildren()->size()==2?"OK":"FAILED") << std::endl;
 
 	delete tree;
 }
@@ -124,13 +125,12 @@ void TreeUnitTest::uniqueTreeTest() {
 	std::cout << "\t" << "isAncestorOf: " << (root->isAncestorOf(c1_1_1_1)==true?"OK":"FAILED") << std::endl;
 	std::cout << "\t" << "getRoot: " << (c1_1_1_1->getRoot()==root?"OK":"FAILED") << std::endl;
 
-	std::vector<TreeNode<long>*> ancestors = c1_1_1_1->getAncestors();
-	bool success = true;
-	if(ancestors[0] != c1_1_1) success = false;
-	if(ancestors[1] != c1_1) success = false;
-	if(ancestors[2] != c1) success = false;
-	if(ancestors[3] != root) success = false;
-	std::cout << "\t" << "getAncestors: " << (success?"OK":"FAILED") << std::endl;
+	std::cout << "\t" << "getAncestors: " << std::endl;
+	ArrayList<TreeNode<long>*>* ancestors = c1_1_1_1->getAncestors();
+	for(auto it = ancestors->begin(); *it!=*(ancestors->end()); ++(*it)) {
+		std::cout << "\t" << "\t" << (*(*it))->getData() << std::endl;
+	}
+	delete ancestors;
 
 	c1_1_1_1->setParent(c1);
 	std::cout << "\t" << "getParent: " << (c1_1_1_1->getParent()==c1?"OK":"FAILED") << std::endl;
@@ -140,34 +140,36 @@ void TreeUnitTest::uniqueTreeTest() {
 	std::cout << "\t" << "getData: " << (c1_1_1_1->getData()==17?"OK":"FAILED") << std::endl;
 	c1_1_1_1->setData(11);
 
-	std::vector<TreeNode<long>*> children = root->getChildren();
-	std::cout << "\t" << "getChildren: " << (children[0]==c1 && children[1]==c2 && children[2]==c3?"OK":"FAILED") << std::endl;
+	ArrayList<TreeNode<long>*>* children = root->getChildren();
+	std::cout << "\t" << "getChildren: " << ((*children)[0]==c1 && (*children)[1]==c2 && (*children)[2]==c3?"OK":"FAILED") << std::endl;
 
 	TreeNode<long>* test = new TreeNode<long>(12);
 	c3->addChild(test);
-	std::vector<TreeNode<long>*> children1 = c3->getChildren();
-	std::cout << "\t" << "addChild: " << (children1[1]==test?"OK":"FAILED") << std::endl;
+	ArrayList<TreeNode<long>*>* children1 = c3->getChildren();
+	std::cout << "\t" << "addChild: " << ((*children1)[1]==test?"OK":"FAILED") << std::endl;
 
 	c3->removeChild(test);
 	delete test;
 	children1 = c3->getChildren();
-	std::cout << "\t" << "removeChild: " << (children1.size()==1?"OK":"FAILED") << std::endl;
+	std::cout << "\t" << "removeChild: " << (children1->size()==1?"OK":"FAILED") << std::endl;
 
 	std::cout << "\t" << "getDescendants: " << std::endl;
-	std::vector<TreeNode<long>*> descendants = root->getDescendants();
-	for(auto it=descendants.begin(); it!=descendants.end(); ++it) {
-		std::cout << "\t" << "\t" << (*it)->getData() << std::endl;
+	ArrayList<TreeNode<long>*>* descendants = root->getDescendants();
+	for(auto it = descendants->begin(); *it!=*(descendants->end()); ++(*it)) {
+		std::cout << "\t" << "\t" << (*(*it))->getData() << std::endl;
 	}
+	delete descendants;
 
 	std::cout << "\t" << "contains: " << (tree->contains(11)?"OK":"FAILED") << std::endl;
 	const TreeNode<long>* search = tree->search(10);
 	std::cout << "\t" << "search: " << (search!=nullptr && search==c3_1?"OK":"FAILED") << std::endl;
 
 	tree->removeNode(c2);
-	std::cout << "\t" << "removeNode: " << (tree->search(3)==nullptr && root->getChildren()[2]->getData()==9?"OK":"FAILED") << std::endl;
+	ArrayList<TreeNode<long>*>* children2 = root->getChildren();
+	std::cout << "\t" << "removeNode: " << ((*children2)[2]->getData()==9?"OK":"FAILED") << std::endl;
 
 	tree->removeBranch(c1);
-	std::cout << "\t" << "removeBranch: " << (tree->search(2)==nullptr && tree->search(8)==nullptr && root->getChildren().size()==2?"OK":"FAILED") << std::endl;
+	std::cout << "\t" << "removeBranch: " << (root->getChildren()->size()==2?"OK":"FAILED") << std::endl;
 
 	delete tree;
 }

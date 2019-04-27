@@ -107,21 +107,21 @@ struct MapEntry {
 }
 
 // Class that implements HASH TABLE data structure on top of ASSOCIATIVE ARRAY abstract data type
-template<typename K, typename V, int (*compareByKey)(const K&, const K&), std::size_t (*hash)(const K&), int (*compareByValue)(const V&, const V&) = comparator<V>>
+template<typename K, typename V, int (*compareByKey)(const K&, const K&) = comparator<K>, std::size_t (*hash)(const K&) = hash<K>, int (*compareByValue)(const V&, const V&) = comparator<V>>
 class HashMap : public Map<K,V> {
 	HashMap()
 	HashMap(const std::size_t& reservedSize)
 }
 
 // Class that implements HASH TABLE iteration on top of MapIterator
-template<typename K, typename V)>
+template<typename K, typename V>
 class HashMapIterator : public MapIterator<K,V> {
 	HashMapIterator(HashTable<MapEntry<K,V>>* hashTable)
 	HashMapIterator(std::size_t total)
 }
 
 // Class that implements "LINKED" HASH TABLE data structure (a HASH TABLE backed by a DOUBLY LINKED LIST to allow predictable iteration order) on top of ASSOCIATIVE ARRAY abstract data type
-template<typename K, typename V, int (*compareByKey)(const K&, const K&), std::size_t (*hash)(const K&), int (*compareByValue)(const V&, const V&) = comparator<V>>
+template<typename K, typename V, int (*compareByKey)(const K&, const K&) = comparator<K>, std::size_t (*hash)(const K&) = hash<K>, int (*compareByValue)(const V&, const V&) = comparator<V>>
 class LinkedHashMap : public Map<K,V> {
 	LinkedHashMap(const std::size_t& reservedSize)
 	LinkedHashMap()
@@ -137,7 +137,7 @@ class LinkedHashMapIterator : public MapIterator<K,V> {
 }
 
 // Class that implements RED BLACK TREE data structure on top of ASSOCIATIVE ARRAY abstract data type
-template<typename K, typename V, int (*compareByKey)(const K&, const K&), int (*compareByValue)(const V&, const V&) = comparator<V>>
+template<typename K, typename V, int (*compareByKey)(const K&, const K&) = comparator<K>, int (*compareByValue)(const V&, const V&) = comparator<V>>
 class TreeMap : public Map<K,V> {
 	TreeMap()
 }
@@ -175,7 +175,7 @@ class Set {
 }
 
 // Class that implements HASH TABLE data structure on top of SET abstract data type
-template<typename T, int (*compare)(const T&,const T&), std::size_t (*hash)(const T&)>
+template<typename T, int (*compare)(const T&,const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class HashSet : public Set<T> {
 	HashSet()
 	HashSet(const std::size_t& reservedSize)
@@ -189,7 +189,7 @@ class HashSetIterator : public SetIterator<T> {
 }
 
 // Class that implements "LINKED" HASH TABLE data structure (a HASH TABLE backed by a DOUBLY LINKED LIST to allow predictable iteration order) on top of SET abstract data type
-template<typename T, int (*compare)(const T&,const T&), std::size_t (*hash)(const T&)>
+template<typename T, int (*compare)(const T&,const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class LinkedHashSet : public Set<T> {
 	LinkedHashSet()
 	LinkedHashSet(const std::size_t& reservedSize)
@@ -204,7 +204,7 @@ class LinkedHashSetIterator : public SetIterator<T> {
 }
 
 // Class that implements RED BLACK TREE data structure on top of SET abstract data type
-template<typename T, int (*compare)(const T&,const T&)>
+template<typename T, int (*compare)(const T&,const T&) = comparator<T>>
 class TreeSet : public Set<T> {
 	TreeSet()
 }
@@ -244,6 +244,29 @@ class Stack: public Container<T> {
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// Class that implements a node in a TREE data structure along with operations it can perform
+template<typename T>
+class TreeNode {
+	TreeNode(const T& data)
+	~TreeNode()
+	void setParent(TreeNode<T>* const& parent)
+	TreeNode<T>*& getParent()
+	void setData(const T& data)
+	const T& getData() const
+	const ArrayList<TreeNode<T>*>*& getChildren()
+	void addChild(TreeNode<T>*& node)
+	void removeChild(TreeNode<T>*& node)
+	void removeChildren()
+	bool isDescendantOf(TreeNode<T>*& node)
+	bool isAncestorOf(TreeNode<T>*& node)
+	TreeNode<T>* getRoot()
+	ArrayList<TreeNode<T>*>* getAncestors()
+	ArrayList<TreeNode<T>*>* getDescendants()
+	std::size_t getSize() const
+	std::size_t getHeight() const
+	std::size_t getDepth() const
+}
+
 // Class that implements operations one can perform on a TREE data structure (abstract data type)
 template<typename T>
 class Tree {
@@ -257,38 +280,8 @@ class Tree {
 	virtual void removeBranch(TreeNode<T>*& node)
 }
 
-// Class that implements a node in a TREE data structure along with operations it can perform
-template<typename T>
-class TreeNode {
-	TreeNode(const T& data)
-	~TreeNode()
-	void setParent(TreeNode<T>* parent)
-	TreeNode<T>*& getParent()
-	void setData(const T& data)
-	const T& getData() const
-	const std::vector<TreeNode<T>*>& getChildren()
-	void addChild(TreeNode<T>*& node)
-	void removeChild(TreeNode<T>*& node)
-	void removeChildren()
-	bool isDescendantOf(TreeNode<T>*& node)
-	bool isAncestorOf(TreeNode<T>*& node) const
-	TreeNode<T>* getRoot()
-	std::vector<TreeNode<T>*> getAncestors()
-	std::vector<TreeNode<T>*> getDescendants() const
-	std::size_t getSize() const
-	std::size_t getHeight() const
-	std::size_t getDepth() const
-}
-
-// Class that specializes TREE data structure with no node values uniqueness guarantee
-template<typename T, int (*comparator)(const T&, const T&) = comparator<T>>
-class NonUniqueTree : public Tree<T> {
-	std::vector<TreeNode<T>*> search(const T& data)
-	bool contains(const T& data) const
-}
-
 // Class that specializes TREE data structure with node value uniqueness guarantee, by virtue of being backed by a HASH TABLE
-template<typename T, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
+template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class UniqueTree : public Tree<T> {
 	TreeNode<T>* search(const T& data)
 	bool contains(const T& data) const
@@ -303,7 +296,7 @@ class TreeNodeVisitor {
 
 // Function that implements pre-order tree iteration
 template<typename T>
-inline void PreOrderTreeIterator(TreeNode<T>* node, TreeNodeVisitor<T>* visitor)
+inline void PreOrderTreeIterator(TreeNode<T>* node, TreeNodeVisitor<T>*  = comparator<Tvisitor)
 
 // Function that implements post-order tree iteration
 template<typename T>

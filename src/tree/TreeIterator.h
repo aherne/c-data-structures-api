@@ -21,17 +21,17 @@ public:
 template<typename T>
 inline void PreOrderTreeIterator(TreeNode<T>* node, TreeNodeVisitor<T>* visitor) {
 	if(!visitor->visit(node)) return;
-	std::vector<TreeNode<T>*> children = node->getChildren();
-	for(auto it = children.begin(); it!=children.end(); ++it) {
-		PreOrderTreeIterator(*it, visitor);
+	ArrayList<TreeNode<T>*>* children = node->getChildren();
+	for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
+		PreOrderTreeIterator(*(*it), visitor);
 	}
 }
 
 template<typename T>
 inline void PostOrderTreeIterator(TreeNode<T>* node, TreeNodeVisitor<T>* visitor) {
-	std::vector<TreeNode<T>*> children = node->getChildren();
-	for(auto it = children.begin(); it!=children.end(); ++it) {
-		PreOrderTreeIterator(*it, visitor);
+	ArrayList<TreeNode<T>*>* children = node->getChildren();
+	for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
+		PreOrderTreeIterator(*(*it), visitor);
 	}
 	if(!visitor->visit(node)) return;
 }
@@ -43,9 +43,9 @@ inline void LevelOrderTreeIterator(TreeNode<T>* root, TreeNodeVisitor<T>* visito
 	while(!q.isEmpty()) {
 		TreeNode<T>* node = q.pop();
 		if(!visitor->visit(node)) return;
-		std::vector<TreeNode<T>*> children = node->getChildren();
-		for(auto it = children.begin(); it!=children.end(); ++it) {
-			q.push(*it);
+		ArrayList<TreeNode<T>*>* children = node->getChildren();
+		for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
+			q.push(*(*it));
 		}
 	}
 }
@@ -57,10 +57,10 @@ inline void LevelOrderTreeIterator(TreeNode<T>* root, std::size_t depth, TreeNod
 	while(!q.isEmpty()) {
 		TreeNode<T>* node = q.pop();
 		visitor->visit(node);
-		std::vector<TreeNode<T>*> children = node->getChildren();
-		for(auto it = children.begin(); it!=children.end(); ++it) {
-			if((*it)->getDepth() <= depth) {
-				q.push(*it);
+		ArrayList<TreeNode<T>*>* children = node->getChildren();
+		for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
+			if((*(*it))->getDepth() <= depth) {
+				q.push(*(*it));
 			}
 		}
 	}

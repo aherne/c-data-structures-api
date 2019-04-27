@@ -50,9 +50,9 @@ class Tree {
 			parent->removeChild(node);
 
 			// migrate my children to parent
-			std::vector<TreeNode<T>*> children = node->getChildren();
-			for(auto it = children.begin(); it!=children.end(); ++it) {
-				parent->addChild(*it);
+			ArrayList<TreeNode<T>*>* children = node->getChildren();
+			for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
+				parent->addChild(*(*it));
 			}
 
 			// empty parent & children
