@@ -13,7 +13,7 @@
 template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class UndirectedGraph : public Graph<T,compare,hash> {
 	public:
-		void removeVertex(GraphVertex<T, compare, hash>*& vertex) {
+		void removeVertex(GraphVertex<T, compare, hash>* const& vertex) {
 			// remove edges that connect to vertex
 			HashSet<GraphVertex<T, compare, hash>*, compareVertex<T, compare, hash>, hashVertex<T, compare, hash>>* edges = vertex->getEdges();
 			for(auto it = edges->begin(); *it!=*(edges->end()); ++(*it)) {
@@ -24,12 +24,12 @@ class UndirectedGraph : public Graph<T,compare,hash> {
 			delete vertex;
 		}
 
-		void createEdge(GraphVertex<T, compare, hash>*& left, GraphVertex<T, compare, hash>*& right) {
+		void createEdge(GraphVertex<T, compare, hash>* const& left, GraphVertex<T, compare, hash>* const& right) {
 			left->addEdge(right);
 			right->addEdge(left);
 		}
 
-		void removeEdge(GraphVertex<T, compare, hash>*& left, GraphVertex<T, compare, hash>*& right) {
+		void removeEdge(GraphVertex<T, compare, hash>* const& left, GraphVertex<T, compare, hash>* const& right) {
 			left->removeEdge(right);
 			right->removeEdge(left);
 		}

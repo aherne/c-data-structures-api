@@ -1,23 +1,32 @@
 // Interface that defines operations one can perform on a CONTAINER abstract data type
 template<typename T>
 class Container {
+	// Deletes container elements from memory
 	virtual ~Container()
+	// Clears container of all elements
 	virtual void clear() = 0
+	// Gets number of elements in container
 	virtual const std::size_t& size() const = 0
+	// Checks if container is empty of elements
 	virtual bool isEmpty() const = 0
+	// Gets earliest (if Queue) / latest (if Stack) element from container 
 	virtual const T& peek() const = 0
+	// Removes earliest (if Queue) / latest (if Stack) element from container and returns its value
 	virtual T pop() = 0
+	// Adds element to container
 	virtual void push(const T& item) = 0
 }
 
 // Class that implements QUEUE data structure on top of CONTAINER abstract data type
 template<typename T>
 class Queue: public Container<T> {
+	// Constructs a queue
 	Queue()
 }
 
 // Class that implements STACK data structure on top of CONTAINER abstract data type
 template<typename T>
 class Stack: public Container<T> {
+	// Constructs a stack
 	Stack()
 }

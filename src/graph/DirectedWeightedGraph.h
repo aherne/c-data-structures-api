@@ -13,7 +13,7 @@
 template<typename T,typename W, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class DirectedWeightedGraph : public WeightedGraph<T,W,compare,hash> {
 public:
-	void removeVertex(WeightedGraphVertex<T,W,compare,hash>*& vertex) {
+	void removeVertex(WeightedGraphVertex<T,W,compare,hash>* const& vertex) {
 		for(auto it = this->vertexes.begin(); *it!=*(this->vertexes.end()); ++(*it)) {
 			(*(*it))->removeEdge(vertex);
 		}
@@ -22,11 +22,11 @@ public:
 		delete vertex;
 	}
 
-	void createEdge(WeightedGraphVertex<T, W,compare, hash>*& left, WeightedGraphVertex<T, W,compare, hash>*& right, const W& weight) {
+	void createEdge(WeightedGraphVertex<T, W,compare, hash>* const& left, WeightedGraphVertex<T, W,compare, hash>* const& right, const W& weight) {
 		left->addEdge(right,weight);
 	}
 
-	void removeEdge(WeightedGraphVertex<T, W,compare, hash>*& left, WeightedGraphVertex<T, W,compare, hash>*& right) {
+	void removeEdge(WeightedGraphVertex<T, W,compare, hash>* const& left, WeightedGraphVertex<T, W,compare, hash>* const& right) {
 		left->removeEdge(right);
 	}
 };

@@ -11,7 +11,7 @@
 #include <stdexcept>
 #include <algorithm>
 #include <utility>
-#include "../LinkedHashTable.h"
+#include "../utilities/LinkedHashTable.h"
 #include "Map.h"
 #include "../list/DoublyLinkedListSorter.h"
 #include "../Comparator.h"

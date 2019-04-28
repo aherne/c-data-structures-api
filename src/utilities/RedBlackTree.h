@@ -48,7 +48,7 @@ public:
 		return findNode(value)!=nullptr;
 	}
 
-	const VALUE* getNodeValue(const VALUE& value) const {
+	VALUE* getNodeValue(const VALUE& value) const {
 		RedBlackTreeNode<VALUE>* node = findNode(value);
 		if(node==nullptr) throw std::out_of_range("Element not found!");
 		return &(node->data);
@@ -101,14 +101,12 @@ public:
 	}
 
 	bool hasMatches(const VALUE& value, int (*custom_comparator)(const VALUE&,const VALUE&)) {
-		if(custom_comparator == nullptr) return false;
 		ArrayList<RedBlackTreeNode<VALUE>*> results;
 		findNodes(root, value, custom_comparator, &results);
 		return results.size()>0;
 	}
 
 	void deleteMatches(const VALUE& value, int (*custom_comparator)(const VALUE&,const VALUE&)) {
-		if(custom_comparator == nullptr) return;
 		ArrayList<RedBlackTreeNode<VALUE>*> results;
 		findNodes(root, value, custom_comparator, &results);
 		if(results.size()==0) throw std::out_of_range("No match found!");

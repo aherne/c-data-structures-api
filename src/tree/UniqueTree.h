@@ -9,7 +9,7 @@
 #define SRC_TREE_UNIQUETREE_H_
 
 #include "Tree.h"
-#include "../HashTable.h"
+#include "../set/HashSet.h"
 #include "TreeUtilities.h"
 #include "../Comparator.h"
 #include "../Hashing.h"
@@ -21,24 +21,22 @@ class UniqueTree : public Tree<T> {
 		using Tree<T>::Tree;
 
 		UniqueTree(const T& data):Tree<T>(data) {
-			hashTable = new HashTable<TreeNode<T>*>(compareTreeNode<T, compare>, hashTreeNode<T, hash>);
-			hashTable->set(this->root);
+			nodes.add(this->root);
 		}
 
 		virtual ~UniqueTree() {
-			delete hashTable;
 		}
 
 		TreeNode<T>* search(const T& data) {
 			TreeNode<T> temp(data);
-			if(!hashTable->contains(&temp)) return nullptr;
-			return *(hashTable->get(&temp));
+			if(!nodes.contains(&temp)) return nullptr;
+			return *(nodes.find(&temp));
 		}
 
 		// tested
 		bool contains(const T& data) const {
 			TreeNode<T> temp(data);
-			return hashTable->contains(&temp);
+			return nodes.contains(&temp);
 		}
 
 		TreeNode<T>* createNode(const T& data, TreeNode<T>*& parent) {
@@ -46,7 +44,7 @@ class UniqueTree : public Tree<T> {
 				throw std::logic_error("Node with that value already exists!");
 			}
 			TreeNode<T>* newNode = Tree<T>::createNode(data, parent);
-			hashTable->set(newNode);
+			nodes.add(newNode);
 			return newNode;
 		}
 
@@ -54,7 +52,7 @@ class UniqueTree : public Tree<T> {
 			if(node == this->root) throw std::logic_error("Root cannot be removed without deallocating the whole tree!");
 
 			// empty parent & children
-			hashTable->remove(node);
+			nodes.remove(node);
 
 			// deallocates branch
 			Tree<T>::removeNode(node);
@@ -63,19 +61,19 @@ class UniqueTree : public Tree<T> {
 		void removeBranch(TreeNode<T>*& node) {
 			if(node == this->root) throw std::logic_error("Root cannot be removed without deallocating the whole tree!");
 
-			// removes each descendant from hashtable
+			// removes each descendant from nodes
 			ArrayList<TreeNode<T>*>* children = node->getDescendants();
 			for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
-				hashTable->remove(*(*it));
+				nodes.remove(*(*it));
 			}
-			hashTable->remove(node);
+			nodes.remove(node);
 			delete children;
 
 			// deallocates branch
 			Tree<T>::removeBranch(node);
 		}
 	private:
-		HashTable<TreeNode<T>*>* hashTable;
+		HashSet<TreeNode<T>*, compareTreeNode<T, compare>, hashTreeNode<T, hash>> nodes;
 };
 
 

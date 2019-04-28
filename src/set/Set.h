@@ -39,6 +39,7 @@ public:
 	virtual const std::size_t& size() const = 0;
 	virtual void add(const T& value) = 0;
 	virtual void remove(const T& value) = 0;
+	virtual T* find(const T& value) = 0;
 	virtual SetIterator<T>* begin() = 0;
 	virtual SetIterator<T>* end() = 0;
 };

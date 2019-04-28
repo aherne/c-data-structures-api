@@ -48,19 +48,19 @@ class GraphVertex {
 			return this->data;
 		}
 
-		HashSet<GraphVertex<T, compare, hash>*, compareVertex<T, compare, hash>, hashVertex<T, compare, hash>>*& getEdges() {
+		HashSet<GraphVertex<T, compare, hash>*, compareVertex<T, compare, hash>, hashVertex<T, compare, hash>>* const& getEdges() {
 			return edges;
 		}
 
-		bool isEdge(GraphVertex<T, compare, hash>*& vertex) const {
+		bool isEdge(GraphVertex<T, compare, hash>* const& vertex) const {
 			return edges->contains(vertex);
 		}
 
-		void addEdge(GraphVertex<T, compare, hash>* vertex) {
+		void addEdge(GraphVertex<T, compare, hash>* const& vertex) {
 			edges->add(vertex);
 		}
 
-		void removeEdge(GraphVertex<T, compare, hash>* vertex) {
+		void removeEdge(GraphVertex<T, compare, hash>* const& vertex) {
 			if(edges->contains(vertex)) {
 				edges->remove(vertex);
 			}

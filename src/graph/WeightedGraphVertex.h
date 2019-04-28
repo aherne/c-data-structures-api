@@ -48,27 +48,27 @@ class WeightedGraphVertex {
 			return this->data;
 		}
 
-		HashMap<WeightedGraphVertex<T, W, compare, hash>*, W, compareWeightedVertex<T, W, compare, hash>, hashWeightedVertex<T, W, compare, hash>>*& getEdges() {
+		HashMap<WeightedGraphVertex<T, W, compare, hash>*, W, compareWeightedVertex<T, W, compare, hash>, hashWeightedVertex<T, W, compare, hash>>* const& getEdges() {
 			return edges;
 		}
 
-		bool isEdge(WeightedGraphVertex<T,W,compare,hash>*& vertex) const {
+		bool isEdge(WeightedGraphVertex<T,W,compare,hash>* const& vertex) const {
 			return edges->containsKey(vertex);
 		}
 
-		const W& getEdgeWeight(WeightedGraphVertex<T,W,compare,hash>*& vertex) const {
+		const W& getEdgeWeight(WeightedGraphVertex<T,W,compare,hash>* const& vertex) const {
 			return edges->get(vertex);
 		}
 
-		void setEdgeWeight(WeightedGraphVertex<T,W,compare,hash>*& vertex, const W& weight) {
+		void setEdgeWeight(WeightedGraphVertex<T,W,compare,hash>* const& vertex, const W& weight) {
 			edges->set(vertex, weight);
 		}
 
-		void addEdge(WeightedGraphVertex<T,W,compare,hash>*& vertex, const W& weight) {
+		void addEdge(WeightedGraphVertex<T,W,compare,hash>* const& vertex, const W& weight) {
 			edges->set(vertex, weight);
 		}
 
-		void removeEdge(WeightedGraphVertex<T,W,compare,hash>*& vertex) {
+		void removeEdge(WeightedGraphVertex<T,W,compare,hash>* const& vertex) {
 			if(edges->containsKey(vertex)) {
 				edges->removeKey(vertex);
 			}

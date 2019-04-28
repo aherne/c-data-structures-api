@@ -32,13 +32,13 @@ class Graph {
 			return temp;
 		}
 
-		virtual void removeVertex(GraphVertex<T, compare, hash>*& vertex) =0;
+		virtual void removeVertex(GraphVertex<T, compare, hash>* const& vertex) =0;
 
-		virtual void createEdge(GraphVertex<T, compare, hash>*& left, GraphVertex<T, compare, hash>*& right) =0;
+		virtual void createEdge(GraphVertex<T, compare, hash>* const& left, GraphVertex<T, compare, hash>* const& right) =0;
 
-		virtual void removeEdge(GraphVertex<T, compare, hash>*& left, GraphVertex<T, compare, hash>*& right) =0;
+		virtual void removeEdge(GraphVertex<T, compare, hash>* const& left, GraphVertex<T, compare, hash>* const& right) =0;
 
-		bool isPath(GraphVertex<T, compare, hash>*& left, GraphVertex<T, compare, hash>*& right) {
+		bool isPath(GraphVertex<T, compare, hash>* const& left, GraphVertex<T, compare, hash>* const& right) {
 			GraphVertexVisitor__IsPath<T, compare, hash> gvvip(left,right);
 			return gvvip.isFound();
 		}

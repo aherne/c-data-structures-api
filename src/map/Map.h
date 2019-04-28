@@ -33,7 +33,7 @@ template<typename KEY, typename VALUE>
 class Map {
 public:
 	virtual ~Map(){}
-
+	virtual const VALUE& operator[](const KEY& index) const=0;
 	virtual void clear()=0;
 	virtual bool containsKey(const KEY&) const=0;
 	virtual bool containsValue(const VALUE&) const=0;

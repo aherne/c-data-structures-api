@@ -1,72 +1,105 @@
 // Interface that defines operations one can perform on a LIST abstract data type
 template<typename T>
 class List {
+	// Deletes elements inside from heap memory
 	virtual ~List()
-	virtual const T& operator[](const size_t& index) const = 0
+	// Gets element in list by position
+	virtual const T& operator[](const std::size_t& index) const = 0
+	// Clears list of all elements
 	virtual void clear() = 0
+	// Adds element to end of list
 	virtual void addToTop(const T& value) = 0
+	// Adds element to start of list
 	virtual void addToBottom(const T& value) = 0
-	virtual const T& get(const size_t& index) const = 0
-	virtual void set(const size_t& index, const T& value) = 0
-	virtual void emplace(const size_t& index, const T& value) = 0
+	// Gets element in list by position 
+	virtual const T& get(const std::size_t& index) const = 0
+	// Sets value of element in list by position
+	virtual void set(const std::size_t& index, const T& value) = 0
+	// Appends element to list after position
+	virtual void emplace(const std::size_t& index, const T& value) = 0
+	// Checks if list is empty
 	virtual bool isEmpty() const = 0
+	// Gets number of elements in list
 	virtual const std::size_t& size() const = 0
-	virtual bool containsIndex(const size_t& index) const = 0
+	// Checks if list contains a position
+	virtual bool containsIndex(const std::size_t& index) const = 0
+	// Checks if list contains a value
 	virtual bool containsValue(const T& value) const = 0
-	virtual void removeIndex(const size_t& index) = 0
+	// Removes element in list by position
+	virtual void removeIndex(const std::size_t& index) = 0
+	// Removes element in list by value
 	virtual void removeValue(const T& value) = 0
+	// Returns an iterator to the first element of list 
 	virtual ListIterator<T>* begin() = 0
+	// Returns an iterator to the element following last element of list
 	virtual ListIterator<T>* end() = 0
 }
 
-// Abstract class that defines iteration prototype of a LIST abstract data type
+// Forward iterator prototype for LIST abstract data type, hiding data structure on top
 template<typename T>
 class ListIterator {
+	// virtual destructor used when iterator is deallocated
 	virtual ~ListIterator()
+	// dereferencing operator required when accessing current element
 	virtual const T& operator*() = 0
+	// advance operator required when iterating
 	virtual void operator++() = 0
+	// difference operator required when iterating
 	bool operator!=(const ListIterator<T>& it)
 }
 
 // Class that implements DYNAMIC ARRAY data structure on top of LIST abstract data type
 template<typename T, int (*comparator)(const T&, const T&) = comparator<T>>
 class ArrayList: public List<T> {
+	// constructs a DYNAMIC ARRAY of unknown initial size
 	ArrayList()
+	// constructs a DYNAMIC ARRAY of known size
 	ArrayList(const std::size_t& reservedSize)
+	// sorts elements inside list according to comparator
 	void sort(bool (*comparator) (const T&, const T&))
 }
 
-// Class that implements DYNAMIC ARRAY iteration on top of ListIterator
+// Forward iterator for DYNAMIC ARRAY data structure built on top of LIST iterator prototype
 template<typename T>
 class ArrayListIterator : public ListIterator<T> {
+	// constructs an iterator at start position when "begin" is called
 	ArrayListIterator(ArrayList<T>* list)
+	// constructs an iterator at end position when "end" is called
 	ArrayListIterator(std::size_t total)
 }
 
 // Class that implements DOUBLY LINKED LIST data structure on top of LIST abstract data type
 template<typename T, int (*comparator)(const T&, const T&) = comparator<T>>
 class DoublyLinkedList: public List<T> {
+	// constructs a DOUBLY LINKED LIST
 	DoublyLinkedList()
+	// sorts elements inside list according to comparator
 	void sort(bool (*comparator) (const T&, const T&))
 }
 
-// Class that implements DOUBLY LINKED LIST iteration on top of ListIterator
+// Forward iterator for DOUBLY LINKED LIST data structure built on top of LIST iterator prototype
 template<typename T>
 class DoublyLinkedListIterator : public ListIterator<T>{
+	// constructs an iterator at start position when "begin" is called
 	DoublyLinkedListIterator(DoublyLinkedList<T>* list)
+	// constructs an iterator at end position when "end" is called
 	DoublyLinkedListIterator(std::size_t total)
 }
 
 // Class that implements LINKED LIST data structure on top of LIST abstract data type
 template<typename T, int (*comparator)(const T&, const T&) = comparator<T>>
 class LinkedList: public List<T> {
+	// constructs a LINKED LIST
 	LinkedList()
+	// sorts elements inside list according to comparator
 	void sort(bool (*comparator) (const T&, const T&))
 }
 
-// Class that implements LINKED LIST iteration on top of ListIterator
+// Forward iterator for LINKED LIST data structure built on top of LIST iterator prototype
 template<typename T>
 class LinkedListIterator : public ListIterator<T>{
+	// constructs an iterator at start position when "begin" is called
 	LinkedListIterator(LinkedList<T>* list)
+	// constructs an iterator at end position when "end" is called
 	LinkedListIterator(std::size_t total)
 }

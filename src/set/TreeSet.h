@@ -8,7 +8,7 @@
 #ifndef SET_TREESET_H_
 #define SET_TREESET_H_
 
-#include "../tree/RedBlackTree.h"
+#include "../utilities/RedBlackTree.h"
 #include "Set.h"
 #include "../Comparator.h"
 
@@ -66,6 +66,10 @@ public:
 
 	void remove(const T& value) {
 		tree->deleteNode(value);
+	}
+
+	T* find(const T& value) {
+		return tree->getNodeValue(value);
 	}
 
 	SetIterator<T>* begin(){

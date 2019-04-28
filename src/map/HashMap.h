@@ -8,7 +8,7 @@
 #ifndef SRC_HASHMAP_H_
 #define SRC_HASHMAP_H_
 
-#include "../HashTable.h"
+#include "../utilities/HashTable.h"
 #include "Map.h"
 #include "../Comparator.h"
 #include "../Hashing.h"

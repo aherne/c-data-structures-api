@@ -1,65 +1,93 @@
 // Abstract class that defines iteration prototype of a SET abstract data type
 template<typename T>
 class SetIterator {
+	// constructs iterator, setting offset
 	SetIterator()
+	// virtual destructor used when iterator is deallocated
 	virtual ~SetIterator()
+	// dereferencing operator required when accessing current element
 	virtual const T& operator*() = 0
+	// advance operator required when iterating
 	virtual void operator++() = 0
+	// difference operator required when iterating
 	bool operator!=(const SetIterator<T>& it)
 }
 
-// Interface that defines operations one can perform on a SET abstract data type
+// Forward iterator prototype for SET abstract data type, hiding data structure on top
 template<typename T>
 class Set {
+	// Deletes elements inside from heap memory
 	virtual ~Set()
+	// Clears SET of all elements
 	virtual void clear() = 0
+	// Checks if SET contains value
 	virtual bool contains(const T& value) const = 0
+	// Checks if SET is empty of values
 	virtual bool isEmpty() const = 0
+	// Gets number of elements in set
 	virtual const std::size_t& size() const = 0
+	// Adds value to set
 	virtual void add(const T& value) = 0
+	// Removes value from set
 	virtual void remove(const T& value) = 0
+	// gets address of set element pointed by value
+	T* find(const T& value)
+	// Returns an iterator to the first element of set 
 	virtual SetIterator<T>* begin() = 0
+	// Returns an iterator to the element following last element of set
 	virtual SetIterator<T>* end() = 0
 }
 
 // Class that implements HASH TABLE data structure on top of SET abstract data type
 template<typename T, int (*compare)(const T&,const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class HashSet : public Set<T> {
+	// constructs a HASH TABLE of unknown initial size
 	HashSet()
+	// constructs a HASH TABLE of known size
 	HashSet(const std::size_t& reservedSize)
 }
 
-// Class that implements HASH TABLE iteration on top of SetIterator
+// Forward iterator for HASH TABLE data structure built on top of SET iterator prototype
 template<typename T>
 class HashSetIterator : public SetIterator<T> {
+	// constructs an iterator at start position when "begin" is called
 	HashSetIterator(HashTable<T>* hashTable)
+	// constructs an iterator at end position when "end" is called
 	HashSetIterator(std::size_t total)
 }
 
 // Class that implements "LINKED" HASH TABLE data structure (a HASH TABLE backed by a DOUBLY LINKED LIST to allow predictable iteration order) on top of SET abstract data type
 template<typename T, int (*compare)(const T&,const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class LinkedHashSet : public Set<T> {
+	// constructs a "LINKED" HASH TABLE of unknown initial size
 	LinkedHashSet()
+	// constructs a "LINKED" HASH TABLE of known size
 	LinkedHashSet(const std::size_t& reservedSize)
+	// sorts elements inside by comparator
 	void sort(bool (*comparator) (const T&, const T&))
 }
 
-// Class that implements "LINKED" HASH TABLE iteration on top of SetIterator
+// Forward iterator for "LINKED" HASH TABLE data structure built on top of SET iterator prototype
 template<typename T>
 class LinkedHashSetIterator : public SetIterator<T> {
+	// constructs an iterator at start position when "begin" is called
 	LinkedHashSetIterator(LinkedHashTable<T>* set)
+	// constructs an iterator at end position when "end" is called
 	LinkedHashSetIterator(std::size_t total)
 }
 
 // Class that implements RED BLACK TREE data structure on top of SET abstract data type
 template<typename T, int (*compare)(const T&,const T&) = comparator<T>>
 class TreeSet : public Set<T> {
+	// constructs a RED BLACK TREE of unknown initial size
 	TreeSet()
 }
 
-// Class that implements RED BLACK TREE iteration on top of SetIterator
+// Forward iterator for RED BLACK TREE data structure built on top of SET iterator prototype
 template<typename T>
 class TreeSetIterator : public SetIterator<T> {
+	// constructs an iterator at start position when "begin" is called
 	TreeSetIterator(RedBlackTree<T>* tree)
+	// constructs an iterator at end position when "end" is called
 	TreeSetIterator(std::size_t total)
 }

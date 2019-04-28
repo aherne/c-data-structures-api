@@ -8,7 +8,7 @@
 #ifndef SRC_LINKEDHASHSET_H_
 #define SRC_LINKEDHASHSET_H_
 
-#include "../LinkedHashTable.h"
+#include "../utilities/LinkedHashTable.h"
 #include <algorithm>
 #include "Set.h"
 #include "../list/DoublyLinkedListSorter.h"
@@ -90,6 +90,10 @@ public:
 
 	void remove(const T& value){
 		hashTable->remove(value);
+	}
+
+	T* find(const T& value) {
+		return hashTable->get(value);
 	}
 
 	SetIterator<T>* begin() {

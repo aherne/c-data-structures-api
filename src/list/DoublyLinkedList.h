@@ -59,7 +59,7 @@ class DoublyLinkedList: public List<T> {
 			empty();
 		}
 
-		const T& operator[](const size_t& index) const {
+		const T& operator[](const std::size_t& index) const {
 			traverse(index);
 
 			return currentItem->value;
@@ -108,7 +108,7 @@ class DoublyLinkedList: public List<T> {
 			++ count;
 		}
 
-		const T& get(const size_t& index) const {
+		const T& get(const std::size_t& index) const {
 			if(index>=count) throw std::out_of_range("Index must already exist!");
 
 			traverse(index);
@@ -116,7 +116,7 @@ class DoublyLinkedList: public List<T> {
 			return currentItem->value;
 		}
 
-		void set(const size_t& index, const T& value) {
+		void set(const std::size_t& index, const T& value) {
 			if(index>=count) throw std::out_of_range("Index must already exist!");
 
 			traverse(index);
@@ -124,7 +124,7 @@ class DoublyLinkedList: public List<T> {
 			currentItem->value = value;
 		}
 
-		void emplace(const size_t& index, const T& value) {
+		void emplace(const std::size_t& index, const T& value) {
 			if(index>count) throw std::out_of_range("Index cannot exceed list length!");
 
 			// perform full traversal
@@ -156,7 +156,7 @@ class DoublyLinkedList: public List<T> {
 			return count;
 		}
 
-		bool containsIndex(const size_t& index) const  {
+		bool containsIndex(const std::size_t& index) const  {
 			return (index>=count?false:true);
 		}
 
@@ -171,7 +171,7 @@ class DoublyLinkedList: public List<T> {
 			return false;
 		}
 
-		void removeIndex(const size_t& index) {
+		void removeIndex(const std::size_t& index) {
 			if(index>=count) throw std::out_of_range("Index must already exist!");
 
 			if(index==0) {

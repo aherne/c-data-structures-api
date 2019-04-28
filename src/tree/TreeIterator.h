@@ -56,7 +56,7 @@ inline void LevelOrderTreeIterator(TreeNode<T>* root, std::size_t depth, TreeNod
 	q.push(root);
 	while(!q.isEmpty()) {
 		TreeNode<T>* node = q.pop();
-		visitor->visit(node);
+		if(!visitor->visit(node)) return;
 		ArrayList<TreeNode<T>*>* children = node->getChildren();
 		for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
 			if((*(*it))->getDepth() <= depth) {

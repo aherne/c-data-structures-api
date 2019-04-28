@@ -94,7 +94,7 @@ public:
 		return count;
 	}
 
-	const VALUE* get(const VALUE& value) const {
+	VALUE* get(const VALUE& value) const {
 		std::size_t hashValue = hashingFunc(value);
 		int bucketNumber = getBucketNumber(hashValue);
 

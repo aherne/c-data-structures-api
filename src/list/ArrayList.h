@@ -54,7 +54,7 @@ public:
 		free(contents);
 	}
 
-	const T& operator[](const size_t& index) const {
+	const T& operator[](const std::size_t& index) const {
 		return contents[index];
 	}
 
@@ -92,17 +92,17 @@ public:
 		++ count;
 	}
 
-	const T& get(const size_t& index) const {
+	const T& get(const std::size_t& index) const {
 		if(index>=count) throw std::out_of_range("Index must already exist!");
 		return contents[index];
 	}
 
-	void set(const size_t& index, const T& value) {
+	void set(const std::size_t& index, const T& value) {
 		if(index>=count) throw std::out_of_range("Index must already exist!");
 		contents[index] = value;
 	}
 
-	void emplace(const size_t& index, const T& value) {
+	void emplace(const std::size_t& index, const T& value) {
 		if(index>count) throw std::out_of_range("Index cannot exceed list length!");
 		if(count == maximum_size) {
 			resize();
@@ -122,7 +122,7 @@ public:
 		return count;
 	}
 
-	bool containsIndex(const size_t& index) const {
+	bool containsIndex(const std::size_t& index) const {
 		return (index>=count?false:true);
 	}
 
@@ -135,7 +135,7 @@ public:
 		return false;
 	}
 
-	void removeIndex(const size_t& index) {
+	void removeIndex(const std::size_t& index) {
 		if(index>=count) throw std::out_of_range("Index must already exist!");
 		for(std::size_t j=index; j< count; ++j) {
 			if((j+1)!=count) {

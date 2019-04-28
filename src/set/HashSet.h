@@ -8,7 +8,7 @@
 #ifndef SET_HASHSET_H_
 #define SET_HASHSET_H_
 
-#include "../HashTable.h"
+#include "../utilities/HashTable.h"
 #include "Set.h"
 #include "../Comparator.h"
 #include "../Hashing.h"

@@ -33,13 +33,13 @@ public:
 		return temp;
 	}
 
-	virtual void removeVertex(WeightedGraphVertex<T,W,compare,hash>*& vertex) =0;
+	virtual void removeVertex(WeightedGraphVertex<T,W,compare,hash>* const& vertex) =0;
 
-	virtual void createEdge(WeightedGraphVertex<T,W, compare, hash>*& left, WeightedGraphVertex<T,W, compare, hash>*& right, const W& weight) =0;
+	virtual void createEdge(WeightedGraphVertex<T,W, compare, hash>* const& left, WeightedGraphVertex<T,W, compare, hash>* const& right, const W& weight) =0;
 
-	virtual void removeEdge(WeightedGraphVertex<T,W, compare, hash>*& left, WeightedGraphVertex<T,W, compare, hash>*& right) =0;
+	virtual void removeEdge(WeightedGraphVertex<T,W, compare, hash>* const& left, WeightedGraphVertex<T,W, compare, hash>* const& right) =0;
 
-	bool isPath(WeightedGraphVertex<T,W, compare, hash>*& left, WeightedGraphVertex<T,W, compare, hash>*& right) {
+	bool isPath(WeightedGraphVertex<T,W, compare, hash>*& left, WeightedGraphVertex<T,W, compare, hash>* const& right) {
 		WeightedGraphVertexVisitor__IsPath<T, W, compare, hash> gvvip(left,right);
 		return gvvip.isFound();
 	}

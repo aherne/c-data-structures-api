@@ -1,29 +1,48 @@
 // Defines logic of a graph vertex and its adjacent weighted edges saved in a HASH MAP data structure
 template<typename T, typename W, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class WeightedGraphVertex {
+	// Creates a vertex by value inside
 	WeightedGraphVertex(const T& data)
+	// Clears all edges it points to from heap memory
 	~WeightedGraphVertex()
+	// Sets value inside vertex
 	void setData(const T& data)
+	// Gets value inside vertex
 	const T& getData() const
-	HashMap<WeightedGraphVertex<T, W, compare, hash>*, W, compareWeightedVertex<T, W, compare, hash>, hashWeightedVertex<T, W, compare, hash>>*& getEdges()
-	bool isEdge(WeightedGraphVertex<T,W,compare,hash>*& vertex) const
-	const W& getEdgeWeight(WeightedGraphVertex<T,W,compare,hash>*& vertex) const
-	void setEdgeWeight(WeightedGraphVertex<T,W,compare,hash>*& vertex, const W& weight)
-	void addEdge(WeightedGraphVertex<T,W,compare,hash>*& vertex, const W& weight)
-	void removeEdge(WeightedGraphVertex<T,W,compare,hash>*& vertex)
+	// Gets all edges current vertex points to
+	HashMap<WeightedGraphVertex<T, W, compare, hash>*, W, compareWeightedVertex<T, W, compare, hash>, hashWeightedVertex<T, W, compare, hash>>* const& getEdges()
+	// Checks if current vertex has an edge with that of input
+	bool isEdge(WeightedGraphVertex<T,W,compare,hash>* const& vertex) const
+	// Gets weight of edge between current vertex and that of input
+	const W& getEdgeWeight(WeightedGraphVertex<T,W,compare,hash>* const& vertex) const
+	// Sets weight of edge between current vertex and that of input
+	void setEdgeWeight(WeightedGraphVertex<T,W,compare,hash>* const& vertex, const W& weight)
+	// Creates an edge between current vertex and that of input
+	void addEdge(WeightedGraphVertex<T,W,compare,hash>* const& vertex, const W& weight)
+	// Removes edge between current vertex and that of input
+	void removeEdge(WeightedGraphVertex<T,W,compare,hash>* const& vertex)
 }
 
-// Abstract class that defines operations one can perform on a WEIGHTED GRAPH abstract data type
+// Abstract class that defines operations one can perform on a WEIGHTED GRAPH abstract data type where vertexes hold unique values
 template<typename T,typename W, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class WeightedGraph {
+	// Clears all data allocated in heap memory
 	virtual ~WeightedGraph()
+	// Creates vertex and adds it to graph
 	virtual WeightedGraphVertex<T,W,compare,hash>* createVertex(const T& data)
-	virtual void removeVertex(WeightedGraphVertex<T,W,compare,hash>*& vertex) = 0
-	virtual void createEdge(WeightedGraphVertex<T,W, compare, hash>*& left, WeightedGraphVertex<T,W, compare, hash>*& right, const W& weight) = 0
-	virtual void removeEdge(WeightedGraphVertex<T,W, compare, hash>*& left, WeightedGraphVertex<T,W, compare, hash>*& right) = 0
-	bool isPath(WeightedGraphVertex<T,W, compare, hash>*& left, WeightedGraphVertex<T,W, compare, hash>*& right)
+	// Removes vertex from graph
+	virtual void removeVertex(WeightedGraphVertex<T,W,compare,hash>* const& vertex) = 0
+	// Creates edge between vertexes
+	virtual void createEdge(WeightedGraphVertex<T,W, compare, hash>* const& left, WeightedGraphVertex<T,W, compare, hash>* const& right, const W& weight) = 0
+	// Removes edge between vertexes
+	virtual void removeEdge(WeightedGraphVertex<T,W, compare, hash>* const& left, WeightedGraphVertex<T,W, compare, hash>* const& right) = 0
+	// Checks if there is a path of edges between vertexes
+	bool isPath(WeightedGraphVertex<T,W, compare, hash>* const& left, WeightedGraphVertex<T,W, compare, hash>* const& right)
+	// Gets number of vertexes in graph
 	std::size_t getSize() const
+	// Checks if graph contains a vertex by value
 	bool contains(const T& data) const
+	// Searches graph for a vertex by value
 	WeightedGraphVertex<T,W,compare,hash>* search(const T& data)
 }
 
@@ -40,16 +59,22 @@ class UndirectedWeightedGraph : public WeightedGraph<T,W,compare,hash> {
 // Abstract class implementing blueprints for vertex visitation during breadth-first-search WEIGHTED GRAPH traversal
 template<typename T, typename W, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class BFS_WeightedGraphVertexVisitor {
+	// Deallocates all data from heap memory
 	virtual ~BFS_WeightedGraphVertexVisitor(){}
+	// Visits a vertex during iteration. If false is returned, iteration stops!
 	virtual bool visit(WeightedGraphVertex<T,W,compare,hash>* const& element, WeightedGraphVertex<T,W,compare,hash>* const& parent) = 0
+	// Checks if a vertex has already been visited
 	virtual bool isVisited(WeightedGraphVertex<T,W,compare,hash>* const& element) = 0
 };
 
 // Abstract class implementing blueprints for vertex visitation during depth-first-search WEIGHTED GRAPH traversal
 template<typename T, typename W, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class DFS_WeightedGraphVertexVisitor {
+	// Deallocates all data from heap memory
 	virtual ~DFS_WeightedGraphVertexVisitor(){}
+	// Visits a vertex during iteration. If false is returned, iteration stops!
 	virtual bool visit(WeightedGraphVertex<T,W,compare,hash>* const& element) = 0
+	// Checks if a vertex has already been visited
 	virtual bool isVisited(WeightedGraphVertex<T,W,compare,hash>* const& element) = 0
 }
 
