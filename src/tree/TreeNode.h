@@ -31,7 +31,7 @@ public:
 	}
 
 	// tested
-	TreeNode<T>*& getParent() {
+	TreeNode<T>* const& getParent() {
 		return parent;
 	}
 
@@ -57,7 +57,7 @@ public:
 	}
 
 	// tested
-	void removeChild(TreeNode<T>*& node) {
+	void removeChild(TreeNode<T>* const& node) {
 		std::size_t index = 0;
 		for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
 			if(*(*it) == node) {
@@ -74,7 +74,7 @@ public:
 	}
 
 	// tested
-	bool isDescendantOf(TreeNode<T>*& node) {
+	bool isDescendantOf(TreeNode<T>* const& node) {
 		TreeNode<T>* root = this;
 		while(root->getParent()!=nullptr) {
 			if(root->getParent()==node) {
@@ -86,7 +86,7 @@ public:
 	}
 
 	// tested
-	bool isAncestorOf(TreeNode<T>*& node) const {
+	bool isAncestorOf(TreeNode<T>* const& node) const {
 		TreeNode<T>* root = node;
 		while(root->getParent()!=nullptr) {
 			if(root->getParent()==this) {

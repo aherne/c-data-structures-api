@@ -14,7 +14,7 @@ class PrintNodeVisitor: public TreeNodeVisitor<T> {
 public:
 	virtual ~PrintNodeVisitor(){};
 
-	bool visit(TreeNode<T>*& element) {
+	bool visit(TreeNode<T>* const& element) {
 		std::cout << "\t" << element->getData() << std::endl;
 		return true;
 	}
@@ -32,77 +32,10 @@ void TreeUnitTest::execute() {
 	 * 	  |
 	 * 	  11
 	 */
-	std::cout << "Tree<long>" << std::endl;
-	treeTest();
 	std::cout << "UniqueTree<long>" << std::endl;
 	uniqueTreeTest();
 	std::cout << "[ITERATORS]" << std::endl;
 	iteratorsTest();
-}
-
-void TreeUnitTest::treeTest() {
-	Tree<long>* tree = new Tree<long>(1);
-	TreeNode<long>* root = tree->getRoot();
-	TreeNode<long>* c1 = tree->createNode(2, root);
-	TreeNode<long>* c2 = tree->createNode(3, root);
-	TreeNode<long>* c3 = tree->createNode(4, root);
-	TreeNode<long>* c1_1 = tree->createNode(5, c1);
-	tree->createNode(6, c1);
-	TreeNode<long>* c1_1_1 = tree->createNode(7, c1_1);
-	tree->createNode(8, c1_1);
-	tree->createNode(9, c2);
-	tree->createNode(10, c3);
-	TreeNode<long>* c1_1_1_1 = tree->createNode(11, c1_1_1);
-	std::cout << "\t" << "getSize: " << (tree->getSize()==11?"OK":"FAILED") << std::endl;
-	std::cout << "\t" << "getHeight: " << (tree->getHeight()==5?"OK":"FAILED") << std::endl;
-	std::cout << "\t" << "getDepth: " << (c1_1_1_1->getDepth()==4?"OK":"FAILED") << std::endl;
-	std::cout << "\t" << "isDescendantOf: " << (c1_1_1_1->isDescendantOf(root)==true?"OK":"FAILED") << std::endl;
-	std::cout << "\t" << "isAncestorOf: " << (root->isAncestorOf(c1_1_1_1)==true?"OK":"FAILED") << std::endl;
-	std::cout << "\t" << "getRoot: " << (c1_1_1_1->getRoot()==root?"OK":"FAILED") << std::endl;
-
-	std::cout << "\t" << "getAncestors: " << std::endl;
-	ArrayList<TreeNode<long>*>* ancestors = c1_1_1_1->getAncestors();
-	for(auto it = ancestors->begin(); *it!=*(ancestors->end()); ++(*it)) {
-		std::cout << "\t" << "\t" << (*(*it))->getData() << std::endl;
-	}
-	delete ancestors;
-
-	c1_1_1_1->setParent(c1);
-	std::cout << "\t" << "getParent: " << (c1_1_1_1->getParent()==c1?"OK":"FAILED") << std::endl;
-	c1_1_1_1->setParent(c1_1_1);
-
-	c1_1_1_1->setData(17);
-	std::cout << "\t" << "getData: " << (c1_1_1_1->getData()==17?"OK":"FAILED") << std::endl;
-	c1_1_1_1->setData(11);
-
-	ArrayList<TreeNode<long>*>* children = root->getChildren();
-	std::cout << "\t" << "getChildren: " << ((*children)[0]==c1 && (*children)[1]==c2 && (*children)[2]==c3?"OK":"FAILED") << std::endl;
-
-	TreeNode<long>* test = new TreeNode<long>(12);
-	c3->addChild(test);
-	ArrayList<TreeNode<long>*>* children1 = c3->getChildren();
-	std::cout << "\t" << "addChild: " << ((*children1)[1]==test?"OK":"FAILED") << std::endl;
-
-	c3->removeChild(test);
-	delete test;
-	children1 = c3->getChildren();
-	std::cout << "\t" << "removeChild: " << (children1->size()==1?"OK":"FAILED") << std::endl;
-
-	std::cout << "\t" << "getDescendants: " << std::endl;
-	ArrayList<TreeNode<long>*>* descendants = root->getDescendants();
-	for(auto it = descendants->begin(); *it!=*(descendants->end()); ++(*it)) {
-		std::cout << "\t" << "\t" << (*(*it))->getData() << std::endl;
-	}
-	delete descendants;
-
-	tree->removeNode(c2);
-	ArrayList<TreeNode<long>*>* children2 = root->getChildren();
-	std::cout << "\t" << "removeNode: " << ((*children2)[2]->getData()==9?"OK":"FAILED") << std::endl;
-
-	tree->removeBranch(c1);
-	std::cout << "\t" << "removeBranch: " << (root->getChildren()->size()==2?"OK":"FAILED") << std::endl;
-
-	delete tree;
 }
 
 void TreeUnitTest::uniqueTreeTest() {

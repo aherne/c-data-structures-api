@@ -10,3 +10,6 @@ Implement const iterators for all structures
 
 (Weighted)DirectedUnweightedGraph: isCyclic using DFS
 Weighted(Directed/Undirected)Graph: getShortestPath
+
+Split tree between ordered/unordered
+save treenode children into a hashmap

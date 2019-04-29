@@ -8,7 +8,7 @@
 #ifndef SRC_MAP_TREEMAP_H_
 #define SRC_MAP_TREEMAP_H_
 
-#include "../utilities/RedBlackTree.h"
+#include "../tree/RedBlackTree.h"
 #include "Map.h"
 #include "../Comparator.h"
 
@@ -133,7 +133,7 @@ class TreeMapIterator : public MapIterator<KEY, VALUE> {
 	public:
 		TreeMapIterator(RedBlackTree<MapEntry<KEY, VALUE>>* tree){
 			this->content = tree;
-			current_item = tree->min();
+			current_item = tree->getRoot();
 			this->offset = 0;
 			this->total = tree->getSize();
 		}

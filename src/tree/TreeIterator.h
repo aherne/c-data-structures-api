@@ -15,11 +15,11 @@ class TreeNodeVisitor {
 public:
 	virtual ~TreeNodeVisitor(){};
 
-	virtual bool visit(TreeNode<T>*& element) = 0;
+	virtual bool visit(TreeNode<T>* const& element) = 0;
 };
 
 template<typename T>
-inline void PreOrderTreeIterator(TreeNode<T>* node, TreeNodeVisitor<T>* visitor) {
+inline void PreOrderTreeIterator(TreeNode<T>* const& node, TreeNodeVisitor<T>* const& visitor) {
 	if(!visitor->visit(node)) return;
 	ArrayList<TreeNode<T>*>* children = node->getChildren();
 	for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
@@ -28,7 +28,7 @@ inline void PreOrderTreeIterator(TreeNode<T>* node, TreeNodeVisitor<T>* visitor)
 }
 
 template<typename T>
-inline void PostOrderTreeIterator(TreeNode<T>* node, TreeNodeVisitor<T>* visitor) {
+inline void PostOrderTreeIterator(TreeNode<T>* const& node, TreeNodeVisitor<T>* const& visitor) {
 	ArrayList<TreeNode<T>*>* children = node->getChildren();
 	for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
 		PreOrderTreeIterator(*(*it), visitor);
@@ -37,7 +37,7 @@ inline void PostOrderTreeIterator(TreeNode<T>* node, TreeNodeVisitor<T>* visitor
 }
 
 template<typename T>
-inline void LevelOrderTreeIterator(TreeNode<T>* root, TreeNodeVisitor<T>* visitor) {
+inline void LevelOrderTreeIterator(TreeNode<T>* const& root, TreeNodeVisitor<T>* const& visitor) {
 	Queue<TreeNode<T>*> q;
 	q.push(root);
 	while(!q.isEmpty()) {
@@ -51,7 +51,7 @@ inline void LevelOrderTreeIterator(TreeNode<T>* root, TreeNodeVisitor<T>* visito
 }
 
 template<typename T>
-inline void LevelOrderTreeIterator(TreeNode<T>* root, std::size_t depth, TreeNodeVisitor<T>* visitor) {
+inline void LevelOrderTreeIterator(TreeNode<T>* const& root, std::size_t depth, TreeNodeVisitor<T>* const& visitor) {
 	Queue<TreeNode<T>*> q;
 	q.push(root);
 	while(!q.isEmpty()) {

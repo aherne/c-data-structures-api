@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include "../list/ArrayList.h"
+#include "Tree.h"
 
 enum RedBlackTreeNodeColor { RED, BLACK };
 
@@ -26,7 +27,7 @@ struct RedBlackTreeNode {
  * Red Black Tree implementation with fundamentally based on pseudocode from CLR Introduction to Algorithms: 3rd Edition
  */
 template<typename VALUE>
-class RedBlackTree {
+class RedBlackTree : public Tree<RedBlackTreeNode<VALUE>> {
 public:
 	RedBlackTree(int (*comparator)(const VALUE&,const VALUE&)) {
 		compare = comparator;
@@ -117,7 +118,7 @@ public:
 	}
 
 	// iterator stuff
-	RedBlackTreeNode<VALUE>* min() {
+	RedBlackTreeNode<VALUE>* getRoot() {
 		return min(root);
 	}
 

@@ -8,7 +8,7 @@
 #ifndef SET_TREESET_H_
 #define SET_TREESET_H_
 
-#include "../utilities/RedBlackTree.h"
+#include "../tree/RedBlackTree.h"
 #include "Set.h"
 #include "../Comparator.h"
 
@@ -102,7 +102,7 @@ class TreeSetIterator : public SetIterator<T> {
 	public:
 		TreeSetIterator(RedBlackTree<T>* tree){
 			content = tree;
-			current_item = tree->min();
+			current_item = tree->getRoot();
 			this->offset = 0;
 			this->total = tree->getSize();
 		}
