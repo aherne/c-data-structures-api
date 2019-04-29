@@ -15,19 +15,9 @@
 #include "../container/Stack.h"
 
 template<typename T, typename W, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
-class DFS_WeightedGraphVertexVisitor {
+class WeightedGraphVertexVisitor {
 public:
-	virtual ~DFS_WeightedGraphVertexVisitor(){};
-
-	virtual bool visit(WeightedGraphVertex<T,W,compare,hash>* const& element) = 0;
-
-	virtual bool isVisited(WeightedGraphVertex<T,W,compare,hash>* const& element) = 0;
-};
-
-template<typename T, typename W, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
-class BFS_WeightedGraphVertexVisitor {
-public:
-	virtual ~BFS_WeightedGraphVertexVisitor(){};
+	virtual ~WeightedGraphVertexVisitor(){};
 
 	virtual bool visit(WeightedGraphVertex<T,W,compare,hash>* const& element, WeightedGraphVertex<T,W,compare,hash>* const& parent) = 0;
 
@@ -35,7 +25,7 @@ public:
 };
 
 template<typename T, typename W, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
-inline void BreadthFirstSearchGraphIterator(WeightedGraphVertex<T,W,compare,hash>* vertex, BFS_WeightedGraphVertexVisitor<T,W,compare,hash>* visitor) {
+inline void BreadthFirstSearchGraphIterator(WeightedGraphVertex<T,W,compare,hash>* vertex, WeightedGraphVertexVisitor<T,W,compare,hash>* visitor) {
 	Queue<WeightedGraphVertex<T,W,compare,hash>*> queue;
 	if(!visitor->visit(vertex, nullptr)) return;
 	queue.push(vertex);
@@ -53,9 +43,9 @@ inline void BreadthFirstSearchGraphIterator(WeightedGraphVertex<T,W,compare,hash
 }
 
 template<typename T, typename W, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
-inline void DepthFirstSearchGraphIterator(WeightedGraphVertex<T,W,compare,hash>* vertex, DFS_WeightedGraphVertexVisitor<T,W,compare,hash>* visitor) {
+inline void DepthFirstSearchGraphIterator(WeightedGraphVertex<T,W,compare,hash>* vertex, WeightedGraphVertexVisitor<T,W,compare,hash>* visitor) {
 	Stack<WeightedGraphVertex<T,W,compare,hash>*> stack;
-	if(!visitor->visit(vertex)) return;
+	if(!visitor->visit(vertex, nullptr)) return;
 	stack.push(vertex);
 	while(!stack.isEmpty()) {
 		WeightedGraphVertex<T,W,compare,hash>* node = stack.pop();
@@ -63,7 +53,7 @@ inline void DepthFirstSearchGraphIterator(WeightedGraphVertex<T,W,compare,hash>*
 		for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
 			std::pair<WeightedGraphVertex<T,W,compare,hash>*,W> tmp = (std::pair<WeightedGraphVertex<T,W,compare,hash>*,W>) (*(*it));
 			if(!visitor->isVisited(tmp.first)) {
-				if(!visitor->visit(tmp.first)) return;
+				if(!visitor->visit(tmp.first, node)) return;
 				stack.push(tmp.first);
 			}
 		}
@@ -71,7 +61,7 @@ inline void DepthFirstSearchGraphIterator(WeightedGraphVertex<T,W,compare,hash>*
 }
 
 template<typename T, typename W, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
-class WeightedGraphVertexVisitor__IsPath : public DFS_WeightedGraphVertexVisitor<T,W,compare,hash> {
+class WeightedGraphVertexVisitor__IsPath : public WeightedGraphVertexVisitor<T,W,compare,hash> {
 public:
 	WeightedGraphVertexVisitor__IsPath(WeightedGraphVertex<T, W, compare, hash>* const& left, WeightedGraphVertex<T, W, compare, hash>* const& right) {
 		this->right = right;
@@ -83,7 +73,7 @@ public:
 		return found;
 	}
 
-	bool visit(WeightedGraphVertex<T, W, compare, hash>* const& element) {
+	bool visit(WeightedGraphVertex<T, W, compare, hash>* const& element, WeightedGraphVertex<T, W, compare, hash>* const& parent) {
 		if(element == right) {
 			found = true;
 			return false;

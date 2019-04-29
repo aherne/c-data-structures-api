@@ -10,10 +10,10 @@
 
 #include "WeightedGraphVertex.h"
 #include "WeightedGraphIterator.h"
-
+#include "Graph.h"
 
 template<typename T,typename W, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
-class WeightedGraph {
+class WeightedGraph : public Graph<WeightedGraphVertex<T,W,compare,hash>, T> {
 public:
 	// O(V)
 	virtual ~WeightedGraph(){
@@ -39,7 +39,7 @@ public:
 
 	virtual void removeEdge(WeightedGraphVertex<T,W, compare, hash>* const& left, WeightedGraphVertex<T,W, compare, hash>* const& right) =0;
 
-	bool isPath(WeightedGraphVertex<T,W, compare, hash>*& left, WeightedGraphVertex<T,W, compare, hash>* const& right) {
+	bool isPath(WeightedGraphVertex<T,W, compare, hash>* const& left, WeightedGraphVertex<T,W, compare, hash>* const& right) {
 		WeightedGraphVertexVisitor__IsPath<T, W, compare, hash> gvvip(left,right);
 		return gvvip.isFound();
 	}

@@ -8,5 +8,5 @@ Document all code
 Implement copy constructors for all structures aside of ArrayList
 Implement const iterators for all structures
 
-(Weighted)DirectedGraph: isCyclic using DFS
+(Weighted)DirectedUnweightedGraph: isCyclic using DFS
 Weighted(Directed/Undirected)Graph: getShortestPath
