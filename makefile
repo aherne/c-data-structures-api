@@ -2,7 +2,7 @@ CC = g++
 CFLAGS = -O2 -g3 -Wall -c
 all:
 	$(CC) $(CFLAGS) "src/library.cpp"
-	$(CC) -shared -o libcds.so library.o
+	$(CC) -shared -o libcds library.o
 test:
 	$(CC) $(CFLAGS) "src/unit_tests/MapUnitTest.cpp"
 	$(CC) $(CFLAGS) "src/unit_tests/ContainerUnitTest.cpp"
