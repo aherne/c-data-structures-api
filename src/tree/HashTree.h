@@ -1,12 +1,12 @@
 /*
- * UniqueTree.h
+ * HashTree.h
  *
  *  Created on: Sep 28, 2016
  *      Author: Lucian
  */
 
-#ifndef SRC_TREE_UNIQUETREE_H_
-#define SRC_TREE_UNIQUETREE_H_
+#ifndef SRC_TREE_HASHTREE_H_
+#define SRC_TREE_HASHTREE_H_
 
 #include "Tree.h"
 #include "TreeNode.h"
@@ -17,15 +17,15 @@
 #include "../Hashing.h"
 
 template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
-class UniqueTree : public Tree<TreeNode<T>> {
+class HashTree : public Tree<TreeNode<T>> {
 protected:
 	public:
-		UniqueTree(const T& data) {
+		HashTree(const T& data) {
 			root = new TreeNode<T>(data);
 			nodes.add(root);
 		}
 
-		~UniqueTree() {
+		~HashTree() {
 			TreeDeallocator<T> deallocate(root);
 		}
 
@@ -112,4 +112,4 @@ protected:
 
 
 
-#endif /* SRC_TREE_UNIQUETREE_H_ */
+#endif /* SRC_TREE_HASHTREE_H_ */

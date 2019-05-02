@@ -13,4 +13,4 @@
 #include "graph/DirectedWeightedGraph.h"
 #include "graph/UndirectedUnweightedGraph.h"
 #include "graph/UndirectedWeightedGraph.h"
-#include "tree/UniqueTree.h"
+#include "tree/HashTree.h"

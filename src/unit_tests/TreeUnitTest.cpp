@@ -6,7 +6,7 @@
  */
 
 #include "TreeUnitTest.h"
-#include "../tree/UniqueTree.h"
+#include "../tree/HashTree.h"
 #include "../tree/TreeIterator.h"
 
 template<typename T>
@@ -32,14 +32,14 @@ void TreeUnitTest::execute() {
 	 * 	  |
 	 * 	  11
 	 */
-	std::cout << "UniqueTree<long>" << std::endl;
-	uniqueTreeTest();
+	std::cout << "HashTree<long>" << std::endl;
+	treeTest();
 	std::cout << "[ITERATORS]" << std::endl;
 	iteratorsTest();
 }
 
-void TreeUnitTest::uniqueTreeTest() {
-	UniqueTree<long>* tree = new UniqueTree<long>(1);
+void TreeUnitTest::treeTest() {
+	HashTree<long>* tree = new HashTree<long>(1);
 	TreeNode<long>* root = tree->getRoot();
 	TreeNode<long>* c1 = tree->createNode(2, root);
 	TreeNode<long>* c2 = tree->createNode(3, root);
