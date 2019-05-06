@@ -115,6 +115,10 @@ void GraphUnitTest::testUnweightedGraph(UnweightedGraph<long,comparator,hash>* g
 	std::cout << "\t" << "getSize: " << (graph->getSize()==10?"OK":"FAILED") << std::endl;
 	std::cout << "\t" << "isEdge: " << (v1->isEdge(v2)?"OK":"FAILED") << std::endl;
 	graph->removeVertex(v6);
+
+	HashSet<UnweightedGraphVertex<long>*, compareVertex<long>, hashVertex<long>>* edges = v1->getEdges();
+	std::cout << "\t" << "getEdges: " << (edges->size()==3?"OK":"FAILED") << std::endl;
+
 	std::cout << "\t" << "removeVertex: " << (!graph->contains(6)?"OK":"FAILED") << std::endl;
 	std::cout << "\t" << "contains: " << (graph->contains(9)?"OK":"FAILED") << std::endl;
 	graph->removeEdge(v4,v5);
@@ -171,6 +175,10 @@ void GraphUnitTest::testWeightedGraph(WeightedGraph<long,long,comparator,hash>* 
 	v2->setEdgeWeight(v10,11);
 	std::cout << "\t" << "setWeight: " << (v2->getEdgeWeight(v10)==11?"OK":"FAILED") << std::endl;
 	graph->removeVertex(v6);
+
+	HashMap<WeightedGraphVertex<long,long>*, long, compareWeightedVertex<long,long>, hashWeightedVertex<long,long>>* edges = v1->getEdges();
+	std::cout << "\t" << "getEdges: " << (edges->size()==3?"OK":"FAILED") << std::endl;
+
 	std::cout << "\t" << "removeVertex: " << (!graph->contains(6)?"OK":"FAILED") << std::endl;
 	std::cout << "\t" << "contains: " << (graph->contains(9)?"OK":"FAILED") << std::endl;
 	graph->removeEdge(v4,v5);
