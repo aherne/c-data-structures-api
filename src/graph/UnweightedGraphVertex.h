@@ -18,13 +18,13 @@
 template<typename T, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
 class UnweightedGraphVertex;
 
-template<typename T, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
-int compareVertex(UnweightedGraphVertex<T, compare, hash>* const& left, UnweightedGraphVertex<T, compare, hash>* const& right) {
+template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
+inline int compareVertex(UnweightedGraphVertex<T, compare, hash>* const& left, UnweightedGraphVertex<T, compare, hash>* const& right) {
 	return comparator(left->getData(), right->getData());
 }
 
-template<typename T, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
-std::size_t hashVertex(UnweightedGraphVertex<T, compare, hash>* const& node) {
+template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
+inline std::size_t hashVertex(UnweightedGraphVertex<T, compare, hash>* const& node) {
 	return hash(node->getData());
 }
 

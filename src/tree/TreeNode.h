@@ -11,14 +11,30 @@
 #include <vector>
 #include <stdexcept>
 #include "../list/ArrayList.h"
+#include "../set/HashSet.h"
+#include "../Comparator.h"
+#include "../Hashing.h"
 
-template<typename T>
+template<typename T, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
+class TreeNode;
+
+template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
+inline int compareTreeNode(TreeNode<T, compare, hash>* const& left, TreeNode<T, compare, hash>* const& right) {
+	return compare(left->getData(), right->getData());
+}
+
+template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
+inline std::size_t hashTreeNode(TreeNode<T, compare, hash>* const& node) {
+	return hash(node->getData());
+}
+
+template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 class TreeNode {
 public:
 	TreeNode(const T& data) {
 		parent = nullptr;
 		this->data = data;
-		children = new ArrayList<TreeNode<T>*>;
+		children = new HashSet<TreeNode<T,compare,hash>*, compareTreeNode<T,compare,hash>, hashTreeNode<T,compare,hash>>;
 	}
 
 	~TreeNode() {
@@ -26,12 +42,12 @@ public:
 	}
 
 	// tested
-	void setParent(TreeNode<T>* const& parent) {
+	void setParent(TreeNode<T,compare,hash>* const& parent) {
 		this->parent = parent;
 	}
 
 	// tested
-	TreeNode<T>* const& getParent() {
+	TreeNode<T,compare,hash>* const& getParent() {
 		return parent;
 	}
 
@@ -46,27 +62,23 @@ public:
 	}
 
 	// tested
-	ArrayList<TreeNode<T>*>* const& getChildren() const {
+	HashSet<TreeNode<T,compare,hash>*, compareTreeNode<T,compare,hash>, hashTreeNode<T,compare,hash>>* const& getChildren() const {
 		return children;
 	}
 
-	// tested
-	void addChild(TreeNode<T>* const& node) {
-		node->setParent(this);
-		children->addToBottom(node);
+	bool hasChild(TreeNode<T,compare,hash>* const& node) const {
+		return children->contains(node);
 	}
 
 	// tested
-	void removeChild(TreeNode<T>* const& node) {
-		std::size_t index = 0;
-		for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
-			if(*(*it) == node) {
-				children->removeIndex(index);
-				return;
-			}
-			++ index;
-		}
-		throw std::out_of_range("Child not found!");
+	void addChild(TreeNode<T,compare,hash>* const& node) {
+		node->setParent(this);
+		children->add(node);
+	}
+
+	// tested
+	void removeChild(TreeNode<T,compare,hash>* const& node) {
+		children->remove(node);
 	}
 
 	void removeChildren() {
@@ -74,8 +86,8 @@ public:
 	}
 
 	// tested
-	bool isDescendantOf(TreeNode<T>* const& node) {
-		TreeNode<T>* root = this;
+	bool isDescendantOf(TreeNode<T,compare,hash>* const& node) {
+		TreeNode<T,compare,hash>* root = this;
 		while(root->getParent()!=nullptr) {
 			if(root->getParent()==node) {
 				return true;
@@ -86,8 +98,8 @@ public:
 	}
 
 	// tested
-	bool isAncestorOf(TreeNode<T>* const& node) const {
-		TreeNode<T>* root = node;
+	bool isAncestorOf(TreeNode<T,compare,hash>* const& node) const {
+		TreeNode<T,compare,hash>* root = node;
 		while(root->getParent()!=nullptr) {
 			if(root->getParent()==this) {
 				return true;
@@ -99,8 +111,8 @@ public:
 
 	// Root - upmost element in tree
 	// tested
-	TreeNode<T>* getRoot() {
-		TreeNode<T>* root = this;
+	TreeNode<T,compare,hash>* getRoot() {
+		TreeNode<T,compare,hash>* root = this;
 		while(root->getParent()!=nullptr) {
 			root = root->getParent();
 		}
@@ -109,9 +121,9 @@ public:
 
 	// Path – a sequence of nodes and edges connecting a node with a descendant.
 	// tested
-	ArrayList<TreeNode<T>*>* getAncestors() {
-		ArrayList<TreeNode<T>*>* output = new ArrayList<TreeNode<T>*>;
-		TreeNode<T>* root = this;
+	ArrayList<TreeNode<T,compare,hash>*>* getAncestors() {
+		ArrayList<TreeNode<T,compare,hash>*>* output = new ArrayList<TreeNode<T,compare,hash>*>;
+		TreeNode<T,compare,hash>* root = this;
 		while(root->getParent()!=nullptr) {
 			output->addToBottom(root->getParent());
 			root = root->getParent();
@@ -120,11 +132,11 @@ public:
 	}
 
 	// tested
-	ArrayList<TreeNode<T>*>* getDescendants() const {
-		ArrayList<TreeNode<T>*>* output = new ArrayList<TreeNode<T>*>;
+	ArrayList<TreeNode<T,compare,hash>*>* getDescendants() const {
+		ArrayList<TreeNode<T,compare,hash>*>* output = new ArrayList<TreeNode<T,compare,hash>*>;
 		for(auto it1 = children->begin(); *it1!=*(children->end()); ++(*it1)) {
 			output->addToBottom(*(*it1));
-			ArrayList<TreeNode<T>*>* temp = (*(*it1))->getDescendants();
+			ArrayList<TreeNode<T,compare,hash>*>* temp = (*(*it1))->getDescendants();
 			for(auto it2 = temp->begin(); *it2!=*(temp->end()); ++(*it2)) {
 				output->addToBottom(*(*it2));
 			}
@@ -160,7 +172,7 @@ public:
 	// tested
 	std::size_t getDepth() const {
 		std::size_t depth = 0;
-		TreeNode<T>* root = parent;
+		TreeNode<T,compare,hash>* root = parent;
 		while(root!=nullptr) {
 			++depth;
 			root = root->getParent();
@@ -168,9 +180,9 @@ public:
 		return depth;
 	}
 private:
-	TreeNode<T>* parent;
+	TreeNode<T,compare,hash>* parent;
 	T data;
-	ArrayList<TreeNode<T>*>* children;
+	HashSet<TreeNode<T,compare,hash>*, compareTreeNode<T,compare,hash>, hashTreeNode<T,compare,hash>>* children;
 };
 
 #endif /* TREENODE_H_ */

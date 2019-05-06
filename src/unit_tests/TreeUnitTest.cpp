@@ -9,12 +9,12 @@
 #include "../tree/HashTree.h"
 #include "../tree/TreeIterator.h"
 
-template<typename T>
-class PrintNodeVisitor: public TreeNodeVisitor<T> {
+template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
+class PrintNodeVisitor: public TreeNodeVisitor<T,compare,hash> {
 public:
 	virtual ~PrintNodeVisitor(){};
 
-	bool visit(TreeNode<T>* const& element) {
+	bool visit(TreeNode<T,compare,hash>* const& element) {
 		std::cout << "\t" << element->getData() << std::endl;
 		return true;
 	}
@@ -73,18 +73,19 @@ void TreeUnitTest::treeTest() {
 	std::cout << "\t" << "getData: " << (c1_1_1_1->getData()==17?"OK":"FAILED") << std::endl;
 	c1_1_1_1->setData(11);
 
-	ArrayList<TreeNode<long>*>* children = root->getChildren();
-	std::cout << "\t" << "getChildren: " << ((*children)[0]==c1 && (*children)[1]==c2 && (*children)[2]==c3?"OK":"FAILED") << std::endl;
+	// TODO: make HashSet guess; add defaults for each custom comparator
+	HashSet<TreeNode<long>*, compareTreeNode<long>, hashTreeNode<long>>* children = root->getChildren();
+	std::cout << "\t" << "getChildren: " << (children->size()==3?"OK":"FAILED") << std::endl;
 
 	TreeNode<long>* test = new TreeNode<long>(12);
 	c3->addChild(test);
-	ArrayList<TreeNode<long>*>* children1 = c3->getChildren();
-	std::cout << "\t" << "addChild: " << ((*children1)[1]==test?"OK":"FAILED") << std::endl;
+	std::cout << "\t" << "addChild: " << (c3->getChildren()->size()==2?"OK":"FAILED") << std::endl;
+
+	std::cout << "\t" << "hasChild: " << (c3->hasChild(test)?"OK":"FAILED") << std::endl;
 
 	c3->removeChild(test);
 	delete test;
-	children1 = c3->getChildren();
-	std::cout << "\t" << "removeChild: " << (children1->size()==1?"OK":"FAILED") << std::endl;
+	std::cout << "\t" << "removeChild: " << (c3->getChildren()->size()==1?"OK":"FAILED") << std::endl;
 
 	std::cout << "\t" << "getDescendants: " << std::endl;
 	ArrayList<TreeNode<long>*>* descendants = root->getDescendants();
@@ -98,8 +99,7 @@ void TreeUnitTest::treeTest() {
 	std::cout << "\t" << "search: " << (search!=nullptr && search==c3_1?"OK":"FAILED") << std::endl;
 
 	tree->removeNode(c2);
-	ArrayList<TreeNode<long>*>* children2 = root->getChildren();
-	std::cout << "\t" << "removeNode: " << ((*children2)[2]->getData()==9?"OK":"FAILED") << std::endl;
+	std::cout << "\t" << "removeNode: " << (root->getChildren()->size()==3?"OK":"FAILED") << std::endl;
 
 	tree->removeBranch(c1);
 	std::cout << "\t" << "removeBranch: " << (root->getChildren()->size()==2?"OK":"FAILED") << std::endl;

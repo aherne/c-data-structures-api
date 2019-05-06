@@ -18,13 +18,13 @@
 template<typename T, typename W, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
 class WeightedGraphVertex;
 
-template<typename T,typename W, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
-int compareWeightedVertex(WeightedGraphVertex<T,W,compare,hash>* const& left, WeightedGraphVertex<T,W,compare,hash>* const& right) {
+template<typename T,typename W, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
+inline int compareWeightedVertex(WeightedGraphVertex<T,W,compare,hash>* const& left, WeightedGraphVertex<T,W,compare,hash>* const& right) {
 	return comparator(left->getData(), right->getData());
 }
 
-template<typename T,typename W, int (*compare)(const T&, const T&), std::size_t (*hash)(const T&)>
-std::size_t hashWeightedVertex(WeightedGraphVertex<T,W,compare,hash>* const& node) {
+template<typename T,typename W, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
+inline std::size_t hashWeightedVertex(WeightedGraphVertex<T,W,compare,hash>* const& node) {
 	return hash(node->getData());
 }
 
