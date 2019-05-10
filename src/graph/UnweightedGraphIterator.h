@@ -102,9 +102,9 @@ public:
 	bool visit(UnweightedGraphVertex<T, compare, hash>* const& element, UnweightedGraphVertex<T, compare, hash>* const& node) {
 		UnweightedGraphVertex<T, compare, hash>* parent = node;
 		if(element == right) {
-			response.addToBottom(right);
+			response.addToTail(right);
 			while(parent!=nullptr) {
-				response.addToBottom(parent);
+				response.addToTail(parent);
 				parent = nodes.get(parent);
 			}
 			return false;

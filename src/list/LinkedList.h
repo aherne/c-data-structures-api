@@ -76,7 +76,7 @@ class LinkedList: public List<T> {
 			count = 0;
 		}
 
-		void addToTop(const T& value) {
+		void addToHead(const T& value) {
 			// reset internal iterator
 			currentIndex = 0;
 			currentItem = nullptr;
@@ -92,7 +92,7 @@ class LinkedList: public List<T> {
 			++ count;
 		}
 
-		void addToBottom(const T& value) {
+		void addToTail(const T& value) {
 			// reset internal iterator
 			currentIndex = 0;
 			currentItem = nullptr;
@@ -133,12 +133,12 @@ class LinkedList: public List<T> {
 			if(index>count) throw std::out_of_range("Index cannot exceed list length!");
 
 			if(index==0) {
-				addToTop(value);
+				addToHead(value);
 
 				currentIndex = 0;
 				currentItem = head;
 			} else if(index==count) {
-				addToBottom(value);
+				addToTail(value);
 
 				currentIndex = index;
 				currentItem = tail;

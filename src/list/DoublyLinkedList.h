@@ -76,7 +76,7 @@ class DoublyLinkedList: public List<T> {
 			count = 0;
 		}
 
-		void addToTop(const T& value) {
+		void addToHead(const T& value) {
 			DoublyLinkedListEntry<T>* newNode = new DoublyLinkedListEntry<T>;
 			newNode->value = value;
 			newNode->next = head;
@@ -94,7 +94,7 @@ class DoublyLinkedList: public List<T> {
 			++ count;
 		}
 
-		void addToBottom(const T& value) {
+		void addToTail(const T& value) {
 			DoublyLinkedListEntry<T>* element = new DoublyLinkedListEntry<T>;
 			element->value = value;
 			element->next = nullptr;
@@ -129,9 +129,9 @@ class DoublyLinkedList: public List<T> {
 
 			// perform full traversal
 			if(index==0) {
-				addToTop(value);
+				addToHead(value);
 			} else if(index==count) {
-				addToBottom(value);
+				addToTail(value);
 			} else {
 				traverse(index-1);
 

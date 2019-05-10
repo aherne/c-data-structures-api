@@ -30,8 +30,8 @@ public:
 	virtual ~List() {}
 	virtual const T& operator[](const std::size_t& index) const=0;
 	virtual void clear()=0;
-	virtual void addToTop(const T& value)=0;
-	virtual void addToBottom(const T& value)=0;
+	virtual void addToHead(const T& value)=0;
+	virtual void addToTail(const T& value)=0;
 	virtual const T& get(const std::size_t& index) const =0;
 	virtual void set(const std::size_t& index, const T& value)=0;
 	virtual void emplace(const std::size_t& index, const T& value)=0;

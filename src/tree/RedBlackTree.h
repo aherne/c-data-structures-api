@@ -157,7 +157,7 @@ private:
 	void findNodes(RedBlackTreeNode<VALUE>*& h, const VALUE& value, int (*custom_comparator)(const VALUE&,const VALUE&), ArrayList<RedBlackTreeNode<VALUE>*>* const& results) {
 		if(h->left!=nil) findNodes(h->left, value, custom_comparator, results);
 		if(custom_comparator(value, h->data)==0) {
-			results->addToBottom(h);
+			results->addToTail(h);
 		}
 		if(h->right!=nil) findNodes(h->right, value, custom_comparator, results);
 	}

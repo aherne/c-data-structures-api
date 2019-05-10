@@ -45,7 +45,7 @@ void ListUnitTest::execute() {
 
 void ListUnitTest::testList(List<long>* list) {
 	for(long i=0; i<2000; ++i) {
-		list->addToBottom(i);
+		list->addToTail(i);
 	}
 
 	long keyToCheck = 1820;
@@ -78,7 +78,7 @@ void ListUnitTest::testList(List<char*>* list) {
 	StringListGenerator slg(2000);
 	std::vector<char*> items = slg.getList();
 	for(auto it = items.begin(); it!=items.end(); ++it) {
-		list->addToBottom(*it);
+		list->addToTail(*it);
 	}
 
 	long keyToCheck = 1820;
@@ -116,15 +116,15 @@ void ListUnitTest::testArrayList() {
 	// test collisions
 
 	ArrayList<long> ht;
-	k=18;ht.addToTop(k);
-	k=1;ht.addToTop(k);
-	k=150;ht.addToTop(k);
-	k=5;ht.addToTop(k);
-	k=8;ht.addToTop(k);
-	k=6;ht.addToTop(k);
-	k=9;ht.addToTop(k);
-	k=11;ht.addToTop(k);
-	k=22;ht.addToTop(k);
+	k=18;ht.addToHead(k);
+	k=1;ht.addToHead(k);
+	k=150;ht.addToHead(k);
+	k=5;ht.addToHead(k);
+	k=8;ht.addToHead(k);
+	k=6;ht.addToHead(k);
+	k=9;ht.addToHead(k);
+	k=11;ht.addToHead(k);
+	k=22;ht.addToHead(k);
 
 	size_t index = 0;
 	long newValue = 2;
@@ -145,15 +145,15 @@ void ListUnitTest::testLinkedList() {
 	// test collisions
 
 	LinkedList<long> ht;
-	k=18;ht.addToTop(k);
-	k=1;ht.addToTop(k);
-	k=150;ht.addToTop(k);
-	k=5;ht.addToTop(k);
-	k=8;ht.addToTop(k);
-	k=6;ht.addToTop(k);
-	k=9;ht.addToTop(k);
-	k=11;ht.addToTop(k);
-	k=22;ht.addToTop(k);
+	k=18;ht.addToHead(k);
+	k=1;ht.addToHead(k);
+	k=150;ht.addToHead(k);
+	k=5;ht.addToHead(k);
+	k=8;ht.addToHead(k);
+	k=6;ht.addToHead(k);
+	k=9;ht.addToHead(k);
+	k=11;ht.addToHead(k);
+	k=22;ht.addToHead(k);
 
 	size_t index = 6;
 	long newValue = 2;
@@ -177,15 +177,15 @@ void ListUnitTest::testDoublyLinkedList() {
 	// test collisions
 
 	DoublyLinkedList<long> ht;
-	k=18;ht.addToTop(k);
-	k=1;ht.addToTop(k);
-	k=150;ht.addToTop(k);
-	k=5;ht.addToTop(k);
-	k=8;ht.addToTop(k);
-	k=6;ht.addToTop(k);
-	k=9;ht.addToTop(k);
-	k=11;ht.addToTop(k);
-	k=22;ht.addToTop(k);
+	k=18;ht.addToHead(k);
+	k=1;ht.addToHead(k);
+	k=150;ht.addToHead(k);
+	k=5;ht.addToHead(k);
+	k=8;ht.addToHead(k);
+	k=6;ht.addToHead(k);
+	k=9;ht.addToHead(k);
+	k=11;ht.addToHead(k);
+	k=22;ht.addToHead(k);
 
 	size_t index = 9;
 	long newValue = 2;

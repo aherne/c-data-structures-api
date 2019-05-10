@@ -66,7 +66,7 @@ public:
 
 	}
 
-	void addToBottom(const T& value) {
+	void addToTail(const T& value) {
 		if(count == maximum_size) {
 			resize();
 		}
@@ -74,7 +74,7 @@ public:
 		++count;
 	}
 
-	void addToTop(const T& value) {
+	void addToHead(const T& value) {
 		if(count == maximum_size) {
 			resize();
 		}

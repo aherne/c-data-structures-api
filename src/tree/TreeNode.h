@@ -125,7 +125,7 @@ public:
 		ArrayList<TreeNode<T,compare,hash>*>* output = new ArrayList<TreeNode<T,compare,hash>*>;
 		TreeNode<T,compare,hash>* root = this;
 		while(root->getParent()!=nullptr) {
-			output->addToBottom(root->getParent());
+			output->addToTail(root->getParent());
 			root = root->getParent();
 		}
 		return output;
@@ -135,10 +135,10 @@ public:
 	ArrayList<TreeNode<T,compare,hash>*>* getDescendants() const {
 		ArrayList<TreeNode<T,compare,hash>*>* output = new ArrayList<TreeNode<T,compare,hash>*>;
 		for(auto it1 = children->begin(); *it1!=*(children->end()); ++(*it1)) {
-			output->addToBottom(*(*it1));
+			output->addToTail(*(*it1));
 			ArrayList<TreeNode<T,compare,hash>*>* temp = (*(*it1))->getDescendants();
 			for(auto it2 = temp->begin(); *it2!=*(temp->end()); ++(*it2)) {
-				output->addToBottom(*(*it2));
+				output->addToTail(*(*it2));
 			}
 			delete temp;
 		}
