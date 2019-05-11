@@ -62,7 +62,7 @@ public:
 	}
 
 	// tested
-	HashSet<TreeNode<T,compare,hash>*, compareTreeNode<T,compare,hash>, hashTreeNode<T,compare,hash>>* const& getChildren() const {
+	Set<TreeNode<T,compare,hash>*>* const& getChildren() const {
 		return children;
 	}
 
@@ -121,8 +121,8 @@ public:
 
 	// Path – a sequence of nodes and edges connecting a node with a descendant.
 	// tested
-	ArrayList<TreeNode<T,compare,hash>*>* getAncestors() {
-		ArrayList<TreeNode<T,compare,hash>*>* output = new ArrayList<TreeNode<T,compare,hash>*>;
+	List<TreeNode<T,compare,hash>*>* getAncestors() {
+		List<TreeNode<T,compare,hash>*>* output = new ArrayList<TreeNode<T,compare,hash>*>;
 		TreeNode<T,compare,hash>* root = this;
 		while(root->getParent()!=nullptr) {
 			output->addToTail(root->getParent());
@@ -132,11 +132,11 @@ public:
 	}
 
 	// tested
-	ArrayList<TreeNode<T,compare,hash>*>* getDescendants() const {
-		ArrayList<TreeNode<T,compare,hash>*>* output = new ArrayList<TreeNode<T,compare,hash>*>;
+	List<TreeNode<T,compare,hash>*>* getDescendants() const {
+		List<TreeNode<T,compare,hash>*>* output = new ArrayList<TreeNode<T,compare,hash>*>;
 		for(auto it1 = children->begin(); *it1!=*(children->end()); ++(*it1)) {
 			output->addToTail(*(*it1));
-			ArrayList<TreeNode<T,compare,hash>*>* temp = (*(*it1))->getDescendants();
+			List<TreeNode<T,compare,hash>*>* temp = (*(*it1))->getDescendants();
 			for(auto it2 = temp->begin(); *it2!=*(temp->end()); ++(*it2)) {
 				output->addToTail(*(*it2));
 			}
@@ -182,7 +182,7 @@ public:
 private:
 	TreeNode<T,compare,hash>* parent;
 	T data;
-	HashSet<TreeNode<T,compare,hash>*, compareTreeNode<T,compare,hash>, hashTreeNode<T,compare,hash>>* children;
+	Set<TreeNode<T,compare,hash>*>* children;
 };
 
 #endif /* TREENODE_H_ */

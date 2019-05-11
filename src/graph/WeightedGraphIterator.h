@@ -12,6 +12,7 @@
 
 #include "WeightedGraphVertex.h"
 #include "../container/Queue.h"
+#include "../list/ArrayList.h"
 #include "../container/Stack.h"
 
 template<typename T, typename W, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
@@ -31,7 +32,7 @@ inline void BreadthFirstSearchGraphIterator(WeightedGraphVertex<T,W,compare,hash
 	queue.push(vertex);
 	while(!queue.isEmpty()) {
 		WeightedGraphVertex<T,W,compare,hash>* node = queue.pop();
-		HashMap<WeightedGraphVertex<T, W, compare, hash>*, W, compareWeightedVertex<T, W, compare, hash>, hashWeightedVertex<T, W, compare, hash>>* children = node->getEdges();
+		Map<WeightedGraphVertex<T, W, compare, hash>*, W>* children = node->getEdges();
 		for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
 			std::pair<WeightedGraphVertex<T,W,compare,hash>*,W> tmp = (std::pair<WeightedGraphVertex<T,W,compare,hash>*,W>) (*(*it));
 			if(!visitor->isVisited(tmp.first)) {
@@ -49,7 +50,7 @@ inline void DepthFirstSearchGraphIterator(WeightedGraphVertex<T,W,compare,hash>*
 	stack.push(vertex);
 	while(!stack.isEmpty()) {
 		WeightedGraphVertex<T,W,compare,hash>* node = stack.pop();
-		HashMap<WeightedGraphVertex<T, W, compare, hash>*, W, compareWeightedVertex<T, W, compare, hash>, hashWeightedVertex<T, W, compare, hash>>* children = node->getEdges();
+		Map<WeightedGraphVertex<T, W, compare, hash>*, W>* children = node->getEdges();
 		for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
 			std::pair<WeightedGraphVertex<T,W,compare,hash>*,W> tmp = (std::pair<WeightedGraphVertex<T,W,compare,hash>*,W>) (*(*it));
 			if(!visitor->isVisited(tmp.first)) {

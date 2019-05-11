@@ -10,6 +10,7 @@
 
 #include "../container/Queue.h"
 #include "../container/Stack.h"
+#include "../list/ArrayList.h"
 #include "UnweightedGraphVertex.h"
 
 template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
@@ -29,7 +30,7 @@ inline void BreadthFirstSearchGraphIterator(UnweightedGraphVertex<T, compare, ha
 	queue.push(vertex);
 	while(!queue.isEmpty()) {
 		UnweightedGraphVertex<T, compare, hash>* node = queue.pop();
-		HashSet<UnweightedGraphVertex<T, compare, hash>*, compareVertex<T, compare, hash>, hashVertex<T, compare, hash>>* children = node->getEdges();
+		Set<UnweightedGraphVertex<T, compare, hash>*>* children = node->getEdges();
 		for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
 			UnweightedGraphVertex<T, compare, hash>* tmp = (UnweightedGraphVertex<T, compare, hash>*) (*(*it));
 			if(!visitor->isVisited(tmp)) {
@@ -47,7 +48,7 @@ inline void DepthFirstSearchGraphIterator(UnweightedGraphVertex<T, compare, hash
 	stack.push(vertex);
 	while(!stack.isEmpty()) {
 		UnweightedGraphVertex<T, compare, hash>* node = stack.pop();
-		HashSet<UnweightedGraphVertex<T, compare, hash>*, compareVertex<T, compare, hash>, hashVertex<T, compare, hash>>* children = node->getEdges();
+		Set<UnweightedGraphVertex<T, compare, hash>*>* children = node->getEdges();
 		for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
 			UnweightedGraphVertex<T, compare, hash>* tmp = (UnweightedGraphVertex<T, compare, hash>*) (*(*it));
 			if(!visitor->isVisited(tmp)) {

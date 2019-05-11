@@ -122,7 +122,7 @@ public:
 		return min(root);
 	}
 
-	RedBlackTreeNode<VALUE>* getNextNode(RedBlackTreeNode<VALUE>* x) {
+	RedBlackTreeNode<VALUE>* getNextNode(RedBlackTreeNode<VALUE>*& x) {
 		if (x->right != nil) {
 			x = x->right;
 			while (x->left != nil){
@@ -184,7 +184,7 @@ private:
 		delete h;
 	}
 
-	void deleteNode(RedBlackTreeNode<VALUE>* z) {
+	void deleteNode(RedBlackTreeNode<VALUE>* const& z) {
 		RedBlackTreeNode<VALUE>* x = nil;
 		RedBlackTreeNode<VALUE>* y = z;
 		RedBlackTreeNodeColor yOriginalColor = y->color;

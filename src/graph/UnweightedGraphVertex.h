@@ -11,7 +11,6 @@
 #include "../Comparator.h"
 #include "../Hashing.h"
 #include "../set/HashSet.h"
-#include "../list/ArrayList.h"
 #include "../container/Queue.h"
 #include "../map/HashMap.h"
 
@@ -48,7 +47,7 @@ class UnweightedGraphVertex {
 			return this->data;
 		}
 
-		HashSet<UnweightedGraphVertex<T, compare, hash>*, compareVertex<T, compare, hash>, hashVertex<T, compare, hash>>* const& getEdges() {
+		Set<UnweightedGraphVertex<T, compare, hash>*>* const& getEdges() {
 			return edges;
 		}
 
@@ -67,7 +66,7 @@ class UnweightedGraphVertex {
 		}
 	protected:
 		T data;
-		HashSet<UnweightedGraphVertex<T, compare, hash>*, compareVertex<T, compare, hash>, hashVertex<T, compare, hash>>* edges;
+		Set<UnweightedGraphVertex<T, compare, hash>*>* edges;
 };
 
 #endif /* SRC_GRAPH_UNWEIGHTEDGRAPHVERTEX_H_ */

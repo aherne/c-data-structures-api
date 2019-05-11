@@ -21,7 +21,7 @@ public:
 template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 inline void PreOrderTreeIterator(TreeNode<T,compare,hash>* const& node, TreeNodeVisitor<T,compare,hash>* const& visitor) {
 	if(!visitor->visit(node)) return;
-	HashSet<TreeNode<T,compare,hash>*, compareTreeNode<T,compare,hash>, hashTreeNode<T,compare,hash>>* children = node->getChildren();
+	Set<TreeNode<T,compare,hash>*>* children = node->getChildren();
 	for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
 		PreOrderTreeIterator(*(*it), visitor);
 	}
@@ -29,7 +29,7 @@ inline void PreOrderTreeIterator(TreeNode<T,compare,hash>* const& node, TreeNode
 
 template<typename T, int (*compare)(const T&, const T&) = comparator<T>, std::size_t (*hash)(const T&) = hash<T>>
 inline void PostOrderTreeIterator(TreeNode<T,compare,hash>* const& node, TreeNodeVisitor<T,compare,hash>* const& visitor) {
-	HashSet<TreeNode<T,compare,hash>*, compareTreeNode<T,compare,hash>, hashTreeNode<T,compare,hash>>* children = node->getChildren();
+	Set<TreeNode<T,compare,hash>*>* children = node->getChildren();
 	for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
 		PreOrderTreeIterator(*(*it), visitor);
 	}
@@ -43,7 +43,7 @@ inline void LevelOrderTreeIterator(TreeNode<T,compare,hash>* const& root, TreeNo
 	while(!q.isEmpty()) {
 		TreeNode<T,compare,hash>* node = q.pop();
 		if(!visitor->visit(node)) return;
-		HashSet<TreeNode<T,compare,hash>*, compareTreeNode<T,compare,hash>, hashTreeNode<T,compare,hash>>* children = node->getChildren();
+		Set<TreeNode<T,compare,hash>*>* children = node->getChildren();
 		for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
 			q.push(*(*it));
 		}
@@ -57,7 +57,7 @@ inline void LevelOrderTreeIterator(TreeNode<T,compare,hash>* const& root, std::s
 	while(!q.isEmpty()) {
 		TreeNode<T,compare,hash>* node = q.pop();
 		if(!visitor->visit(node)) return;
-		HashSet<TreeNode<T,compare,hash>*, compareTreeNode<T,compare,hash>, hashTreeNode<T,compare,hash>>* children = node->getChildren();
+		Set<TreeNode<T,compare,hash>*>* children = node->getChildren();
 		for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
 			if((*(*it))->getDepth() <= depth) {
 				q.push(*(*it));

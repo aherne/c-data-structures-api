@@ -14,7 +14,7 @@ template<typename T,typename W, int (*compare)(const T&, const T&) = comparator<
 class UndirectedWeightedGraph : public WeightedGraph<T,W,compare,hash> {
 public:
 	void removeVertex(WeightedGraphVertex<T,W,compare,hash>* const& vertex) {
-		HashMap<WeightedGraphVertex<T, W, compare, hash>*, W, compareWeightedVertex<T, W, compare, hash>, hashWeightedVertex<T, W, compare, hash>>* edges = vertex->getEdges();
+		Map<WeightedGraphVertex<T, W, compare, hash>*, W>* edges = vertex->getEdges();
 		for(auto it = edges->begin(); *it!=*(edges->end()); ++(*it)) {
 			(*(*it)).first->removeEdge(vertex);
 		}

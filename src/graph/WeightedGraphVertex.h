@@ -11,7 +11,6 @@
 #include "../Comparator.h"
 #include "../Hashing.h"
 #include "../set/HashSet.h"
-#include "../list/ArrayList.h"
 #include "../container/Queue.h"
 #include "../map/HashMap.h"
 
@@ -48,7 +47,7 @@ class WeightedGraphVertex {
 			return this->data;
 		}
 
-		HashMap<WeightedGraphVertex<T, W, compare, hash>*, W, compareWeightedVertex<T, W, compare, hash>, hashWeightedVertex<T, W, compare, hash>>* const& getEdges() {
+		Map<WeightedGraphVertex<T, W, compare, hash>*, W>* const& getEdges() {
 			return edges;
 		}
 
@@ -75,7 +74,7 @@ class WeightedGraphVertex {
 		}
 	protected:
 		T data;
-		HashMap<WeightedGraphVertex<T, W, compare, hash>*, W, compareWeightedVertex<T, W, compare, hash>, hashWeightedVertex<T, W, compare, hash>>* edges;
+		Map<WeightedGraphVertex<T, W, compare, hash>*, W>* edges;
 };
 
 #endif /* SRC_GRAPH_WEIGHTEDGRAPHVERTEX_H_ */

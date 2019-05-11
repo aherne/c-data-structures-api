@@ -15,7 +15,7 @@ class UndirectedUnweightedGraph : public UnweightedGraph<T,compare,hash> {
 	public:
 		void removeVertex(UnweightedGraphVertex<T, compare, hash>* const& vertex) {
 			// remove edges that connect to vertex
-			HashSet<UnweightedGraphVertex<T, compare, hash>*, compareVertex<T, compare, hash>, hashVertex<T, compare, hash>>* edges = vertex->getEdges();
+			Set<UnweightedGraphVertex<T, compare, hash>*>* edges = vertex->getEdges();
 			for(auto it = edges->begin(); *it!=*(edges->end()); ++(*it)) {
 				(*(*it))->removeEdge(vertex);
 			}

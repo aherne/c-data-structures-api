@@ -17,7 +17,7 @@ public:
 	}
 private:
 	void deleteRecursive(TreeNode<T,compare,hash>* const& node) {
-		HashSet<TreeNode<T,compare,hash>*, compareTreeNode<T,compare,hash>, hashTreeNode<T,compare,hash>>* children = node->getChildren();
+		Set<TreeNode<T,compare,hash>*>* children = node->getChildren();
 		for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
 			deleteRecursive(*(*it));
 			delete (*(*it));

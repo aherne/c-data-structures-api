@@ -59,7 +59,7 @@ void TreeUnitTest::treeTest() {
 	std::cout << "\t" << "getRoot: " << (c1_1_1_1->getRoot()==root?"OK":"FAILED") << std::endl;
 
 	std::cout << "\t" << "getAncestors: " << std::endl;
-	ArrayList<TreeNode<long>*>* ancestors = c1_1_1_1->getAncestors();
+	List<TreeNode<long>*>* ancestors = c1_1_1_1->getAncestors();
 	for(auto it = ancestors->begin(); *it!=*(ancestors->end()); ++(*it)) {
 		std::cout << "\t" << "\t" << (*(*it))->getData() << std::endl;
 	}
@@ -73,8 +73,7 @@ void TreeUnitTest::treeTest() {
 	std::cout << "\t" << "getData: " << (c1_1_1_1->getData()==17?"OK":"FAILED") << std::endl;
 	c1_1_1_1->setData(11);
 
-	// TODO: make HashSet guess; add defaults for each custom comparator
-	HashSet<TreeNode<long>*, compareTreeNode<long>, hashTreeNode<long>>* children = root->getChildren();
+	Set<TreeNode<long>*>* children = root->getChildren();
 	std::cout << "\t" << "getChildren: " << (children->size()==3?"OK":"FAILED") << std::endl;
 
 	TreeNode<long>* test = new TreeNode<long>(12);
@@ -88,7 +87,7 @@ void TreeUnitTest::treeTest() {
 	std::cout << "\t" << "removeChild: " << (c3->getChildren()->size()==1?"OK":"FAILED") << std::endl;
 
 	std::cout << "\t" << "getDescendants: " << std::endl;
-	ArrayList<TreeNode<long>*>* descendants = root->getDescendants();
+	List<TreeNode<long>*>* descendants = root->getDescendants();
 	for(auto it = descendants->begin(); *it!=*(descendants->end()); ++(*it)) {
 		std::cout << "\t" << "\t" << (*(*it))->getData() << std::endl;
 	}

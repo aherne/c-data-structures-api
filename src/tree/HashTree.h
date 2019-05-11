@@ -75,7 +75,7 @@ protected:
 			parent->removeChild(node);
 
 			// migrate my children to parent
-			HashSet<TreeNode<T,compare,hash>*, compareTreeNode<T,compare,hash>, hashTreeNode<T,compare,hash>>* children = node->getChildren();
+			Set<TreeNode<T,compare,hash>*>* children = node->getChildren();
 			for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
 				parent->addChild(*(*it));
 			}
@@ -88,7 +88,7 @@ protected:
 			if(node == root) throw std::logic_error("Root cannot be removed without deallocating the whole tree!");
 
 			// removes each descendant from nodes
-			ArrayList<TreeNode<T,compare,hash>*>* children = node->getDescendants();
+			List<TreeNode<T,compare,hash>*>* children = node->getDescendants();
 			for(auto it = children->begin(); *it!=*(children->end()); ++(*it)) {
 				nodes.remove(*(*it));
 			}
